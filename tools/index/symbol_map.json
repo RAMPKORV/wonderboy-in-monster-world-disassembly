@@ -1,0 +1,546 @@
+{
+  "generated": "2026-03-16",
+  "note": "Includes shared VBlank scheduler RAM anchors, the task-script scratch/flag cluster, the bootstrap patch words, and the source-authored VBlank/task-dispatch plus bootstrap/input helper chain recovered during CODE-004 through 0x005260. Current best fit: `0x8A4E/0x8A4F` hold packed selected-input playback duration/value bytes loaded from `0xFF1400`, while `0x8A7A-0x8A7D` doubles as the selected-input playback mirror and source selector.",
+  "entries": [
+    {
+      "name": "StartOfRom",
+      "address": "0x000000",
+      "category": "rom"
+    },
+    {
+      "name": "VectorReset",
+      "address": "0x000004",
+      "category": "vector"
+    },
+    {
+      "name": "RomHeader",
+      "address": "0x000100",
+      "category": "rom"
+    },
+    {
+      "name": "ResetEntry",
+      "address": "0x00000200",
+      "category": "code"
+    },
+    {
+      "name": "ReservedVectorTrap",
+      "address": "0x00000006",
+      "category": "code"
+    },
+    {
+      "name": "BusErrorHandler",
+      "address": "0x000049FA",
+      "category": "code"
+    },
+    {
+      "name": "AddressErrorHandler",
+      "address": "0x000049F8",
+      "category": "code"
+    },
+    {
+      "name": "DefaultExceptionHandlerA",
+      "address": "0x000049FE",
+      "category": "code"
+    },
+    {
+      "name": "DefaultExceptionHandlerB",
+      "address": "0x00004A02",
+      "category": "code"
+    },
+    {
+      "name": "DefaultInterruptHandler",
+      "address": "0x00004B58",
+      "category": "code"
+    },
+    {
+      "name": "VBlankHandler",
+      "address": "0x00004B5C",
+      "category": "code"
+    },
+    {
+      "name": "InitializeVBlankDispatchState",
+      "address": "0x00004B6A",
+      "category": "code"
+    },
+    {
+      "name": "ClearImmediateTaskSlotStates",
+      "address": "0x00004B82",
+      "category": "code"
+    },
+    {
+      "name": "RetireRoundRobinTaskSlots",
+      "address": "0x00004B96",
+      "category": "code"
+    },
+    {
+      "name": "PrimeImmediateTaskCursor",
+      "address": "0x00004BBC",
+      "category": "code"
+    },
+    {
+      "name": "ProcessImmediateTaskSlots",
+      "address": "0x00004BC2",
+      "category": "code"
+    },
+    {
+      "name": "ResetDispatchStackAndRetry",
+      "address": "0x00004BF8",
+      "category": "code"
+    },
+    {
+      "name": "DispatchTimedRoundRobinTasks",
+      "address": "0x00004C00",
+      "category": "code"
+    },
+    {
+      "name": "DispatchRoundRobinTasksFallback",
+      "address": "0x00004C5A",
+      "category": "code"
+    },
+    {
+      "name": "DispatchNextRoundRobinTask",
+      "address": "0x00004C6E",
+      "category": "code"
+    },
+    {
+      "name": "CompleteCurrentTaskSlotWithResult",
+      "address": "0x00004CA8",
+      "category": "code"
+    },
+    {
+      "name": "VBlankDispatchIdleLoop",
+      "address": "0x00004CB4",
+      "category": "code"
+    },
+    {
+      "name": "QueueInitialImmediateTask",
+      "address": "0x00004CB8",
+      "category": "code"
+    },
+    {
+      "name": "InitImmCb",
+      "address": "0x00004CC8",
+      "category": "code"
+    },
+    {
+      "name": "SecondImmCb",
+      "address": "0x00004D18",
+      "category": "code"
+    },
+    {
+      "name": "ThirdImmCb",
+      "address": "0x00004D56",
+      "category": "code"
+    },
+    {
+      "name": "FourthImmCb",
+      "address": "0x00004D68",
+      "category": "code"
+    },
+    {
+      "name": "CleanImmCb",
+      "address": "0x00004DA8",
+      "category": "code"
+    },
+    {
+      "name": "CleanStateCb",
+      "address": "0x00004DE2",
+      "category": "code"
+    },
+    {
+      "name": "TaskScriptCbList",
+      "address": "0x00004E5C",
+      "category": "data"
+    },
+    {
+      "name": "TaskDescriptor_004F54",
+      "address": "0x00004F54",
+      "category": "data"
+    },
+    {
+      "name": "LoadSecondaryTaskListCb_004F58",
+      "address": "0x00004F58",
+      "category": "code"
+    },
+    {
+      "name": "TaskDelayPollCb_004F66",
+      "address": "0x00004F66",
+      "category": "code"
+    },
+    {
+      "name": "QueueInitialTaskWhenReadyCb_004F84",
+      "address": "0x00004F84",
+      "category": "code"
+    },
+    {
+      "name": "QueueInitialTaskFromRoundRobin_004F9C",
+      "address": "0x00004F9C",
+      "category": "code"
+    },
+    {
+      "name": "WaitTaskAdvanceReadyCb_004FA6",
+      "address": "0x00004FA6",
+      "category": "code"
+    },
+    {
+      "name": "TaskSecondaryList_004FC0",
+      "address": "0x00004FC0",
+      "category": "data"
+    },
+    {
+      "name": "TaskDescriptor_004FC8",
+      "address": "0x00004FC8",
+      "category": "data"
+    },
+    {
+      "name": "AsyncTaskReadyGateCb_004FCC",
+      "address": "0x00004FCC",
+      "category": "code"
+    },
+    {
+      "name": "ClearTaskScriptProgressBuffer",
+      "address": "0x00004FEE",
+      "category": "code"
+    },
+    {
+      "name": "LoadSelectedInputPlaybackBuffer_005016",
+      "address": "0x00005016",
+      "category": "code"
+    },
+    {
+      "name": "AdvanceSelectedInputPlayback",
+      "address": "0x0000501C",
+      "category": "code"
+    },
+    {
+      "name": "AppendSelectedInputPlaybackValue_005036",
+      "address": "0x00005036",
+      "category": "code"
+    },
+    {
+      "name": "StepSelectedInputPlayback",
+      "address": "0x0000505C",
+      "category": "code"
+    },
+    {
+      "name": "TaskDescriptor_00507C",
+      "address": "0x0000507C",
+      "category": "data"
+    },
+    {
+      "name": "TaskAdvanceRoundRobinCb_005080",
+      "address": "0x00005080",
+      "category": "code"
+    },
+    {
+      "name": "TaskAdvanceSecondaryList_0050CC",
+      "address": "0x000050CC",
+      "category": "data"
+    },
+    {
+      "name": "QueueRoundRobinTaskDescriptor",
+      "address": "0x000050D4",
+      "category": "code"
+    },
+    {
+      "name": "QueueImmediateTaskDescriptor",
+      "address": "0x000050E2",
+      "category": "code"
+    },
+    {
+      "name": "LoadSecondaryTaskDescriptorList",
+      "address": "0x00005106",
+      "category": "code"
+    },
+    {
+      "name": "ClearTaskScriptScratch",
+      "address": "0x00005124",
+      "category": "code"
+    },
+    {
+      "name": "PlayTaskAdvanceSound",
+      "address": "0x00005132",
+      "category": "code"
+    },
+    {
+      "name": "PollSecondaryTaskStatus",
+      "address": "0x0000513C",
+      "category": "code"
+    },
+    {
+      "name": "BootstrapClearDisplayAndTaskBuffers_005170",
+      "address": "0x00005170",
+      "category": "code"
+    },
+    {
+      "name": "BootstrapRetirePendingTasksAndApplyPatch_005188",
+      "address": "0x00005188",
+      "category": "code"
+    },
+    {
+      "name": "BootstrapInlinePatchStream_0051C0",
+      "address": "0x000051C0",
+      "category": "data"
+    },
+    {
+      "name": "HeaderChecksum",
+      "address": "0x00018E",
+      "category": "rom"
+    },
+    {
+      "name": "VDP_DATA_PORT",
+      "address": "0x00C00000",
+      "category": "hardware"
+    },
+    {
+      "name": "VDP_CONTROL_PORT",
+      "address": "0x00C00004",
+      "category": "hardware"
+    },
+    {
+      "name": "VDP_HV_COUNTER",
+      "address": "0x00C00008",
+      "category": "hardware"
+    },
+    {
+      "name": "SystemStackTop",
+      "address": "0x00FF0C00",
+      "category": "ram"
+    },
+    {
+      "name": "WorkRamStart",
+      "address": "0x00FF0000",
+      "category": "ram"
+    },
+    {
+      "name": "WorkRamEnd",
+      "address": "0x00FFFFFF",
+      "category": "ram"
+    },
+    {
+      "name": "TaskScriptScratchBuffer",
+      "address": "0x00FF3300",
+      "category": "ram"
+    },
+    {
+      "name": "VBlankDispatchFlags",
+      "address": "0x00FF8006",
+      "category": "ram"
+    },
+    {
+      "name": "TaskCompletionResult",
+      "address": "0x00FF8068",
+      "category": "ram"
+    },
+    {
+      "name": "ImmediateTaskSlots",
+      "address": "0x00FF8048",
+      "category": "ram"
+    },
+    {
+      "name": "SecondaryTaskSlots",
+      "address": "0x00FF80C8",
+      "category": "ram"
+    },
+    {
+      "name": "RoundRobinTaskSlots",
+      "address": "0x00FF8248",
+      "category": "ram"
+    },
+    {
+      "name": "ImmediateTaskCursor",
+      "address": "0x00FF8A48",
+      "category": "ram"
+    },
+    {
+      "name": "VBlankTickCounter",
+      "address": "0x00FF8A49",
+      "category": "ram"
+    },
+    {
+      "name": "RoundRobinTaskIndex",
+      "address": "0x00FF8A4A",
+      "category": "ram"
+    },
+    {
+      "name": "TaskDispatchBudget",
+      "address": "0x00FF8A4B",
+      "category": "ram"
+    },
+    {
+      "name": "CurrentTaskSlotPointer",
+      "address": "0x00FF8A4C",
+      "category": "ram"
+    },
+    {
+      "name": "TaskScriptCountdown",
+      "address": "0x00FF8A4E",
+      "category": "ram"
+    },
+    {
+      "name": "SelectedInputPlaybackCountdown",
+      "address": "0x00FF8A4E",
+      "category": "ram"
+    },
+    {
+      "name": "TaskScriptValue",
+      "address": "0x00FF8A4F",
+      "category": "ram"
+    },
+    {
+      "name": "SelectedInputPlaybackValue",
+      "address": "0x00FF8A4F",
+      "category": "ram"
+    },
+    {
+      "name": "TaskScriptMode",
+      "address": "0x00FF8A50",
+      "category": "ram"
+    },
+    {
+      "name": "SelectedInputPlaybackMode",
+      "address": "0x00FF8A50",
+      "category": "ram"
+    },
+    {
+      "name": "TaskScriptFlags",
+      "address": "0x00FF8A51",
+      "category": "ram"
+    },
+    {
+      "name": "TaskScriptStateLong",
+      "address": "0x00FF8A52",
+      "category": "ram"
+    },
+    {
+      "name": "TaskScriptProgressCurrent",
+      "address": "0x00FF8A7A",
+      "category": "ram"
+    },
+    {
+      "name": "SelectedInputCurrent",
+      "address": "0x00FF8A7A",
+      "category": "ram"
+    },
+    {
+      "name": "TaskScriptProgressPrevious",
+      "address": "0x00FF8A7B",
+      "category": "ram"
+    },
+    {
+      "name": "SelectedInputPrevious",
+      "address": "0x00FF8A7B",
+      "category": "ram"
+    },
+    {
+      "name": "TaskScriptProgressFlags",
+      "address": "0x00FF8A7C",
+      "category": "ram"
+    },
+    {
+      "name": "SelectedInputPressed",
+      "address": "0x00FF8A7C",
+      "category": "ram"
+    },
+    {
+      "name": "SecondaryTaskStatusSelector",
+      "address": "0x00FF8A7D",
+      "category": "ram"
+    },
+    {
+      "name": "SelectedInputSource",
+      "address": "0x00FF8A7D",
+      "category": "ram"
+    },
+    {
+      "name": "Player1InputCurrent",
+      "address": "0x00FF8A7F",
+      "category": "ram"
+    },
+    {
+      "name": "Player1InputPrevious",
+      "address": "0x00FF8A80",
+      "category": "ram"
+    },
+    {
+      "name": "SecondaryTaskReadySlot0",
+      "address": "0x00FF8A81",
+      "category": "ram"
+    },
+    {
+      "name": "Player1InputPressed",
+      "address": "0x00FF8A81",
+      "category": "ram"
+    },
+    {
+      "name": "Player2InputCurrent",
+      "address": "0x00FF8A82",
+      "category": "ram"
+    },
+    {
+      "name": "Player2InputPrevious",
+      "address": "0x00FF8A83",
+      "category": "ram"
+    },
+    {
+      "name": "SecondaryTaskReadySlot1",
+      "address": "0x00FF8A84",
+      "category": "ram"
+    },
+    {
+      "name": "Player2InputPressed",
+      "address": "0x00FF8A84",
+      "category": "ram"
+    },
+    {
+      "name": "BootstrapPatchSlot0",
+      "address": "0x00FF8B34",
+      "category": "ram"
+    },
+    {
+      "name": "BootstrapPatchSlot1",
+      "address": "0x00FF8B36",
+      "category": "ram"
+    },
+    {
+      "name": "BootstrapPatchSlot2",
+      "address": "0x00FF8B38",
+      "category": "ram"
+    },
+    {
+      "name": "BootstrapPatchSlot3",
+      "address": "0x00FF8B3A",
+      "category": "ram"
+    },
+    {
+      "name": "TaskDispatchTimingFlags",
+      "address": "0x00FF8A5D",
+      "category": "ram"
+    },
+    {
+      "name": "TaskAdvanceReadyFlags",
+      "address": "0x00FF8C56",
+      "category": "ram"
+    },
+    {
+      "name": "TaskScriptAuxFlag",
+      "address": "0x00FF9658",
+      "category": "ram"
+    },
+    {
+      "name": "TaskScriptProgressBuffer",
+      "address": "0x00FF1400",
+      "category": "ram"
+    },
+    {
+      "name": "AsyncTaskReadyByte",
+      "address": "0x00FFA3A4",
+      "category": "ram"
+    },
+    {
+      "name": "TaskScriptAuxScratchBuffer",
+      "address": "0x00FF9996",
+      "category": "ram"
+    }
+  ]
+}

@@ -1,0 +1,300 @@
+{
+  "generated": "2026-03-16",
+  "note": "Bootstrap seed index derived from vector/header work, then extended with the source-authored VBlank/task-dispatch, bootstrap/display setup, input-stream, and controller helper chain through 0x005260. Current best fit: `0x00501C` latches packed `(duration,value)` bytes from `0xFF1400` into `0x8A4E/0x8A4F`, `0x005036` is the matching run-length writer, and `0x00505C` feeds playback into the selected-input mirror at `0x8A7A-0x8A7D`.",
+  "entries": [
+    {
+      "name": "ResetEntry",
+      "address": "0x00000200",
+      "source": "header.asm",
+      "kind": "entrypoint"
+    },
+    {
+      "name": "ReservedVectorTrap",
+      "address": "0x00000006",
+      "source": "header.asm",
+      "kind": "reserved_vector_target"
+    },
+    {
+      "name": "BusErrorHandler",
+      "address": "0x000049FA",
+      "source": "header.asm",
+      "kind": "exception_vector_target"
+    },
+    {
+      "name": "AddressErrorHandler",
+      "address": "0x000049F8",
+      "source": "header.asm",
+      "kind": "exception_vector_target"
+    },
+    {
+      "name": "DefaultExceptionHandlerA",
+      "address": "0x000049FE",
+      "source": "header.asm",
+      "kind": "exception_vector_target"
+    },
+    {
+      "name": "DefaultExceptionHandlerB",
+      "address": "0x00004A02",
+      "source": "header.asm",
+      "kind": "exception_vector_target"
+    },
+    {
+      "name": "DefaultInterruptHandler",
+      "address": "0x00004B58",
+      "source": "src/vblank.asm",
+      "kind": "interrupt_vector_target"
+    },
+    {
+      "name": "VBlankHandler",
+      "address": "0x00004B5C",
+      "source": "src/vblank.asm",
+      "kind": "interrupt_vector_target"
+    },
+    {
+      "name": "InitializeVBlankDispatchState",
+      "address": "0x00004B6A",
+      "source": "src/vblank.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "ClearImmediateTaskSlotStates",
+      "address": "0x00004B82",
+      "source": "src/vblank.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "RetireRoundRobinTaskSlots",
+      "address": "0x00004B96",
+      "source": "src/vblank.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "PrimeImmediateTaskCursor",
+      "address": "0x00004BBC",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "ProcessImmediateTaskSlots",
+      "address": "0x00004BC2",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "ResetDispatchStackAndRetry",
+      "address": "0x00004BF8",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "DispatchTimedRoundRobinTasks",
+      "address": "0x00004C00",
+      "source": "src/vblank.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "DispatchRoundRobinTasksFallback",
+      "address": "0x00004C5A",
+      "source": "src/vblank.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "DispatchNextRoundRobinTask",
+      "address": "0x00004C6E",
+      "source": "src/vblank.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "CompleteCurrentTaskSlotWithResult",
+      "address": "0x00004CA8",
+      "source": "src/vblank.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "VBlankDispatchIdleLoop",
+      "address": "0x00004CB4",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "QueueInitialImmediateTask",
+      "address": "0x00004CB8",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "InitImmCb",
+      "address": "0x00004CC8",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "SecondImmCb",
+      "address": "0x00004D18",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "ThirdImmCb",
+      "address": "0x00004D56",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "FourthImmCb",
+      "address": "0x00004D68",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "CleanImmCb",
+      "address": "0x00004DA8",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "CleanStateCb",
+      "address": "0x00004DE2",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "LoadSecondaryTaskListCb_004F58",
+      "address": "0x00004F58",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "TaskDelayPollCb_004F66",
+      "address": "0x00004F66",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "QueueInitialTaskWhenReadyCb_004F84",
+      "address": "0x00004F84",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "QueueInitialTaskFromRoundRobin_004F9C",
+      "address": "0x00004F9C",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "WaitTaskAdvanceReadyCb_004FA6",
+      "address": "0x00004FA6",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "AsyncTaskReadyGateCb_004FCC",
+      "address": "0x00004FCC",
+      "source": "src/vblank.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "ClearTaskScriptProgressBuffer",
+      "address": "0x00004FEE",
+      "source": "src/vblank.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "LoadSelectedInputPlaybackBuffer_005016",
+      "address": "0x00005016",
+      "source": "src/core.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "AdvanceSelectedInputPlayback",
+      "address": "0x0000501C",
+      "source": "src/core.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "AppendSelectedInputPlaybackValue_005036",
+      "address": "0x00005036",
+      "source": "src/core.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "StepSelectedInputPlayback",
+      "address": "0x0000505C",
+      "source": "src/core.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "TaskAdvanceRoundRobinCb_005080",
+      "address": "0x00005080",
+      "source": "src/core.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "QueueRoundRobinTaskDescriptor",
+      "address": "0x000050D4",
+      "source": "src/core.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "QueueImmediateTaskDescriptor",
+      "address": "0x000050E2",
+      "source": "src/core.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "LoadSecondaryTaskDescriptorList",
+      "address": "0x00005106",
+      "source": "src/core.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "ClearTaskScriptScratch",
+      "address": "0x00005124",
+      "source": "src/core.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "PlayTaskAdvanceSound",
+      "address": "0x00005132",
+      "source": "src/core.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "PollSecondaryTaskStatus",
+      "address": "0x0000513C",
+      "source": "src/core.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "BootstrapClearDisplayAndTaskBuffers_005170",
+      "address": "0x00005170",
+      "source": "src/core.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "BootstrapRetirePendingTasksAndApplyPatch_005188",
+      "address": "0x00005188",
+      "source": "src/core.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "ReadControllerPortsAndLatchSelectedInput",
+      "address": "0x000051C6",
+      "source": "src/core.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "ReadControllerInputStateTriplet",
+      "address": "0x00005216",
+      "source": "src/core.asm",
+      "kind": "subroutine"
+    },
+    {
+      "name": "UpdateSelectedInputPressedState",
+      "address": "0x00005250",
+      "source": "src/core.asm",
+      "kind": "subroutine"
+    }
+  ]
+}

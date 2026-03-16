@@ -1,0 +1,11 @@
+VDP_DATA_PORT            equ $00C00000
+VDP_CONTROL_PORT         equ $00C00004
+VDP_HV_COUNTER           equ $00C00008
+PSG_INPUT                equ $00C00011
+VERSION_REGISTER         equ $00A10001
+JOY1_DATA                equ $00A10003
+JOY2_DATA                equ $00A10005
+EXPANSION_DATA           equ $00A10007
+JOY_CONTROL              equ $00A10009
+Z80_BUS_REQUEST          equ $00A11100
+Z80_RESET                equ $00A11200

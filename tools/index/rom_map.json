@@ -1,0 +1,86 @@
+{
+  "generated": "2026-03-16",
+  "note": "Refreshed after extending the source-authored VBlank/task-dispatch, bootstrap/display setup, input-stream, and controller helper chain through 0x005260 while preserving ROM order with a bit-perfect rebuild. Current best fit: `0x00501C` latches packed `(duration,value)` bytes from `0xFF1400` into `0x8A4E/0x8A4F`, `0x005036` run-length encodes the same format, and `0x00505C` replays it through the selected-input mirror at `0x8A7A-0x8A7D`.",
+  "rom_size": 786432,
+  "ranges": [
+    {
+      "start": "0x000000",
+      "end": "0x0000FF",
+      "source": "header.asm",
+      "kind": "vector_table",
+      "status": "source_authored"
+    },
+    {
+      "start": "0x000100",
+      "end": "0x0001FF",
+      "source": "header.asm",
+      "kind": "header",
+      "status": "source_authored"
+    },
+    {
+      "start": "0x000200",
+      "end": "0x004B57",
+      "source": "src/init.asm",
+      "blob": "data/rom/init_000200_004b57.bin",
+      "kind": "opaque_blob",
+      "status": "incbin"
+    },
+    {
+      "start": "0x004B58",
+      "end": "0x004FFF",
+      "source": "src/vblank.asm",
+      "kind": "interrupt_and_dispatch_code",
+      "status": "source_authored"
+    },
+    {
+      "start": "0x005000",
+      "end": "0x00516F",
+      "source": "src/core.asm",
+      "kind": "cross_module_source_authored_tail",
+      "status": "source_authored"
+    },
+    {
+      "start": "0x005170",
+      "end": "0x0051C5",
+      "source": "src/core.asm",
+      "kind": "bootstrap_display_setup_and_inline_patch_data",
+      "status": "source_authored"
+    },
+    {
+      "start": "0x0051C6",
+      "end": "0x005260",
+      "source": "src/core.asm",
+      "kind": "controller_input_helpers",
+      "status": "source_authored"
+    },
+    {
+      "start": "0x005261",
+      "end": "0x01FFFF",
+      "source": "src/core.asm",
+      "blob": "data/rom/core_005000_01ffff.bin",
+      "kind": "opaque_blob",
+      "status": "incbin"
+    },
+    {
+      "start": "0x020000",
+      "end": "0x03FFFF",
+      "source": "data/rom/bank_020000_03ffff.bin",
+      "kind": "opaque_blob",
+      "status": "incbin"
+    },
+    {
+      "start": "0x040000",
+      "end": "0x07FFFF",
+      "source": "data/rom/bank_040000_07ffff.bin",
+      "kind": "opaque_blob",
+      "status": "incbin"
+    },
+    {
+      "start": "0x080000",
+      "end": "0x0BFFFF",
+      "source": "data/rom/bank_080000_0bffff.bin",
+      "kind": "opaque_blob",
+      "status": "incbin"
+    }
+  ]
+}
