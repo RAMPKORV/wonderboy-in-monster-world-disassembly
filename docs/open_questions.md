@@ -99,48 +99,124 @@
   The bytes now prove a four-entry absolute pointer list into bank-local resources
   (`0x0211DA`, `0x021720`, `0x021A06`, and `0x021FCA`), followed by one bank-relative offset table that
   targets `0x0201D0-0x020539` and a second monotone bank-relative offset table that targets
-  `0x020E4C-0x021195`. That is enough to justify explicit source-owned pointer and offset tables, but not
-  yet enough to say whether the owner is a dictionary/dialogue builder, a menu text catalog, or some
-  broader script/text dispatcher without the 68k-side code that loads these table bases.
+  `0x020E4C-0x0211C9`. Both target domains are now split in source into ROM-order short record slices,
+  which confirms that the front bank is dealing with real record families rather than random earlier
+  bytes. Even so, those record bytes still mix readable text fragments with undecoded control payloads,
+  so it is not yet safe to say whether the owner is a dialogue builder, a menu text catalog, a quiz-host
+  script table, or some broader script/text dispatcher without the 68k-side code that loads these bases.
 - Determine the consumer and field semantics for the next bank `0x020000` structured island at
-  `0x022460-0x022C5F`. The front `0x022460-0x0224BF` bytes are now split as six 0x10-byte same-bank
+  `0x022460-0x022DB7`. The front `0x022460-0x0224BF` bytes are now split as six 0x10-byte same-bank
   reference descriptors, `0x0224C0-0x0225D7` is a monotone big-endian offset table that fits a
   payload base at `0x0225D8`, `0x022662-0x02292B` is now source-authored as a table-targeted payload
-  family with one `0x8A`-byte lead-in plus mostly 6-byte short records and eight 8-byte variants, and
-  `0x02292C-0x022AEB` is a stable 0x10-byte repeated descriptor band. That is enough to justify
-  source-owned table labels and record boundaries, but not yet enough to call the region map, object,
-  or script data. The next useful evidence target is the bank-local or low-ROM code that indexes the
-  `0x0224C0` table, explains the duplicate `$0260` offset entry, or lands on the repeated records.
+  family with one `0x8A`-byte lead-in plus mostly 6-byte short records and eight 8-byte variants,
+  `0x02292C-0x022AEB` is a stable 0x10-byte repeated descriptor band, and the former opaque tail at
+  `0x022AEC-0x022D3F` is now explicit as variable-length `$FFFF`-delimited word records with one larger
+  descriptor at `0x022BBA` that embeds three `$FE00`-prefixed sublists before a doubled `$FFFF`
+  terminator; the next `0x022D40-0x022D6B` span is a repeated `$0BFF` word band; and
+  `0x022D6C-0x022DB7` is now split as several compact `$FF00`-terminated word records. That is enough
+  to justify source-owned table labels and record boundaries, but not yet enough to call the region map,
+  object, or script data. The next useful evidence target is the bank-local or low-ROM code that indexes
+  the `0x0224C0` table, explains the duplicate `$0260` offset entry, or interprets the `$FFFF` / `$FE00`
+  / `$FF00` delimiters plus the repeated `$0BFF` band in the newly exposed tail.
 - Determine the consumer and field semantics for the later bank `0x020000` structured island at
-  `0x023AB6-0x024537`. The bytes there are now split in source as a long band of big-endian word
+  `0x022DB8-0x023AB5` in bank `0x020000`. The region is no longer one anonymous gap: `0x022DB8-0x0237B3`
+  is now isolated as a recurring-word band, `0x0237B4` and `0x0237E2` are explicit standalone `$FFFF`
+  words, `0x0237B6-0x0237CD` and `0x0237CE-0x0237DB` are source-visible `$FF00`-terminated compact word
+  records, and `0x0237DC-0x0237E1` is a short three-word lead-in
+  before the remaining mixed payload at `0x0237E4-0x023AB5`. That is enough to prove local structure and a
+  real bridge between the earlier compact-record family and the later `$FFFF`-delimited word-record band,
+  but not enough yet to name the higher-level owner without the code that recognizes those sentinels or
+  steps across this transition zone.
+- Determine the consumer and field semantics for the later bank `0x020000` structured island at
+  `0x023AB6-0x02482B`. The bytes there are now split in source as a long band of big-endian word
   records whose boundaries are repeatedly marked by `$FFFF` sentinels, and several subfamilies share
-  stable field counts or coordinate-like word patterns. That is enough to justify a ROM-order record
-  split, but not yet enough to call the region menu layout data, object placement, script payloads, or
-  another subsystem without the code that scans those sentinels or consumes the resulting fields.
+  stable field counts or coordinate-like word patterns. The newly exposed continuation at
+  `0x024538-0x02482B` also reuses several control-like words already seen nearby (`$E001/$E010/$E012/$E021/$E031/$E042/$E071`,
+  `$D301`, and embedded `$FF00` markers before the final `$FFFF`), which strengthens the case that this
+  is one larger structured family rather than two unrelated blobs. That is enough to justify a ROM-order
+  record split, but not yet enough to call the region menu layout data, object placement, script payloads,
+  or another subsystem without the code that scans those sentinels or consumes the resulting fields.
+- Determine the format family for the back tail of bank `0x020000` at `0x02482C-0x03FFFF`. The front
+  offset table at `0x02482C` is now explicit `dc.w` data, nine earlier blocks at `0x024836-0x035077`
+  already ended with `0xFF7B`, and the next three blocks at `0x035078-0x03C6DF` are now split out by
+  proven `0xFF7A` terminators into `0x035078-0x03519D`, `0x03519E-0x0354F3`, and
+  `0x0354F4-0x03C6DF`. That leaves only `0x03C6E0-0x03FFFF` as the final unsplit tail in this bank
+  region. The strongest current byte-level evidence is still structural: header-like prefixes such as
+  `0x0660`, `0x0B60`, `0x0F00`, and `0x0960`, heavy fill-style runs, and alternating `0xFF7A` /
+  `0xFF7B` block terminators that look more like compressed graphics/data families than scripts or plain
+  tables. The next useful evidence target is a loader/decompressor path that proves whether these are map,
+  tile, sprite, or other asset blocks and whether `0xFF7A` and `0xFF7B` are true format variants or just
+  sibling terminators inside one codec family.
 - Determine the exact owner of the bank `0x080000` non-fill island at `0x098000-0x09F776`.
   The front `0x098000-0x09991F` slice is now split out as a strongly Z80-like opcode-dense block,
-  the next `0x099920-0x09997F` and `0x099980-0x099A84` slices behave like descriptor/layout data,
+  the next `0x099920-0x09997F` slice is now explicit as sixteen fixed 6-byte descriptor-like records,
+  `0x099980-0x099A74` is now explicit as forty-nine fixed 5-byte layout-like records, and
+  `0x099A75-0x099A84` stands apart as a short trailer,
   `0x099A85-0x099AFF` is explicit zero fill, and the `0x099B00+` command region now has a clearer
   front split: `0x099B00-0x099B31` is a short lead-in, `0x099B32-0x099BAF` is an explicit big-
   endian offset table whose entries mostly point back into the local `0x099B00-0x0A0348` command
   payload, `0x099BB0-0x099BD2` now stands alone as an unreferenced prelude, and `0x099BD3-0x09A347`
-  is split in source into table-targeted ROM-order command records. One outlier word (`$F7FD`) still
-  resists that local pattern, and the final table target at `0x09A348` still expands into a very
-  large trailing record through `0x09F776`. The next useful evidence target is still the 68k-side
-  loader or bank-switch path that enters this region, so these labels can move from structural names
-  to subsystem ownership.
+  is split in source into table-targeted ROM-order command records. The former monolithic target at
+  `0x09A348-0x09F776` is now also broken at later proven record starts into three command-record
+  windows: `0x09A348-0x09C007`, `0x09C008-0x09E027`, and `0x09E028-0x09F776`, and each of those windows
+  is now further split into explicit FF-terminated ROM-order record slices (154 + 183 + 149 records)
+  with only the short non-terminated lead-out at `0x09F76A-0x09F776` left grouped as a tail. Byte-level
+  review still shows the same strongest clues: the repeated local `0xFF` record endings, repeated 24-byte
+  triplets at `0x09AB2A-0x09AB71`, `0x09E6F7-0x09E73E`, and `0x09F4D5-0x09F51C`, and the unresolved
+  68k-side entry path into this region. The next useful evidence target is still the loader or bank-switch
+  path that enters this region, so these labels can move from structural names to subsystem ownership.
 - Determine the exact owner and record format for the next bank `0x080000` non-fill island at
   `0x0A0000-0x0A4C76`. The front `0x0A0000-0x0A07C5` bytes are now explicit in source as a nested
   big-endian offset-table tree: a root table at `0x0A0000`, a denser second-stage block at
   `0x0A01C8`, and a short tail at `0x0A07BC`. Most words point back into the same island, often to
   later words or to the downstream payload, which makes this look like a table-driven resource index
-  rather than random packed data. The first payload band at `0x0A07C6-0x0A08E5` is now also split
-  in source as twelve repeated `0x18`-byte records, each with four 6-byte tuples, but the tuple
-  semantics and higher-level owner are still unresolved. The later half is no longer completely
-  monolithic either: `0x0A08E6-0x0A34FF` now stands as a separate unresolved lead-in, and
-  `0x0A3500-0x0A4C76` is split in ROM order into table-targeted record slices because the same front
-  offset tree already references stable starts throughout that back half. Raw-byte review still
-  suggests much of the unresolved lead-in continues as a longer 6-byte tuple stream, with a more
-  homogeneous motif beginning around `0x0A0E86`, but that motif change is not yet a loader-proven
-  boundary. The next useful evidence target is the 68k-side code that selects one of these offsets or
-  the downstream record decoder that interprets the `0x0A08E6+` payload families.
+  rather than random packed data. The first payload band is now split farther in source as a continued
+  run of repeated `0x18`-byte records from `0x0A07C6-0x0A0B25`, each still fitting four 6-byte tuples,
+  but the tuple semantics and higher-level owner remain unresolved. The later half is no longer
+  completely monolithic either: the old single lead-in at `0x0A0B26-0x0A34FF` is now split into an
+  earlier mixed patch at `0x0A0B26-0x0A0C82`, four narrower FF-terminated 6-byte record bands at
+  `0x0A0C83-0x0A0D18`, `0x0A0D3F-0x0A0D74`, `0x0A0E85-0x0A0F2C`, and `0x0A0FA9-0x0A10AA`, then a much
+  more structured `0x0A10AB-0x0A34FF` region that mostly resolves into FF-terminated runs whose payload
+  lengths are multiples of 5 bytes, interrupted only by short anomaly gaps at `0x0A1322-0x0A132C`,
+  `0x0A136E-0x0A1377`, `0x0A1406-0x0A1410`, `0x0A1D3F-0x0A1D4E`, `0x0A23F6-0x0A23FF`,
+  `0x0A2586-0x0A258A`, `0x0A2606-0x0A260F`, `0x0A2765-0x0A27CA`, `0x0A2D86-0x0A2D9A`, and
+  `0x0A3040-0x0A304A`, and then a table-targeted back half at `0x0A3500-0x0A4C76` whose stable starts
+  are already proven by the front offset tree. The first three 5-byte-tuple runs are now split all the way down to
+  individual FF-terminated record starts at `0x0A10AB-0x0A1321`, `0x0A132D-0x0A136D`, and `0x0A1378-0x0A1405`,
+  including a singleton `$FF` record at `0x0A1378`, but the later runs still remain grouped at run granularity. The
+  new 6-byte families have a strong local shape
+  (constant trailing `$FF`, repeated first-byte groups like `$0A/$05/$0B/$0E`, and selector-like second
+  bytes such as `$00`, `$20`, `$60`, and `$02`), while the newer `0x0A10AB+` body now strongly suggests
+  a different FF-delimited 5-byte tuple family. That still does not prove the exact role of either
+  family. The first eight 5-byte-tuple runs are now split to individual record starts through
+  `0x0A2764`, including the later windows at `0x0A1D4F-0x0A23F5`, `0x0A2400-0x0A2585`,
+  `0x0A258B-0x0A2605`, and `0x0A2610-0x0A2764`; the first of those even begins with two singleton `$FF`
+  records before settling back into the usual small tuple multiples. The later runs at
+  `0x0A27CB-0x0A2D85`, `0x0A2D9B-0x0A303F`, and `0x0A304B-0x0A34FF` are now also split all the way down to
+  individual record starts, so the whole regular `0x0A10AB-0x0A34FF` family is source-visible in ROM order
+  with only the short anomaly gaps still grouped as mixed payload. The last three run-local length histograms
+  are now explicit too: `0x0A27CB-0x0A2D85` has sizes `6/11/16/21/31/36/41/46/56/76/81/86/91`,
+  `0x0A2D9B-0x0A303F` has `6/11/21/46`, and `0x0A304B-0x0A34FF` has `6/11/16/21/41`. That still does not
+  prove the exact role of the tuple family. The back half at `0x0A3500-0x0A4C76` is also a little less
+  opaque now: besides generic table-targeted slices, it now exposes a 12-record 3-word band at
+  `0x0A37B0-0x0A37F7`, a 16-record local-offset-triplet band at `0x0A3B77-0x0A3C16` whose entries point
+  back into the `0x0A12EC-0x0A1519` tuple family, and a small self-referencing tail cluster at
+  `0x0A4AA3-0x0A4AEB` made of eight 3-word records plus an FF-terminated local-offset list naming those
+  same starts. The next useful evidence target is still the 68k-side code that selects one of these
+  offsets or the downstream record decoder that interprets the `0x0A07C6+` and `0x0A3500+` payload families.
+- Determine the consumer and tag semantics for the newly split bank `0x040000` front table cluster at
+  `0x041000-0x07FF66`. The bytes now prove a repeated four-byte `[tag][24-bit ROM address]` shape with
+  a large local-target run at `0x041000-0x0418AB`, a cross-bank run at `0x0418AC-0x041B3F`, a short
+  tail table at `0x041B80-0x041BBF`, explicit `0xFF` fill gaps on both sides of that tail, and an
+  expanded local-target payload window at `0x041C00-0x07FF66` whose internal ROM-order starts are now
+  source-visible almost to the end of the bank. The top byte is mostly `$02` with smaller `$00`, `$01`,
+  and `$FF` sentinel cases, so it is safer to treat the front records as flagged ROM references and the
+  payload body as table-targeted records rather than plain pointers or named assets until the 68k-side
+  owner proves what the flag means and what kind of resource families live behind the targets. The next
+  useful evidence target is the code or descriptor path that loads `0x041000` as a table base or
+  dispatches into the `0x041C00+` / `0x0801CD+` target ranges, especially now that the cross-bank side is
+  also split in source as 178 ROM-order starts across `0x0801CD-0x0961D7` with explicit untargeted gaps
+  at `0x093FD1-0x094149` and `0x0961D8-0x09622A`. The same-bank fixed-stride bands at
+  `0x04BFAA-0x04E5A9` and `0x05D630-0x05FC2F`, plus the later shorter pair at `0x06B192-0x06BB11`,
+  remain particularly strong evidence targets because their cadence could help identify the shared
+  payload family once the consumer is found.

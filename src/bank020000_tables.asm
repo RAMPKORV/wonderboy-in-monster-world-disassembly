@@ -1,11 +1,13 @@
-; ROM range: 0x022460-0x022C5F
+; ROM range: 0x022460-0x022DB7
 ; The first post-dictionary bank020000 island is structurally dense rather than plain text.
 ; The front 0x60 bytes are six 0x10-byte same-bank reference descriptors, followed by a
 ; monotone offset table whose values fit a payload base at 0x0225D8. That payload is no
 ; longer one coarse blob either: after an 0x8A-byte lead-in, the same offset table fans out
 ; into mostly 6-byte short records with a smaller set of 8-byte variants before the later
-; 0x02292C-0x022AEB repeated 0x10-byte descriptor band. The consuming driver is still open,
-; so keep the labels structural.
+; 0x02292C-0x022AEB repeated 0x10-byte descriptor band and a trailing variable-length word
+; region at 0x022AEC-0x022DB7 whose front records are mostly delimited by $FFFF, followed by
+; a short repeated $0BFF word band and then several smaller $FF00-terminated compact word
+; records. The consuming driver is still open, so keep the labels structural.
 
 Bank020000_SameBankReferenceDescriptor_022460:
 	dc.l	$000267D2,$00026C78
@@ -440,5 +442,135 @@ Bank020000_RepeatedDescriptorRecord_022ACC:
 Bank020000_RepeatedDescriptorRecord_022ADC:
 	dc.w	$0462,$0D82,$1010,$1120,$1020,$0000,$0414,$0000
 
-Bank020000_SentinelRichDescriptorTail_022AEC:
-	incbin "data/rom/bank_020000_03ffff.bin",$002AEC,$000174
+; The tail is not random residue: most records are variable-length word groups terminated by
+; $FFFF, with one larger record at 0x022BBA using internal $FE00-prefixed sublists plus a
+; doubled $FFFF terminator before the following family resumes.
+Bank020000_SentinelDelimitedDescriptorRecord_022AEC:
+	dc.w	$0486,$0DDC,$0502,$0000,$0434,$114C,$1090,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022AFC:
+	dc.w	$054B,$0000,$0450,$1290,$1080,$0601,$3A21,$12A8
+	dc.w	$1068,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022B10:
+	dc.w	$0535,$0000,$0416,$10A0,$1090,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022B1C:
+	dc.w	$0536,$0000,$041A,$1180,$1080,$F937,$000C,$053C
+	dc.w	$0000,$044E,$1130,$1080,$0603,$0C0D,$1160,$1068
+	dc.w	$1A13,$11A0,$1068,$2C1B,$1140,$1068,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022B4A:
+	dc.w	$0538,$0000,$0414,$12E0,$1080,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022B56:
+	dc.w	$0537,$0000,$041E,$1350,$1090,$0601,$562A,$1370
+	dc.w	$1078,$F937,$000C,$053D,$0000,$043C,$1330,$1090
+	dc.w	$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022B78:
+	dc.w	$0553,$0000,$040A,$10F0,$1080,$0602,$2618,$10D0
+	dc.w	$1068,$020A,$10B0,$1068,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022B92:
+	dc.w	$0602,$040B,$1208,$1068,$1812,$1220,$1068,$0534
+	dc.w	$0000,$040A,$11E8,$1080,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022BAC:
+	dc.w	$052E,$0000,$0406,$1250,$1080,$FFFF
+
+Bank020000_StandaloneDescriptorSentinel_022BB8:
+	dc.w	$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022BBA:
+	dc.w	$054A,$0000,$040E,$1240,$1140,$F942,$0006
+
+Bank020000_SentinelDelimitedDescriptorSublist_022BC8:
+	dc.w	$FE00,$000A,$FC1C,$001E
+
+Bank020000_SentinelDelimitedDescriptorSublist_022BD0:
+	dc.w	$FE00,$0002,$0603,$3820,$11E0,$1128,$582B,$1200
+	dc.w	$1128,$5229,$1260,$1128
+
+Bank020000_SentinelDelimitedDescriptorSublist_022BE8:
+	dc.w	$FE00,$0016,$0603,$5A2C,$11E0,$1128,$582B,$1200
+	dc.w	$1128,$5229,$1260,$1128
+
+Bank020000_SentinelDelimitedDescriptorDoubleTerminator_022C00:
+	dc.w	$FFFF,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022C04:
+	dc.w	$0550,$0000,$040C,$10A0,$1200,$0603,$C022,$10C8
+	dc.w	$11C0,$C424,$10A0,$11C0,$C223,$10F0,$11C0,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022C24:
+	dc.w	$0545,$0000,$0422,$10A0,$1080,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022C30:
+	dc.w	$053B,$0000,$0424,$1130,$1090,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022C3C:
+	dc.w	$0546,$0000,$0428,$11C8,$1090,$0602,$2A1A,$11E0
+	dc.w	$1078,$1611,$11F8,$1078,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022C56:
+	dc.w	$0547,$0000,$042C,$1260,$1090,$0603,$361F,$1274
+	dc.w	$1078,$C825,$1288,$1078,$582B,$129C,$1078,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022C76:
+	dc.w	$0900,$0412,$1280,$103C,$0557,$0000,$0458,$1280
+	dc.w	$1070,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022C8A:
+	dc.w	$0602,$120F,$1140,$1078,$2216,$1158,$1078,$0542
+	dc.w	$0000,$0442,$1170,$1090,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022CA4:
+	dc.w	$0602,$5427,$1068,$1128,$5C2D,$1050,$1128,$0543
+	dc.w	$0000,$043E,$1038,$1140,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022CBE:
+	dc.w	$0541,$0000,$0446,$10F0,$10F0,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022CCA:
+	dc.w	$0544,$0000,$044C,$11B0,$10F0,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022CD6:
+	dc.w	$0566,$0000,$0468,$1070,$1150,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022CE2:
+	dc.w	$0563,$0000,$0460,$10B0,$1040,$0602,$5A2C,$1088
+	dc.w	$1028,$321D,$10A0,$1028,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022CFC:
+	dc.w	$0562,$0000,$045E,$1190,$1090,$0603,$080C,$1140
+	dc.w	$1078,$1410,$1158,$1078,$2417,$1170,$1078,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022D1C:
+	dc.w	$0564,$0000,$045A,$11B0,$1040,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022D28:
+	dc.w	$0565,$0000,$0462,$1240,$1050,$FFFF
+
+Bank020000_SentinelDelimitedDescriptorRecord_022D34:
+	dc.w	$0200,$9002,$005A,$10C0,$1160,$FFFF
+
+Bank020000_RepeatedPlaceholderWordRun_022D40:
+	dc.w	$0BFF,$0BFF,$0BFF,$0BFF,$0BFF,$0BFF,$0BFF,$0BFF
+	dc.w	$0BFF,$0BFF,$0BFF,$0BFF,$0BFF,$0BFF,$0BFF,$0BFF
+	dc.w	$0BFF,$0BFF,$0BFF,$0BFF,$0BFF,$0BFF
+
+Bank020000_FFTerminatedCompactWordRecord_022D6C:
+	dc.w	$0B09,$0016,$0035,$FF00
+
+Bank020000_FFTerminatedCompactWordRecord_022D74:
+	dc.w	$0BFF,$0B09,$0013,$0039,$FF00
+
+Bank020000_FFTerminatedCompactWordRecord_022D7E:
+	dc.w	$0BFF,$0BFF,$0BFC,$0700,$05FE,$001C,$FC0F,$0005
+	dc.w	$FE00,$15FC,$1700,$05FE,$000E,$FC1F,$0005,$FE00
+	dc.w	$0709,$0063,$0064,$FF00
+
+Bank020000_FFTerminatedCompactWordRecord_022DA6:
+	dc.w	$0BF9,$4700,$0809,$006C,$006F,$FF09,$006C,$0005
+	dc.w	$FF00

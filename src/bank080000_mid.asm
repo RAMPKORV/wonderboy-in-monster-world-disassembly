@@ -2,18 +2,18 @@
 ; Conservative split of the first non-fill tail-bank island. The front block is strongly
 ; Z80/opcode-dense rather than plain 68k or obvious asset data, but its caller and exact
 ; subsystem owner are still unproven. The following slices are structurally clearer: a
-; compact descriptor-header region, a packed layout/coordinate table, a small zero-fill
+; compact descriptor-header region plus an adjacent fixed-record layout band, a small zero-fill
 ; gap, and a larger command region whose front bytes now split into a short lead-in plus a
-; bank-local offset table before the denser command records.
+; bank-local offset table before the denser command records. The formerly monolithic trailing
+; command body at 0x09A348-0x09F776 is now divided into three ROM-order source windows, each
+; further split at every proven local 0xFF terminator so the command-record cadence is explicit
+; even before the subsystem owner is clearer.
 
 Bank080000_Z80LikeCodeBlock_098000:
 	incbin "data/rom/bank_080000_0bffff.bin",$018000,$001920
 
-Bank080000_DescriptorHeaderRecords_099920:
-	incbin "data/rom/bank_080000_0bffff.bin",$019920,$000060
-
-Bank080000_PackedLayoutDescriptorTable_099980:
-	incbin "data/rom/bank_080000_0bffff.bin",$019980,$000105
+Bank080000_StructuredDescriptorAndLayoutRecords_099920:
+	include "src/bank080000_mid_descriptors.asm"
 
 Bank080000_ZeroFill_099A85:
 	dc.b	$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
@@ -228,5 +228,11 @@ Bank080000_CommandRecord_09A26B:
 Bank080000_CommandRecord_09A288:
 	incbin "data/rom/bank_080000_0bffff.bin",$01A288,$0000C0
 
-Bank080000_CommandRecord_09A348:
-	incbin "data/rom/bank_080000_0bffff.bin",$01A348,$00542F
+Bank080000_FFTerminatedCommandRecordWindowFront_09A348:
+	include "src/bank080000_mid_command_tail_front.asm"
+
+Bank080000_FFTerminatedCommandRecordWindowMid_09C008:
+	include "src/bank080000_mid_command_tail_mid.asm"
+
+Bank080000_FFTerminatedCommandRecordWindowTail_09E028:
+	include "src/bank080000_mid_command_tail_tail.asm"

@@ -4,7 +4,7 @@
     "description": "Comprehensive roadmap from the current bootstrap split to a mature source-first Mega Drive disassembly with full 68k coverage, named tables, decoded data formats, and tooling/docs parity with a well-developed sibling project.",
     "created": "2026-03-17",
     "phase": 1,
-    "current_state": "The project has a bit-perfect rebuild, header/source bootstrap, strong early VBlank and menu recovery, and useful metadata tooling. The three 0x020000+ banks now have bank-specific source owners instead of top-level whole-bank incbins, bank 0x020000 now has source-authored front text-index data at `0x0211CA-0x02135F` (a four-entry local pointer list plus two bank-relative offset tables), quiz/name/text islands through `0x02245F`, the first post-dictionary structured descriptor/index island at `0x022460-0x022C5F` (same-bank reference descriptors, a monotone payload offset table, a source-authored table-targeted short-record payload family at `0x022662-0x02292B`, and a repeated descriptor-record band), and a later sentinel-delimited word-record band at `0x023AB6-0x024537`, while bank 0x080000 now splits both of its first post-fill non-empty islands: `0x098000-0x09F776` is decomposed into a Z80-like opcode-dense block, descriptor/layout records, explicit zero fill, a command lead-in, a bank-local command offset table at `0x099B32-0x099BAF`, an unreferenced prelude at `0x099BB0-0x099BD2`, narrower table-targeted command-record slices through `0x09A347`, and a remaining large trailing record at `0x09A348-0x09F776`, while `0x0A0000-0x0A4C76` now starts with an explicit multi-level offset-table tree through `0x0A07C5`, a source-authored repeated four-tuple record band at `0x0A07C6-0x0A08E5`, an unresolved lead-in at `0x0A08E6-0x0A34FF`, and then a table-targeted back half at `0x0A3500-0x0A4C76` split into ROM-order record slices proven by the same offset tree instead of one anonymous tail incbin; the biggest maturity gaps are still broad 68k code recovery past 0x020000, text/script/data-table extraction, and deeper bank-wide symbolization.",
+    "current_state": "The project has a bit-perfect rebuild, header/source bootstrap, strong early VBlank/menu recovery, and bank-specific owners for all 0x020000+ banks. Bank 0x020000 now exposes two front bank-relative text/control target families before the already split index/text/table islands: 52 ROM-order record slices at 0x0201D0-0x020539 and 131 ROM-order record slices at 0x020E4C-0x0211C9, with the untargeted gap 0x02053A-0x020E4B left explicit. The same bank also keeps source-owned quiz/name/text islands through 0x02245F, structured descriptor/index data through 0x022DB7, a partially split bridge at 0x022DB8-0x023AB5, sentinel-delimited word-record families through 0x02482B, and a now-further-decomposed compressed-data tail at 0x02482C-0x03FFFF where the front relative-offset table is source-authored and proven 0xFF7A/0xFF7B block boundaries are explicit through 0x03C6DF, leaving only 0x03C6E0-0x03FFFF as one remaining final tail remainder. Bank 0x040000 still has its flagged ROM-reference tables and nearly all same-bank payload targets split in ROM order through 0x07FF66. Bank 0x080000 still has its cross-bank table-targeted payload front split through 0x0961D7, a structurally split 0x098000-0x09F776 island whose `0x099920-0x099A84` front descriptor/layout pocket is now source-authored as fixed 6-byte and 5-byte record families plus a short trailer, and a heavily decomposed 0x0A0000-0x0A4C76 island with offset-table, tuple-run, and table-targeted payload families source-visible in ROM order; the 0x0A3500+ back half now also exposes explicit 3-word record bands, local-offset triplet records, and a small self-referencing local-offset list instead of only generic sliced targets.",
     "reference_project": "E:\\Romhacking\\vermilion",
     "ghidra_path": "ghidra/"
   },
@@ -88,7 +88,7 @@
           "description": "Document the concrete end-state criteria for this project: all 68k code source-authored, all major data tables named, all text/script systems decoded, all remaining incbins justified as assets, and all indexes/tooling updated to reflect that maturity.",
           "priority": "medium",
           "effort": "small",
-          "status": "todo",
+          "status": "in_progress",
           "file": "docs/milestones.md + docs/module_plan.md"
         }
       ]
@@ -111,7 +111,7 @@
           "description": "Disassemble and label the entire init blob so reset/startup, hardware init, RAM clears, checksum or header handling, decompressor/bootstrap helpers, and early scene setup are all source-authored instead of living in init_000200_004b57.bin.",
           "priority": "critical",
           "effort": "very_large",
-          "status": "todo",
+          "status": "in_progress",
           "file": "src/init.asm + data/rom/init_000200_004b57.bin"
         },
         {
@@ -120,7 +120,7 @@
           "description": "Disassemble the large post-bootstrap core gap so the control flow from controller/input helpers into downstream menu, state, and gameplay systems is visible and no longer hidden behind a single mid-core incbin.",
           "priority": "critical",
           "effort": "very_large",
-          "status": "todo",
+          "status": "in_progress",
           "file": "src/core.asm + data/rom/core_005000_01ffff.bin"
         },
         {
@@ -247,7 +247,7 @@
           "description": "Identify where code, pointer tables, compressed assets, dialogue/text blocks, map data, and fill regions actually live in 0x040000-0x07FFFF so recovery work can proceed by proven structure instead of guesswork.",
           "priority": "critical",
           "effort": "large",
-          "status": "todo",
+          "status": "in_progress",
           "file": "src/bank040000.asm + docs/blob_catalog.md + tools/index/rom_map.json"
         },
         {
@@ -265,7 +265,7 @@
           "description": "Convert late-ROM pointer arrays, descriptor tables, animation tables, map/object references, and table-driven state data into documented assembly structures with validated entry counts and owners.",
           "priority": "high",
           "effort": "large",
-          "status": "todo",
+          "status": "in_progress",
           "file": "src/bank040000.asm + docs/object_tables.md + docs/data_table_style.md"
         },
         {
@@ -826,8 +826,8 @@
     "total_tasks": 76,
     "by_status": {
       "done": 4,
-      "in_progress": 8,
-      "todo": 64
+      "in_progress": 13,
+      "todo": 59
     },
     "by_priority": {
       "critical": 26,

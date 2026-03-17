@@ -475,3 +475,292 @@
   decoded. The offset-table evidence is now strong enough to justify stable record boundaries and a
   duplicate offset at `$0260`, but not yet enough to name the fields or the higher-level owner without
   the code that indexes `0x0224C0` and consumes the later descriptor bands.
+- Extended the next bank `0x080000` front payload split inside `0x0A0000-0x0A4C76`. The new
+  `src/bank080000_a08e6.asm` module now owns `0x0A08E6-0x0A0B25` as twenty-four more ROM-order
+  `0x18`-byte records instead of leaving the entire `0x0A08E6+` lead-in behind one monolithic
+  `incbin`.
+- Kept that new tail-bank split structural. The strongest proof is cadence rather than subsystem
+  meaning: the new span continues the same four-6-byte-tuple layout already source-authored at
+  `0x0A07C6-0x0A08E5`, while the following bytes only become clearly different at the new unresolved
+  lead-in start `0x0A0B26`. A later `0xFF`-delimited family around `0x0A0E85` now looks like the next
+  conservative split candidate, but it is still left opaque until its local boundary is promoted into
+  source.
+- Split the first structurally strong post-fill island in bank `0x040000` out of the remaining coarse
+  `0x041000-0x07FFFF` owner. The new `src/bank040000_tables.asm` module now owns
+  `0x041000-0x041BFF` as a ROM-order flagged ROM-reference table cluster plus two explicit `0xFF`
+  fill gaps instead of leaving that whole front late-bank span inside one anonymous `incbin`.
+- The front `0x041000-0x0418AB` run is now source-authored as a 683-entry four-byte table whose
+  longwords fit a repeated `[tag][24-bit ROM address]` pattern and point only into
+  `0x041C00-0x07FF66`. The next `0x0418AC-0x041B3F` run keeps the same shape but points only into
+  `0x0801CD-0x093FD0`, showing a clean local-to-cross-bank phase change rather than one undifferentiated
+  blob.
+- Kept the new bank `0x040000` labels structural rather than calling the bytes a final pointer table.
+  The top byte behaves like a tag or record-type field with mostly `$02` plus a smaller number of `$00`,
+  `$01`, and `$FF` sentinel entries, so the safest current naming is a flagged ROM-reference table until
+  the 68k-side consumer proves whether these are assets, scripts, maps, or another banked resource index.
+- Split the short tail at `0x041B80-0x041BBF` as a second 16-entry table of the same shape, now known to
+  point only into `0x09414A-0x0961D7`, and made both adjacent `0xFF` runs at `0x041B40-0x041B7F` and
+  `0x041BC0-0x041BFF` explicit in source so the late-bank front no longer jumps directly from one fill
+  hotspot to one huge opaque remainder.
+- Split the front-middle of the still-mixed bank `0x080000` lead-in at `0x0A0B26-0x0A34FF` one step
+  further without forcing subsystem meaning. The new `src/bank080000_a0c83.asm` module now owns four
+  narrower FF-terminated 6-byte record bands at `0x0A0C83-0x0A0D18`, `0x0A0D3F-0x0A0D74`,
+  `0x0A0E85-0x0A0F2C`, and `0x0A0FA9-0x0A10AA`, with the mixed bytes between them kept as explicit
+  ROM-order `incbin` gaps rather than one monolithic unresolved lead-in.
+- Kept those new bank `0x080000` labels structural. The immediate proof is purely byte-level: each new
+  band is a stable run of 6-byte records whose last byte is always `$FF`, and several neighboring
+  records reuse the same first-byte/second-byte families (`$0A/$05/$0B/$0E` with `$00/$20/$60/$02`
+  selectors) plus signed offset-like tail bytes such as `$F4,$F8,$FC`. That is enough to justify
+  source-owned record-band boundaries, but not enough yet to call them sprites, objects, credits, or
+  map elements without the 68k-side consumer.
+- Split the first front chunk of bank `0x040000`'s local-target payload family out of the remaining
+  coarse late-bank owner. The new `src/bank040000_payload_front.asm` module now owns
+  `0x041C00-0x043FFF` as twenty-two ROM-order record slices whose starts are proven directly by the
+  monotone local target addresses in the flagged reference table at `0x041000-0x0418AB`.
+- Kept that new bank `0x040000` split structural rather than subsystem-specific. The current proof is
+  only ownership and ordering: the local flagged table points monotonically into `0x041C00-0x07FF66`,
+  and the first twenty-two targets fill `0x041C00-0x043FFF` without gaps or overlaps. That is enough
+  to justify a source-owned payload window and explicit record starts, but not enough yet to name the
+  records as maps, scripts, assets, or another higher-level family without the 68k-side loader.
+- Extended that same bank `0x040000` payload window much farther forward without forcing semantics.
+  `src/bank040000_payload_front.asm` now carries fifty-nine additional ROM-order slices, so the
+  proven local-target run reaches `0x04A70E` instead of stopping at `0x043FFF`.
+- The added boundaries are still justified only by the monotone local-reference table at
+  `0x041000-0x0418AB`: every new start from `0x0440C7` through `0x04A4B0` is table-targeted, ordered,
+  and gap-free up to the next unsplit byte at `0x04A70F`. That is enough evidence for a clean mature
+  source split even though the higher-level record family is still unresolved.
+- Extended that same bank `0x040000` local-target payload split one chunk farther forward. The new
+  `src/bank040000_payload_mid.asm` module now owns `0x04A70F-0x04E5A9` as twenty-three more ROM-order
+  payload slices instead of dropping straight back to a monolithic bank remainder at `0x04A70F`.
+- The strongest new pattern in that added span is structural, not semantic: after fifteen irregular
+  table-targeted records from `0x04A70F` through `0x04BEA1`, the next eight starts at `0x04BFAA`,
+  `0x04C46A`, `0x04C92A`, `0x04CDEA`, `0x04D2AA`, `0x04D76A`, `0x04DC2A`, and `0x04E0EA` form a clean
+  fixed-stride run of `0x4C0`-byte records. That makes the local table's ownership of this region even
+  more explicit, while the loader and resource meaning still remain open.
+- Extended that same bank `0x040000` local-target payload split again into a new ROM-order module
+  `src/bank040000_payload_late.asm`, so the explicit same-bank payload window now reaches
+  `0x05FC2F` instead of stopping at `0x04E5A9`.
+- This new pass promoted 160 more monotone same-bank starts from the flagged ROM-reference table at
+  `0x041000-0x0418AB`, covering `0x04E5AA-0x05FC2F` as explicit record slices and pushing the next
+  coarse late-bank remainder back to `0x05FC30`.
+- The most useful new structural clue in that added span is another repeated fixed-stride family:
+  after the irregular lead-in through `0x05D47B`, the local table lands on eight consecutive
+  `0x4C0`-byte records at `0x05D630`, `0x05DAF0`, `0x05DFB0`, `0x05E470`, `0x05E930`, `0x05EDF0`,
+  `0x05F2B0`, and `0x05F770`, following an earlier isolated `0x4C0` record at `0x05C5DA`.
+- Kept the new late-bank names structural. The table still proves ordering and repeated record sizes,
+  but not yet the consuming loader or whether this payload family is maps, scripts, graphics
+  metadata, or another banked resource group.
+- Extended that same bank `0x040000` local-target payload split through the rest of the proven same-bank
+  target run. The new `src/bank040000_payload_tail.asm` module now owns `0x05FC30-0x07FF66` as 284 more
+  ROM-order record slices, leaving only a tiny trailing remainder at `0x07FF67-0x07FFFF` in
+  `src/bank040000.asm`.
+- This final same-bank pass materially sharpens the front table's ownership claim: the local flagged
+  references at `0x041000-0x0418AB` now expose almost their entire target domain directly in source,
+  not just the earlier front and mid windows. The clearest new repeated-size clue in the added tail is a
+  shorter two-record `0x4C0` stride family at `0x06B192` and `0x06B652`, in addition to the already
+  documented eight-record runs at `0x04BFAA` and `0x05D630`.
+- Kept the new labels structural rather than subsystem-specific. The bytes still prove stable ROM-order
+  starts and repeated record sizes, but not yet whether the payload family is maps, scripts, graphics
+  metadata, or another late-bank resource group without its loader/dispatcher.
+- Extended that same flagged-reference evidence across the bank boundary into bank `0x080000`. The
+  cross-bank target runs from `0x0418AC-0x041BBF` now split the former opaque `0x080000-0x09622A`
+  front tail-bank slice into a tiny untargeted lead-in at `0x080000-0x0801CC`, a large ROM-order
+  table-targeted payload front at `0x0801CD-0x093FD0`, an explicit untargeted gap at
+  `0x093FD1-0x094149`, a shorter ROM-order table-targeted tail at `0x09414A-0x0961D7`, and a final
+  untargeted gap at `0x0961D8-0x09622A` before the known `0xFF` fill run begins.
+- Kept those new bank `0x080000` labels structural rather than forcing a subsystem guess. The current
+  proof is still the same monotone flagged ROM-reference ownership from bank `0x040000`: 178 unique
+  cross-bank starts now expose the target domain directly in source, but the meaning of the flag byte,
+  the loader path, and the payload record format remain open.
+- Split the previously raw `0x022AEC-0x022C5F` tail inside bank `0x020000`'s first post-dictionary
+  structured island into explicit source-authored word records instead of one late `incbin`.
+- That tail now reads as a small family of variable-length descriptor records whose boundaries are mostly
+  proved by `$FFFF` terminators. One larger record at `0x022BBA` is now called out separately because it
+  carries three internal `$FE00`-prefixed sublists before a doubled `$FFFF` terminator at `0x022C00`.
+- Kept the new names structural. The bytes now justify stable record and sublist boundaries, but they do
+  not yet prove whether this tail belongs to maps, object placement, scripts, or another data-driven
+  subsystem without the code that scans the `$FFFF` / `$FE00` markers or consumes the surrounding
+  `0x022460-0x022C5F` descriptor island.
+- Extended that same bank `0x020000` structured tail farther forward without forcing semantics. The
+  `src/bank020000_tables.asm` module now owns `0x022C56-0x022DB7` explicitly instead of dropping back to
+  an anonymous `incbin` at `0x022C60`.
+- The added front `0x022C56-0x022D3F` bytes continue the same structural pattern as the preceding tail:
+  they are ROM-order variable-length word records terminated by `$FFFF`, including one longer record at
+  `0x022C56`, several short six-word records, and another mixed record at `0x022CFC`.
+- The next `0x022D40-0x022D6B` span is now explicit as a repeated `$0BFF` word band, and the following
+  `0x022D6C-0x022DB7` bytes split cleanly into compact `$FF00`-terminated word records, two of which also
+  embed `$FE00` markers. That is enough to justify smaller ROM-order structural slices even though the
+  higher-level owner and field semantics remain open.
+- Split the remaining mixed `0x0A10AB-0x0A34FF` lead-in inside bank `0x080000` one level further without
+  forcing subsystem meaning. The new `src/bank080000_a10ab.asm` module now breaks that old monolithic tail
+  into long FF-terminated runs whose pre-terminator payload lengths are always multiples of 5 bytes,
+  separated by short anomaly gaps at `0x0A1322-0x0A132C`, `0x0A136E-0x0A1377`, `0x0A1406-0x0A1410`,
+  `0x0A1D3F-0x0A1D4E`, `0x0A23F6-0x0A23FF`, `0x0A2586-0x0A258A`, `0x0A2606-0x0A260F`,
+  `0x0A2765-0x0A27CA`, `0x0A2D86-0x0A2D9A`, and `0x0A3040-0x0A304A`.
+- The new regular runs now stand explicitly in ROM order at `0x0A10AB-0x0A1321`, `0x0A132D-0x0A136D`,
+  `0x0A1378-0x0A1405`, `0x0A1411-0x0A1D3E`, `0x0A1D4F-0x0A23F5`, `0x0A2400-0x0A2585`,
+  `0x0A258B-0x0A2605`, `0x0A2610-0x0A2764`, `0x0A27CB-0x0A2D85`, `0x0A2D9B-0x0A303F`, and
+  `0x0A304B-0x0A34FF`, so the largest remaining opaque middle slice in this island is no longer one
+  anonymous incbin.
+- Kept the labels structural. The byte-level evidence now strongly supports FF-delimited tuple-run
+  ownership, but it still does not prove whether each 5-byte unit is layout, object, script, or another
+  format without the decoder that consumes the surrounding `0x0A0000-0x0A4C76` table tree.
+- Split the neighboring bank `0x080000` command tail at `0x09A348-0x09F776` one level further without
+  forcing subsystem meaning. The former single large trailing record in `src/bank080000_mid.asm` now
+  breaks at later proven record starts into three ROM-order source windows:
+  `0x09A348-0x09C007`, `0x09C008-0x09E027`, and `0x09E028-0x09F776`.
+- The new boundaries are still justified only by byte-level structure: the old trailing body contains
+  486 local `0xFF` record ends, each new window starts immediately after one such terminator, and the
+  same region also shows repeated 24-byte triplets at `0x09AB2A-0x09AB71`, `0x09E6F7-0x09E73E`, and
+  `0x09F4D5-0x09F51C`, plus a short non-terminated lead-out at `0x09F76A-0x09F776`.
+- Tightened the front descriptor/layout pocket in that same bank `0x080000` island without forcing a
+  subsystem name. The former raw `0x099920-0x099A84` span is now source-authored in
+  `src/bank080000_mid_descriptors.asm` as sixteen fixed 6-byte records at `0x099920-0x09997F`,
+  forty-nine fixed 5-byte records at `0x099980-0x099A74`, and a short 16-byte trailer at
+  `0x099A75-0x099A84`.
+- Kept those new labels structural. The strongest new proof is cadence rather than semantics: the bytes
+  now justify stable 6-byte and 5-byte record boundaries in ROM order, but they still do not prove the
+  consuming loader or whether the fields describe layouts, objects, audio-side commands, or another
+  tail-bank resource family.
+- Split those three bank `0x080000` FF-terminated command windows one level further into explicit ROM-order
+  record slices instead of leaving each window as one coarse `incbin`. The new `src/bank080000_mid_command_*.asm`
+  modules now break `0x09A348-0x09C007` into 154 FF-terminated records, `0x09C008-0x09E027` into 183 records,
+  and `0x09E028-0x09F776` into 149 FF-terminated records plus the existing short non-terminated lead-out at
+  `0x09F76A-0x09F776`.
+- Kept the new labels structural and ROM-order. The strongest proof is still purely local byte cadence: every
+  new record ends at a proven in-window `0xFF` terminator, the slices cover each window without gaps, and the
+  lone non-terminated tail remains isolated rather than being forced into the same record family.
+- Tightened the neighboring `0x0A10AB-0x0A1405` tail-bank lead-in one step further without forcing subsystem
+  meaning. The first three FF-terminated 5-byte-tuple runs in `src/bank080000_a10ab.asm`
+  (`0x0A10AB-0x0A1321`, `0x0A132D-0x0A136D`, and `0x0A1378-0x0A1405`) are now source-authored as 63 explicit
+  ROM-order record slices instead of three coarse run-sized `incbin`s.
+- The byte-level evidence for that split is now stronger and more local: every authored record ends at a proven
+  `0xFF` terminator, every pre-terminator payload in those three runs is an exact multiple of five bytes, and the
+  front records already show repeated small tuple families plus one singleton `$FF` record at `0x0A1378`. That is
+  enough to justify stable record boundaries while still keeping the names structural until a 68k-side consumer or
+  decoder proves what the tuples mean.
+- Extended that same `0x0A10AB+` tail-bank pass farther into the next long regular window without forcing semantics.
+  The new `src/bank080000_a1411.asm` module now owns `0x0A1411-0x0A1D3E` as 215 explicit ROM-order FF-terminated
+  record slices instead of one coarse run-sized `incbin` in `src/bank080000_a10ab.asm`.
+- The byte-level proof in that new span stays structural but is strong enough for a mature split: every record ends
+  at a local `0xFF`, every pre-terminator payload length remains a multiple of five bytes, and the run resolves
+  cleanly from `0x0A1411` through `0x0A1D3E` with no internal anomaly gaps.
+- Extended that same bank `0x080000` five-byte tuple pass farther forward without forcing subsystem meaning.
+  The next four regular runs in `src/bank080000_a10ab.asm` are no longer coarse run-sized `incbin`s:
+  `0x0A1D4F-0x0A23F5` now lives in `src/bank080000_a1d4f.asm`, `0x0A2400-0x0A2585` in
+  `src/bank080000_a2400.asm`, `0x0A258B-0x0A2605` in `src/bank080000_a258b.asm`, and
+  `0x0A2610-0x0A2764` in `src/bank080000_a2610.asm` as explicit ROM-order record slices.
+- The byte-level proof stays local but strong: every new record ends at a proven local `$FF`, and every
+  pre-terminator payload length across those four runs remains a multiple of five bytes. Their now-explicit
+  record-length histograms are `1/6/11/16/21/26/31/36/41` for `0x0A1D4F-0x0A23F5`, `6/11/16/21/26` for
+  `0x0A2400-0x0A2585`, `31/36/56` for `0x0A258B-0x0A2605`, and `6/11/16/21` for `0x0A2610-0x0A2764`.
+- Kept the labels structural. This pass improves ROM-order readability and narrows the remaining grouped runs
+  in `0x0A10AB-0x0A34FF`, but it still does not prove whether the 5-byte tuples are layout, object, script,
+  or another resource family without the decoder behind the surrounding offset-table tree.
+- Finished the same `0x0A10AB-0x0A34FF` tail-bank five-byte tuple pass by splitting the last three regular
+  runs out of `src/bank080000_a10ab.asm` into `src/bank080000_a27cb.asm`, `src/bank080000_a2d9b.asm`, and
+  `src/bank080000_a304b.asm`, so the spans at `0x0A27CB-0x0A2D85`, `0x0A2D9B-0x0A303F`, and
+  `0x0A304B-0x0A34FF` now also expose every proven ROM-order record start directly in source.
+- The byte-level proof stays local but strong. Every new record ends at a proven local `$FF`, every
+  pre-terminator payload length in those final three runs remains a multiple of five bytes, and the run-local
+  length histograms are now explicit: `0x0A27CB-0x0A2D85` has 62 records with sizes
+  `6/11/16/21/31/36/41/46/56/76/81/86/91`, `0x0A2D9B-0x0A303F` has 77 records with sizes `6/11/21/46`, and
+  `0x0A304B-0x0A34FF` has 115 records with sizes `6/11/16/21/41`.
+- This leaves the whole regular `0x0A10AB-0x0A34FF` family split to individual record starts in ROM order,
+  with only the already-explicit anomaly gaps between runs still left as mixed payload. The tuple meaning is
+  still unresolved, so the names stay structural until the surrounding offset-tree consumer is recovered.
+- Tightened the next opaque bridge in bank `0x020000` without forcing subsystem meaning. The old monolithic
+  `0x022DB8-0x023AB5` gap between `src/bank020000_tables.asm` and `src/bank020000_records.asm` now lives in
+  `src/bank020000_gap.asm`, which isolates a front recurring-word band at `0x022DB8-0x0237B3`, then exposes
+  two standalone `$FFFF` words at `0x0237B4` and `0x0237E2`, two more `$FF00`-terminated compact word
+  records at `0x0237B6-0x0237CD` and `0x0237CE-0x0237DB`, a short
+  three-word lead-in at `0x0237DC-0x0237E1`, and only then the remaining mixed payload at
+  `0x0237E4-0x023AB5`.
+- Kept the new bridge labels structural. The local sentinel words are now strong enough to prove a real
+  transition zone between the earlier compact-record family and the later `$FFFF`-delimited word-record
+  band, but not yet enough to claim the higher-level owner or field semantics without the code that walks
+  or dispatches these records.
+- Extended that same bank `0x020000` sentinel-delimited family one step farther into the following opaque
+  tail without forcing subsystem meaning. The new `src/bank020000_tail_records.asm` module now owns the
+  front `0x024538-0x02482B` continuation as nine explicit big-endian word records, each ending at a local
+  `$FFFF` sentinel, instead of dropping straight back to a coarse bank-wide `incbin` immediately after
+  `0x024537`.
+- The new continuation sharpens two useful structural fits without overclaiming semantics: the front record
+
+- Tightened the back half of bank `0x080000`'s `0x0A3500-0x0A4C76` table-targeted payload family without
+  forcing subsystem meaning. Several repeated subfamilies are now explicit data instead of raw sliced
+  `incbin`s inside `src/bank080000_a3500.asm`.
+- The front new cluster at `0x0A37B0-0x0A37FD` is now source-authored as twelve fixed 3-word records
+  followed by two standalone local offsets, which is a stronger structural fit than leaving fourteen short
+  table-targeted slices opaque.
+- The later run at `0x0A3B77-0x0A3C16` is now source-authored as sixteen local-offset triplet records. Each
+  record is three bank-local 24-bit offsets plus a trailing `$FD`, and every pointed start lands back in the
+  already split `0x0A12EC-0x0A1519` five-byte-tuple family.
+- The tail cluster at `0x0A4AA3-0x0A4AEB` is now also explicit as eight fixed 3-word records plus an
+  FF-terminated local-offset list that names those same eight starts, making a small self-referential group
+  visible directly in source.
+- Kept the names structural rather than subsystem-specific. The new evidence is still local byte structure
+  and cross-links into already split tuple runs, not yet the 68k-side loader or decoder that would justify
+  stronger ownership terms.
+  at `0x024538` reuses several control-word motifs already seen nearby (`$E001/$E010/$E012/$E021/$E031/$E042/$E071`,
+  `$D301`, and embedded `$FF00` markers before the final `$FFFF`), while the following eight shorter records
+  cleanly continue the same pointer-like-header plus small word-tuple cadence already visible in
+  `0x023AB6-0x024537`.
+- Kept the names structural. This pass proves that the later word-record island extends at least through
+  `0x02482B`, but the code that scans these sentinels and interprets the mixed control-like words still
+  needs to be found before stronger subsystem names are safe.
+- Followed the two already source-authored bank-relative offset tables at `0x0211DA-0x02135F` back into
+  their target domains so the front of bank `0x020000` is no longer just one `0x020000-0x0211C9` blob.
+- The new `src/bank020000_front_records_a.asm` module now owns `0x0201D0-0x020539` as 52 ROM-order
+  record slices proved directly by the offset table at `0x0211DA`, while the gap before it
+  (`0x020000-0x0201CF`) and the following untargeted middle (`0x02053A-0x020E4B`) stay explicit as
+  separate `incbin` regions in `src/bank020000.asm`.
+- The new `src/bank020000_front_records_b.asm` module now owns `0x020E4C-0x0211C9` as 131 ROM-order
+  record slices proved directly by the monotone offset table at `0x021258`, leaving the front index
+  island at `0x0211CA-0x02135F` adjacent to the exact target family it indexes.
+- Kept those new front-bank labels structural. Raw bytes in both target ranges still mix text fragments
+  with undecoded control payloads, so the tables now prove stable record boundaries and ROM-order
+  ownership, but not yet the higher-level menu/script/dialogue consumer.
+
+## 2026-03-18
+
+- Split `src/bank020000_dialogue_front.asm` (`0x020000-0x0201CF`, 19 labelled incbin slices, 8 NPC
+  dialogue records). Split `src/bank020000_dialogue_mid.asm` (`0x02053A-0x020E4B`, 110+ labelled
+  incbin slices, 53 null-delimited records including boss speeches and landmark hints). Both verified
+  bit-perfect. `src/bank020000.asm` updated to include both new files.
+
+- Split the full tail region `0x02482C-0x03FFFF` (112,596 bytes) into 11 named sections in
+  `src/bank020000_tail_blocks.asm`, replacing the single opaque `incbin`:
+  - `Bank020000_TailOffsetTable_02482C` (10 bytes): 4-entry relative-offset table, offsets
+    0x0016/0x007A/0x00EA/0x015E pointing into Block 1's RLE payload, terminated by 0xFF7B sentinel.
+  - `Bank020000_TailGfxBlock1_024836` – `Bank020000_TailGfxBlock9_034AEC`: 9 RLE/compressed-graphics
+    blocks, each terminated by 0xFF7B. Sizes range from 116 bytes (Block 6) to 18,587 bytes (Block 4).
+    Blocks 1-4 use a `0xXX60`/`0xXX6Y` header byte pattern; Blocks 5-7 share the `0x0F03...` header
+    pattern; Block 8 uses `0xC0FB...`. The 0x52, 0x4A, 0x5A byte values within payloads are RLE
+    opcodes consistent with Mega Drive tile/sprite compressed graphics formats.
+  - `Bank020000_TailRemainder_035078` (44,936 bytes): remaining tail not yet further subdivided;
+    contains additional RLE blocks (some terminated by 0xFF7A) and further structured records.
+  - Build verified bit-perfect (SHA256 matches) and all `node tools/run_checks.js` checks pass.
+
+- Key structural discovery: the 0xFF7B byte pattern is the block terminator for RLE graphics blocks
+  in bank 020000's tail, not merely an offset-table sentinel. The first 0xFF7B at 0x024834 IS the
+  offset table's end-of-table sentinel; the subsequent 0xFF7B occurrences mark the ends of individual
+  compressed graphics blocks. A second terminator variant 0xFF7A also occurs within the tail remainder
+  (9 occurrences at 0x02CF1A, 0x02D91E, 0x032D27/29, 0x033149/4B, 0x03519C, 0x034F2, 0x03C6DE).
+
+- Open questions still pending: second dictionary location (indices 0xA8-0xFF), content of tail
+  remainder (0x035078-0x03FFFF), identity of the data structure type referenced by the 6 descriptors
+  at 0x022460.
+
+- Tightened the tail of bank `0x020000` again without over-claiming semantics. The former single
+  `Bank020000_TailRemainder_035078` slice in `src/bank020000_tail_blocks.asm` is now split into
+  three additional compressed/data blocks plus a smaller trailing remainder: `0x035078-0x03519D`,
+  `0x03519E-0x0354F3`, and `0x0354F4-0x03C6DF` each end with a proven `0xFF7A` terminator, leaving
+  only `0x03C6E0-0x03FFFF` grouped as the final unresolved tail.
+- Promoted the front `0x02482C-0x024835` offset table from a raw `incbin` into explicit `dc.w`
+  data (`$0016,$007A,$00EA,$015E,$FF7B`), since those values are already fully understood as
+  relative offsets into Block 1 plus the terminating sentinel.
+- The new `0xFF7A`-terminated split keeps the terminology structural. The three added blocks start
+  with header-like prefixes `0x0660`, `0x0B60`, and `0x0F00`, which fits the broader compressed-data
+  picture in this tail, but the exact codec/asset family is still not proven enough to hardcode a
+  stronger subsystem label.

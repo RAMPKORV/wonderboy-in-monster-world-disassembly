@@ -166,47 +166,52 @@ Bank080000_TableTargetedPayloadRecord_0A3788:
 Bank080000_TableTargetedPayloadRecord_0A3799:
 	incbin "data/rom/bank_080000_0bffff.bin",$023799,$000017
 
+; 0x0A37B0-0x0A37FF tightens into a small structured cluster: twelve fixed 3-word
+; records followed by two standalone local offsets before the next mixed record family.
+Bank080000_TripleWordRecordBand_0A37B0:
 Bank080000_TableTargetedPayloadRecord_0A37B0:
-	incbin "data/rom/bank_080000_0bffff.bin",$0237B0,$000006
+	dc.w	$FC08,$0800,$0D86
 
 Bank080000_TableTargetedPayloadRecord_0A37B6:
-	incbin "data/rom/bank_080000_0bffff.bin",$0237B6,$000006
+	dc.w	$FC10,$0800,$0D91
 
 Bank080000_TableTargetedPayloadRecord_0A37BC:
-	incbin "data/rom/bank_080000_0bffff.bin",$0237BC,$000006
+	dc.w	$FC18,$0800,$0D97
 
 Bank080000_TableTargetedPayloadRecord_0A37C2:
-	incbin "data/rom/bank_080000_0bffff.bin",$0237C2,$000006
+	dc.w	$FC08,$0800,$0DA2
 
 Bank080000_TableTargetedPayloadRecord_0A37C8:
-	incbin "data/rom/bank_080000_0bffff.bin",$0237C8,$000006
+	dc.w	$FC10,$0800,$0DAD
 
 Bank080000_TableTargetedPayloadRecord_0A37CE:
-	incbin "data/rom/bank_080000_0bffff.bin",$0237CE,$000006
+	dc.w	$FC18,$0800,$0DB8
 
 Bank080000_TableTargetedPayloadRecord_0A37D4:
-	incbin "data/rom/bank_080000_0bffff.bin",$0237D4,$000006
+	dc.w	$FC08,$0800,$0DC3
 
 Bank080000_TableTargetedPayloadRecord_0A37DA:
-	incbin "data/rom/bank_080000_0bffff.bin",$0237DA,$000006
+	dc.w	$FC10,$0800,$0DCE
 
 Bank080000_TableTargetedPayloadRecord_0A37E0:
-	incbin "data/rom/bank_080000_0bffff.bin",$0237E0,$000006
+	dc.w	$FC18,$0800,$0DD4
 
 Bank080000_TableTargetedPayloadRecord_0A37E6:
-	incbin "data/rom/bank_080000_0bffff.bin",$0237E6,$000006
+	dc.w	$FC08,$0800,$0DDF
 
 Bank080000_TableTargetedPayloadRecord_0A37EC:
-	incbin "data/rom/bank_080000_0bffff.bin",$0237EC,$000006
+	dc.w	$FC10,$0800,$0DEA
 
 Bank080000_TableTargetedPayloadRecord_0A37F2:
-	incbin "data/rom/bank_080000_0bffff.bin",$0237F2,$000006
+	dc.w	$FC18,$0800,$0DF5
 
+Bank080000_StandaloneLocalOffset_0A37F8:
 Bank080000_TableTargetedPayloadRecord_0A37F8:
-	incbin "data/rom/bank_080000_0bffff.bin",$0237F8,$000003
+	dc.b	$00,$0E,$00
 
+Bank080000_StandaloneLocalOffset_0A37FB:
 Bank080000_TableTargetedPayloadRecord_0A37FB:
-	incbin "data/rom/bank_080000_0bffff.bin",$0237FB,$000003
+	dc.b	$00,$0E,$4C
 
 Bank080000_TableTargetedPayloadRecord_0A37FE:
 	incbin "data/rom/bank_080000_0bffff.bin",$0237FE,$000009
@@ -523,53 +528,56 @@ Bank080000_TableTargetedPayloadRecord_0A3B53:
 Bank080000_TableTargetedPayloadRecord_0A3B67:
 	incbin "data/rom/bank_080000_0bffff.bin",$023B67,$000010
 
+; 0x0A3B77-0x0A3C16 is a regular run of records with three local 24-bit offsets and a
+; trailing $FD byte. The pointed starts land back in the 0x0A12EC-0x0A1519 tuple family.
+Bank080000_LocalOffsetTripletRecordBand_0A3B77:
 Bank080000_TableTargetedPayloadRecord_0A3B77:
-	incbin "data/rom/bank_080000_0bffff.bin",$023B77,$00000A
+	dc.b	$02,$12,$EC,$02,$12,$F7,$02,$13,$0C,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3B81:
-	incbin "data/rom/bank_080000_0bffff.bin",$023B81,$00000A
+	dc.b	$02,$13,$17,$02,$13,$22,$02,$13,$2D,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3B8B:
-	incbin "data/rom/bank_080000_0bffff.bin",$023B8B,$00000A
+	dc.b	$02,$13,$38,$02,$13,$43,$02,$13,$58,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3B95:
-	incbin "data/rom/bank_080000_0bffff.bin",$023B95,$00000A
+	dc.b	$02,$13,$63,$02,$13,$6E,$02,$13,$79,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3B9F:
-	incbin "data/rom/bank_080000_0bffff.bin",$023B9F,$00000A
+	dc.b	$02,$13,$84,$02,$13,$8F,$02,$13,$A4,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3BA9:
-	incbin "data/rom/bank_080000_0bffff.bin",$023BA9,$00000A
+	dc.b	$02,$13,$AF,$02,$13,$BA,$02,$13,$C5,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3BB3:
-	incbin "data/rom/bank_080000_0bffff.bin",$023BB3,$00000A
+	dc.b	$02,$13,$D0,$02,$13,$DB,$02,$13,$F0,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3BBD:
-	incbin "data/rom/bank_080000_0bffff.bin",$023BBD,$00000A
+	dc.b	$02,$13,$FB,$02,$14,$06,$02,$14,$11,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3BC7:
-	incbin "data/rom/bank_080000_0bffff.bin",$023BC7,$00000A
+	dc.b	$02,$14,$1C,$02,$14,$27,$02,$14,$32,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3BD1:
-	incbin "data/rom/bank_080000_0bffff.bin",$023BD1,$00000A
+	dc.b	$02,$14,$3D,$02,$14,$48,$02,$14,$53,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3BDB:
-	incbin "data/rom/bank_080000_0bffff.bin",$023BDB,$00000A
+	dc.b	$02,$14,$5E,$02,$14,$69,$02,$14,$74,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3BE5:
-	incbin "data/rom/bank_080000_0bffff.bin",$023BE5,$00000A
+	dc.b	$02,$14,$7F,$02,$14,$8A,$02,$14,$95,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3BEF:
-	incbin "data/rom/bank_080000_0bffff.bin",$023BEF,$00000A
+	dc.b	$02,$14,$A0,$02,$14,$AB,$02,$14,$B6,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3BF9:
-	incbin "data/rom/bank_080000_0bffff.bin",$023BF9,$00000A
+	dc.b	$02,$14,$C1,$02,$14,$CC,$02,$14,$D7,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3C03:
-	incbin "data/rom/bank_080000_0bffff.bin",$023C03,$00000A
+	dc.b	$02,$14,$E2,$02,$14,$ED,$02,$14,$F8,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3C0D:
-	incbin "data/rom/bank_080000_0bffff.bin",$023C0D,$00000A
+	dc.b	$02,$15,$03,$02,$15,$0E,$02,$15,$19,$FD
 
 Bank080000_TableTargetedPayloadRecord_0A3C17:
 	incbin "data/rom/bank_080000_0bffff.bin",$023C17,$000009
@@ -1804,32 +1812,37 @@ Bank080000_TableTargetedPayloadRecord_0A4A7E:
 Bank080000_TableTargetedPayloadRecord_0A4A87:
 	incbin "data/rom/bank_080000_0bffff.bin",$024A87,$00001C
 
+; 0x0A4AA3-0x0A4AEB exposes a compact self-referencing group: eight 3-word records are
+; followed immediately by an FF-terminated local-offset list that names those same starts.
+Bank080000_TripleWordRecordBand_0A4AA3:
 Bank080000_TableTargetedPayloadRecord_0A4AA3:
-	incbin "data/rom/bank_080000_0bffff.bin",$024AA3,$000006
+	dc.w	$FB04,$0400,$316E
 
 Bank080000_TableTargetedPayloadRecord_0A4AA9:
-	incbin "data/rom/bank_080000_0bffff.bin",$024AA9,$000006
+	dc.w	$FB04,$0400,$3174
 
 Bank080000_TableTargetedPayloadRecord_0A4AAF:
-	incbin "data/rom/bank_080000_0bffff.bin",$024AAF,$000006
+	dc.w	$FB04,$0400,$317A
 
 Bank080000_TableTargetedPayloadRecord_0A4AB5:
-	incbin "data/rom/bank_080000_0bffff.bin",$024AB5,$000006
+	dc.w	$FB04,$0400,$3180
 
 Bank080000_TableTargetedPayloadRecord_0A4ABB:
-	incbin "data/rom/bank_080000_0bffff.bin",$024ABB,$000006
+	dc.w	$FB04,$0400,$3186
 
 Bank080000_TableTargetedPayloadRecord_0A4AC1:
-	incbin "data/rom/bank_080000_0bffff.bin",$024AC1,$000006
+	dc.w	$FB04,$0400,$318C
 
 Bank080000_TableTargetedPayloadRecord_0A4AC7:
-	incbin "data/rom/bank_080000_0bffff.bin",$024AC7,$000006
+	dc.w	$FB04,$0400,$3192
 
 Bank080000_TableTargetedPayloadRecord_0A4ACD:
-	incbin "data/rom/bank_080000_0bffff.bin",$024ACD,$000006
+	dc.w	$FB04,$0400,$3198
 
+Bank080000_LocalOffsetListWithFFTerminator_0A4AD3:
 Bank080000_TableTargetedPayloadRecord_0A4AD3:
-	incbin "data/rom/bank_080000_0bffff.bin",$024AD3,$000019
+	dc.b	$02,$31,$6E,$02,$31,$74,$02,$31,$7A,$02,$31,$80
+	dc.b	$02,$31,$86,$02,$31,$8C,$02,$31,$92,$02,$31,$98,$FF
 
 Bank080000_TableTargetedPayloadRecord_0A4AEC:
 	incbin "data/rom/bank_080000_0bffff.bin",$024AEC,$000003

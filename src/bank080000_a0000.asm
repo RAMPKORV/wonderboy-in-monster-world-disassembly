@@ -3,10 +3,12 @@
 ; dominated by big-endian words that mostly point back into this same 0x0A0000-0x0A4C76
 ; region, forming a nested offset-table tree rather than plain opaque blob data. The
 ; downstream payload bytes are still structurally dense and unresolved. The first proven
-; regular band ends at 0x0A08E5; beyond that point the bytes still fit a long 6-byte-tuple
-; stream, and the later half now also has stable record starts proven by the same offset
-; tree, so keep the front span and the table-targeted back half as separate ROM-order
-; owners until the consuming loader/decoder is identified.
+; regular band now extends through 0x0A0B25 as a continued 0x18-byte four-tuple family.
+; The following lead-in is still mixed overall, but several narrower FF-terminated 6-byte
+; record bands now stand apart from the surrounding patch-like payload, and the next large
+; span at 0x0A10AB-0x0A34FF now further decomposes into long FF-terminated 5-byte-tuple
+; runs separated by short anomaly gaps. Keep the remaining ownership structural until the
+; consuming loader/decoder is identified.
 
 Bank080000_MultiLevelOffsetTableRoot_0A0000:
 	dc.w	$0018,$001E,$0026,$0034,$004E,$005A,$00CE,$00F6
@@ -143,8 +145,17 @@ Bank080000_MultiLevelOffsetTableTail_0A07BC:
 Bank080000_FourTupleRecordBand_0A07C6:
 	include "src/bank080000_a07c6.asm"
 
-Bank080000_UnresolvedPayloadLeadIn_0A08E6:
-	incbin "data/rom/bank_080000_0bffff.bin",$0208E6,$002C1A
+Bank080000_FourTupleRecordBandTail_0A08E6:
+	include "src/bank080000_a08e6.asm"
+
+Bank080000_UnresolvedPayloadLeadIn_0A0B26:
+	incbin "data/rom/bank_080000_0bffff.bin",$020B26,$00015D
+
+Bank080000_FFTerminatedSixByteRecordFamilies_0A0C83:
+	include "src/bank080000_a0c83.asm"
+
+Bank080000_FFTerminatedFiveByteTupleTail_0A10AB:
+	include "src/bank080000_a10ab.asm"
 
 Bank080000_TableTargetedPayloadRecords_0A3500:
 	include "src/bank080000_a3500.asm"
