@@ -1,776 +1,852 @@
 {
   "_meta": {
-    "project": "Wonder Boy in Monster World Bit-Perfect Disassembly",
-    "description": "Roadmap for taking `wonderboy.bin` from a single ROM dump to a fully rebuildable, split, documented Mega Drive disassembly in the same general shape as the sibling Vermilion project.",
-    "created": "2026-03-16",
-    "phase": 0,
-    "current_state": "Bootstrap rebuild, coarse code split through init/vblank/core, first viewer tools, Ghidra sync scaffolding, and regression tooling are in place and verified. The source-authored VBlank/task-dispatch, bootstrap/display-setup, and input-helper recovery now spans `0x004B58-0x005260`, covering immediate-slot iteration, timed and fallback round-robin scheduler passes, the completion helper that clears the current task slot and latches `d0` into `TaskCompletionResult` at `0x8068`, the bootstrap descriptor/callback chains through the async-ready gate at `0x004FCC`, the progress-buffer clear/setup helper at `0x004FEE`, the selected-input stream helpers at `0x005016-0x00505C`, the descriptor/callback pair at `0x00507C`, the queue-install/scratch/sound helpers at `0x0050D4-0x00513B`, `PollSecondaryTaskStatus` at `0x00513C-0x00516F`, the recovered bootstrap stubs plus inline patch stream at `0x005170-0x0051C5`, and the named controller readers at `0x0051C6`, `0x005216`, and `0x005250`. Machine-readable exports and RAM notes now also cover the bootstrap patch words at `0x8B34-0x8B3A` alongside the scheduler/input anchors at `0x8A4E-0x8A50`, `0x8A7A-0x8A84`, `0x8C56`, `0x9658`, `0x9996`, `0xA3A4`, and the `0xFF1400` stream buffer; `0x00501C` now looks proven as a packed `(duration,value)` latch into `0x8A4E/0x8A4F`, `0x005036` as the matching run-length writer, and `0x0051C6`/`0x005250` as the consumer path that reuses `0x8A7A-0x8A7D` for selected-input playback while live-pad mirroring is gated. The next productive frontier is finding upstream writers beyond `0x005036` and the downstream gameplay users of that playback/recording stream while broader player/object struct work resumes.",
-    "reference_project": "../Romhacking/vermilion",
-    "ghidra_path": "C:/ProgramData/chocolatey/lib/ghidra/tools/ghidra_12.0_PUBLIC/ghidraRun.bat",
-    "rom": {
-      "file": "wonderboy.bin",
-      "sha256": "6b2ac36f624f914ad26e32baa87d1253aea9dcfc13d2a5842ecdd2bd4a7a43b9",
-      "size_bytes": 786432,
-      "initial_sp": "0x00FF0C00",
-      "entry": "0x00000200",
-      "checksum": "0x9D79",
-      "rom_range": "0x000000-0x0BFFFF",
-      "ram_range": "0x00FF0000-0x00FFFFFF",
-      "domestic_name": "Wonder Boy V Monster World III",
-      "international_name": "WONDER BOY in Monster world",
-      "serial": "GM G-4060  -00",
-      "region": "UE"
-    }
+    "project": "Wonder Boy in Monster World Disassembly",
+    "description": "Comprehensive roadmap from the current bootstrap split to a mature source-first Mega Drive disassembly with full 68k coverage, named tables, decoded data formats, and tooling/docs parity with a well-developed sibling project.",
+    "created": "2026-03-17",
+    "phase": 1,
+    "current_state": "The project has a bit-perfect rebuild, header/source bootstrap, strong early VBlank and menu recovery, and useful metadata tooling. The three 0x020000+ banks now have bank-specific source owners instead of top-level whole-bank incbins, bank 0x020000 now has source-authored front text-index data at `0x0211CA-0x02135F` (a four-entry local pointer list plus two bank-relative offset tables), quiz/name/text islands through `0x02245F`, the first post-dictionary structured descriptor/index island at `0x022460-0x022C5F` (same-bank reference descriptors, a monotone payload offset table, a source-authored table-targeted short-record payload family at `0x022662-0x02292B`, and a repeated descriptor-record band), and a later sentinel-delimited word-record band at `0x023AB6-0x024537`, while bank 0x080000 now splits both of its first post-fill non-empty islands: `0x098000-0x09F776` is decomposed into a Z80-like opcode-dense block, descriptor/layout records, explicit zero fill, a command lead-in, a bank-local command offset table at `0x099B32-0x099BAF`, an unreferenced prelude at `0x099BB0-0x099BD2`, narrower table-targeted command-record slices through `0x09A347`, and a remaining large trailing record at `0x09A348-0x09F776`, while `0x0A0000-0x0A4C76` now starts with an explicit multi-level offset-table tree through `0x0A07C5`, a source-authored repeated four-tuple record band at `0x0A07C6-0x0A08E5`, an unresolved lead-in at `0x0A08E6-0x0A34FF`, and then a table-targeted back half at `0x0A3500-0x0A4C76` split into ROM-order record slices proven by the same offset tree instead of one anonymous tail incbin; the biggest maturity gaps are still broad 68k code recovery past 0x020000, text/script/data-table extraction, and deeper bank-wide symbolization.",
+    "reference_project": "E:\\Romhacking\\vermilion",
+    "ghidra_path": "ghidra/"
   },
   "schema_version": 2,
   "task_defaults": {
     "verify_steps": [
-      "cmd //c build.bat",
-      "cmd //c verify.bat",
+      "cmd /c verify.bat",
       "node tools/validate_todos.js",
       "node tools/run_checks.js"
     ],
     "acceptance": [
-      "Bit-perfect build: `cmd //c verify.bat` exits 0 and rebuilt ROM SHA256 matches `6b2ac36f624f914ad26e32baa87d1253aea9dcfc13d2a5842ecdd2bd4a7a43b9`.",
-      "Mega Drive header and checksum remain byte-identical unless an intentional checksum regeneration step is documented.",
-      "ROM physical order is preserved: code/data splitting does not move bytes across module boundaries without an updated include order that still rebuilds identically.",
-      "Opaque blobs stay opaque until understood: use `incbin` or generated binary assets rather than rewriting unknown data by hand.",
-      "Completed modules use meaningful labels and symbolic constants instead of bulk `FUN_`/`LAB_`/raw address placeholders."
+      "Every change preserves a bit-perfect rebuild unless the task explicitly establishes new generated assets that still round-trip to the original bytes.",
+      "New labels, constants, and module boundaries follow repo conventions and prefer real game/domain meaning where the ROM proves it.",
+      "Recovered code/data ownership is reflected in source files and machine-readable indexes, not only in notes or Ghidra.",
+      "Opaque bytes stay opaque only when their format or ownership is still unproven; monolithic bank-sized incbins are not an acceptable end state."
     ],
     "editing_rules": [
-      "Prefer Node.js for project tooling so the workflow matches the sibling Vermilion project.",
-      "Prefer hexadecimal literals in ROM data tables and keep byte ordering obvious.",
-      "Preserve physical ROM order; split files by include layout, not by where code would look nicest.",
-      "When a block is not yet understood, keep it byte-perfect with `dc.b`/`dc.w`/`dc.l` or `incbin` rather than risky rewrites.",
-      "Document every mid-function split, shared tail, or stranded data block caused by ROM layout constraints."
+      "Prefer source-authored ASM with labels and comments over coarse incbins once control flow or table structure is proven.",
+      "Keep hex literals in dc.b/dc.w/dc.l data so byte identity is easy to audit.",
+      "Put RAM, hardware, sound, script, and gameplay constants in the appropriate shared constant files rather than scattering new equates.",
+      "Use Node.js for repository tooling and round-trip extract/build helpers."
     ]
   },
   "quality_gates": {
     "always": [
-      "Keep an untouched baseline copy/hash record for `wonderboy.bin` and compare every rebuilt ROM against it.",
-      "After any source change, run `cmd //c verify.bat`; if it fails, diagnose the first mismatch rather than piling on more edits.",
-      "Refresh machine-readable symbol exports after meaningful Ghidra naming work so source and analysis stay aligned.",
-      "Do not replace raw data with guessed structure definitions unless the rebuilt bytes are proven identical."
+      "Run cmd /c verify.bat after every non-trivial source or data change.",
+      "Run node tools/run_checks.js before considering a task complete.",
+      "Update rom_map/function indexes/manifests when ROM ownership or labels materially change.",
+      "Do not revert unrelated user changes while chasing bit-perfect rebuilds."
     ],
     "before_refactors": [
-      "Confirm branch ranges still fit if labels move between files or macros change instruction size.",
-      "Confirm any extracted asset blob round-trips back to the original bytes exactly.",
-      "Add comments for calling convention, register usage, and invariants before aggressively renaming or splitting routines.",
-      "Check whether the block is reached through jump tables, computed addresses, or fallthrough before marking it dead code."
+      "Document proven code/data boundaries before moving bytes into new modules.",
+      "Confirm branch sizing and absolute-vs-relative control flow remain byte-identical.",
+      "Confirm any extracted asset or text bank can rebuild back to the exact original bytes.",
+      "Prefer bank/module decomposition and structural naming over cosmetic renaming passes."
     ]
   },
   "categories": {
-    "environment_baseline": {
-      "description": "Bootstrap the repo, establish the baseline ROM fingerprint, and create the minimum build/verify workflow needed for a serious bit-perfect effort.",
+    "disassembly_completion_strategy": {
+      "description": "Reshape the project around final-form module ownership so all later recovery work has stable destinations instead of accumulating inside coarse blobs.",
       "tasks": [
         {
-          "id": "ENV-001",
-          "title": "Create Wonderboy repo scaffold",
-          "description": "Create the baseline directory layout (`src`, `data`, `tools`, `docs`, `ghidra`, `original`, `worklogs`) and add minimal placeholder files so the project stops being a single-ROM folder.",
-          "priority": "high",
-          "effort": "small",
-          "status": "done",
-          "file": "README.md + src/ + data/ + tools/ + docs/ + ghidra/ + original/"
-        },
-        {
-          "id": "ENV-002",
-          "title": "Capture immutable ROM baseline",
-          "description": "Copy `wonderboy.bin` into `original/`, record SHA256/size/header fields in docs, and treat that copy as read-only so all verification flows refer back to a single canonical baseline.",
-          "priority": "critical",
-          "effort": "small",
-          "status": "done",
-          "file": "original/wonderboy.bin + docs/rom_baseline.md"
-        },
-        {
-          "id": "ENV-003",
-          "title": "Determine exact assembler strategy",
-          "description": "Evaluate ASM68K, AS, and VASM against Wonder Boy's ROM quirks, then pick the assembler whose syntax and output can most reliably reproduce the original bytes with the least shim logic.",
+          "id": "PLAN-001",
+          "title": "Replace whole-bank ownership with bank-specific include modules",
+          "description": "Update src/rom_body.asm so the three 0x020000+ banks are owned by bank-specific source include files rather than direct bank_*.bin incbins, even if each new module still contains smaller temporary slices at first.",
           "priority": "critical",
           "effort": "medium",
           "status": "done",
-          "file": "docs/toolchain.md"
+          "file": "src/rom_body.asm + src/bank020000.asm + src/bank040000.asm + src/bank080000.asm"
         },
         {
-          "id": "ENV-004",
-          "title": "Create minimal buildable root assembly",
-          "description": "Create a first-pass `wonderboy.asm` that can assemble a mostly raw ROM using includes and/or `incbin` chunks, providing a safe foundation before deeper reverse engineering starts.",
-          "priority": "critical",
-          "effort": "medium",
-          "status": "done",
-          "file": "wonderboy.asm"
-        },
-        {
-          "id": "ENV-005",
-          "title": "Create build and verify scripts",
-          "description": "Add `build.bat` and `verify.bat` modeled after Vermilion so rebuilding and bit-perfect hash verification become one-command operations from the start.",
-          "priority": "critical",
-          "effort": "small",
-          "status": "done",
-          "file": "build.bat + verify.bat"
-        },
-        {
-          "id": "ENV-006",
-          "title": "Port todos schema and maintenance scripts",
-          "description": "Bring over a Wonderboy-specific `tools/todos.schema.json`, `tools/validate_todos.js`, and `tools/update_todos_stats.js` so planning quality matches the Vermilion workflow.",
-          "priority": "medium",
-          "effort": "small",
-          "status": "done",
-          "file": "tools/todos.schema.json + tools/validate_todos.js + tools/update_todos_stats.js"
-        }
-      ]
-    },
-    "ghidra_workflow": {
-      "description": "Set up Ghidra as the primary analysis environment and make its output reproducible instead of a one-off GUI-only effort.",
-      "tasks": [
-        {
-          "id": "GHD-001",
-          "title": "Create and document the Ghidra project",
-          "description": "Import `wonderboy.bin` into a dedicated Ghidra project with the correct 68000 language/loader settings, then record the exact steps so the project is reproducible on another machine.",
-          "priority": "high",
-          "effort": "small",
-          "status": "done",
-          "file": "ghidra/ + docs/ghidra_setup.md"
-        },
-        {
-          "id": "GHD-002",
-          "title": "Document memory map, vectors, and entrypoints",
-          "description": "Use Ghidra to map the vector table, initial entry sequence, interrupt handlers, ROM header fields, and major address ranges so the source split follows the ROM's real structure.",
+          "id": "PLAN-002",
+          "title": "Define target module map for a mature Wonder Boy split",
+          "description": "Design the intended steady-state source layout for gameplay, states, player, enemy, map/script, strings, graphics, sound, and bank-local data so future splits converge toward a stable architecture instead of ad hoc fragments.",
           "priority": "high",
           "effort": "medium",
-          "status": "done",
-          "file": "docs/memory_map.md"
+          "status": "in_progress",
+          "file": "docs/module_plan.md + src/*.asm"
         },
         {
-          "id": "GHD-003",
-          "title": "Define bookmark and label taxonomy",
-          "description": "Establish consistent Ghidra bookmark categories and label prefixes for code, data, jump tables, graphics, compression blobs, scripts, and uncertain regions to avoid naming chaos later.",
-          "priority": "medium",
-          "effort": "small",
-          "status": "done",
-          "file": "docs/ghidra_conventions.md"
-        },
-        {
-          "id": "GHD-004",
-          "title": "Build headless export scripts",
-          "description": "Create scripts that export symbols, function boundaries, comments, and bookmarks from Ghidra into JSON or CSV so source-side tooling can consume analysis results.",
-          "priority": "medium",
-          "effort": "medium",
-          "status": "done",
-          "file": "tools/ghidra_export.* + ghidra/scripts/"
-        },
-        {
-          "id": "GHD-005",
-          "title": "Establish emulator trace-assisted workflow",
-          "description": "Pick an emulator/debugger workflow for runtime traces, RAM watches, and breakpoints, then define how those traces feed back into Ghidra and the disassembly.",
-          "priority": "medium",
-          "effort": "medium",
-          "status": "done",
-          "file": "docs/debug_workflow.md"
-        },
-        {
-          "id": "GHD-006",
-          "title": "Generate first-pass function and xref index",
-          "description": "Produce an initial machine-readable index of functions, callsites, jump tables, and pointer tables to guide the first split and help track naming progress over time.",
-          "priority": "high",
-          "effort": "medium",
-          "status": "done",
-          "file": "tools/index/*.json"
-        }
-      ]
-    },
-    "rom_layout_and_header": {
-      "description": "Recreate the hard ROM constraints first so later cleanup work has a stable, byte-identical backbone.",
-      "tasks": [
-        {
-          "id": "HDR-001",
-          "title": "Recreate vector table and Mega Drive header exactly",
-          "description": "Write the vector table and ROM header in source form with exact byte values, including stack pointer, reset vector, names, serial, region, and checksum field placement.",
-          "priority": "critical",
-          "effort": "medium",
-          "status": "done",
-          "file": "header.asm"
-        },
-        {
-          "id": "HDR-002",
-          "title": "Find and document checksum handling",
-          "description": "Identify whether the game validates or updates the header checksum internally, document the checksum routine if present, and decide whether builds should preserve or regenerate the field.",
-          "priority": "high",
-          "effort": "medium",
-          "status": "done",
-          "file": "docs/header_checksum.md"
-        },
-        {
-          "id": "HDR-003",
-          "title": "Map coarse ROM regions",
-          "description": "Create a coarse map of where major code blocks, pointer tables, graphics, sound data, text, and compressed assets live inside the 0x0C0000-byte ROM.",
-          "priority": "high",
-          "effort": "medium",
-          "status": "done",
-          "file": "docs/rom_layout.md"
-        },
-        {
-          "id": "HDR-004",
-          "title": "Identify padding, alignment, and fill patterns",
-          "description": "Catalog every padding run, alignment boundary, and repeated fill byte pattern so the rebuild can preserve them deliberately instead of accidentally changing them.",
-          "priority": "high",
-          "effort": "medium",
-          "status": "done",
-          "file": "docs/rom_layout.md"
-        },
-        {
-          "id": "HDR-005",
-          "title": "Document RAM and save-related assumptions",
-          "description": "Record how the ROM header advertises RAM, whether SRAM is present or unused, and how startup code initializes RAM regions so later symbol work has correct hardware context.",
-          "priority": "medium",
-          "effort": "small",
-          "status": "done",
-          "file": "docs/memory_map.md"
-        }
-      ]
-    },
-    "split_disassembly_scaffold": {
-      "description": "Move from one giant binary to a rebuildable split disassembly while preserving the physical byte layout at every step.",
-      "tasks": [
-        {
-          "id": "SPLIT-001",
-          "title": "Create top-level include order preserving ROM layout",
-          "description": "Build the main include file so modules appear in the same order as the original ROM, with no logical reshuffling that would hide byte layout dependencies.",
-          "priority": "critical",
-          "effort": "medium",
-          "status": "done",
-          "file": "wonderboy.asm"
-        },
-        {
-          "id": "SPLIT-002",
-          "title": "Create coarse module split",
-          "description": "Split the ROM into a manageable first generation of modules such as header, init, engine core, interrupts, player/object systems, map/script systems, graphics data, sound data, and text/data banks.",
-          "priority": "high",
-          "effort": "large",
-          "status": "done",
-          "file": "src/*.asm"
-        },
-        {
-          "id": "SPLIT-003",
-          "title": "Externalize opaque blobs with incbin",
-          "description": "Move large still-unexplained binary ranges into named `data/**` files referenced by `incbin`, giving the repo structure without forcing premature decoding of every asset blob.",
-          "priority": "high",
-          "effort": "large",
-          "status": "done",
-          "file": "data/** + src/*.asm"
-        },
-        {
-          "id": "SPLIT-004",
-          "title": "Create core constant files",
-          "description": "Introduce `hw_constants.asm`, `ram_addresses.asm`, `game_constants.asm`, and any sound-specific constants file so future cleanup has stable destinations for symbolic names.",
-          "priority": "high",
-          "effort": "medium",
-          "status": "done",
-          "file": "hw_constants.asm + ram_addresses.asm + game_constants.asm + sound_constants.asm"
-        },
-        {
-          "id": "SPLIT-005",
-          "title": "Create shared macros library",
-          "description": "Add macros for common VDP commands, interrupt toggles, pointer table patterns, and byte-preserving convenience helpers, but only when expansion stays identical.",
-          "priority": "medium",
-          "effort": "medium",
-          "status": "done",
-          "file": "macros.asm"
-        },
-        {
-          "id": "SPLIT-006",
-          "title": "Create symbol and address manifest",
-          "description": "Maintain a machine-readable manifest mapping ROM ranges to source files, labels, asset blobs, and extraction status so the split stays auditable as it grows.",
-          "priority": "medium",
-          "effort": "medium",
-          "status": "done",
-          "file": "tools/index/rom_map.json"
-        }
-      ]
-    },
-    "code_recovery": {
-      "description": "Recover the game's executable structure so the disassembly becomes understandable and maintainable rather than merely rebuildable.",
-      "tasks": [
-        {
-          "id": "CODE-001",
-          "title": "Rename reset, exception, and startup routines",
-          "description": "Replace default analysis names around the vector table, reset entry, hardware initialization, and early boot flow with stable source labels and comments.",
-          "priority": "high",
-          "effort": "medium",
-          "status": "done",
-          "file": "header.asm + src/init.asm + src/core.asm"
-        },
-        {
-          "id": "CODE-002",
-          "title": "Recover interrupt and frame loop flow",
-          "description": "Understand VBlank/HBlank handlers, frame pacing, DMA/VDP sync points, and the main loop scheduling rules that drive the rest of the engine.",
-          "priority": "high",
-          "effort": "large",
-          "status": "done",
-          "file": "src/vblank.asm + src/core.asm"
-        },
-        {
-          "id": "CODE-003",
-          "title": "Recover game state dispatchers",
-          "description": "Find the high-level state machine and submenu/scene dispatchers, name the states, and document their transitions so the codebase can be split along real behavior boundaries.",
-          "priority": "high",
-          "effort": "large",
-          "status": "done",
-          "file": "src/states.asm + src/gameplay.asm"
-        },
-        {
-          "id": "CODE-004",
-          "title": "Recover object, entity, and player RAM structs",
-          "description": "Reverse-engineer the RAM layouts used for player state, active objects, enemies, temporary work buffers, and map state, then replace raw offsets with field names.",
+          "id": "PLAN-003",
+          "title": "Break init and core coarse blobs into subsystem module frontiers",
+          "description": "Replace the single init/core ownership model with explicit subsystem frontiers that separate startup, state dispatch, menus, gameplay, map loading, rendering helpers, script systems, and bank-local continuations without changing ROM order.",
           "priority": "high",
           "effort": "large",
           "status": "in_progress",
-          "file": "ram_addresses.asm + game_constants.asm + src/*.asm",
-          "note": "2026-03-16: recovered the scheduler/bootstrap/controller helper chain through 0x005260, named the shared RAM anchors around 0x8A48-0xA3A4, and synced the exported metadata. `0x00501C` now looks proven as a packed `(duration,value)` latch into `0x8A4E/0x8A4F`, `0x005036` as the matching run-length writer, and `0x0051C6`/`0x005250` as the selected-input playback consumer path reusing `0x8A7A-0x8A7D`. The remaining frontier is finding upstream writers beyond `0x005036` and downstream gameplay consumers of that playback/recording format."
+          "file": "src/init.asm + src/core.asm + src/*.asm"
         },
         {
-          "id": "CODE-005",
-          "title": "Recover collision, physics, and rendering subsystems",
-          "description": "Name and document the core movement, collision, animation, sprite composition, and render-preparation routines that make the action-RPG engine work.",
+          "id": "PLAN-004",
+          "title": "Upgrade ROM ownership metadata to module-level granularity",
+          "description": "Expand tools/index/rom_map.json so it stops describing late ROM as three opaque banks and instead tracks every source-authored slice, data table, extracted asset block, and remaining opaque region at a reviewable granularity.",
           "priority": "high",
-          "effort": "very_large",
-          "status": "todo",
-          "file": "src/player.asm + src/enemy.asm + src/gameplay.asm"
+          "effort": "medium",
+          "status": "in_progress",
+          "file": "tools/index/rom_map.json"
         },
         {
-          "id": "CODE-006",
-          "title": "Recover map loading and decompression call graph",
-          "description": "Identify how room/area loading works, which decompressors feed maps or graphics, and how loaders stitch pointer tables, tilemaps, and entity data together.",
-          "priority": "high",
-          "effort": "large",
-          "status": "todo",
-          "file": "src/mapdata.asm + src/gameplay.asm + src/miscdata.asm"
-        },
-        {
-          "id": "CODE-007",
-          "title": "Recover sound driver interface and Z80 handshake",
-          "description": "Document 68000-to-sound-driver communication, command queues, bank switching, and any embedded Z80 program boundaries so audio code can be cleanly split without guesswork.",
-          "priority": "high",
-          "effort": "large",
-          "status": "todo",
-          "file": "src/sound.asm + sound_constants.asm"
-        },
-        {
-          "id": "CODE-008",
-          "title": "Audit computed control flow and dead code",
-          "description": "Systematically audit jump tables, computed calls, fallthrough-driven shared tails, and truly unreachable code so the split does not accidentally sever hidden control-flow edges.",
+          "id": "PLAN-005",
+          "title": "Write a parity target checklist for mature disassembly state",
+          "description": "Document the concrete end-state criteria for this project: all 68k code source-authored, all major data tables named, all text/script systems decoded, all remaining incbins justified as assets, and all indexes/tooling updated to reflect that maturity.",
           "priority": "medium",
-          "effort": "large",
+          "effort": "small",
           "status": "todo",
-          "file": "src/*.asm"
+          "file": "docs/milestones.md + docs/module_plan.md"
         }
       ]
     },
-    "data_assets_formats": {
-      "description": "Reverse the non-code parts of the ROM so art, maps, sound data, and binary tables can be split and eventually edited without losing fidelity.",
+    "core_frontier_recovery": {
+      "description": "Finish the remaining low-ROM executable frontier and expand the early-game code split until the entire 0x000200-0x01FFFF region is source-authored and sensibly modularized.",
       "tasks": [
         {
-          "id": "DATA-001",
-          "title": "Catalog all pointer tables and blob ranges",
-          "description": "Create an inventory of pointer tables, offset tables, and large blob regions, including suspected graphics, map, script, and audio assets, with ROM offsets and confidence notes.",
-          "priority": "high",
+          "id": "CORE-001",
+          "title": "Source-author the 0x0088C2-0x008C33 gauge and spell-bar block",
+          "description": "Finish the current rendering-heavy frontier in src/core.asm, proving code/data boundaries across the gauge writer, inline scale bundles, tile tables, and width synthesis so the remaining magic/status UI body stops depending on a coarse incbin.",
+          "priority": "critical",
           "effort": "large",
-          "status": "todo",
-          "file": "docs/blob_catalog.md"
+          "status": "in_progress",
+          "file": "src/core.asm + data/rom/core_005000_01ffff.bin"
         },
         {
-          "id": "DATA-002",
-          "title": "Reverse graphics, palette, and tilemap formats",
-          "description": "Identify sprite/tile encodings, palette storage, nametable/tilemap layouts, and any chunked graphics pointer schemes used by Wonder Boy in Monster World.",
-          "priority": "high",
-          "effort": "large",
-          "status": "todo",
-          "file": "docs/gfx_formats.md + data/art/"
-        },
-        {
-          "id": "DATA-003",
-          "title": "Reverse all compression formats with round-trip tooling",
-          "description": "Find every compression/decompression routine used by the game, implement extract/rebuild tools for each format, and prove exact round-trip reproduction before those assets are edited.",
+          "id": "CORE-002",
+          "title": "Recover startup and bootstrap flow from 0x000200-0x004B57",
+          "description": "Disassemble and label the entire init blob so reset/startup, hardware init, RAM clears, checksum or header handling, decompressor/bootstrap helpers, and early scene setup are all source-authored instead of living in init_000200_004b57.bin.",
           "priority": "critical",
           "effort": "very_large",
           "status": "todo",
-          "file": "tools/compression/*.js + docs/compression.md"
+          "file": "src/init.asm + data/rom/init_000200_004b57.bin"
         },
         {
-          "id": "DATA-004",
-          "title": "Split graphics, sound, and map blobs into data directories",
-          "description": "After the blob inventory and round-trip tooling exist, move large assets into structured `data/art`, `data/maps`, and `data/sound` trees while keeping source references byte-perfect.",
+          "id": "CORE-003",
+          "title": "Recover the 0x005261-0x007923 core continuation",
+          "description": "Disassemble the large post-bootstrap core gap so the control flow from controller/input helpers into downstream menu, state, and gameplay systems is visible and no longer hidden behind a single mid-core incbin.",
+          "priority": "critical",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "src/core.asm + data/rom/core_005000_01ffff.bin"
+        },
+        {
+          "id": "CORE-004",
+          "title": "Recover the full 0x008C80-0x01FFFF low-ROM body",
+          "description": "Disassemble the rest of the low ROM into source-authored code and named tables, splitting it into steady-state modules such as states, gameplay, player, enemy, map/script, and misc data as real subsystem ownership becomes clear.",
+          "priority": "critical",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "src/core.asm + src/states.asm + src/gameplay.asm + src/player.asm + src/enemy.asm + src/miscdata.asm"
+        },
+        {
+          "id": "CORE-005",
+          "title": "Recover high-level state dispatchers and scene transitions",
+          "description": "Identify and name the main game state machine, mode entry points, submenu dispatchers, scripted transition paths, and return conventions so module boundaries follow real behavior rather than raw address ranges.",
           "priority": "high",
           "effort": "large",
           "status": "todo",
-          "file": "data/art/** + data/maps/** + data/sound/**"
+          "file": "src/core.asm + src/states.asm + docs/state_flow.md"
         },
         {
-          "id": "DATA-005",
-          "title": "Document animation and object layout tables",
-          "description": "Identify table formats that drive animation scripts, object spawning, entity parameters, and sprite composition so they can be named and tooled later.",
-          "priority": "medium",
+          "id": "CORE-006",
+          "title": "Audit all computed control flow in recovered 68k code",
+          "description": "Systematically identify jump tables, function-pointer dispatch, fallthrough shared tails, and dead-code candidates across the recovered low-ROM code so no hidden control-flow edges remain masked by conservative splitting.",
+          "priority": "high",
           "effort": "large",
           "status": "todo",
-          "file": "docs/object_tables.md"
+          "file": "src/*.asm + tools/index/function_index.json"
         },
         {
-          "id": "DATA-006",
-          "title": "Identify audio asset boundaries",
-          "description": "Separate sound driver code from FM/PSG sequence data, DAC samples, banks, and any Z80-resident code or tables, including notes on bank alignment constraints.",
-          "priority": "medium",
-          "effort": "medium",
+          "id": "CORE-007",
+          "title": "Eliminate active-code incbins below 0x020000",
+          "description": "Drive the entire low-ROM code region to a mature state where any remaining incbins below 0x020000 are proven asset/data islands rather than executable 68k code, with comments and manifests explaining every exception.",
+          "priority": "critical",
+          "effort": "very_large",
           "status": "todo",
-          "file": "docs/audio_layout.md + data/sound/**"
-        },
-        {
-          "id": "DATA-007",
-          "title": "Create blob metadata manifests",
-          "description": "For each extracted blob family, maintain metadata describing original ROM range, format, pointer owner, rebuild tool, and unresolved decoding questions.",
-          "priority": "medium",
-          "effort": "medium",
-          "status": "todo",
-          "file": "data/**/manifest.json"
+          "file": "src/init.asm + src/core.asm + src/*.asm + tools/index/rom_map.json"
         }
       ]
     },
-    "text_and_scripts": {
-      "description": "Decode the game's textual and scripted content so story, UI, and progression logic are not trapped in opaque byte arrays.",
+    "bank_020000_recovery": {
+      "description": "Turn the first fully opaque mid-ROM bank into a named mix of source-authored code, decoded tables, and only narrowly-scoped asset incbins.",
+      "tasks": [
+        {
+          "id": "BNKA-001",
+          "title": "Create a bank020000 include tree and ownership skeleton",
+          "description": "Add src/bank020000.asm and any initial child modules so the 0x020000-0x03FFFF region has a stable source owner before deep recovery starts, with room for code, strings, scripts, and asset sections.",
+          "priority": "critical",
+          "effort": "medium",
+          "status": "done",
+          "file": "src/bank020000.asm + src/bank020000_*.asm"
+        },
+        {
+          "id": "BNKA-002",
+          "title": "Map code, table, text, and asset boundaries across bank 0x020000",
+          "description": "Survey the entire bank to distinguish executable 68k code, pointer tables, text/dialogue banks, compressed blocks, graphics/tile data, and padding/fill so the bank stops being treated as a single unknown blob.",
+          "priority": "critical",
+          "effort": "large",
+          "status": "todo",
+          "file": "src/bank020000.asm + docs/blob_catalog.md + tools/index/rom_map.json"
+        },
+        {
+          "id": "BNKA-003",
+          "title": "Recover all executable 68k routines in bank 0x020000",
+          "description": "Disassemble and label every proven 68k routine in the first bank, including dispatchers, helper routines, and bank-local submodules, until no executable code in 0x020000-0x03FFFF remains hidden in raw incbins.",
+          "priority": "critical",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "src/bank020000.asm + src/*.asm"
+        },
+        {
+          "id": "BNKA-004",
+          "title": "Recover pointer tables and structured data in bank 0x020000",
+          "description": "Convert jump tables, pointer tables, offset tables, descriptor tables, and other structured data in the bank into named assembly tables with documented entry formats and stable labels.",
+          "priority": "high",
+          "effort": "large",
+          "status": "in_progress",
+          "file": "src/bank020000.asm + docs/data_table_style.md"
+        },
+        {
+          "id": "BNKA-005",
+          "title": "Extract and name text-bearing regions in bank 0x020000",
+          "description": "Find every text-bearing region in the bank, identify which ones are menus, shops, dialogue, signposts, item names, or credits-related strings, and move them into structured text ownership instead of leaving them inside bank_020000_03ffff.bin.",
+          "priority": "high",
+          "effort": "large",
+          "status": "in_progress",
+          "file": "src/bank020000.asm + src/strings.asm + data/text/"
+        },
+        {
+          "id": "BNKA-006",
+          "title": "Recover script or event data formats in bank 0x020000",
+          "description": "Identify any script bytecode, cutscene/event data, branching tables, or trigger lists living in this bank and move them into documented script/data modules with entry-point labels and format notes.",
+          "priority": "high",
+          "effort": "large",
+          "status": "todo",
+          "file": "src/bank020000.asm + src/script.asm + docs/script_format.md"
+        },
+        {
+          "id": "BNKA-007",
+          "title": "Reduce bank 0x020000 raw coverage to proven asset islands only",
+          "description": "End the bank recovery with only tightly-scoped, format-justified asset or compressed-data incbins remaining, each surrounded by named loaders, pointer owners, and manifest entries.",
+          "priority": "critical",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "src/bank020000.asm + data/rom/bank_020000_03ffff.bin + tools/index/rom_map.json"
+        }
+      ]
+    },
+    "bank_040000_recovery": {
+      "description": "Decode the large late-ROM bank into modules that make its code/data mix understandable and editable.",
+      "tasks": [
+        {
+          "id": "BNKB-001",
+          "title": "Create a bank040000 include tree and ownership skeleton",
+          "description": "Add src/bank040000.asm and initial child modules so the 0x040000-0x07FFFF region can be split incrementally without keeping a whole-bank incbin in the top-level ROM body.",
+          "priority": "critical",
+          "effort": "medium",
+          "status": "done",
+          "file": "src/bank040000.asm + src/bank040000_*.asm"
+        },
+        {
+          "id": "BNKB-002",
+          "title": "Map the full structure of bank 0x040000",
+          "description": "Identify where code, pointer tables, compressed assets, dialogue/text blocks, map data, and fill regions actually live in 0x040000-0x07FFFF so recovery work can proceed by proven structure instead of guesswork.",
+          "priority": "critical",
+          "effort": "large",
+          "status": "todo",
+          "file": "src/bank040000.asm + docs/blob_catalog.md + tools/index/rom_map.json"
+        },
+        {
+          "id": "BNKB-003",
+          "title": "Recover all executable 68k routines in bank 0x040000",
+          "description": "Disassemble every real 68k routine in the bank, including gameplay continuations, subsystem helpers, and bank-local dispatchers, so no executable logic in 0x040000-0x07FFFF remains trapped in bank_040000_07ffff.bin.",
+          "priority": "critical",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "src/bank040000.asm + src/*.asm"
+        },
+        {
+          "id": "BNKB-004",
+          "title": "Recover all pointer and descriptor tables in bank 0x040000",
+          "description": "Convert late-ROM pointer arrays, descriptor tables, animation tables, map/object references, and table-driven state data into documented assembly structures with validated entry counts and owners.",
+          "priority": "high",
+          "effort": "large",
+          "status": "todo",
+          "file": "src/bank040000.asm + docs/object_tables.md + docs/data_table_style.md"
+        },
+        {
+          "id": "BNKB-005",
+          "title": "Recover dialogue, script, and UI text hosted in bank 0x040000",
+          "description": "Locate and split any dialogue/script/text resources in this bank, especially story scenes, location text, shop/inn text, and credits-linked strings, with pointer-table ownership and round-trip validation.",
+          "priority": "high",
+          "effort": "large",
+          "status": "todo",
+          "file": "src/bank040000.asm + src/strings.asm + src/script.asm + data/text/"
+        },
+        {
+          "id": "BNKB-006",
+          "title": "Recover late-ROM asset loaders and their data owners in bank 0x040000",
+          "description": "Tie compressed blocks, map/tile data, sound-related resources, and other large blobs in this bank to their loading code and pointer owners so extracted assets are no longer orphaned raw slices.",
+          "priority": "high",
+          "effort": "large",
+          "status": "todo",
+          "file": "src/bank040000.asm + src/mapdata.asm + src/gfxdata.asm + src/sound.asm"
+        },
+        {
+          "id": "BNKB-007",
+          "title": "Reduce bank 0x040000 raw coverage to justified assets only",
+          "description": "Drive the bank to the same mature end-state as the lower banks: executable code fully source-authored, tables named, text split out, and any remaining incbins narrowed to well-documented asset payloads.",
+          "priority": "critical",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "src/bank040000.asm + data/rom/bank_040000_07ffff.bin + tools/index/rom_map.json"
+        }
+      ]
+    },
+    "bank_080000_recovery": {
+      "description": "Decode the tail banks with their heavy fill regions so the project still reaches a mature, justified split instead of leaving the last quarter of the ROM opaque.",
+      "tasks": [
+        {
+          "id": "BNKC-001",
+          "title": "Create a bank080000 include tree and ownership skeleton",
+          "description": "Add src/bank080000.asm and child modules so the tail 0x080000-0x0BFFFF region stops being owned directly by a whole-bank incbin and can be decomposed into smaller proven slices.",
+          "priority": "critical",
+          "effort": "medium",
+          "status": "done",
+          "file": "src/bank080000.asm + src/bank080000_*.asm"
+        },
+        {
+          "id": "BNKC-002",
+          "title": "Map fill, padding, data, and code boundaries in bank 0x080000",
+          "description": "Document which long 0xFF runs are true padding, sparse tables, empty bank space, or encoded assets, and identify any executable 68k code or pointer tables hidden among those tail-bank regions.",
+          "priority": "critical",
+          "effort": "large",
+          "status": "in_progress",
+          "file": "src/bank080000.asm + docs/rom_layout.md + docs/blob_catalog.md"
+        },
+        {
+          "id": "BNKC-003",
+          "title": "Recover any executable 68k logic present in bank 0x080000",
+          "description": "Disassemble and label all proven code in the tail banks, including helper routines, data-driven interpreters, or loader code, so no real 68k execution remains hidden in the last quarter of the ROM.",
+          "priority": "critical",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "src/bank080000.asm + src/*.asm"
+        },
+        {
+          "id": "BNKC-004",
+          "title": "Recover structured tables and asset ownership in bank 0x080000",
+          "description": "Name and split all pointer tables, terminal data banks, credits/endgame resources, or tail-end asset blocks in the 0x080000-0x0BFFFF region, with manifests describing any remaining opaque formats.",
+          "priority": "high",
+          "effort": "large",
+          "status": "in_progress",
+          "file": "src/bank080000.asm + src/strings.asm + data/**/manifest.json"
+        },
+        {
+          "id": "BNKC-005",
+          "title": "Reduce bank 0x080000 to explained data ownership",
+          "description": "End tail-bank recovery with every byte either source-authored, described as padding/fill, or attached to a named asset family and loader path, so the last quarter of the ROM is no longer a black box.",
+          "priority": "critical",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "src/bank080000.asm + data/rom/bank_080000_0bffff.bin + tools/index/rom_map.json"
+        }
+      ]
+    },
+    "text_and_script_recovery": {
+      "description": "Decode every textual and scripted system so dialogue, UI, progression logic, and localization details are no longer trapped inside unknown byte arrays.",
       "tasks": [
         {
           "id": "TEXT-001",
-          "title": "Reverse text encoding and font mapping",
-          "description": "Identify how the game encodes characters, control codes, terminators, and font tile mapping, including any dual-byte or context-sensitive glyph behavior.",
-          "priority": "high",
-          "effort": "medium",
+          "title": "Reverse the full text encoding and control-code scheme",
+          "description": "Identify character encoding, terminators, inline control codes, line-break behavior, text speed/control bytes, and any context-sensitive glyph handling used across dialogue, menus, signs, and credits.",
+          "priority": "critical",
+          "effort": "large",
           "status": "todo",
-          "file": "docs/text_encoding.md"
+          "file": "docs/text_encoding.md + data/text/"
         },
         {
           "id": "TEXT-002",
-          "title": "Extract all text with a round-trip encoder",
-          "description": "Build a tool that dumps every known text bank to a readable format and re-encodes it back to the exact original bytes, including control codes and pointer table alignment.",
+          "title": "Recover font and glyph mapping ownership",
+          "description": "Locate the font graphics, tile-to-character mapping, width or layout metadata, and any banked font variants so decoded text is grounded in repo-local data instead of external dump assumptions.",
           "priority": "high",
+          "effort": "large",
+          "status": "todo",
+          "file": "docs/text_encoding.md + src/gfxdata.asm + data/art/"
+        },
+        {
+          "id": "TEXT-003",
+          "title": "Build a repo-local full text dump and round-trip builder",
+          "description": "Create tools/text_dump.js and tools/text_build.js so every known text bank can be decoded into readable files, edited, and rebuilt back to the exact original bytes with pointer-table stability checks.",
+          "priority": "critical",
           "effort": "large",
           "status": "todo",
           "file": "tools/text_dump.js + tools/text_build.js + data/text/"
         },
         {
-          "id": "TEXT-003",
-          "title": "Reverse event and script opcode formats",
-          "description": "Understand script commands, parameter formats, pointer/reference behavior, branching, and event triggers so story and progression logic become inspectable.",
+          "id": "TEXT-004",
+          "title": "Classify and split all menu, item, and magic strings",
+          "description": "Move UI strings such as inventory headings, spell names, item names, equipment names, prompts, and status labels into structured string modules with stable labels and pointer ownership.",
           "priority": "high",
+          "effort": "large",
+          "status": "todo",
+          "file": "src/strings.asm + data/text/ui/"
+        },
+        {
+          "id": "TEXT-005",
+          "title": "Classify and split all dialogue, shop, inn, and sign text",
+          "description": "Recover story dialogue and world text into named banks or files grouped by subsystem, town, area, or event, using proven pointer tables and known localized names only where the ROM supports them.",
+          "priority": "high",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "src/strings.asm + data/text/dialogue/"
+        },
+        {
+          "id": "TEXT-006",
+          "title": "Reverse the event and script opcode formats",
+          "description": "Identify script commands, argument formats, pointer semantics, branching rules, and event trigger integration so story and progression logic become readable instead of remaining opaque byte streams.",
+          "priority": "critical",
           "effort": "very_large",
           "status": "todo",
           "file": "docs/script_format.md + src/script.asm"
         },
         {
-          "id": "TEXT-004",
-          "title": "Split dialogue, UI, and script banks into modules",
-          "description": "Once text and scripts are understood, split them into named source/data files by bank or subsystem while preserving address order and pointer stability.",
-          "priority": "medium",
-          "effort": "large",
-          "status": "todo",
-          "file": "src/strings.asm + src/script.asm + data/text/**"
-        },
-        {
-          "id": "TEXT-005",
-          "title": "Add text pointer and size validation",
-          "description": "Create automated checks that validate text pointer tables, encoded lengths, control code sanity, and rebuild byte identity so script work stops being fragile.",
-          "priority": "medium",
-          "effort": "medium",
-          "status": "todo",
-          "file": "tools/validate_text.js"
-        }
-      ]
-    },
-    "cleanup_and_symbolization": {
-      "description": "Turn a bare rebuild into a maintainable disassembly by systematically replacing placeholders and raw numerics with names, comments, and verified abstractions.",
-      "tasks": [
-        {
-          "id": "CLEAN-001",
-          "title": "Remove generic placeholder labels module by module",
-          "description": "Track and eliminate default placeholder names from completed modules, keeping address-stable rename notes where useful for cross-referencing old analysis output.",
+          "id": "TEXT-007",
+          "title": "Split scripts into source-owned modules with entry labels",
+          "description": "Once script formats are understood, move script banks and event entry tables into named modules with stable script entry labels, caller references, and documentation of bank/area ownership.",
           "priority": "high",
           "effort": "very_large",
           "status": "todo",
-          "file": "src/*.asm"
+          "file": "src/script.asm + data/scripts/"
         },
         {
-          "id": "CLEAN-002",
-          "title": "Replace raw RAM and hardware addresses with constants",
-          "description": "Define symbolic names for VDP, controller, Z80, RAM, and object-struct addresses, then replace raw operands across the codebase without changing assembled bytes.",
+          "id": "TEXT-008",
+          "title": "Add text and script validation tooling",
+          "description": "Create automated checks for text pointer validity, encoded length limits, control-code sanity, and script entry coverage so recovered text/script systems remain safe to edit.",
+          "priority": "medium",
+          "effort": "medium",
+          "status": "todo",
+          "file": "tools/validate_text.js + tools/validate_scripts.js"
+        }
+      ]
+    },
+    "data_table_recovery": {
+      "description": "Promote every major structured data family into named tables with documented formats so the ROM is semantically organized rather than just mechanically rebuildable.",
+      "tasks": [
+        {
+          "id": "DATA-001",
+          "title": "Create a full pointer-table and descriptor-table inventory",
+          "description": "Catalog every pointer table, offset table, descriptor table, and repeated-record structure in the ROM, noting ROM range, owner, entry size, likely consumer, and current confidence level.",
+          "priority": "critical",
+          "effort": "large",
+          "status": "todo",
+          "file": "docs/blob_catalog.md + tools/index/table_index.json"
+        },
+        {
+          "id": "DATA-002",
+          "title": "Recover inventory, equipment, item, and magic data tables",
+          "description": "Identify the actual data tables that drive item names, equipment attributes, consumable behavior, magic definitions, and category availability so menu/UI recovery is backed by real structured ownership.",
           "priority": "high",
           "effort": "large",
           "status": "todo",
-          "file": "hw_constants.asm + ram_addresses.asm + src/*.asm"
+          "file": "src/items.asm + src/strings.asm + data/gameplay/"
         },
         {
-          "id": "CLEAN-003",
-          "title": "Replace raw VDP command longwords with macros",
-          "description": "Where safe, replace raw VDP command literals with named macros or symbolic builders that still assemble byte-identically and make VRAM/CRAM/VSRAM intent readable.",
+          "id": "DATA-003",
+          "title": "Recover enemy, boss, and combat parameter tables",
+          "description": "Locate enemy stat tables, boss parameter tables, AI descriptor tables, projectile or hitbox data, and combat lookup structures so action-RPG behavior is driven by named data instead of anonymous bytes.",
+          "priority": "high",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "src/enemy.asm + src/gameplay.asm + data/gameplay/"
+        },
+        {
+          "id": "DATA-004",
+          "title": "Recover shop, inn, and economy tables",
+          "description": "Identify shop inventories, prices, inn pricing/behavior, and economy-related tables so all merchant-facing systems are represented as named data with town or owner context where proven.",
+          "priority": "high",
+          "effort": "large",
+          "status": "todo",
+          "file": "src/items.asm + data/gameplay/shops/"
+        },
+        {
+          "id": "DATA-005",
+          "title": "Recover room, area, warp, and progression tables",
+          "description": "Find the tables that define areas, room transitions, warps, exits, and world progression links so map and script recovery can rely on named structural data instead of scattered raw pointers.",
+          "priority": "high",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "src/mapdata.asm + data/maps/ + docs/area_flow.md"
+        },
+        {
+          "id": "DATA-006",
+          "title": "Recover object spawn, trigger, and event placement tables",
+          "description": "Identify the structured data that places NPCs, enemies, triggers, chests, doors, and scripted interactions in each area, including entry formats and pointer ownership.",
+          "priority": "high",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "src/mapdata.asm + src/script.asm + data/maps/objects/"
+        },
+        {
+          "id": "DATA-007",
+          "title": "Recover animation, sprite-composition, and render descriptor tables",
+          "description": "Document the table formats that drive animation sequences, sprite piece layouts, tile compositions, and render-side descriptor data for player, enemies, UI, and effects.",
+          "priority": "high",
+          "effort": "large",
+          "status": "todo",
+          "file": "docs/object_tables.md + src/player.asm + src/enemy.asm + src/gfxdata.asm"
+        },
+        {
+          "id": "DATA-008",
+          "title": "Recover save, options, and persistent-state data structures",
+          "description": "Determine whether the game truly uses backup RAM or save-related structures beyond the header artifacts, and if so, map the save layout, checks, and persistent progression tables in source and documentation.",
           "priority": "medium",
           "effort": "large",
           "status": "todo",
-          "file": "macros.asm + src/*.asm"
+          "file": "docs/save_format.md + src/sram.asm + ram_addresses.asm"
+        }
+      ]
+    },
+    "format_and_asset_recovery": {
+      "description": "Decode the non-code formats so remaining incbins become deliberate asset containers with extract/build pipelines rather than unexplained leftovers.",
+      "tasks": [
+        {
+          "id": "FMT-001",
+          "title": "Reverse all compression and decompression formats used by the ROM",
+          "description": "Identify every decompressor, the data families it serves, and the exact format rules, then build extraction and rebuild tooling that reproduces each compressed block byte-for-byte.",
+          "priority": "critical",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "docs/compression.md + tools/compression/"
         },
         {
-          "id": "CLEAN-004",
-          "title": "Replace raw struct offsets with field names",
-          "description": "Systematically identify repeated `$NN(Ax)` patterns that belong to player, object, script, map, or save structs and replace them with named fields once proven.",
+          "id": "FMT-002",
+          "title": "Recover graphics, palette, and tilemap formats",
+          "description": "Document sprite/tile encoding, palette storage, map tilemap layouts, UI tile banks, and any chunk/pointer schemes so art and layout data can be extracted and understood as real formats.",
+          "priority": "high",
+          "effort": "large",
+          "status": "todo",
+          "file": "docs/gfx_formats.md + src/gfxdata.asm + data/art/"
+        },
+        {
+          "id": "FMT-003",
+          "title": "Recover map encodings and area asset pipelines",
+          "description": "Decode overworld, town, dungeon, and room data encodings, including any compression, metatile layers, collision layers, and entity references, with round-trip extraction/build tooling.",
+          "priority": "high",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "docs/map_formats.md + src/mapdata.asm + tools/map_extract.js + tools/map_build.js"
+        },
+        {
+          "id": "FMT-004",
+          "title": "Recover sound driver structure and 68000/Z80 interface",
+          "description": "Document the 68000-to-sound-driver handshake, sound command format, Z80 boundaries, bank ownership, and sound-driver RAM usage so sound code can be split into source and named data rather than remaining a future black box.",
+          "priority": "high",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "src/sound.asm + sound_constants.asm + docs/audio_layout.md"
+        },
+        {
+          "id": "FMT-005",
+          "title": "Separate sound assets from sound code and command tables",
+          "description": "Identify sequence data, DAC/sample payloads, FM/PSG resources, and any sound lookup tables so sound-related incbins are partitioned into named code and asset ownership.",
           "priority": "medium",
           "effort": "large",
           "status": "todo",
-          "file": "game_constants.asm + src/*.asm"
+          "file": "src/sound.asm + data/sound/ + docs/audio_layout.md"
         },
         {
-          "id": "CLEAN-005",
-          "title": "Add function headers and module-level documentation",
-          "description": "Raise documentation density across all modules with file headers, routine summaries, register conventions, data format comments, and notes for non-obvious invariants.",
+          "id": "FMT-006",
+          "title": "Create per-family asset manifests for extracted blob ranges",
+          "description": "For text, maps, art, sound, and other asset families, maintain manifests recording ROM ranges, format, parent pointers/loaders, rebuild tools, and unresolved questions so remaining opaque data is always contextualized.",
           "priority": "medium",
+          "effort": "medium",
+          "status": "todo",
+          "file": "data/**/manifest.json"
+        },
+        {
+          "id": "FMT-007",
+          "title": "Externalize mature asset families into structured data directories",
+          "description": "Once formats and round-trip tooling exist, move large art, map, sound, and script resources out of generic data/rom blobs into structured data trees without losing ROM-order traceability or bit-perfect rebuild behavior.",
+          "priority": "high",
+          "effort": "large",
+          "status": "todo",
+          "file": "data/art/ + data/maps/ + data/sound/ + data/text/"
+        }
+      ]
+    },
+    "symbolization_and_docs": {
+      "description": "Raise naming, comments, RAM/constant coverage, and structural documentation until the codebase reads like a maintained disassembly instead of a partially decoded binary mirror.",
+      "tasks": [
+        {
+          "id": "SYM-001",
+          "title": "Expand the RAM map from local anchors to subsystem-level structures",
+          "description": "Continue naming work RAM so player, object, menu, map, script, render, task, and sound work areas are represented as real structs or grouped regions rather than isolated address notes.",
+          "priority": "critical",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "ram_addresses.asm + docs/memory_map.md"
+        },
+        {
+          "id": "SYM-002",
+          "title": "Define comprehensive gameplay and subsystem constants",
+          "description": "Create or expand shared constant files for gameplay states, object types, menu ids, script opcodes, sound commands, tile attributes, and table sizes so recovered code stops depending on unexplained immediates.",
+          "priority": "high",
+          "effort": "large",
+          "status": "todo",
+          "file": "game_constants.asm + hw_constants.asm + sound_constants.asm"
+        },
+        {
+          "id": "SYM-003",
+          "title": "Replace raw struct offsets with named field constants",
+          "description": "Systematically convert proven $NN(Ax) patterns into named field offsets for player, object, menu, map, script, and save-related structures across all recovered modules.",
+          "priority": "high",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "game_constants.asm + ram_addresses.asm + src/*.asm"
+        },
+        {
+          "id": "SYM-004",
+          "title": "Eliminate placeholder or address-suffixed labels in mature modules",
+          "description": "As each module reaches stable understanding, replace conservative address-suffixed or generic behavior labels with stronger subsystem or game-facing names while preserving cross-reference traceability in comments or indexes.",
+          "priority": "high",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "src/*.asm + tools/index/symbol_map.json"
+        },
+        {
+          "id": "SYM-005",
+          "title": "Add function headers and module-level documentation throughout src",
+          "description": "Give each mature module clear file headers, exported routine summaries, register usage notes, and data format comments so reverse engineering knowledge lives in source instead of only in worklogs.",
+          "priority": "high",
           "effort": "very_large",
           "status": "todo",
           "file": "src/*.asm + docs/*.md"
         },
         {
-          "id": "CLEAN-006",
-          "title": "Annotate misplaced data and ROM-layout artifacts",
-          "description": "Whenever code/data splitting reveals mid-function file starts, stranded blobs, or logically misplaced sections, add prominent comments explaining the physical-ROM reason they must stay there.",
+          "id": "SYM-006",
+          "title": "Document every misplaced data island caused by ROM-order constraints",
+          "description": "Whenever a function or table must stay in an apparently odd file because of bit-perfect ROM ordering, add prominent comments explaining the physical-ROM reason and the logical owner.",
           "priority": "medium",
           "effort": "medium",
           "status": "todo",
           "file": "src/*.asm"
+        },
+        {
+          "id": "SYM-007",
+          "title": "Create docs for module boundaries, table style, and naming rules",
+          "description": "Write repo-specific guidance for how modules are split, how data tables should be represented, and how domain names should be introduced so future recovery stays consistent and reviewable.",
+          "priority": "medium",
+          "effort": "medium",
+          "status": "todo",
+          "file": "docs/module_boundaries.md + docs/data_table_style.md + docs/naming_conventions.md"
+        },
+        {
+          "id": "SYM-008",
+          "title": "Keep Ghidra and source labels synchronized as source matures",
+          "description": "Expand the source-to-Ghidra sync process so labels, comments, bookmarks, and module ownership remain aligned between the repo and the analysis project as large bank recoveries land.",
+          "priority": "medium",
+          "effort": "medium",
+          "status": "todo",
+          "file": "tools/ghidra_export.js + ghidra/scripts/ + docs/ghidra_setup.md"
         }
       ]
     },
-    "tooling_and_regression": {
-      "description": "Build the safety rails that keep a large reverse-engineering project stable as it grows.",
+    "tooling_and_indexes": {
+      "description": "Build the indexes, viewers, validators, and extraction tools needed to support mature reverse engineering and future editing without relying on manual address chasing.",
       "tasks": [
         {
           "id": "TOOL-001",
-          "title": "Create ROM diff tool",
-          "description": "Write a diff tool that compares the rebuilt ROM to the original and reports differences by offset and, where possible, by owning source module or label so verify failures are quick to diagnose.",
-          "priority": "high",
-          "effort": "medium",
-          "status": "done",
-          "file": "tools/rom_diff.js"
+          "title": "Expand the function index to full-ROM coverage",
+          "description": "Upgrade tools/index/function_index.json so it tracks every recovered routine, entry point, dispatcher, and table-dispatched target across all banks rather than only the current early-ROM frontier.",
+          "priority": "critical",
+          "effort": "large",
+          "status": "todo",
+          "file": "tools/index/function_index.json + tools/index/functions.js"
         },
         {
           "id": "TOOL-002",
-          "title": "Create unified run_checks script",
-          "description": "Add a single Node.js entry point that runs all Wonderboy lints and reports a pass/fail summary similar to the Vermilion project.",
+          "title": "Generate callsite, include-graph, and RAM-symbol indexes",
+          "description": "Add repo-native generators for callsites, include graph, and RAM symbol coverage so control flow, module dependencies, and memory ownership can be audited the same way mature disassemblies do.",
           "priority": "high",
-          "effort": "small",
-          "status": "done",
-          "file": "tools/run_checks.js"
+          "effort": "medium",
+          "status": "todo",
+          "file": "tools/index/callsites.js + tools/index/include_graph.js + tools/index/ram_symbols.js"
         },
         {
           "id": "TOOL-003",
-          "title": "Create placeholder-label lint",
-          "description": "Add a lint that flags remaining generic labels or auto-analysis names in completed modules so naming quality can improve steadily instead of regressing.",
-          "priority": "medium",
-          "effort": "small",
-          "status": "done",
-          "file": "tools/lint_placeholder_labels.js"
+          "title": "Generate indexes for strings, scripts, and data tables",
+          "description": "Create machine-readable indexes for decoded strings, script entries/opcodes, and structured tables so tooling and reviewers can navigate text/data ownership without scanning raw assembly.",
+          "priority": "high",
+          "effort": "large",
+          "status": "todo",
+          "file": "tools/index/strings.js + tools/index/script_entries.js + tools/index/table_index.js"
         },
         {
           "id": "TOOL-004",
-          "title": "Create raw address and decimal-data lints",
-          "description": "Add lints for raw hardware I/O operands, raw RAM addresses, and decimal literals in `dc.*` data directives so the source style stays predictable and searchable.",
-          "priority": "medium",
-          "effort": "medium",
-          "status": "done",
-          "file": "tools/lint_raw_io_addresses.js + tools/lint_raw_ram_addresses.js + tools/lint_dc_decimal.js"
+          "title": "Build extraction and injection CLIs for mature data families",
+          "description": "Create command-line tooling that can dump and rebuild recovered text, scripts, maps, and gameplay tables so future editing work uses verified pipelines instead of manual source edits alone.",
+          "priority": "high",
+          "effort": "very_large",
+          "status": "todo",
+          "file": "tools/text_dump.js + tools/text_build.js + tools/map_extract.js + tools/map_build.js + tools/extract_game_data.js + tools/inject_game_data.js"
         },
         {
           "id": "TOOL-005",
-          "title": "Create comment-density and magic-number audits",
-          "description": "Build warning-level reports for comment density and unreviewed magic numbers so under-documented or under-symbolized modules are easy to prioritize.",
-          "priority": "low",
-          "effort": "medium",
-          "status": "done",
-          "file": "tools/comment_density.js + tools/audit_magic_numbers.js"
+          "title": "Extend viewers to cover decoded maps, palettes, text, and tables",
+          "description": "Turn the existing bootstrap viewers into a broader inspection suite that can render recovered maps, palettes, strings, and table-driven gameplay data in human-readable form.",
+          "priority": "medium",
+          "effort": "large",
+          "status": "todo",
+          "file": "tools/map_viewer.js + tools/palette_viewer.js + tools/string_viewer.js + tools/table_viewer.js"
         },
         {
           "id": "TOOL-006",
-          "title": "Create Ghidra sync helpers",
-          "description": "Add scripts that import/export labels, comments, and address manifests between source control and Ghidra so naming work is not trapped in one direction.",
+          "title": "Add lints for raw struct offsets, table formatting, and asset manifest drift",
+          "description": "Extend run_checks so it warns or fails on newly introduced raw struct offsets, malformed named tables, missing manifest metadata, and other regressions that would erode a mature source layout.",
           "priority": "medium",
           "effort": "medium",
-          "status": "done",
-          "file": "tools/ghidra_sync/*.js"
+          "status": "todo",
+          "file": "tools/run_checks.js + tools/lint_*.js"
         },
         {
           "id": "TOOL-007",
-          "title": "Create verification helper for header and metadata freshness",
-          "description": "Add a helper that checks not just the ROM hash but also header fields, checksum expectations, and freshness of exported symbol metadata so stale analysis artifacts are easier to spot.",
+          "title": "Verify metadata freshness against current source ownership",
+          "description": "Expand verify_metadata.js so it checks that symbol maps, ROM ownership manifests, table indexes, and other generated metadata are up to date after major source splits.",
           "priority": "medium",
           "effort": "medium",
-          "status": "done",
+          "status": "todo",
           "file": "tools/verify_metadata.js"
+        },
+        {
+          "id": "TOOL-008",
+          "title": "Create a maturity dashboard for coverage of code, labels, and tables",
+          "description": "Produce a report summarizing source-authored ROM coverage, remaining incbin ranges, label quality, table coverage, and decoded asset families so progress toward a fully mapped disassembly is measurable.",
+          "priority": "medium",
+          "effort": "medium",
+          "status": "todo",
+          "file": "tools/disassembly_dashboard.js + docs/milestones.md"
         }
       ]
     },
-    "modding_foundation": {
-      "description": "Once the disassembly is stable, create the machine-readable outputs and tools that make the project useful for hacking, editors, and future randomizer work.",
+    "regression_and_parity": {
+      "description": "Harden the repo so the long push from coarse split to mature disassembly stays reproducible, reviewable, and aligned with the desired end state.",
       "tasks": [
         {
-          "id": "MOD-001",
-          "title": "Export symbol map and function index",
-          "description": "Generate `symbol_map.json` and related indexes that map addresses to names, modules, and categories so external tools can reason about the ROM semantically.",
-          "priority": "high",
-          "effort": "medium",
-          "status": "done",
-          "file": "tools/index/symbol_map.json"
-        },
-        {
-          "id": "MOD-002",
-          "title": "Build map and palette viewer tools",
-          "description": "Create viewer/dumper tools that render map, tile, and palette data in human-readable form so spatial and visual assets can be studied without hex editing.",
-          "priority": "medium",
-          "effort": "large",
-          "status": "done",
-          "file": "tools/map_viewer.js + tools/palette_viewer.js"
-        },
-        {
-          "id": "MOD-003",
-          "title": "Build text and script dump/inject CLI",
-          "description": "Create CLI tooling that can dump decoded text/scripts, accept edits, and rebuild them through the verified round-trip pipeline.",
-          "priority": "medium",
-          "effort": "large",
-          "status": "todo",
-          "file": "tools/script_dump.js + tools/script_build.js"
-        },
-        {
-          "id": "MOD-004",
-          "title": "Build structured extractor/injector for gameplay data",
-          "description": "Create tooling that extracts selected gameplay tables such as enemy stats, item data, shops, maps, or event tables into JSON and injects them back safely.",
-          "priority": "high",
-          "effort": "large",
-          "status": "todo",
-          "file": "tools/extract_game_data.js + tools/inject_game_data.js"
-        },
-        {
-          "id": "MOD-005",
-          "title": "Draft editor architecture document",
-          "description": "Write down what an eventual Wonderboy editor should operate on, how it will interface with extracted JSON and source, and what validation guarantees it must preserve.",
-          "priority": "low",
-          "effort": "medium",
-          "status": "todo",
-          "file": "docs/editor_architecture.md"
-        },
-        {
-          "id": "MOD-006",
-          "title": "Draft randomizer and modding architecture document",
-          "description": "Define a post-disassembly architecture for randomizer or patch tooling, including seed format, patch strategy, progression validation, and what data sources it will rely on.",
-          "priority": "low",
-          "effort": "medium",
-          "status": "todo",
-          "file": "docs/randomizer_architecture.md"
-        }
-      ]
-    },
-    "documentation_and_process": {
-      "description": "Keep the project understandable and sustainable as reverse engineering knowledge accumulates.",
-      "tasks": [
-        {
-          "id": "DOC-001",
-          "title": "Create project README",
-          "description": "Write a root README covering prerequisites, assembler choice, build/verify commands, Ghidra setup, ROM baseline expectations, and the repo layout.",
+          "id": "REGR-001",
+          "title": "Create a pre-commit verification hook for Wonderboy",
+          "description": "Add Windows and shell pre-commit helpers that run the standard validation and bit-perfect checks before commits so regressions are caught before they enter history.",
           "priority": "high",
           "effort": "small",
-          "status": "done",
-          "file": "README.md"
+          "status": "todo",
+          "file": "tools/pre-commit.cmd + tools/pre-commit.sh + docs/contributing.md"
         },
         {
-          "id": "DOC-002",
-          "title": "Create naming conventions and contribution guide",
-          "description": "Document label naming, constant placement, file-splitting rules, comment expectations, and verification requirements so future work stays coherent.",
+          "id": "REGR-002",
+          "title": "Document the workflow for diagnosing verify failures after deep bank splits",
+          "description": "Write a repo-specific guide for reading listing files, using rom_diff output, checking branch sizing, and debugging off-by-one boundary mistakes that appear during large source-authored bank conversions.",
           "priority": "medium",
           "effort": "small",
-          "status": "done",
-          "file": "docs/contributing.md"
+          "status": "todo",
+          "file": "docs/debugging_verify_failures.md"
         },
         {
-          "id": "DOC-003",
-          "title": "Maintain research log and unresolved questions register",
-          "description": "Keep a running log of discoveries, false leads, emulator findings, and unresolved format questions so difficult areas are not repeatedly reverse-engineered from scratch.",
+          "id": "REGR-003",
+          "title": "Refresh onboarding and contributor docs for the mature workflow",
+          "description": "Replace the bootstrap-era guidance with documentation that explains module ownership, bank recovery expectations, tooling/index refresh steps, and how to add new source-authored slices safely.",
           "priority": "medium",
           "effort": "medium",
-          "status": "done",
-          "file": "docs/research_log.md + docs/open_questions.md"
+          "status": "todo",
+          "file": "README.md + docs/contributing.md + docs/onboarding.md"
         },
         {
-          "id": "DOC-004",
-          "title": "Update todos statistics and milestone summaries regularly",
-          "description": "Treat `todos.json` as a living project dashboard by keeping task status, category counts, and milestone notes in sync with the actual state of the disassembly.",
-          "priority": "low",
-          "effort": "small",
-          "status": "done",
-          "file": "todos.json"
-        },
-        {
-          "id": "DOC-005",
-          "title": "Define Wonderboy milestone gates",
-          "description": "Create milestone definitions analogous to Vermilion's early cleanup phases: bootstrap rebuild, coarse split, named core engine, documented data formats, and tooling-ready foundation.",
+          "id": "REGR-004",
+          "title": "Refresh milestone gates for full-disassembly completion",
+          "description": "Rewrite docs/milestones.md so it tracks the transition from coarse bootstrap to complete 68k coverage, full data-table recovery, decoded asset formats, and mature tooling rather than stopping at early scaffold milestones.",
           "priority": "medium",
           "effort": "small",
-          "status": "done",
+          "status": "todo",
           "file": "docs/milestones.md"
+        },
+        {
+          "id": "REGR-005",
+          "title": "Perform periodic parity audits against the target mature state",
+          "description": "Establish a recurring review that measures Wonderboy against the intended mature-disassembly checklist: module coverage, label quality, table ownership, text/script extraction, and tooling completeness.",
+          "priority": "low",
+          "effort": "medium",
+          "status": "todo",
+          "file": "docs/parity_audit.md + tools/disassembly_dashboard.js"
+        },
+        {
+          "id": "REGR-006",
+          "title": "Close the project only when every remaining incbin is justified",
+          "description": "Make the final acceptance criterion explicit: the project is not considered mature until every surviving incbin is a documented asset or padding region with known owner, and all executable 68k plus structured tables are source-authored and indexed.",
+          "priority": "critical",
+          "effort": "small",
+          "status": "todo",
+          "file": "docs/milestones.md + tools/index/rom_map.json"
         }
       ]
     }
   },
   "priority_order": [
-    "--- Phase 0: Rebuildable baseline ---",
-    "ENV-002 (capture immutable ROM baseline)",
-    "ENV-003 (determine exact assembler strategy)",
-    "ENV-004 (create minimal buildable root assembly)",
-    "ENV-005 (create build and verify scripts)",
-    "HDR-001 (recreate vector table and Mega Drive header exactly)",
-    "SPLIT-001 (create top-level include order preserving ROM layout)",
-    "--- Phase 1: Analysis scaffolding ---",
-    "GHD-001 through GHD-006 (Ghidra workflow and exports)",
-    "HDR-002 through HDR-004 (checksum, coarse layout, padding)",
-    "SPLIT-002 through SPLIT-006 (coarse split, incbins, constants, manifests)",
-    "--- Phase 2: Engine understanding ---",
-    "CODE-001 through CODE-004 (startup, frame loop, state flow, RAM structs)",
-    "CODE-006 and DATA-003 (map/decompression understanding and round-trip tooling)",
-    "TEXT-001 through TEXT-003 (text encoding and script format)",
-    "--- Phase 3: Project maturity ---",
-    "CODE-005 and CODE-007 (physics/rendering and sound driver interface)",
-    "DATA-001 through DATA-007 (blob catalog, graphics, audio, manifests)",
-    "CLEAN-001 through CLEAN-006 (labels, constants, docs, ROM-layout annotations)",
-    "TOOL-001 through TOOL-007 (diffs, lints, sync, regression checks)",
-    "--- Phase 4: Vermilion-like tooling shape ---",
-    "MOD-001 through MOD-004 (symbol map plus extraction/injection tooling)",
-    "MOD-005 and MOD-006 (editor/randomizer architecture docs)",
-    "DOC-001 through DOC-005 (README, conventions, logs, milestones)"
+    "--- Immediate structural work ---",
+    "PLAN-001",
+    "CORE-001",
+    "CORE-002",
+    "CORE-003",
+    "CORE-007",
+    "--- First bank decomposition wave ---",
+    "BNKA-001",
+    "BNKA-002",
+    "BNKA-003",
+    "BNKB-001",
+    "BNKB-002",
+    "BNKC-001",
+    "BNKC-002",
+    "--- Text, script, and table foundations ---",
+    "TEXT-001",
+    "TEXT-003",
+    "TEXT-006",
+    "DATA-001",
+    "DATA-002",
+    "DATA-005",
+    "--- Format and asset decoding ---",
+    "FMT-001",
+    "FMT-002",
+    "FMT-003",
+    "FMT-004",
+    "--- Symbolization and tooling maturation ---",
+    "SYM-001",
+    "SYM-002",
+    "SYM-003",
+    "TOOL-001",
+    "TOOL-002",
+    "TOOL-003",
+    "--- Completion and hardening ---",
+    "REGR-001",
+    "REGR-004",
+    "REGR-006"
   ],
   "statistics": {
-    "total_tasks": 67,
+    "total_tasks": 76,
     "by_status": {
-      "done": 40,
-      "in_progress": 1,
-      "todo": 26
+      "done": 4,
+      "in_progress": 8,
+      "todo": 64
     },
     "by_priority": {
-      "high": 30,
-      "critical": 7,
-      "medium": 26,
-      "low": 4
+      "critical": 26,
+      "high": 34,
+      "medium": 15,
+      "low": 1
     },
     "by_category": {
-      "environment_baseline": 6,
-      "ghidra_workflow": 6,
-      "rom_layout_and_header": 5,
-      "split_disassembly_scaffold": 6,
-      "code_recovery": 8,
-      "data_assets_formats": 7,
-      "text_and_scripts": 5,
-      "cleanup_and_symbolization": 6,
-      "tooling_and_regression": 7,
-      "modding_foundation": 6,
-      "documentation_and_process": 5
+      "disassembly_completion_strategy": 5,
+      "core_frontier_recovery": 7,
+      "bank_020000_recovery": 7,
+      "bank_040000_recovery": 7,
+      "bank_080000_recovery": 5,
+      "text_and_script_recovery": 8,
+      "data_table_recovery": 8,
+      "format_and_asset_recovery": 7,
+      "symbolization_and_docs": 8,
+      "tooling_and_indexes": 8,
+      "regression_and_parity": 6
     }
   }
 }

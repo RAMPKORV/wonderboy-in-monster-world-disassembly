@@ -128,3 +128,33 @@
   - `0x0051C6` and `0x005250` confirm the consumer side: when playback mode at `0x8A50`
     is negative, live pad mirroring into `0x8A7A-0x8A7C` stops, leaving `0x00505C` to feed
     replayed values into the selected-input mirror and `0x005250` to derive edge presses.
+- Extended that chain to a later downstream helper at `0x00805A-0x0080A7`:
+  - The routine begins by popping its return address into `0x9634`, calling helper
+    `0x0400`, and then examining `0x8A7C` / `0x8A7A` rather than the per-pad triplets.
+  - `0x95D7-0x95D9` now look like a selected-input auto-repeat cluster: last held value,
+    countdown, and gated output respectively. New presses seed a `0x10` delay, subsequent
+    repeats use `0x08`, and suppressed frames write `0x00` to the output byte.
+  - That output byte is then consumed by at least the higher-level handlers at `0x007924`,
+    `0x007938`, and `0x008212`, which strongly suggests this path belongs to UI / menu
+    navigation rather than moment-to-moment player control.
+- Cross-checked the repo for a text dump or decoded menu/dialogue bank that could tie this
+  UI-repeat path to known Wonder Boy screens such as Purapril/Childam shops or other named
+  progression menus, but none is checked in yet. Keep the downstream owners behavior-based
+  until `0x0080A8+` and the text/script data are split enough to prove a real match.
+- Continued past that point with raw-ROM disassembly of `0x00882C-0x008A03` but stopped short of
+  a source-authored split after one failed rewrite attempt showed the bytes are still sensitive to
+  assembler layout/encoding choices. Even so, the ROM evidence tightened several useful anchors:
+  `0x9628` looks like a pending packed target for the adjacent status gauge, `0x95F2` behaves like
+  its redraw countdown, `0x95F4/0x95F6` look like paired width accumulators, `0x95FC/0x95FE/0x9600`
+  act like body/fill/pad tile counts, `0x9602/0x9604` hold the current packed value and low-word
+  remainder, `0x95AA` is an eight-byte tile-id buffer for the three-row strip writer at `0x008B2E`,
+  and `0x95B8-0x95C3` still best fit as six-entry spell-bar fill/capacity arrays that line up with
+  the already proven `FIRE STORM` / `QUAKE` / `THUNDER` / `POWER` / `SHIELD` / `RETURN` page.
+
+- Returned to that gauge/status frontier and source-authored the first byte-safe bridge at
+  `0x00882C-0x0088C1`. The new split keeps the rebuilt ROM bit-perfect while turning three
+  metadata-only labels into real source: `NormalizeAndClearMagicMenuTopRowSelection_00882C`,
+  `ProcessPendingMagicMenuStatusGauge_00885A`, and `ClampMagicMenuStatusGaugeValue_0088B4`.
+  The remaining `0x0088C2-0x008C34` tail still has to stay incbin-backed because the scale bundles,
+  the follow-on writer at `0x0088D6`, and the later upload/width code still have the same branch-
+  sizing and table-address hazards seen in the earlier reverted attempt.

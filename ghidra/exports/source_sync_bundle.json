@@ -1,8 +1,9 @@
 {
-  "generated": "2026-03-16T20:31:28.465Z",
+  "generated": "2026-03-17T18:13:15.339Z",
   "symbol_map": {
-    "generated": "2026-03-16",
-    "note": "Includes shared VBlank scheduler RAM anchors, the task/input scratch and mirror cluster, the bootstrap patch words, and the source-authored VBlank/task-dispatch plus bootstrap/controller helper chain recovered during CODE-004 through 0x005260. Current best fit: `0x8A4E/0x8A4F` hold packed selected-input playback duration/value bytes loaded from `0xFF1400`, while `0x8A7A-0x8A7D` doubles as the selected-input playback mirror and source selector.",
+    "generated": "2026-03-17",
+    "note": "Includes shared VBlank scheduler RAM anchors, the task-script scratch/flag cluster, the bootstrap patch words, the source-authored VBlank/task-dispatch plus bootstrap/input helper chain recovered through 0x005260, and the downstream selected-input inventory/equipment plus adjacent magic/status menu helpers through 0x0088C1. Current best fit: 0x8A4E/0x8A4F hold packed selected-input playback duration/value bytes loaded from 0xFF1400, 0x8A7A-0x8A7D doubles as the selected-input playback mirror and source selector, 0x95D7-0x95D9 form a UI/menu-style auto-repeat latch/countdown/output cluster, 0x95B7/0x95C8 now look like temporary empty/filled spell-bar counts, 0x95D1 behaves like a magic/status layout-record index, 0x95D6 now also looks like the previous category-owned entry id, 0x95DA/0x95DB/0x95DE/0x95DF now act like row-transfer and blink-loop scratch, 0x95DC/0x95DD cache magic/status-art selectors mirrored from 0x9F10/0x9F11, 0x00799E-0x007BA9 source-authors the adjacent modal magic/status submode plus apply/refresh path, 0x007BB2-0x007CA3 redraws the six-spell grid and paired bar strips, 0x007CA4-0x007D9B now clears top-row assignments, drives the adjacent six-choice grid navigation, and reduces the local action tests to simple pressed masks over 0x8A7C, 0x007D9C-0x008059 now bridges into visible-list confirmation, selected-row blinking, queued menu-text row transfers, and an inline PAUSE prompt, 0x95E0/0x95E4 act like modal flag plus saved selection backup, 0x95E5 looks like the current chosen submode value, 0x95E6 also behaves like a current magic-menu page/state word, 0x963C/0x9640/0x9648/0x964C act like nearby menu return/dispatch vectors, 0xC00C is a likely action flag, 0x95E8 holds the measured spell-name width, 0x95EE behaves like a lower-row magic/status selector, 0x95F8 caches the magic meter fill amount, 0x8A77 looks like a menu text-transfer row id, and 0x9EF1/0x9EFA-0x9EF6 now looks like a destination cluster filled by the layout loader at 0x0086BC. The offset table at 0x007BFE resolves to the localized magic labels FIRE STORM, QUAKE, THUNDER, POWER, SHIELD, and RETURN; external dump evidence also matches Oasis Boots, Fire-Urn, Purapril, Childam, Shiela Purapril, Prince of the Devil World, and Bio-Mecha without outweighing contradictory inline ROM strings.",
+    "ownership_note": "The `0x020000+` ROM body now flows through bank-local include owners, with explicit `0xFF` fill slices called out in `src/bank040000.asm` and `src/bank080000.asm`.",
     "entries": [
       {
         "name": "StartOfRom",
@@ -15,8 +16,18 @@
         "category": "vector"
       },
       {
+        "name": "ReservedVectorTrap",
+        "address": "0x00000006",
+        "category": "code"
+      },
+      {
         "name": "RomHeader",
         "address": "0x000100",
+        "category": "rom"
+      },
+      {
+        "name": "HeaderChecksum",
+        "address": "0x00018E",
         "category": "rom"
       },
       {
@@ -25,18 +36,18 @@
         "category": "code"
       },
       {
-        "name": "ReservedVectorTrap",
-        "address": "0x00000006",
-        "category": "code"
-      },
-      {
-        "name": "BusErrorHandler",
-        "address": "0x000049FA",
+        "name": "PrepareMenuTilemapWrite_000A36",
+        "address": "0x00000A36",
         "category": "code"
       },
       {
         "name": "AddressErrorHandler",
         "address": "0x000049F8",
+        "category": "code"
+      },
+      {
+        "name": "BusErrorHandler",
+        "address": "0x000049FA",
         "category": "code"
       },
       {
@@ -205,23 +216,68 @@
         "category": "code"
       },
       {
-        "name": "LoadTaskScriptProgressBuffer_005016",
+        "name": "LoadSelectedInputPlaybackBuffer_005016",
         "address": "0x00005016",
         "category": "code"
       },
       {
-        "name": "AdvanceTaskScript",
+        "name": "AdvanceSelectedInputPlayback",
         "address": "0x0000501C",
         "category": "code"
       },
       {
-        "name": "AppendTaskScriptProgressValue_005036",
+        "name": "AppendSelectedInputPlaybackValue_005036",
         "address": "0x00005036",
         "category": "code"
       },
       {
-        "name": "StepTaskScript",
+        "name": "StepSelectedInputPlayback",
         "address": "0x0000505C",
+        "category": "code"
+      },
+      {
+        "name": "TaskDescriptor_00507C",
+        "address": "0x0000507C",
+        "category": "data"
+      },
+      {
+        "name": "TaskAdvanceRoundRobinCb_005080",
+        "address": "0x00005080",
+        "category": "code"
+      },
+      {
+        "name": "TaskAdvanceSecondaryList_0050CC",
+        "address": "0x000050CC",
+        "category": "data"
+      },
+      {
+        "name": "QueueRoundRobinTaskDescriptor",
+        "address": "0x000050D4",
+        "category": "code"
+      },
+      {
+        "name": "QueueImmediateTaskDescriptor",
+        "address": "0x000050E2",
+        "category": "code"
+      },
+      {
+        "name": "LoadSecondaryTaskDescriptorList",
+        "address": "0x00005106",
+        "category": "code"
+      },
+      {
+        "name": "ClearTaskScriptScratch",
+        "address": "0x00005124",
+        "category": "code"
+      },
+      {
+        "name": "PlayTaskAdvanceSound",
+        "address": "0x00005132",
+        "category": "code"
+      },
+      {
+        "name": "PollSecondaryTaskStatus",
+        "address": "0x0000513C",
         "category": "code"
       },
       {
@@ -240,9 +296,504 @@
         "category": "data"
       },
       {
-        "name": "HeaderChecksum",
-        "address": "0x00018E",
-        "category": "rom"
+        "name": "BuildMagicMenuTopRowTileOffset_00757A",
+        "address": "0x0000757A",
+        "category": "code"
+      },
+      {
+        "name": "HandleMagicMenuSubmodeLeftInput_007924",
+        "address": "0x00007924",
+        "category": "code"
+      },
+      {
+        "name": "HandleMagicMenuSubmodeRightInput_007938",
+        "address": "0x00007938",
+        "category": "code"
+      },
+      {
+        "name": "MagicMenuSubmodeTopRowTileTable_00799A",
+        "address": "0x0000799A",
+        "category": "data"
+      },
+      {
+        "name": "RunMagicMenuSubmode_00799E",
+        "address": "0x0000799E",
+        "category": "code"
+      },
+      {
+        "name": "OpenMagicMenuSubmode_0079EE",
+        "address": "0x000079EE",
+        "category": "code"
+      },
+      {
+        "name": "OpenMagicMenuStatusSelection_007A44",
+        "address": "0x00007A44",
+        "category": "code"
+      },
+      {
+        "name": "DrawMagicMenuSubmodeIndicatorTile_007AAA",
+        "address": "0x00007AAA",
+        "category": "code"
+      },
+      {
+        "name": "MagicMenuSubmodeIndicatorCoords_007ABC",
+        "address": "0x00007ABC",
+        "category": "data"
+      },
+      {
+        "name": "DrawMagicMenuEntryGrid_007AC0",
+        "address": "0x00007AC0",
+        "category": "code"
+      },
+      {
+        "name": "MagicMenuEntryGridCoords_007B0A",
+        "address": "0x00007B0A",
+        "category": "data"
+      },
+      {
+        "name": "RefreshMagicMenuStatusPanel_007B22",
+        "address": "0x00007B22",
+        "category": "code"
+      },
+      {
+        "name": "WriteInventoryMenuBufferedTextRow_007B70",
+        "address": "0x00007B70",
+        "category": "code"
+      },
+      {
+        "name": "DrawMagicMenuOptionalStatusIcon_007B86",
+        "address": "0x00007B86",
+        "category": "code"
+      },
+      {
+        "name": "MagicMenuStatusPanelCoords_007B92",
+        "address": "0x00007B92",
+        "category": "data"
+      },
+      {
+        "name": "MagicMenuStatusPanelLiteralTileTable_007B9A",
+        "address": "0x00007B9A",
+        "category": "data"
+      },
+      {
+        "name": "MagicMenuReturnIconTileQuad_007BAA",
+        "address": "0x00007BAA",
+        "category": "data"
+      },
+      {
+        "name": "DrawMagicMenuSpellGrid_007BB2",
+        "address": "0x00007BB2",
+        "category": "code"
+      },
+      {
+        "name": "MagicSpellNameOffsetTable_007BFE",
+        "address": "0x00007BFE",
+        "category": "data"
+      },
+      {
+        "name": "MagicSpellRecordTable_007C0A",
+        "address": "0x00007C0A",
+        "category": "data"
+      },
+      {
+        "name": "MagicSpellRecord_FireStorm_007C0A",
+        "address": "0x00007C0A",
+        "category": "data"
+      },
+      {
+        "name": "MagicSpellRecord_Quake_007C17",
+        "address": "0x00007C17",
+        "category": "data"
+      },
+      {
+        "name": "MagicSpellRecord_Thunder_007C1F",
+        "address": "0x00007C1F",
+        "category": "data"
+      },
+      {
+        "name": "MagicSpellRecord_Power_007C29",
+        "address": "0x00007C29",
+        "category": "data"
+      },
+      {
+        "name": "MagicSpellRecord_Shield_007C31",
+        "address": "0x00007C31",
+        "category": "data"
+      },
+      {
+        "name": "MagicSpellRecord_Return_007C3A",
+        "address": "0x00007C3A",
+        "category": "data"
+      },
+      {
+        "name": "RefreshMagicMenuSelectedSpellNames_007C44",
+        "address": "0x00007C44",
+        "category": "code"
+      },
+      {
+        "name": "PrepareMagicMenuSpellNameWrite_007C56",
+        "address": "0x00007C56",
+        "category": "code"
+      },
+      {
+        "name": "DrawMagicMenuSpellBar_007C68",
+        "address": "0x00007C68",
+        "category": "code"
+      },
+      {
+        "name": "WriteRepeatedMagicMenuSpellBarTile_007C94",
+        "address": "0x00007C94",
+        "category": "code"
+      },
+      {
+        "name": "MagicMenuSpellBarFilledTileIdTable_007CA0",
+        "address": "0x00007CA0",
+        "category": "data"
+      },
+      {
+        "name": "MagicMenuSpellBarEmptyTileIdTable_007CA2",
+        "address": "0x00007CA2",
+        "category": "data"
+      },
+      {
+        "name": "ClearAssignedMagicMenuValue_007CA4",
+        "address": "0x00007CA4",
+        "category": "code"
+      },
+      {
+        "name": "HandleMagicMenuSixChoiceInput_007D00",
+        "address": "0x00007D00",
+        "category": "code"
+      },
+      {
+        "name": "MagicMenuSixChoiceDirectionBitTable_007D46",
+        "address": "0x00007D46",
+        "category": "data"
+      },
+      {
+        "name": "MagicMenuSixChoiceSelectionTable_007D4A",
+        "address": "0x00007D4A",
+        "category": "data"
+      },
+      {
+        "name": "MagicMenuSixChoiceCursorCoords_Default_007D62",
+        "address": "0x00007D62",
+        "category": "data"
+      },
+      {
+        "name": "MagicMenuSixChoiceCursorCoords_Alt_007D6E",
+        "address": "0x00007D6E",
+        "category": "data"
+      },
+      {
+        "name": "PollMagicMenuPrimaryAction_007D7A",
+        "address": "0x00007D7A",
+        "category": "code"
+      },
+      {
+        "name": "PollMagicMenuSubmodeAction_007D7E",
+        "address": "0x00007D7E",
+        "category": "code"
+      },
+      {
+        "name": "CheckMagicMenuSubmodeExit_007D8A",
+        "address": "0x00007D8A",
+        "category": "code"
+      },
+      {
+        "name": "HandleInventoryMenuVisibleListInput_007D9C",
+        "address": "0x00007D9C",
+        "category": "code"
+      },
+      {
+        "name": "PlayInventoryMenuPauseSentinelSound_007E0A",
+        "address": "0x00007E0A",
+        "category": "code"
+      },
+      {
+        "name": "RunInventoryMenuVisibleEntryBlink_007E12",
+        "address": "0x00007E12",
+        "category": "code"
+      },
+      {
+        "name": "ClearInventoryMenuVisibleEntryRow_007E72",
+        "address": "0x00007E72",
+        "category": "code"
+      },
+      {
+        "name": "DrawInventoryMenuStatusPanelBase_007E7C",
+        "address": "0x00007E7C",
+        "category": "code"
+      },
+      {
+        "name": "RunInventoryMenuPanelTransferForward_007E8C",
+        "address": "0x00007E8C",
+        "category": "code"
+      },
+      {
+        "name": "RunInventoryMenuPanelTransferReverse_007EBA",
+        "address": "0x00007EBA",
+        "category": "code"
+      },
+      {
+        "name": "RequestInventoryMenuTransferRow0B_007EEE",
+        "address": "0x00007EEE",
+        "category": "code"
+      },
+      {
+        "name": "RequestInventoryMenuTransferRow08_007F00",
+        "address": "0x00007F00",
+        "category": "code"
+      },
+      {
+        "name": "ShowInventoryMenuPausePrompt_007F0E",
+        "address": "0x00007F0E",
+        "category": "code"
+      },
+      {
+        "name": "InventoryMenuPauseText_007F4E",
+        "address": "0x00007F4E",
+        "category": "data"
+      },
+      {
+        "name": "UploadInventoryMenuPanelRows_007F54",
+        "address": "0x00007F54",
+        "category": "code"
+      },
+      {
+        "name": "UploadInventoryMenuFooterRows_007F76",
+        "address": "0x00007F76",
+        "category": "code"
+      },
+      {
+        "name": "UploadInventoryMenuPanelFillRows_007F98",
+        "address": "0x00007F98",
+        "category": "code"
+      },
+      {
+        "name": "UploadInventoryMenuStatusRows_007FBA",
+        "address": "0x00007FBA",
+        "category": "code"
+      },
+      {
+        "name": "PrepareMagicMenuPanelRefresh_007FCE",
+        "address": "0x00007FCE",
+        "category": "code"
+      },
+      {
+        "name": "UploadInventoryMenuRow0BPattern_007FF6",
+        "address": "0x00007FF6",
+        "category": "code"
+      },
+      {
+        "name": "UploadInventoryMenuPauseRows_008000",
+        "address": "0x00008000",
+        "category": "code"
+      },
+      {
+        "name": "UploadLiteralMenuTileRow_008010",
+        "address": "0x00008010",
+        "category": "code"
+      },
+      {
+        "name": "UploadPackedMenuTileRow_008024",
+        "address": "0x00008024",
+        "category": "code"
+      },
+      {
+        "name": "PackedMenuTileBaseTable_00804A",
+        "address": "0x0000804A",
+        "category": "data"
+      },
+      {
+        "name": "UpdateSelectedInputUiRepeat_00805A",
+        "address": "0x0000805A",
+        "category": "code"
+      },
+      {
+        "name": "UpdateInventoryMenuListCursor_ShowVisible_0081D6",
+        "address": "0x000081D6",
+        "category": "code"
+      },
+      {
+        "name": "DrawInventoryMenuLevelDisplay_00853C",
+        "address": "0x0000853C",
+        "category": "code"
+      },
+      {
+        "name": "DrawInventoryMenuGoldDisplay_008596",
+        "address": "0x00008596",
+        "category": "code"
+      },
+      {
+        "name": "DrawInventoryMenuStatusGraphicSet_0085CC",
+        "address": "0x000085CC",
+        "category": "code"
+      },
+      {
+        "name": "InventoryMenuStatusGraphicTileTable_0085DC",
+        "address": "0x000085DC",
+        "category": "data"
+      },
+      {
+        "name": "InventoryMenuStatusGraphicCoordsTable_0085EC",
+        "address": "0x000085EC",
+        "category": "data"
+      },
+      {
+        "name": "DrawInventoryMenuTileQuad_0085F0",
+        "address": "0x000085F0",
+        "category": "code"
+      },
+      {
+        "name": "DrawInventoryMenuLiteralTileQuad_008608",
+        "address": "0x00008608",
+        "category": "code"
+      },
+      {
+        "name": "DrawMagicMenuStatusGraphics_008620",
+        "address": "0x00008620",
+        "category": "code"
+      },
+      {
+        "name": "MagicMenuStatusGraphicPatternIdTableHigh_008690",
+        "address": "0x00008690",
+        "category": "data"
+      },
+      {
+        "name": "MagicMenuStatusGraphicPatternIdTableLow_00869C",
+        "address": "0x0000869C",
+        "category": "data"
+      },
+      {
+        "name": "LoadMagicMenuStatusLayoutConfig_0086BC",
+        "address": "0x000086BC",
+        "category": "code"
+      },
+      {
+        "name": "MagicMenuStatusLayoutRecordTable_008720",
+        "address": "0x00008720",
+        "category": "data"
+      },
+      {
+        "name": "MagicMenuStatusLayoutLockedRecord_00874A",
+        "address": "0x0000874A",
+        "category": "data"
+      },
+      {
+        "name": "MagicMenuStatusLayoutPageRecordTable_008750",
+        "address": "0x00008750",
+        "category": "data"
+      },
+      {
+        "name": "FillInventoryMenuTileRun_Clear_00875C",
+        "address": "0x0000875C",
+        "category": "code"
+      },
+      {
+        "name": "FillInventoryMenuTileRun_008762",
+        "address": "0x00008762",
+        "category": "code"
+      },
+      {
+        "name": "FillInventoryMenuTileRun_SetHighTileBit_008768",
+        "address": "0x00008768",
+        "category": "code"
+      },
+      {
+        "name": "DrawMagicMenuSpellName_008778",
+        "address": "0x00008778",
+        "category": "code"
+      },
+      {
+        "name": "DrawMagicMenuMeter_0087CE",
+        "address": "0x000087CE",
+        "category": "code"
+      },
+      {
+        "name": "NormalizeAndClearMagicMenuTopRowSelection_00882C",
+        "address": "0x0000882C",
+        "category": "code"
+      },
+      {
+        "name": "ProcessPendingMagicMenuStatusGauge_00885A",
+        "address": "0x0000885A",
+        "category": "code"
+      },
+      {
+        "name": "ClampMagicMenuStatusGaugeValue_0088B4",
+        "address": "0x000088B4",
+        "category": "code"
+      },
+      {
+        "name": "DrawMagicMenuStatusGaugeRows_0088D6",
+        "address": "0x000088D6",
+        "category": "code"
+      },
+      {
+        "name": "SelectMagicMenuStatusGaugeLargeScale_00893C",
+        "address": "0x0000893C",
+        "category": "code"
+      },
+      {
+        "name": "SelectMagicMenuStatusGaugeSmallScale_008950",
+        "address": "0x00008950",
+        "category": "code"
+      },
+      {
+        "name": "UpdateMagicMenuSpellBarFillAndCapacity_008A04",
+        "address": "0x00008A04",
+        "category": "code"
+      },
+      {
+        "name": "TryAdvanceMagicMenuSpellBarFill_008A3A",
+        "address": "0x00008A3A",
+        "category": "code"
+      },
+      {
+        "name": "TryIncreaseMagicMenuSpellBarFill_008A88",
+        "address": "0x00008A88",
+        "category": "code"
+      },
+      {
+        "name": "MagicSpellBarGrowthStepTable_008A9C",
+        "address": "0x00008A9C",
+        "category": "data"
+      },
+      {
+        "name": "BuildMagicMenuStatusGaugeTileIdBuffer_008AA2",
+        "address": "0x00008AA2",
+        "category": "code"
+      },
+      {
+        "name": "UploadMagicMenuStatusGaugeTileRows_008B2E",
+        "address": "0x00008B2E",
+        "category": "code"
+      },
+      {
+        "name": "PlayInventoryMenuMoveSound_008BB0",
+        "address": "0x00008BB0",
+        "category": "code"
+      },
+      {
+        "name": "UpdateMagicMenuStatusLayoutWidths_008BB6",
+        "address": "0x00008BB6",
+        "category": "code"
+      },
+      {
+        "name": "MagicMenuStatusWidthLookupTable_008C1E",
+        "address": "0x00008C1E",
+        "category": "data"
+      },
+      {
+        "name": "InitializeMagicMenuSelectionState_008C34",
+        "address": "0x00008C34",
+        "category": "code"
+      },
+      {
+        "name": "PlayInventoryMenuConfirmSound_008BAA",
+        "address": "0x00008BAA",
+        "category": "code"
       },
       {
         "name": "VDP_DATA_PORT",
@@ -260,18 +811,18 @@
         "category": "hardware"
       },
       {
-        "name": "SystemStackTop",
-        "address": "0x00FF0C00",
-        "category": "ram"
-      },
-      {
         "name": "WorkRamStart",
         "address": "0x00FF0000",
         "category": "ram"
       },
       {
-        "name": "WorkRamEnd",
-        "address": "0x00FFFFFF",
+        "name": "SystemStackTop",
+        "address": "0x00FF0C00",
+        "category": "ram"
+      },
+      {
+        "name": "TaskScriptProgressBuffer",
+        "address": "0x00FF1400",
         "category": "ram"
       },
       {
@@ -285,13 +836,13 @@
         "category": "ram"
       },
       {
-        "name": "TaskCompletionResult",
-        "address": "0x00FF8068",
+        "name": "ImmediateTaskSlots",
+        "address": "0x00FF8048",
         "category": "ram"
       },
       {
-        "name": "ImmediateTaskSlots",
-        "address": "0x00FF8048",
+        "name": "TaskCompletionResult",
+        "address": "0x00FF8068",
         "category": "ram"
       },
       {
@@ -330,18 +881,13 @@
         "category": "ram"
       },
       {
-        "name": "TaskScriptCountdown",
-        "address": "0x00FF8A4E",
-        "category": "ram"
-      },
-      {
         "name": "SelectedInputPlaybackCountdown",
         "address": "0x00FF8A4E",
         "category": "ram"
       },
       {
-        "name": "TaskScriptValue",
-        "address": "0x00FF8A4F",
+        "name": "TaskScriptCountdown",
+        "address": "0x00FF8A4E",
         "category": "ram"
       },
       {
@@ -350,12 +896,17 @@
         "category": "ram"
       },
       {
-        "name": "TaskScriptMode",
-        "address": "0x00FF8A50",
+        "name": "TaskScriptValue",
+        "address": "0x00FF8A4F",
         "category": "ram"
       },
       {
         "name": "SelectedInputPlaybackMode",
+        "address": "0x00FF8A50",
+        "category": "ram"
+      },
+      {
+        "name": "TaskScriptMode",
         "address": "0x00FF8A50",
         "category": "ram"
       },
@@ -370,8 +921,13 @@
         "category": "ram"
       },
       {
-        "name": "TaskScriptProgressCurrent",
-        "address": "0x00FF8A7A",
+        "name": "TaskDispatchTimingFlags",
+        "address": "0x00FF8A5D",
+        "category": "ram"
+      },
+      {
+        "name": "MenuTextTransferRowId",
+        "address": "0x00FF8A77",
         "category": "ram"
       },
       {
@@ -380,8 +936,8 @@
         "category": "ram"
       },
       {
-        "name": "TaskScriptProgressPrevious",
-        "address": "0x00FF8A7B",
+        "name": "TaskScriptProgressCurrent",
+        "address": "0x00FF8A7A",
         "category": "ram"
       },
       {
@@ -390,8 +946,23 @@
         "category": "ram"
       },
       {
+        "name": "TaskScriptProgressPrevious",
+        "address": "0x00FF8A7B",
+        "category": "ram"
+      },
+      {
         "name": "SelectedInputPressed",
         "address": "0x00FF8A7C",
+        "category": "ram"
+      },
+      {
+        "name": "TaskScriptProgressFlags",
+        "address": "0x00FF8A7C",
+        "category": "ram"
+      },
+      {
+        "name": "SecondaryTaskStatusSelector",
+        "address": "0x00FF8A7D",
         "category": "ram"
       },
       {
@@ -415,6 +986,11 @@
         "category": "ram"
       },
       {
+        "name": "SecondaryTaskReadySlot0",
+        "address": "0x00FF8A81",
+        "category": "ram"
+      },
+      {
         "name": "Player2InputCurrent",
         "address": "0x00FF8A82",
         "category": "ram"
@@ -426,6 +1002,11 @@
       },
       {
         "name": "Player2InputPressed",
+        "address": "0x00FF8A84",
+        "category": "ram"
+      },
+      {
+        "name": "SecondaryTaskReadySlot1",
         "address": "0x00FF8A84",
         "category": "ram"
       },
@@ -450,8 +1031,318 @@
         "category": "ram"
       },
       {
-        "name": "TaskDispatchTimingFlags",
-        "address": "0x00FF8A5D",
+        "name": "TaskAdvanceReadyFlags",
+        "address": "0x00FF8C56",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuEntryTextWidth",
+        "address": "0x00FF8CDE",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuEntryTileRow0Buffer",
+        "address": "0x00FF8CE0",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuEntryTileRow1Buffer",
+        "address": "0x00FF8CF0",
+        "category": "ram"
+      },
+      {
+        "name": "DecimalDigitScratchBuffer",
+        "address": "0x00FF959F",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuSpellBarEmptyTileCountScratch",
+        "address": "0x00FF95B7",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuSpellBarFilledTileCountScratch",
+        "address": "0x00FF95C8",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusLayoutRecordIndex",
+        "address": "0x00FF95D1",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusSelectionScratchBuffer",
+        "address": "0x00FF95CE",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusSelectionScratchSnapshot",
+        "address": "0x00FF95D2",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuPreviousCategoryEntryId",
+        "address": "0x00FF95D6",
+        "category": "ram"
+      },
+      {
+        "name": "SelectedInputRepeatLatchedValue",
+        "address": "0x00FF95D7",
+        "category": "ram"
+      },
+      {
+        "name": "SelectedInputRepeatCountdown",
+        "address": "0x00FF95D8",
+        "category": "ram"
+      },
+      {
+        "name": "SelectedInputRepeatOutput",
+        "address": "0x00FF95D9",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuTransferRowScratch",
+        "address": "0x00FF95DA",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuSkipArrowRefreshFlag",
+        "address": "0x00FF95DB",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuArrowRefreshSuppressCounter",
+        "address": "0x00FF95DB",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusGraphicCache0",
+        "address": "0x00FF95DC",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusGraphicCache1",
+        "address": "0x00FF95DD",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuBlinkPhaseCountdown",
+        "address": "0x00FF95DE",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuBlinkPhaseToggle",
+        "address": "0x00FF95DF",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuSubmodeModalFlag",
+        "address": "0x00FF95E0",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuLevelScratch",
+        "address": "0x00FF95E1",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuValidTopRowSelection0",
+        "address": "0x00FF95E2",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuValidTopRowSelection1",
+        "address": "0x00FF95E3",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuSubmodeSavedSelectionIndex",
+        "address": "0x00FF95E4",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuSubmodeSelectedValue",
+        "address": "0x00FF95E5",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuCategoryDescriptorBase",
+        "address": "0x00FF95E6",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuCurrentPageState",
+        "address": "0x00FF95E6",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuSpellNameWidth",
+        "address": "0x00FF95E8",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusValue2",
+        "address": "0x00FF95EE",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusValue3",
+        "address": "0x00FF95F0",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusGaugeTileIdBuffer",
+        "address": "0x00FF95AA",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuSpellBarFillDeltaScratch",
+        "address": "0x00FF95B2",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuSpellBarFillBase",
+        "address": "0x00FF95B8",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuSpellBarCapacityBase",
+        "address": "0x00FF95BE",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusGaugeAnimationCountdown",
+        "address": "0x00FF95F2",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusGaugeWidthSlot0",
+        "address": "0x00FF95F4",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusGaugeWidthSlot1",
+        "address": "0x00FF95F6",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuMeterCache",
+        "address": "0x00FF95F8",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusGaugeBodyTileCount",
+        "address": "0x00FF95FC",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusGaugeFilledTileCount",
+        "address": "0x00FF95FE",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusGaugeTailPadTileCount",
+        "address": "0x00FF9600",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusGaugePackedValue",
+        "address": "0x00FF9602",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusGaugeRemainderValue",
+        "address": "0x00FF9604",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuCategoryId",
+        "address": "0x00FF95FA",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuSelectionIndex",
+        "address": "0x00FF9606",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuVisibleEntryIds",
+        "address": "0x00FF9608",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuVisibleEntryCount",
+        "address": "0x00FF9610",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuTopVisibleEntryIndex",
+        "address": "0x00FF9612",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuListCursorState",
+        "address": "0x00FF9614",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuAuxCursorState",
+        "address": "0x00FF961A",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuScrollUpIndicatorState",
+        "address": "0x00FF9620",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuScrollDownIndicatorState",
+        "address": "0x00FF9622",
+        "category": "ram"
+      },
+      {
+        "name": "PlayerGoldAmount",
+        "address": "0x00FF962C",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusGaugePendingValue",
+        "address": "0x00FF9628",
+        "category": "ram"
+      },
+      {
+        "name": "SelectedInputRepeatReturnVector",
+        "address": "0x00FF9634",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuTopRowAssignmentReturnVector",
+        "address": "0x00FF963C",
+        "category": "ram"
+      },
+      {
+        "name": "MenuTransferReturnVector",
+        "address": "0x00FF963C",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuSubmodeReturnVector",
+        "address": "0x00FF9640",
+        "category": "ram"
+      },
+      {
+        "name": "InventoryMenuBlinkReturnVector",
+        "address": "0x00FF9648",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuSubmodeDispatchVector",
+        "address": "0x00FF964C",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuSubmodeApplyReturnVector",
+        "address": "0x00FF9654",
         "category": "ram"
       },
       {
@@ -460,27 +1351,76 @@
         "category": "ram"
       },
       {
-        "name": "TaskScriptProgressBuffer",
-        "address": "0x00FF1400",
+        "name": "MagicMenuSpellPageFlag",
+        "address": "0x00FF966B",
         "category": "ram"
       },
       {
         "name": "TaskScriptAuxScratchBuffer",
         "address": "0x00FF9996",
         "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusLayoutFlags",
+        "address": "0x00FF9EF1",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusLayoutConfigWord1",
+        "address": "0x00FF9EF2",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusLayoutConfigWord2",
+        "address": "0x00FF9EF4",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusLayoutConfigLong3",
+        "address": "0x00FF9EF6",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusLayoutConfigLong0",
+        "address": "0x00FF9EFA",
+        "category": "ram"
+      },
+      {
+        "name": "PlayerLevel",
+        "address": "0x00FF9F00",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusValue0",
+        "address": "0x00FF9F10",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuStatusValue1",
+        "address": "0x00FF9F11",
+        "category": "ram"
+      },
+      {
+        "name": "AsyncTaskReadyByte",
+        "address": "0x00FFA3A4",
+        "category": "ram"
+      },
+      {
+        "name": "MagicMenuSubmodeActionFlag",
+        "address": "0x00FFC00C",
+        "category": "ram"
+      },
+      {
+        "name": "WorkRamEnd",
+        "address": "0x00FFFFFF",
+        "category": "ram"
       }
     ]
   },
   "function_index": {
-    "generated": "2026-03-16",
-    "note": "Bootstrap seed index derived from vector/header work, then extended with the source-authored VBlank/task-dispatch, bootstrap/display setup, input-stream, and controller helper chain through 0x005260. Current best fit: `0x00501C` latches packed `(duration,value)` bytes from `0xFF1400` into `0x8A4E/0x8A4F`, `0x005036` is the matching run-length writer, and `0x00505C` feeds playback into the selected-input mirror at `0x8A7A-0x8A7D`.",
+    "generated": "2026-03-17",
+    "note": "Bootstrap seed index derived from vector/header work, then extended with the source-authored VBlank/task-dispatch, bootstrap/display setup, input-stream, controller helper chain, and the downstream selected-input inventory/equipment plus adjacent magic/status menu helpers through 0x0088C1 and 0x008C34-0x008C7F. Current best fit: 0x00501C latches packed (duration,value) bytes from 0xFF1400 into 0x8A4E/0x8A4F, 0x005036 is the matching run-length writer, 0x00505C feeds playback into the selected-input mirror at 0x8A7A-0x8A7D, 0x007924-0x007D9B owns the adjacent magic/status submode plus localized six-spell grid, 0x007D9C-0x008059 bridges back into the visible inventory/equipment list UI, 0x00805A-0x0088C1 covers repeat-gated input and nearby inventory/magic status drawing, 0x0088D6+ still holds the byte-sensitive gauge/spell-bar renderer, 0x008C34 now snapshots the local selector scratch, clears visible-list state, and keeps only sub-0x08 top-row selector ids in 0x95E2/0x95E3, and the `0x020000+` ROM body now flows through bank-local include owners rather than top-level whole-bank blobs.",
     "entries": [
-      {
-        "name": "ResetEntry",
-        "address": "0x00000200",
-        "source": "header.asm",
-        "kind": "entrypoint"
-      },
       {
         "name": "ReservedVectorTrap",
         "address": "0x00000006",
@@ -488,14 +1428,20 @@
         "kind": "reserved_vector_target"
       },
       {
-        "name": "BusErrorHandler",
-        "address": "0x000049FA",
+        "name": "ResetEntry",
+        "address": "0x00000200",
         "source": "header.asm",
-        "kind": "exception_vector_target"
+        "kind": "entrypoint"
       },
       {
         "name": "AddressErrorHandler",
         "address": "0x000049F8",
+        "source": "header.asm",
+        "kind": "exception_vector_target"
+      },
+      {
+        "name": "BusErrorHandler",
+        "address": "0x000049FA",
         "source": "header.asm",
         "kind": "exception_vector_target"
       },
@@ -698,6 +1644,48 @@
         "kind": "subroutine"
       },
       {
+        "name": "TaskAdvanceRoundRobinCb_005080",
+        "address": "0x00005080",
+        "source": "src/core.asm",
+        "kind": "code_label"
+      },
+      {
+        "name": "QueueRoundRobinTaskDescriptor",
+        "address": "0x000050D4",
+        "source": "src/core.asm",
+        "kind": "code_label"
+      },
+      {
+        "name": "QueueImmediateTaskDescriptor",
+        "address": "0x000050E2",
+        "source": "src/core.asm",
+        "kind": "code_label"
+      },
+      {
+        "name": "LoadSecondaryTaskDescriptorList",
+        "address": "0x00005106",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "ClearTaskScriptScratch",
+        "address": "0x00005124",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "PlayTaskAdvanceSound",
+        "address": "0x00005132",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "PollSecondaryTaskStatus",
+        "address": "0x0000513C",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
         "name": "BootstrapClearDisplayAndTaskBuffers_005170",
         "address": "0x00005170",
         "source": "src/core.asm",
@@ -726,12 +1714,696 @@
         "address": "0x00005250",
         "source": "src/core.asm",
         "kind": "subroutine"
+      },
+      {
+        "name": "HandleMagicMenuSubmodeLeftInput_007924",
+        "address": "0x00007924",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "HandleMagicMenuSubmodeRightInput_007938",
+        "address": "0x00007938",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "MagicMenuSubmodeTopRowTileTable_00799A",
+        "address": "0x0000799A",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "RunMagicMenuSubmode_00799E",
+        "address": "0x0000799E",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "OpenMagicMenuSubmode_0079EE",
+        "address": "0x000079EE",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "OpenMagicMenuStatusSelection_007A44",
+        "address": "0x00007A44",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DrawMagicMenuSubmodeIndicatorTile_007AAA",
+        "address": "0x00007AAA",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "MagicMenuSubmodeIndicatorCoords_007ABC",
+        "address": "0x00007ABC",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "DrawMagicMenuEntryGrid_007AC0",
+        "address": "0x00007AC0",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "MagicMenuEntryGridCoords_007B0A",
+        "address": "0x00007B0A",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "RefreshMagicMenuStatusPanel_007B22",
+        "address": "0x00007B22",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "WriteInventoryMenuBufferedTextRow_007B70",
+        "address": "0x00007B70",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DrawMagicMenuOptionalStatusIcon_007B86",
+        "address": "0x00007B86",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "MagicMenuStatusPanelCoords_007B92",
+        "address": "0x00007B92",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicMenuStatusPanelLiteralTileTable_007B9A",
+        "address": "0x00007B9A",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicMenuReturnIconTileQuad_007BAA",
+        "address": "0x00007BAA",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "DrawMagicMenuSpellGrid_007BB2",
+        "address": "0x00007BB2",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "MagicSpellNameOffsetTable_007BFE",
+        "address": "0x00007BFE",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicSpellRecordTable_007C0A",
+        "address": "0x00007C0A",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicSpellRecord_FireStorm_007C0A",
+        "address": "0x00007C0A",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicSpellRecord_Quake_007C17",
+        "address": "0x00007C17",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicSpellRecord_Thunder_007C1F",
+        "address": "0x00007C1F",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicSpellRecord_Power_007C29",
+        "address": "0x00007C29",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicSpellRecord_Shield_007C31",
+        "address": "0x00007C31",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicSpellRecord_Return_007C3A",
+        "address": "0x00007C3A",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "RefreshMagicMenuSelectedSpellNames_007C44",
+        "address": "0x00007C44",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "PrepareMagicMenuSpellNameWrite_007C56",
+        "address": "0x00007C56",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DrawMagicMenuSpellBar_007C68",
+        "address": "0x00007C68",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "WriteRepeatedMagicMenuSpellBarTile_007C94",
+        "address": "0x00007C94",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "MagicMenuSpellBarFilledTileIdTable_007CA0",
+        "address": "0x00007CA0",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicMenuSpellBarEmptyTileIdTable_007CA2",
+        "address": "0x00007CA2",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "ClearAssignedMagicMenuValue_007CA4",
+        "address": "0x00007CA4",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "HandleMagicMenuSixChoiceInput_007D00",
+        "address": "0x00007D00",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "MagicMenuSixChoiceDirectionBitTable_007D46",
+        "address": "0x00007D46",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicMenuSixChoiceSelectionTable_007D4A",
+        "address": "0x00007D4A",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicMenuSixChoiceCursorCoords_Default_007D62",
+        "address": "0x00007D62",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicMenuSixChoiceCursorCoords_Alt_007D6E",
+        "address": "0x00007D6E",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "PollMagicMenuPrimaryAction_007D7A",
+        "address": "0x00007D7A",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "PollMagicMenuSubmodeAction_007D7E",
+        "address": "0x00007D7E",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "CheckMagicMenuSubmodeExit_007D8A",
+        "address": "0x00007D8A",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "HandleInventoryMenuVisibleListInput_007D9C",
+        "address": "0x00007D9C",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "PlayInventoryMenuPauseSentinelSound_007E0A",
+        "address": "0x00007E0A",
+        "source": "src/core.asm",
+        "kind": "code_label"
+      },
+      {
+        "name": "RunInventoryMenuVisibleEntryBlink_007E12",
+        "address": "0x00007E12",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "ClearInventoryMenuVisibleEntryRow_007E72",
+        "address": "0x00007E72",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DrawInventoryMenuStatusPanelBase_007E7C",
+        "address": "0x00007E7C",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "RunInventoryMenuPanelTransferForward_007E8C",
+        "address": "0x00007E8C",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "RunInventoryMenuPanelTransferReverse_007EBA",
+        "address": "0x00007EBA",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "RequestInventoryMenuTransferRow0B_007EEE",
+        "address": "0x00007EEE",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "RequestInventoryMenuTransferRow08_007F00",
+        "address": "0x00007F00",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "ShowInventoryMenuPausePrompt_007F0E",
+        "address": "0x00007F0E",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "InventoryMenuPauseText_007F4E",
+        "address": "0x00007F4E",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "UploadInventoryMenuPanelRows_007F54",
+        "address": "0x00007F54",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "UploadInventoryMenuFooterRows_007F76",
+        "address": "0x00007F76",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "UploadInventoryMenuPanelFillRows_007F98",
+        "address": "0x00007F98",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "UploadInventoryMenuStatusRows_007FBA",
+        "address": "0x00007FBA",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "PrepareMagicMenuPanelRefresh_007FCE",
+        "address": "0x00007FCE",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "UploadInventoryMenuRow0BPattern_007FF6",
+        "address": "0x00007FF6",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "UploadInventoryMenuPauseRows_008000",
+        "address": "0x00008000",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "UploadLiteralMenuTileRow_008010",
+        "address": "0x00008010",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "UploadPackedMenuTileRow_008024",
+        "address": "0x00008024",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "PackedMenuTileBaseTable_00804A",
+        "address": "0x0000804A",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "UpdateSelectedInputUiRepeat_00805A",
+        "address": "0x0000805A",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "UpdateInventoryMenuScrollUpIndicator_0080A8",
+        "address": "0x000080A8",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "UpdateInventoryMenuScrollDownIndicator_0080FA",
+        "address": "0x000080FA",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "UpdateInventoryMenuAuxCursorBlink_008148",
+        "address": "0x00008148",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "UpdateInventoryMenuListCursorBlink_0081A8",
+        "address": "0x000081A8",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "UpdateInventoryMenuVisibleSelection_008212",
+        "address": "0x00008212",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DrawInventoryMenuHeading_008272",
+        "address": "0x00008272",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "InventoryMenuHeadingOffsetTable_0082B6",
+        "address": "0x000082B6",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "BuildInventoryMenuVisibleEntryList_0082F4",
+        "address": "0x000082F4",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "CheckInventoryMenuCanScrollDown_0083A4",
+        "address": "0x000083A4",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "BuildInventoryMenuVramWriteCommand_0083B0",
+        "address": "0x000083B0",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "RedrawInventoryMenuVisibleWindow_0083D0",
+        "address": "0x000083D0",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DrawInventoryMenuBufferedRow_008476",
+        "address": "0x00008476",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "ClearInventoryMenuRow_0084AE",
+        "address": "0x000084AE",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DrawInventoryMenuStatusLabels_0084C4",
+        "address": "0x000084C4",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "InventoryMenuStatusLabelTable_0084DE",
+        "address": "0x000084DE",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "FormatDecimalValueToDigitScratch_0084EC",
+        "address": "0x000084EC",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "WriteRightAlignedDecimalDigits_00850C",
+        "address": "0x0000850C",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DivideLongBy10_008522",
+        "address": "0x00008522",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DrawInventoryMenuLevelDisplay_00853C",
+        "address": "0x0000853C",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DrawInventoryMenuGoldDisplay_008596",
+        "address": "0x00008596",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DrawInventoryMenuStatusGraphicSet_0085CC",
+        "address": "0x000085CC",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "InventoryMenuStatusGraphicTileTable_0085DC",
+        "address": "0x000085DC",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "InventoryMenuStatusGraphicCoordsTable_0085EC",
+        "address": "0x000085EC",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "DrawInventoryMenuTileQuad_0085F0",
+        "address": "0x000085F0",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DrawInventoryMenuLiteralTileQuad_008608",
+        "address": "0x00008608",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DrawMagicMenuStatusGraphics_008620",
+        "address": "0x00008620",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "MagicMenuStatusGraphicPatternIdTableHigh_008690",
+        "address": "0x00008690",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicMenuStatusGraphicPatternIdTableLow_00869C",
+        "address": "0x0000869C",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "LoadMagicMenuStatusLayoutConfig_0086BC",
+        "address": "0x000086BC",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "MagicMenuStatusLayoutRecordTable_008720",
+        "address": "0x00008720",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicMenuStatusLayoutLockedRecord_00874A",
+        "address": "0x0000874A",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "MagicMenuStatusLayoutPageRecordTable_008750",
+        "address": "0x00008750",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "FillInventoryMenuTileRun_Clear_00875C",
+        "address": "0x0000875C",
+        "source": "src/core.asm",
+        "kind": "code_label"
+      },
+      {
+        "name": "FillInventoryMenuTileRun_008762",
+        "address": "0x00008762",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "FillInventoryMenuTileRun_SetHighTileBit_008768",
+        "address": "0x00008768",
+        "source": "src/core.asm",
+        "kind": "code_label"
+      },
+      {
+        "name": "DrawMagicMenuSpellName_008778",
+        "address": "0x00008778",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DrawMagicMenuMeter_0087CE",
+        "address": "0x000087CE",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "NormalizeAndClearMagicMenuTopRowSelection_00882C",
+        "address": "0x0000882C",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "ProcessPendingMagicMenuStatusGauge_00885A",
+        "address": "0x0000885A",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "ClampMagicMenuStatusGaugeValue_0088B4",
+        "address": "0x000088B4",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "DrawMagicMenuStatusGaugeRows_0088D6",
+        "address": "0x000088D6",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "SelectMagicMenuStatusGaugeLargeScale_00893C",
+        "address": "0x0000893C",
+        "source": "src/core.asm",
+        "kind": "code_label"
+      },
+      {
+        "name": "SelectMagicMenuStatusGaugeSmallScale_008950",
+        "address": "0x00008950",
+        "source": "src/core.asm",
+        "kind": "code_label"
+      },
+      {
+        "name": "UpdateMagicMenuSpellBarFillAndCapacity_008A04",
+        "address": "0x00008A04",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "TryAdvanceMagicMenuSpellBarFill_008A3A",
+        "address": "0x00008A3A",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "TryIncreaseMagicMenuSpellBarFill_008A88",
+        "address": "0x00008A88",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "MagicSpellBarGrowthStepTable_008A9C",
+        "address": "0x00008A9C",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "BuildMagicMenuStatusGaugeTileIdBuffer_008AA2",
+        "address": "0x00008AA2",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "UploadMagicMenuStatusGaugeTileRows_008B2E",
+        "address": "0x00008B2E",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "UpdateMagicMenuStatusLayoutWidths_008BB6",
+        "address": "0x00008BB6",
+        "source": "src/core.asm",
+        "kind": "subroutine"
+      },
+      {
+        "name": "MagicMenuStatusWidthLookupTable_008C1E",
+        "address": "0x00008C1E",
+        "source": "src/core.asm",
+        "kind": "data"
+      },
+      {
+        "name": "InitializeMagicMenuSelectionState_008C34",
+        "address": "0x00008C34",
+        "source": "src/core.asm",
+        "kind": "subroutine"
       }
     ]
   },
   "rom_map": {
-    "generated": "2026-03-16",
-    "note": "Refreshed after extending the source-authored VBlank/task-dispatch, bootstrap/display setup, input-stream, and controller helper chain through 0x005260 while preserving ROM order with a bit-perfect rebuild. Current best fit: `0x00501C` latches packed `(duration,value)` bytes from `0xFF1400` into `0x8A4E/0x8A4F`, `0x005036` run-length encodes the same format, and `0x00505C` replays it through the selected-input mirror at `0x8A7A-0x8A7D`.",
+    "generated": "2026-03-17",
+    "note": "Refreshed after extending the source-authored VBlank/task-dispatch, bootstrap/display setup, input-stream, controller helper chain, and the downstream selected-input inventory/equipment plus adjacent magic/status menu helpers while preserving ROM order with a bit-perfect rebuild. Current best fit: 0x00501C latches packed (duration,value) bytes from 0xFF1400 into 0x8A4E/0x8A4F, 0x005036 run-length encodes the same format, 0x00505C replays it through the selected-input mirror at 0x8A7A-0x8A7D, 0x007924-0x007D9B now source-authors the adjacent magic/status submode plus six-spell grid, 0x007D9C-0x008059 bridges that flow back into the generic inventory/equipment list UI, 0x00805A-0x0088C1 covers repeat-gated input and adjacent inventory/magic status drawing, 0x008C34-0x008C7F now initializes the visible-list state from local selection scratch, bank 0x020000 now source-authors an upstream quiz/trivia text block at 0x021360-0x02171F plus the inventory/equipment/magic/item name tables, world-keyword table, and adjacent shop/inn/Ocarina/dictionary text through 0x02245F, the `0x020000+` top-level whole-bank blobs now route through bank-specific include owners, `0x0409FA-0x040FFF` is split out as an explicit late-bank `0xFF` fill slice, and the `0x098000-0x09F776` tail-bank non-fill island is now decomposed into a Z80-like opcode-dense block, descriptor/layout records, zero fill, a command lead-in, a bank-local command offset table at `0x099B32-0x099BAF`, and trailing command records alongside the explicit `0x09622B-0x097FFF`, `0x09F777-0x09FFFF`, and `0x0A4C77-0x0BFFFF` fill slices.",
     "rom_size": 786432,
     "ranges": [
       {
@@ -786,6 +2458,64 @@
       },
       {
         "start": "0x005261",
+        "end": "0x007923",
+        "source": "src/core.asm",
+        "blob": "data/rom/core_005000_01ffff.bin",
+        "kind": "opaque_blob",
+        "status": "incbin"
+      },
+      {
+        "start": "0x007924",
+        "end": "0x007BA9",
+        "source": "src/core.asm",
+        "kind": "magic_menu_submode_and_status_refresh",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x007BAA",
+        "end": "0x007CA3",
+        "source": "src/core.asm",
+        "kind": "magic_spell_grid_and_bar_refresh",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x007CA4",
+        "end": "0x007D9B",
+        "source": "src/core.asm",
+        "kind": "magic_menu_assignment_navigation_and_pressed_masks",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x007D9C",
+        "end": "0x008059",
+        "source": "src/core.asm",
+        "kind": "inventory_menu_selection_transfer_and_pause_helpers",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x00805A",
+        "end": "0x0088C1",
+        "source": "src/core.asm",
+        "kind": "inventory_and_magic_menu_helpers",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x0088C2",
+        "end": "0x008C33",
+        "source": "src/core.asm",
+        "blob": "data/rom/core_005000_01ffff.bin",
+        "kind": "opaque_magic_menu_gauge_and_spell_bar_blob",
+        "status": "incbin"
+      },
+      {
+        "start": "0x008C34",
+        "end": "0x008C7F",
+        "source": "src/core.asm",
+        "kind": "magic_menu_selection_state_init",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x008C80",
         "end": "0x01FFFF",
         "source": "src/core.asm",
         "blob": "data/rom/core_005000_01ffff.bin",
@@ -794,23 +2524,207 @@
       },
       {
         "start": "0x020000",
+        "end": "0x02135F",
+        "source": "src/bank020000.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "opaque_bank_slice",
+        "status": "incbin"
+      },
+      {
+        "start": "0x021360",
+        "end": "0x0213AE",
+        "source": "src/bank020000_quiz.asm",
+        "kind": "quiz_phrase_offset_table_tail",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x0213AF",
+        "end": "0x021428",
+        "source": "src/bank020000_quiz.asm",
+        "kind": "quiz_prompt_and_control_records",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x021429",
+        "end": "0x02171F",
+        "source": "src/bank020000_quiz.asm",
+        "kind": "quiz_question_and_answer_text",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x021720",
+        "end": "0x021A05",
+        "source": "src/bank020000_names.asm",
+        "kind": "inventory_equipment_magic_item_name_table",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x021A06",
+        "end": "0x021B7F",
+        "source": "src/bank020000_names.asm",
+        "kind": "world_keyword_name_table",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x021B80",
+        "end": "0x021FC9",
+        "source": "src/bank020000_text.asm",
+        "kind": "shop_inn_ocarina_text_records",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x021FCA",
+        "end": "0x021FDC",
+        "source": "src/bank020000_text.asm",
+        "kind": "ocarina_melody_aux_data",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x021FDD",
+        "end": "0x021FE9",
+        "source": "src/bank020000_text.asm",
+        "kind": "zero_padding",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x021FEA",
+        "end": "0x022025",
+        "source": "src/bank020000_text.asm",
+        "kind": "pyramid_transition_hint_text",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x022026",
+        "end": "0x02245F",
+        "source": "src/bank020000_text.asm",
+        "kind": "dialogue_dictionary_word_table",
+        "status": "source_authored"
+      },
+      {
+        "start": "0x022460",
         "end": "0x03FFFF",
-        "source": "data/rom/bank_020000_03ffff.bin",
-        "kind": "opaque_blob",
+        "source": "src/bank020000.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "opaque_bank_slice",
         "status": "incbin"
       },
       {
         "start": "0x040000",
+        "end": "0x0409F9",
+        "source": "src/bank040000.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "opaque_bank_slice",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0409FA",
+        "end": "0x040FFF",
+        "source": "src/bank040000.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "confirmed_ff_fill",
+        "status": "incbin"
+      },
+      {
+        "start": "0x041000",
         "end": "0x07FFFF",
-        "source": "data/rom/bank_040000_07ffff.bin",
-        "kind": "opaque_blob",
+        "source": "src/bank040000.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "opaque_bank_slice",
         "status": "incbin"
       },
       {
         "start": "0x080000",
+        "end": "0x09622A",
+        "source": "src/bank080000.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "opaque_bank_slice",
+        "status": "incbin"
+      },
+      {
+        "start": "0x09622B",
+        "end": "0x097FFF",
+        "source": "src/bank080000.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "confirmed_ff_fill",
+        "status": "incbin"
+      },
+      {
+        "start": "0x098000",
+        "end": "0x09991F",
+        "source": "src/bank080000_mid.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "opcode_dense_z80_like_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x099920",
+        "end": "0x09997F",
+        "source": "src/bank080000_mid.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "descriptor_header_records",
+        "status": "incbin"
+      },
+      {
+        "start": "0x099980",
+        "end": "0x099A84",
+        "source": "src/bank080000_mid.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "packed_layout_descriptor_table",
+        "status": "incbin"
+      },
+      {
+        "start": "0x099A85",
+        "end": "0x099AFF",
+        "source": "src/bank080000_mid.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "confirmed_zero_fill",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x099B00",
+        "end": "0x099B31",
+        "source": "src/bank080000_mid.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "command_region_lead_in",
+        "status": "incbin"
+      },
+      {
+        "start": "0x099B32",
+        "end": "0x099BAF",
+        "source": "src/bank080000_mid.asm",
+        "kind": "command_offset_table",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x099BB0",
+        "end": "0x09F776",
+        "source": "src/bank080000_mid.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "command_records",
+        "status": "incbin"
+      },
+      {
+        "start": "0x09F777",
+        "end": "0x09FFFF",
+        "source": "src/bank080000.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "confirmed_ff_fill",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A0000",
+        "end": "0x0A4C76",
+        "source": "src/bank080000.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "opaque_bank_slice",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A4C77",
         "end": "0x0BFFFF",
-        "source": "data/rom/bank_080000_0bffff.bin",
-        "kind": "opaque_blob",
+        "source": "src/bank080000.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "confirmed_ff_fill",
         "status": "incbin"
       }
     ]
