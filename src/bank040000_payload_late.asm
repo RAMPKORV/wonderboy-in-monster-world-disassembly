@@ -1,9 +1,9 @@
 ; ROM range: 0x04E5AA-0x05FC2F
 ; Continued local-target payload window reached from the same flagged ROM-reference
-; table at 0x041000-0x0418AB. This span extends the proven monotone same-bank starts
-; farther into 0x05xxxx, including a later 0x4C0-stride repeated family from
-; 0x05D630 through 0x05FC2F. Keep the labels structural until a loader or
-; decoder proves what resource family these records actually belong to.
+; table at 0x041000-0x0418AB. This span now calls out both the isolated 0x05C5DA 0x4C0-byte
+; record and the later eight-record 0x05D630-0x05FC2F stride family. Keep the labels
+; structural until a loader or decoder proves what resource family these records actually
+; belong to.
 
 Bank040000_LocalTableTargetedPayloadRecord_04E5AA:
 	incbin "data/rom/bank_040000_07ffff.bin",$00E5AA,$0001EC
@@ -431,8 +431,7 @@ Bank040000_LocalTableTargetedPayloadRecord_05C164:
 Bank040000_LocalTableTargetedPayloadRecord_05C34A:
 	incbin "data/rom/bank_040000_07ffff.bin",$01C34A,$000290
 
-Bank040000_LocalTableTargetedPayloadFixedStrideRecord_05C5DA:
-	incbin "data/rom/bank_040000_07ffff.bin",$01C5DA,$0004C0
+	include "src/bank040000_payload_stride_05c5da.asm"
 
 Bank040000_LocalTableTargetedPayloadRecord_05CA9A:
 	incbin "data/rom/bank_040000_07ffff.bin",$01CA9A,$000170
@@ -461,26 +460,4 @@ Bank040000_LocalTableTargetedPayloadRecord_05D3BD:
 Bank040000_LocalTableTargetedPayloadRecord_05D47B:
 	incbin "data/rom/bank_040000_07ffff.bin",$01D47B,$0001B5
 
-Bank040000_LocalTableTargetedPayloadFixedStrideRecord_05D630:
-	incbin "data/rom/bank_040000_07ffff.bin",$01D630,$0004C0
-
-Bank040000_LocalTableTargetedPayloadFixedStrideRecord_05DAF0:
-	incbin "data/rom/bank_040000_07ffff.bin",$01DAF0,$0004C0
-
-Bank040000_LocalTableTargetedPayloadFixedStrideRecord_05DFB0:
-	incbin "data/rom/bank_040000_07ffff.bin",$01DFB0,$0004C0
-
-Bank040000_LocalTableTargetedPayloadFixedStrideRecord_05E470:
-	incbin "data/rom/bank_040000_07ffff.bin",$01E470,$0004C0
-
-Bank040000_LocalTableTargetedPayloadFixedStrideRecord_05E930:
-	incbin "data/rom/bank_040000_07ffff.bin",$01E930,$0004C0
-
-Bank040000_LocalTableTargetedPayloadFixedStrideRecord_05EDF0:
-	incbin "data/rom/bank_040000_07ffff.bin",$01EDF0,$0004C0
-
-Bank040000_LocalTableTargetedPayloadFixedStrideRecord_05F2B0:
-	incbin "data/rom/bank_040000_07ffff.bin",$01F2B0,$0004C0
-
-Bank040000_LocalTableTargetedPayloadFixedStrideRecord_05F770:
-	incbin "data/rom/bank_040000_07ffff.bin",$01F770,$0004C0
+	include "src/bank040000_payload_stride_05d630.asm"

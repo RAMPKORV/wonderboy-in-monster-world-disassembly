@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-17T18:13:15.339Z",
+  "generated": "2026-03-18T04:39:40.641Z",
   "symbol_map": {
     "generated": "2026-03-17",
     "note": "Includes shared VBlank scheduler RAM anchors, the task-script scratch/flag cluster, the bootstrap patch words, the source-authored VBlank/task-dispatch plus bootstrap/input helper chain recovered through 0x005260, and the downstream selected-input inventory/equipment plus adjacent magic/status menu helpers through 0x0088C1. Current best fit: 0x8A4E/0x8A4F hold packed selected-input playback duration/value bytes loaded from 0xFF1400, 0x8A7A-0x8A7D doubles as the selected-input playback mirror and source selector, 0x95D7-0x95D9 form a UI/menu-style auto-repeat latch/countdown/output cluster, 0x95B7/0x95C8 now look like temporary empty/filled spell-bar counts, 0x95D1 behaves like a magic/status layout-record index, 0x95D6 now also looks like the previous category-owned entry id, 0x95DA/0x95DB/0x95DE/0x95DF now act like row-transfer and blink-loop scratch, 0x95DC/0x95DD cache magic/status-art selectors mirrored from 0x9F10/0x9F11, 0x00799E-0x007BA9 source-authors the adjacent modal magic/status submode plus apply/refresh path, 0x007BB2-0x007CA3 redraws the six-spell grid and paired bar strips, 0x007CA4-0x007D9B now clears top-row assignments, drives the adjacent six-choice grid navigation, and reduces the local action tests to simple pressed masks over 0x8A7C, 0x007D9C-0x008059 now bridges into visible-list confirmation, selected-row blinking, queued menu-text row transfers, and an inline PAUSE prompt, 0x95E0/0x95E4 act like modal flag plus saved selection backup, 0x95E5 looks like the current chosen submode value, 0x95E6 also behaves like a current magic-menu page/state word, 0x963C/0x9640/0x9648/0x964C act like nearby menu return/dispatch vectors, 0xC00C is a likely action flag, 0x95E8 holds the measured spell-name width, 0x95EE behaves like a lower-row magic/status selector, 0x95F8 caches the magic meter fill amount, 0x8A77 looks like a menu text-transfer row id, and 0x9EF1/0x9EFA-0x9EF6 now looks like a destination cluster filled by the layout loader at 0x0086BC. The offset table at 0x007BFE resolves to the localized magic labels FIRE STORM, QUAKE, THUNDER, POWER, SHIELD, and RETURN; external dump evidence also matches Oasis Boots, Fire-Urn, Purapril, Childam, Shiela Purapril, Prince of the Devil World, and Bio-Mecha without outweighing contradictory inline ROM strings.",
@@ -2402,8 +2402,8 @@
     ]
   },
   "rom_map": {
-    "generated": "2026-03-17",
-    "note": "Refreshed after extending the source-authored VBlank/task-dispatch, bootstrap/display setup, input-stream, controller helper chain, and the downstream selected-input inventory/equipment plus adjacent magic/status menu helpers while preserving ROM order with a bit-perfect rebuild. Current best fit: 0x00501C latches packed (duration,value) bytes from 0xFF1400 into 0x8A4E/0x8A4F, 0x005036 run-length encodes the same format, 0x00505C replays it through the selected-input mirror at 0x8A7A-0x8A7D, 0x007924-0x007D9B now source-authors the adjacent magic/status submode plus six-spell grid, 0x007D9C-0x008059 bridges that flow back into the generic inventory/equipment list UI, 0x00805A-0x0088C1 covers repeat-gated input and adjacent inventory/magic status drawing, 0x008C34-0x008C7F now initializes the visible-list state from local selection scratch, bank 0x020000 now source-authors an upstream quiz/trivia text block at 0x021360-0x02171F plus the inventory/equipment/magic/item name tables, world-keyword table, and adjacent shop/inn/Ocarina/dictionary text through 0x02245F, the `0x020000+` top-level whole-bank blobs now route through bank-specific include owners, `0x0409FA-0x040FFF` is split out as an explicit late-bank `0xFF` fill slice, and the `0x098000-0x09F776` tail-bank non-fill island is now decomposed into a Z80-like opcode-dense block, descriptor/layout records, zero fill, a command lead-in, a bank-local command offset table at `0x099B32-0x099BAF`, and trailing command records alongside the explicit `0x09622B-0x097FFF`, `0x09F777-0x09FFFF`, and `0x0A4C77-0x0BFFFF` fill slices.",
+    "generated": "2026-03-18",
+    "note": "Refreshed after extending the source-authored VBlank/task-dispatch, bootstrap/display setup, input-stream, controller helper chain, and the downstream selected-input inventory/equipment plus adjacent magic/status menu helpers while preserving ROM order with a bit-perfect rebuild. Current best fit: 0x00501C latches packed (duration,value) bytes from 0xFF1400 into 0x8A4E/0x8A4F, 0x005036 run-length encodes the same format, 0x00505C replays it through the selected-input mirror at 0x8A7A-0x8A7D, 0x007924-0x007D9B now source-authors the adjacent magic/status submode plus six-spell grid, 0x007D9C-0x008059 bridges that flow back into the generic inventory/equipment list UI, 0x00805A-0x0088C1 covers repeat-gated input and adjacent inventory/magic status drawing, 0x008C34-0x008C7F now initializes the visible-list state from local selection scratch, bank 0x020000 now source-authors an upstream quiz/trivia text block at 0x021360-0x02171F plus the inventory/equipment/magic/item name tables, world-keyword table, adjacent shop/inn/Ocarina/dictionary text through 0x02245F, and the first post-dictionary descriptor/index island at 0x022460-0x022DB7, the 0x020000+ top-level whole-bank blobs now route through bank-specific include owners, 0x0409FA-0x040FFF is split out as an explicit late-bank 0xFF fill slice, the 0x098000-0x09F776 tail-bank non-fill island is now decomposed into a Z80-like opcode-dense block, a newly source-authored pre-descriptor structural tail at 0x099200-0x09991F (two monotone byte bands, a fixed 19-byte record family, mixed/control tails, local-offset words, packed bytes, repeated 0x01F1 words, and a short word trailer), descriptor/layout records, zero fill, a command lead-in, a bank-local command offset table at 0x099B32-0x099BAF, an unreferenced command-record prelude at 0x099BB0-0x099BD2, narrower table-targeted command records through 0x09A347, and fully sliced FF-terminated command-record windows at 0x09A348-0x09C007, 0x09C008-0x09E027, and 0x09E028-0x09F776 with only the short non-terminated lead-out at 0x09F76A-0x09F776 still grouped, while the next 0x0A0000-0x0A4C76 island now begins with a source-authored multi-level offset-table tree through 0x0A07C5, continues with repeated four-tuple records through 0x0A0B25, four FF-terminated six-byte bands through 0x0A10AA, a fully record-sliced FF-terminated five-byte tuple family through 0x0A34FF, and a table-targeted back half that now also exposes explicit 3-word bands, local-offset triplet records, and a self-referencing local-offset list.",
     "rom_size": 786432,
     "ranges": [
       {
@@ -2524,11 +2524,56 @@
       },
       {
         "start": "0x020000",
-        "end": "0x02135F",
+        "end": "0x0201CF",
         "source": "src/bank020000.asm",
         "blob": "data/rom/bank_020000_03ffff.bin",
-        "kind": "opaque_bank_slice",
+        "kind": "opaque_front_bank_slice",
         "status": "incbin"
+      },
+      {
+        "start": "0x0201D0",
+        "end": "0x020539",
+        "source": "src/bank020000_front_records_a.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "bank_relative_text_control_record_family_a",
+        "status": "incbin"
+      },
+      {
+        "start": "0x02053A",
+        "end": "0x020E4B",
+        "source": "src/bank020000.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "untargeted_front_bank_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x020E4C",
+        "end": "0x0211C9",
+        "source": "src/bank020000_front_records_b.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "bank_relative_text_control_record_family_b",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0211CA",
+        "end": "0x0211D9",
+        "source": "src/bank020000_offsets.asm",
+        "kind": "local_text_table_pointer_list",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0211DA",
+        "end": "0x021257",
+        "source": "src/bank020000_offsets.asm",
+        "kind": "bank_relative_text_offset_table_a",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x021258",
+        "end": "0x02135F",
+        "source": "src/bank020000_offsets.asm",
+        "kind": "bank_relative_text_offset_table_b",
+        "status": "source_authored_data"
       },
       {
         "start": "0x021360",
@@ -2602,18 +2647,344 @@
       },
       {
         "start": "0x022460",
-        "end": "0x03FFFF",
-        "source": "src/bank020000.asm",
+        "end": "0x0224BF",
+        "source": "src/bank020000_tables.asm",
+        "kind": "same_bank_reference_descriptors",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0224C0",
+        "end": "0x0225D7",
+        "source": "src/bank020000_tables.asm",
+        "kind": "indexed_payload_offset_table",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0225D8",
+        "end": "0x022661",
+        "source": "src/bank020000_tables.asm",
         "blob": "data/rom/bank_020000_03ffff.bin",
-        "kind": "opaque_bank_slice",
+        "kind": "indexed_payload_prelude",
+        "status": "incbin"
+      },
+      {
+        "start": "0x022662",
+        "end": "0x02292B",
+        "source": "src/bank020000_tables.asm",
+        "kind": "indexed_short_record_payload_family",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x02292C",
+        "end": "0x022AEB",
+        "source": "src/bank020000_tables.asm",
+        "kind": "repeated_descriptor_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x022AEC",
+        "end": "0x022BB7",
+        "source": "src/bank020000_tables.asm",
+        "kind": "sentinel_delimited_descriptor_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x022BB8",
+        "end": "0x022BB9",
+        "source": "src/bank020000_tables.asm",
+        "kind": "standalone_descriptor_sentinel",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x022BBA",
+        "end": "0x022C03",
+        "source": "src/bank020000_tables.asm",
+        "kind": "descriptor_record_with_embedded_fe00_sublists",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x022C04",
+        "end": "0x022D3F",
+        "source": "src/bank020000_tables.asm",
+        "kind": "sentinel_delimited_descriptor_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x022D40",
+        "end": "0x022D6B",
+        "source": "src/bank020000_tables.asm",
+        "kind": "repeated_placeholder_word_run",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x022D6C",
+        "end": "0x022DB7",
+        "source": "src/bank020000_tables.asm",
+        "kind": "ff00_terminated_compact_word_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x022DB8",
+        "end": "0x0237B3",
+        "source": "src/bank020000_gap.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "recurring_word_pattern_band",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0237B4",
+        "end": "0x0237B5",
+        "source": "src/bank020000_gap.asm",
+        "kind": "standalone_ffff_sentinel",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0237B6",
+        "end": "0x0237CD",
+        "source": "src/bank020000_gap.asm",
+        "kind": "ff00_terminated_compact_word_record",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0237CE",
+        "end": "0x0237DB",
+        "source": "src/bank020000_gap.asm",
+        "kind": "ff00_terminated_compact_word_record",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0237DC",
+        "end": "0x0237E1",
+        "source": "src/bank020000_gap.asm",
+        "kind": "mixed_lead_in_words",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0237E2",
+        "end": "0x0237E3",
+        "source": "src/bank020000_gap.asm",
+        "kind": "standalone_ffff_sentinel",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0237E4",
+        "end": "0x023AB5",
+        "source": "src/bank020000_gap.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "pattern_dense_mixed_payload",
+        "status": "incbin"
+      },
+      {
+        "start": "0x023AB6",
+        "end": "0x024537",
+        "source": "src/bank020000_records.asm",
+        "kind": "sentinel_delimited_word_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x024538",
+        "end": "0x02482B",
+        "source": "src/bank020000_tail_records.asm",
+        "kind": "sentinel_delimited_word_record_continuation",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x02482C",
+        "end": "0x024835",
+        "source": "src/bank020000_tail_blocks.asm",
+        "kind": "tail_relative_offset_table",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x024836",
+        "end": "0x025125",
+        "source": "src/bank020000_tail_blocks.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_compressed_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x025126",
+        "end": "0x0289B7",
+        "source": "src/bank020000_tail_blocks.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_compressed_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0289B8",
+        "end": "0x02AE74",
+        "source": "src/bank020000_tail_blocks.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_compressed_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x02AE75",
+        "end": "0x02F70F",
+        "source": "src/bank020000_tail_blocks.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_compressed_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x02F710",
+        "end": "0x030479",
+        "source": "src/bank020000_tail_blocks.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_compressed_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x03047A",
+        "end": "0x0304ED",
+        "source": "src/bank020000_tail_blocks.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_compressed_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0304EE",
+        "end": "0x03140D",
+        "source": "src/bank020000_tail_blocks.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_compressed_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x03140E",
+        "end": "0x034AEB",
+        "source": "src/bank020000_tail_blocks.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_compressed_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x034AEC",
+        "end": "0x035077",
+        "source": "src/bank020000_tail_blocks.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_compressed_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x035078",
+        "end": "0x03519D",
+        "source": "src/bank020000_tail_blocks.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_compressed_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x03519E",
+        "end": "0x0354F3",
+        "source": "src/bank020000_tail_blocks.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_compressed_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0354F4",
+        "end": "0x03C6DF",
+        "source": "src/bank020000_tail_blocks.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_compressed_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x03C6E0",
+        "end": "0x03E845",
+        "source": "src/bank020000_tail_remainder.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_header_like_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x03E846",
+        "end": "0x03EF4D",
+        "source": "src/bank020000_tail_remainder.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_header_like_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x03EF4E",
+        "end": "0x03F4D0",
+        "source": "src/bank020000_tail_remainder.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_header_like_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x03F4D1",
+        "end": "0x03FE23",
+        "source": "src/bank020000_tail_remainder.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_header_like_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x03FE24",
+        "end": "0x03FFFF",
+        "source": "src/bank020000_tail_remainder.asm",
+        "blob": "data/rom/bank_020000_03ffff.bin",
+        "kind": "tail_header_like_data_block",
         "status": "incbin"
       },
       {
         "start": "0x040000",
-        "end": "0x0409F9",
-        "source": "src/bank040000.asm",
+        "end": "0x0400FF",
+        "source": "src/bank040000_front_blocks.asm",
         "blob": "data/rom/bank_040000_07ffff.bin",
-        "kind": "opaque_bank_slice",
+        "kind": "front_header_like_lead_in",
+        "status": "incbin"
+      },
+      {
+        "start": "0x040100",
+        "end": "0x04025B",
+        "source": "src/bank040000_front_blocks.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "front_header_like_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x04025C",
+        "end": "0x0403FF",
+        "source": "src/bank040000_front_blocks.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "front_header_like_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x040400",
+        "end": "0x04053B",
+        "source": "src/bank040000_front_blocks.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "front_header_like_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x04053C",
+        "end": "0x0406C3",
+        "source": "src/bank040000_front_blocks.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "front_header_like_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0406C4",
+        "end": "0x0408D3",
+        "source": "src/bank040000_front_blocks.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "front_header_like_data_block",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0408D4",
+        "end": "0x0409F9",
+        "source": "src/bank040000_front_blocks.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "front_header_like_data_block",
         "status": "incbin"
       },
       {
@@ -2626,18 +2997,167 @@
       },
       {
         "start": "0x041000",
+        "end": "0x0418AB",
+        "source": "src/bank040000_tables.asm",
+        "kind": "local_flagged_rom_reference_table",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0418AC",
+        "end": "0x041B3F",
+        "source": "src/bank040000_tables.asm",
+        "kind": "cross_bank_flagged_rom_reference_table",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x041B40",
+        "end": "0x041B7F",
+        "source": "src/bank040000_tables.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "confirmed_ff_fill",
+        "status": "incbin"
+      },
+      {
+        "start": "0x041B80",
+        "end": "0x041BBF",
+        "source": "src/bank040000_tables.asm",
+        "kind": "cross_bank_flagged_rom_reference_table_tail",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x041BC0",
+        "end": "0x041BFF",
+        "source": "src/bank040000_tables.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "confirmed_ff_fill",
+        "status": "incbin"
+      },
+      {
+        "start": "0x041C00",
+        "end": "0x04A70E",
+        "source": "src/bank040000_payload_front.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "local_table_targeted_payload_records",
+        "status": "incbin"
+      },
+      {
+        "start": "0x04A70F",
+        "end": "0x04BFA9",
+        "source": "src/bank040000_payload_mid.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "local_table_targeted_payload_records",
+        "status": "incbin"
+      },
+      {
+        "start": "0x04BFAA",
+        "end": "0x04E5A9",
+        "source": "src/bank040000_payload_stride_04bfaa.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "local_table_targeted_fixed_stride_record_family",
+        "status": "incbin"
+      },
+      {
+        "start": "0x04E5AA",
+        "end": "0x05C5D9",
+        "source": "src/bank040000_payload_late.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "local_table_targeted_payload_records",
+        "status": "incbin"
+      },
+      {
+        "start": "0x05C5DA",
+        "end": "0x05CA99",
+        "source": "src/bank040000_payload_stride_05c5da.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "local_table_targeted_fixed_stride_record",
+        "status": "incbin"
+      },
+      {
+        "start": "0x05CA9A",
+        "end": "0x05D62F",
+        "source": "src/bank040000_payload_late.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "local_table_targeted_payload_records",
+        "status": "incbin"
+      },
+      {
+        "start": "0x05D630",
+        "end": "0x05FC2F",
+        "source": "src/bank040000_payload_stride_05d630.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "local_table_targeted_fixed_stride_record_family",
+        "status": "incbin"
+      },
+      {
+        "start": "0x05FC30",
+        "end": "0x06B191",
+        "source": "src/bank040000_payload_tail.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "local_table_targeted_payload_records",
+        "status": "incbin"
+      },
+      {
+        "start": "0x06B192",
+        "end": "0x06BB11",
+        "source": "src/bank040000_payload_stride_06b192.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "local_table_targeted_fixed_stride_record_family",
+        "status": "incbin"
+      },
+      {
+        "start": "0x06BB12",
+        "end": "0x07FF66",
+        "source": "src/bank040000_payload_tail.asm",
+        "blob": "data/rom/bank_040000_07ffff.bin",
+        "kind": "local_table_targeted_payload_records",
+        "status": "incbin"
+      },
+      {
+        "start": "0x07FF67",
         "end": "0x07FFFF",
         "source": "src/bank040000.asm",
         "blob": "data/rom/bank_040000_07ffff.bin",
-        "kind": "opaque_bank_slice",
+        "kind": "tiny_trailing_bank_remainder",
         "status": "incbin"
       },
       {
         "start": "0x080000",
+        "end": "0x0801CC",
+        "source": "src/bank080000.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "untargeted_tail_bank_lead_in",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0801CD",
+        "end": "0x093FD0",
+        "source": "src/bank080000_cross_payload_front.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "cross_bank_table_targeted_payload_records",
+        "status": "incbin"
+      },
+      {
+        "start": "0x093FD1",
+        "end": "0x094149",
+        "source": "src/bank080000.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "untargeted_cross_bank_payload_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x09414A",
+        "end": "0x0961D7",
+        "source": "src/bank080000_cross_payload_tail.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "cross_bank_table_targeted_payload_records",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0961D8",
         "end": "0x09622A",
         "source": "src/bank080000.asm",
         "blob": "data/rom/bank_080000_0bffff.bin",
-        "kind": "opaque_bank_slice",
+        "kind": "untargeted_cross_bank_payload_gap",
         "status": "incbin"
       },
       {
@@ -2650,27 +3170,118 @@
       },
       {
         "start": "0x098000",
-        "end": "0x09991F",
+        "end": "0x0991FF",
         "source": "src/bank080000_mid.asm",
         "blob": "data/rom/bank_080000_0bffff.bin",
         "kind": "opcode_dense_z80_like_block",
         "status": "incbin"
       },
       {
-        "start": "0x099920",
-        "end": "0x09997F",
-        "source": "src/bank080000_mid.asm",
+        "start": "0x099200",
+        "end": "0x09923F",
+        "source": "src/bank080000_mid_front.asm",
+        "kind": "pre_descriptor_monotone_byte_band_a",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x099240",
+        "end": "0x09927F",
+        "source": "src/bank080000_mid_front.asm",
+        "kind": "pre_descriptor_monotone_byte_band_b",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x099280",
+        "end": "0x099648",
+        "source": "src/bank080000_mid_front.asm",
+        "kind": "pre_descriptor_fixed_nineteen_byte_record_band",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x099649",
+        "end": "0x099828",
+        "source": "src/bank080000_mid_front.asm",
         "blob": "data/rom/bank_080000_0bffff.bin",
-        "kind": "descriptor_header_records",
+        "kind": "pre_descriptor_mixed_control_byte_band",
         "status": "incbin"
       },
       {
-        "start": "0x099980",
-        "end": "0x099A84",
-        "source": "src/bank080000_mid.asm",
+        "start": "0x099829",
+        "end": "0x09988F",
+        "source": "src/bank080000_mid_front.asm",
         "blob": "data/rom/bank_080000_0bffff.bin",
-        "kind": "packed_layout_descriptor_table",
+        "kind": "pre_descriptor_compact_control_byte_band",
         "status": "incbin"
+      },
+      {
+        "start": "0x099890",
+        "end": "0x09989F",
+        "source": "src/bank080000_mid_front.asm",
+        "kind": "pre_descriptor_local_offset_word_band",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0998A0",
+        "end": "0x0998D9",
+        "source": "src/bank080000_mid_front.asm",
+        "kind": "pre_descriptor_packed_byte_band",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0998DA",
+        "end": "0x0998E1",
+        "source": "src/bank080000_mid_front.asm",
+        "kind": "pre_descriptor_zero_fill",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0998E2",
+        "end": "0x0998F1",
+        "source": "src/bank080000_mid_front.asm",
+        "kind": "pre_descriptor_repeated_word_band",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0998F2",
+        "end": "0x0998FF",
+        "source": "src/bank080000_mid_front.asm",
+        "kind": "pre_descriptor_byte_trailer",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x099900",
+        "end": "0x09991D",
+        "source": "src/bank080000_mid_front.asm",
+        "kind": "pre_descriptor_word_tail",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x09991E",
+        "end": "0x09991F",
+        "source": "src/bank080000_mid_front.asm",
+        "kind": "pre_descriptor_word_trailer",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x099920",
+        "end": "0x09997F",
+        "source": "src/bank080000_mid_descriptors.asm",
+        "kind": "fixed_six_byte_descriptor_header_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x099980",
+        "end": "0x099A74",
+        "source": "src/bank080000_mid_descriptors.asm",
+        "kind": "fixed_five_byte_layout_descriptor_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x099A75",
+        "end": "0x099A84",
+        "source": "src/bank080000_mid_descriptors.asm",
+        "kind": "layout_descriptor_table_tail",
+        "status": "source_authored_data"
       },
       {
         "start": "0x099A85",
@@ -2697,10 +3308,42 @@
       },
       {
         "start": "0x099BB0",
-        "end": "0x09F776",
+        "end": "0x099BD2",
         "source": "src/bank080000_mid.asm",
         "blob": "data/rom/bank_080000_0bffff.bin",
-        "kind": "command_records",
+        "kind": "command_record_prelude",
+        "status": "incbin"
+      },
+      {
+        "start": "0x099BD3",
+        "end": "0x09A347",
+        "source": "src/bank080000_mid.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "table_targeted_command_records",
+        "status": "incbin"
+      },
+      {
+        "start": "0x09A348",
+        "end": "0x09C007",
+        "source": "src/bank080000_mid_command_tail_front.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "ff_terminated_command_record_slices",
+        "status": "incbin"
+      },
+      {
+        "start": "0x09C008",
+        "end": "0x09E027",
+        "source": "src/bank080000_mid_command_tail_mid.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "ff_terminated_command_record_slices",
+        "status": "incbin"
+      },
+      {
+        "start": "0x09E028",
+        "end": "0x09F776",
+        "source": "src/bank080000_mid_command_tail_tail.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "ff_terminated_command_record_slices_with_tail_leadout",
         "status": "incbin"
       },
       {
@@ -2713,11 +3356,314 @@
       },
       {
         "start": "0x0A0000",
-        "end": "0x0A4C76",
-        "source": "src/bank080000.asm",
+        "end": "0x0A01C7",
+        "source": "src/bank080000_a0000.asm",
         "blob": "data/rom/bank_080000_0bffff.bin",
-        "kind": "opaque_bank_slice",
+        "kind": "multi_level_offset_table_root",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A01C8",
+        "end": "0x0A07BB",
+        "source": "src/bank080000_a0000.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "multi_level_offset_table_block",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A07BC",
+        "end": "0x0A07C5",
+        "source": "src/bank080000_a0000.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "multi_level_offset_table_tail",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A07C6",
+        "end": "0x0A08E5",
+        "source": "src/bank080000_a07c6.asm",
+        "kind": "repeated_four_tuple_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A08E6",
+        "end": "0x0A0B25",
+        "source": "src/bank080000_a08e6.asm",
+        "kind": "continued_four_tuple_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A0B26",
+        "end": "0x0A0C82",
+        "source": "src/bank080000_a0000.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "mixed_unresolved_payload_lead_in",
         "status": "incbin"
+      },
+      {
+        "start": "0x0A0C83",
+        "end": "0x0A0D18",
+        "source": "src/bank080000_a0c83.asm",
+        "kind": "ff_terminated_six_byte_record_band",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A0D19",
+        "end": "0x0A0D3E",
+        "source": "src/bank080000_a0c83.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "mixed_payload_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A0D3F",
+        "end": "0x0A0D74",
+        "source": "src/bank080000_a0c83.asm",
+        "kind": "ff_terminated_six_byte_record_band",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A0D75",
+        "end": "0x0A0E84",
+        "source": "src/bank080000_a0c83.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "mixed_payload_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A0E85",
+        "end": "0x0A0F2C",
+        "source": "src/bank080000_a0c83.asm",
+        "kind": "ff_terminated_six_byte_record_band",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A0F2D",
+        "end": "0x0A0FA8",
+        "source": "src/bank080000_a0c83.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "mixed_payload_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A0FA9",
+        "end": "0x0A10AA",
+        "source": "src/bank080000_a0c83.asm",
+        "kind": "ff_terminated_six_byte_record_band",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A10AB",
+        "end": "0x0A1321",
+        "source": "src/bank080000_a10ab.asm",
+        "kind": "ff_terminated_five_byte_tuple_run",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A1322",
+        "end": "0x0A132C",
+        "source": "src/bank080000_a10ab.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "mixed_payload_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A132D",
+        "end": "0x0A136D",
+        "source": "src/bank080000_a10ab.asm",
+        "kind": "ff_terminated_five_byte_tuple_run",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A136E",
+        "end": "0x0A1377",
+        "source": "src/bank080000_a10ab.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "mixed_payload_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A1378",
+        "end": "0x0A1405",
+        "source": "src/bank080000_a10ab.asm",
+        "kind": "ff_terminated_five_byte_tuple_run",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A1406",
+        "end": "0x0A1410",
+        "source": "src/bank080000_a10ab.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "mixed_payload_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A1411",
+        "end": "0x0A1D3E",
+        "source": "src/bank080000_a1411.asm",
+        "kind": "ff_terminated_five_byte_tuple_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A1D3F",
+        "end": "0x0A1D4E",
+        "source": "src/bank080000_a10ab.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "mixed_payload_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A1D4F",
+        "end": "0x0A23F5",
+        "source": "src/bank080000_a1d4f.asm",
+        "kind": "ff_terminated_five_byte_tuple_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A23F6",
+        "end": "0x0A23FF",
+        "source": "src/bank080000_a10ab.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "mixed_payload_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A2400",
+        "end": "0x0A2585",
+        "source": "src/bank080000_a2400.asm",
+        "kind": "ff_terminated_five_byte_tuple_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A2586",
+        "end": "0x0A258A",
+        "source": "src/bank080000_a10ab.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "mixed_payload_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A258B",
+        "end": "0x0A2605",
+        "source": "src/bank080000_a258b.asm",
+        "kind": "ff_terminated_five_byte_tuple_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A2606",
+        "end": "0x0A260F",
+        "source": "src/bank080000_a10ab.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "mixed_payload_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A2610",
+        "end": "0x0A2764",
+        "source": "src/bank080000_a2610.asm",
+        "kind": "ff_terminated_five_byte_tuple_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A2765",
+        "end": "0x0A27CA",
+        "source": "src/bank080000_a10ab.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "mixed_payload_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A27CB",
+        "end": "0x0A2D85",
+        "source": "src/bank080000_a27cb.asm",
+        "kind": "ff_terminated_five_byte_tuple_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A2D86",
+        "end": "0x0A2D9A",
+        "source": "src/bank080000_a10ab.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "mixed_payload_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A2D9B",
+        "end": "0x0A303F",
+        "source": "src/bank080000_a2d9b.asm",
+        "kind": "ff_terminated_five_byte_tuple_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A3040",
+        "end": "0x0A304A",
+        "source": "src/bank080000_a10ab.asm",
+        "blob": "data/rom/bank_080000_0bffff.bin",
+        "kind": "mixed_payload_gap",
+        "status": "incbin"
+      },
+      {
+        "start": "0x0A304B",
+        "end": "0x0A34FF",
+        "source": "src/bank080000_a304b.asm",
+        "kind": "ff_terminated_five_byte_tuple_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A3500",
+        "end": "0x0A37AF",
+        "source": "src/bank080000_a3500_front.asm",
+        "kind": "front_table_targeted_local_offset_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A37B0",
+        "end": "0x0A3B76",
+        "source": "src/bank080000_a3500.asm",
+        "kind": "table_targeted_compact_local_offset_control_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A3B77",
+        "end": "0x0A3C16",
+        "source": "src/bank080000_a3500.asm",
+        "kind": "local_offset_triplet_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A3C17",
+        "end": "0x0A43D4",
+        "source": "src/bank080000_a3c17.asm",
+        "kind": "compact_local_offset_control_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A43D5",
+        "end": "0x0A47D8",
+        "source": "src/bank080000_a43d5.asm",
+        "kind": "compact_local_offset_control_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A47D9",
+        "end": "0x0A4AA2",
+        "source": "src/bank080000_a47d9.asm",
+        "kind": "compact_local_offset_control_records",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A4AA3",
+        "end": "0x0A4AEB",
+        "source": "src/bank080000_a3500.asm",
+        "kind": "self_referencing_local_offset_cluster",
+        "status": "source_authored_data"
+      },
+      {
+        "start": "0x0A4AEC",
+        "end": "0x0A4C76",
+        "source": "src/bank080000_a4aec.asm",
+        "kind": "compact_local_offset_control_tail_records",
+        "status": "source_authored_data"
       },
       {
         "start": "0x0A4C77",

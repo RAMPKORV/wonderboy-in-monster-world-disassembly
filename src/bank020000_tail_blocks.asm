@@ -87,8 +87,10 @@ Bank020000_TailGfxBlock11_03519E:
 Bank020000_TailGfxBlock12_0354F4:
 	incbin "data/rom/bank_020000_03ffff.bin",$0154F4,$0071EC
 
-; --- Final tail remainder (0x03C6E0-0x03FFFF, 14624 bytes) ---
-; Remaining compressed/data tail. Starts with a 0x0960... header-like prefix but does
-; not expose another proven 0xFF7A/0xFF7B terminator before the bank end.
-Bank020000_TailTrailingDataRemainder_03C6E0:
-	incbin "data/rom/bank_020000_03ffff.bin",$01C6E0,$003920
+; --- Final tail continuation (0x03C6E0-0x03FFFF, 14624 bytes) ---
+; This bank end still lacks proven 0xFF7A/0xFF7B terminators, but several later internal
+; starts are now called out explicitly because they begin with the same 0x0960 / 0x0F00 /
+; 0x0B60-style header-like prefixes already seen in earlier tail blocks. Keep the names
+; structural until a loader or decompressor proves whether these are true block headers,
+; format variants, or nested substreams.
+	include "src/bank020000_tail_remainder.asm"

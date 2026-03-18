@@ -317,11 +317,7 @@ Bank040000_LocalTableTargetedPayloadRecord_06AE42:
 Bank040000_LocalTableTargetedPayloadRecord_06AFB7:
 	incbin "data/rom/bank_040000_07ffff.bin",$02AFB7,$0001DB
 
-Bank040000_LocalTableTargetedPayloadFixedStrideRecord_06B192:
-	incbin "data/rom/bank_040000_07ffff.bin",$02B192,$0004C0
-
-Bank040000_LocalTableTargetedPayloadFixedStrideRecord_06B652:
-	incbin "data/rom/bank_040000_07ffff.bin",$02B652,$0004C0
+	include "src/bank040000_payload_stride_06b192.asm"
 
 Bank040000_LocalTableTargetedPayloadRecord_06BB12:
 	incbin "data/rom/bank_040000_07ffff.bin",$02BB12,$00021B

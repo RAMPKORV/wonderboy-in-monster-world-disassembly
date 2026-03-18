@@ -562,6 +562,21 @@
 - Kept the new labels structural rather than subsystem-specific. The bytes still prove stable ROM-order
   starts and repeated record sizes, but not yet whether the payload family is maps, scripts, graphics
   metadata, or another late-bank resource group without its loader/dispatcher.
+
+## 2026-03-18
+
+- Tightened the front of the bank `0x080000` back-half payload at `0x0A3500-0x0A37AF` into a new
+  ROM-order source module `src/bank080000_a3500_front.asm` instead of leaving that whole opening run as
+  dozens of tiny `incbin` slices inside `src/bank080000_a3500.asm`.
+- The new front slice is still labeled structurally, but it is materially more readable now: most
+  records begin with repeated `FC .. .. FB .. ..` prefixes, many embed local 24-bit offsets back into
+  the earlier `0x0A07C6-0x0A0D80` tuple families, and several end in short `FF` or `FD`-terminated
+  selector tails. That is enough evidence to keep the bytes source-authored without overclaiming a map,
+  script, sprite, or credits owner.
+- This also sharpens the next likely format split inside the same island. The first `0x0A3500+` run now
+  reads as a compact front control/offset cluster, followed by the already source-authored 3-word band at
+  `0x0A37B0-0x0A37F7`, standalone local offsets at `0x0A37F8-0x0A37FD`, and later local-offset triplet /
+  self-referencing families farther back in the same bank-local payload.
 - Extended that same flagged-reference evidence across the bank boundary into bank `0x080000`. The
   cross-bank target runs from `0x0418AC-0x041BBF` now split the former opaque `0x080000-0x09622A`
   front tail-bank slice into a tiny untargeted lead-in at `0x080000-0x0801CC`, a large ROM-order
@@ -577,10 +592,64 @@
 - That tail now reads as a small family of variable-length descriptor records whose boundaries are mostly
   proved by `$FFFF` terminators. One larger record at `0x022BBA` is now called out separately because it
   carries three internal `$FE00`-prefixed sublists before a doubled `$FFFF` terminator at `0x022C00`.
+- Tightened the previously incbin-backed `0x099649-0x09988F` middle of bank `0x080000`'s pre-descriptor
+  tail into explicit source-authored data in `src/bank080000_mid_front.asm` instead of two coarse mixed
+  byte bands.
+- The front `0x099649-0x099828` span now stands as thirty fixed 16-byte records, which is a much cleaner
+  cadence than the earlier catch-all mixed/control label. The bytes stay structural, but the stable
+  record width is now explicit in ROM order.
+- The following `0x099829-0x09988F` span also tightened further: it now exposes a 3-byte lead-in at
+  `0x099829-0x09982B` followed by twenty fixed 5-byte records at `0x09982C-0x09988F` instead of one
+  compact-control `incbin`.
+- Kept the new names structural. The byte evidence now proves cadence and boundaries, but not yet the
+  loader, field semantics, or whether these records belong to audio, credits, sprite/layout metadata, or
+  another tail-bank subsystem.
+- Tightened the final unsplit bank-end tail in bank `0x020000` without overclaiming the format. The old
+  single remainder at `0x03C6E0-0x03FFFF` in `src/bank020000_tail_blocks.asm` now lives in
+  `src/bank020000_tail_remainder.asm` as five smaller ROM-order sub-blocks starting at `0x03C6E0`,
+  `0x03E846`, `0x03EF4E`, `0x03F4D1`, and `0x03FE24`.
+- Those new starts are still weaker than the earlier `0xFF7A` / `0xFF7B` terminator-proven boundaries, but
+  they are not arbitrary: each one begins with one of the same short header-like prefixes already seen at
+  earlier tail-block starts (`0x0960`, `0x0F00`, or `0x0B60`), and the surrounding bytes show the same
+  compressed/data-heavy texture rather than plain text or code.
+- Kept the names structural. This pass improves ROM-order readability and removes the last monolithic
+  remainder in the bank `0x020000` compressed tail, but it still does not prove whether those later
+  header-like starts are true block boundaries, nested substreams, or format variants until a loader or
+  decompressor path is recovered.
+- Tightened the mid-back pocket of bank `0x080000`'s `0x0A3500-0x0A4C76` table-targeted region without
+  forcing subsystem meaning. The former run of tiny `incbin` slices at `0x0A37FE-0x0A3B76` is now
+  source-authored as explicit `dc.b` records in `src/bank080000_a3500.asm` instead of opaque byte slices.
+- The new proof is still structural but stronger than simple table-target boundaries: most records repeat
+  `FC .. .. FB .. ..` front prefixes, then fan out through compact local 24-bit offsets back into the
+  already split `0x0A0E85-0x0A12E5` and `0x0A12EC+` families, with short `FF`-terminated selector tails or
+  `FD`-terminated control tails. Several records also expose useful subfamilies directly in source, such as
+  short `00xxxx` local offsets, paired `08xxxx` target lists, and mixed `02/04/06/08` offset tuples.
+- Kept the new names structural. The bytes now justify source-authored ownership and a compact-record-pocket
+  comment for `0x0A37FE-0x0A3B76`, but they still do not prove whether the controlling loader is walking
+  scripts, object layouts, sprite metadata, or another tail-bank resource family.
+- Extended that same bank `0x080000` back-half cleanup farther in ROM order. The next continuation at
+  `0x0A3C17-0x0A4AA2` is no longer a wall of tiny inline `incbin` slices inside `src/bank080000_a3500.asm`:
+  it now lives in three ROM-order source modules, `src/bank080000_a3c17.asm`, `src/bank080000_a43d5.asm`,
+  and `src/bank080000_a47d9.asm`, before the already explicit self-referencing cluster at `0x0A4AA3-0x0A4AEB`.
+- The newly exposed bytes keep reinforcing the same structural fit rather than a subsystem claim. Large parts
+  of `0x0A3C17-0x0A4AA2` reuse the proven `FC/FB/FE` prefix controls, short `00/01/02/03/04/05/06/07/08/0A`
+  local-offset lists, and `FF` or `FD` tails, while repeatedly targeting earlier families in the same bank such
+  as `0x0A0Fxx`, `0x0A15xx`, `0x0A16xx`, `0x0A19xx`, `0x0A1Bxx`, `0x0A2Cxx`, `0x0A2Dxx`, and `0x0A30xx`.
+- Kept the new labels structural. The bytes now justify module-level ownership and a clearer ROM-order split,
+  but they still do not prove whether this pocket is script data, object/layout metadata, sprite control data,
+  or another table-driven resource family without the loader or decoder that interprets those prefixes.
 - Kept the new names structural. The bytes now justify stable record and sublist boundaries, but they do
   not yet prove whether this tail belongs to maps, object placement, scripts, or another data-driven
   subsystem without the code that scans the `$FFFF` / `$FE00` markers or consumes the surrounding
   `0x022460-0x022C5F` descriptor island.
+- Tightened the bank `0x040000` same-bank payload split one more step without forcing semantics. The
+  repeated `0x4C0`-byte target families are no longer just individual labels inside the larger
+  irregular payload files: `0x04BFAA-0x04E5A9`, `0x05C5DA-0x05CA99`, `0x05D630-0x05FC2F`, and
+  `0x06B192-0x06BB11` now each live in dedicated ROM-order source modules.
+- This does not change the current subsystem interpretation, but it does make the strongest repeated-size
+  evidence in bank `0x040000` much clearer for future passes. The front flagged ROM-reference table still
+  proves all of these starts directly, and the resulting families now stand apart from their surrounding
+  irregular records instead of being buried inside long monolithic payload modules.
 - Extended that same bank `0x020000` structured tail farther forward without forcing semantics. The
   `src/bank020000_tables.asm` module now owns `0x022C56-0x022DB7` explicitly instead of dropping back to
   an anonymous `incbin` at `0x022C60`.
@@ -702,6 +771,19 @@
 - Kept the names structural rather than subsystem-specific. The new evidence is still local byte structure
   and cross-links into already split tuple runs, not yet the 68k-side loader or decoder that would justify
   stronger ownership terms.
+- Tightened the remaining tail of that same `0x0A3500+` back-half pocket without forcing subsystem meaning.
+  The former final run of tiny `incbin` slices at `0x0A4AEC-0x0A4C76` now lives in
+  `src/bank080000_a4aec.asm` as explicit `dc.b` records included from `src/bank080000_a3500.asm`.
+- The newly exposed bytes continue the same structural motif already seen earlier in the back half: three
+  standalone local offsets at `0x0A4AEC-0x0A4AF2`, then a compact control pocket whose records repeatedly
+  start with `FC`/`FB`/`FE` prefix groups and end in short `FF`- or `FD`-terminated local-offset lists.
+  Those lists reach back into several already split families, including the earlier `0x0A0E85+` tuple
+  band, the `0x0A157B+` run, the self-referencing `0x0A319E+` cluster, the `0x0A323F+` local-offset
+  family, and the late `0x0A3476+` starts.
+- This pass keeps the names structural but leaves the bank materially cleaner: the whole currently split
+  `0x0A3500-0x0A4C76` table-targeted back half is now source-authored as explicit data families rather
+  than generic one-line target slices, even though the higher-level loader and field semantics still need
+  code-flow evidence.
   at `0x024538` reuses several control-word motifs already seen nearby (`$E001/$E010/$E012/$E021/$E031/$E042/$E071`,
   `$D301`, and embedded `$FF00` markers before the final `$FFFF`), while the following eight shorter records
   cleanly continue the same pointer-like-header plus small word-tuple cadence already visible in
@@ -724,10 +806,61 @@
 
 ## 2026-03-18
 
+- Split the formerly monolithic bank `0x040000` front pre-table slice at `0x040000-0x0409F9`
+  into a dedicated ROM-order module, `src/bank040000_front_blocks.asm`, instead of leaving the
+  whole bank front as one anonymous `incbin` in `src/bank040000.asm`.
+- Kept the new bank-front names structural. Raw-byte review now supports six weaker but still useful
+  internal starts at `0x040100`, `0x04025C`, `0x040400`, `0x04053C`, `0x0406C4`, and `0x0408D4`.
+  Those starts are evidence-backed because they begin with recurring short header-like prefixes seen
+  multiple times within the same front slice (`FFFF 000A`, `FFFF 000E`, or `0000 0102` followed by
+  a nearby `FFFF 001E/000E` pocket), while the unique `0x040000-0x0400FF` lead-in stays separate.
+- This pass does not prove the subsystem owner for the bank-front bytes, but it still improves the
+  late-ROM source layout materially: bank `0x040000` now makes both its front pre-table island and
+  its long table-targeted body visible in smaller ROM-order modules rather than falling back to a
+  bank-front monolith before the already split flagged-reference tables at `0x041000`.
+
 - Split `src/bank020000_dialogue_front.asm` (`0x020000-0x0201CF`, 19 labelled incbin slices, 8 NPC
   dialogue records). Split `src/bank020000_dialogue_mid.asm` (`0x02053A-0x020E4B`, 110+ labelled
   incbin slices, 53 null-delimited records including boss speeches and landmark hints). Both verified
   bit-perfect. `src/bank020000.asm` updated to include both new files.
+
+- Tightened the bank `0x080000` pre-descriptor tail inside the `0x098000-0x09F776` non-fill island
+  without forcing subsystem meaning. The former single `0x098000-0x09991F` front slice in
+  `src/bank080000_mid.asm` is now split at `0x099200`, leaving only `0x098000-0x0991FF` under the
+  strongly Z80-like opcode-dense label and moving `0x099200-0x09991F` into the new ROM-order module
+  `src/bank080000_mid_front.asm`.
+- The front `0x099200-0x09927F` bytes are now explicit as two monotone byte bands, and the next
+  `0x099280-0x099648` span is source-authored as 51 fixed 19-byte records because every record stays
+  aligned on the same cadence and its third/fourth bytes are consistently one of `F0C0`, `D0C0`, or
+  `B0C0`.
+- Kept the later `0x099649-0x09988F` bytes conservative as two smaller mixed/control tails rather than
+  forcing a weak tuple theory, but still tightened the final `0x099890-0x09991F` trailer into source as
+  a short local-offset word band, a packed byte band, eight repeated `0x01F1` words, a 14-byte trailer,
+  and a final word tail leading directly into the already split `0x099920-0x099A84` descriptor/layout
+  records.
+- Kept the new names structural. The current proof is byte cadence and local ordering, not yet the
+  consuming loader, so this pass records a clearer pre-descriptor frontier without overcommitting to
+  audio, credits, scripts, or another subsystem.
+- Tightened that same `0x098000-0x0991FF` front slice one step further without forcing subsystem meaning.
+  The former single Z80-like `incbin` in `src/bank080000_mid.asm` now lives in
+  `src/bank080000_mid_z80.asm`, where the front `0x098000-0x09907A` bytes stay grouped as the opcode-dense
+  Z80-like code body but the final `0x185` bytes are explicit in ROM order instead of hidden inside the same
+  blob.
+- The new split is still structural but materially cleaner: `0x09907B-0x09913C` is now exposed as an
+  odd-aligned little-endian ascending word table with 97 entries rising from `0x028E` to `0x051C`,
+  `0x09913D-0x0991FE` is a matching descending table with 97 entries falling from `0x0349` to `0x01A4`,
+  and `0x0991FF` stands apart as a single trailing zero byte before the already split pre-descriptor tail at
+  `0x099200`.
+- Kept the names structural rather than guessing at waveform, pitch, camera, or script semantics. The byte
+  pattern proves odd-aligned little-endian lookup-table ownership inside the Z80-like island, but the
+  consumer still needs to be found before stronger subsystem labels are safe.
+- Tightened the front of the same `0x099BD3-0x09A347` command region one step further without forcing a
+  subsystem guess. Five longer table-targeted command records are no longer single `incbin`s in
+  `src/bank080000_mid.asm`: `0x099D05-0x099D47`, `0x099D48-0x099D77`, `0x09A10E-0x09A13B`,
+  `0x09A16A-0x09A198`, and `0x09A288-0x09A347` are now explicit as smaller FF-terminated subrecords.
+- That new split keeps the labels structural. The bytes prove repeated local `0xFF` terminators and one
+  standalone `0xFF` sentinel at `0x09A11D`, but they still do not prove whether the command stream is audio,
+  credits, animation, or another banked interpreter.
 
 - Split the full tail region `0x02482C-0x03FFFF` (112,596 bytes) into 11 named sections in
   `src/bank020000_tail_blocks.asm`, replacing the single opaque `incbin`:

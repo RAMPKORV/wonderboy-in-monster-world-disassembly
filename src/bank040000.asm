@@ -5,8 +5,8 @@
 ; the first four chunks of its local-target payload family are split further at
 ; 0x041C00-0x07FF66, leaving only a tiny trailing bank remainder.
 
-Bank040000:
-	incbin "data/rom/bank_040000_07ffff.bin",$000000,$0009FA
+Bank040000_FrontHeaderLikeData_040000:
+	include "src/bank040000_front_blocks.asm"
 
 Bank040000_Fill_0409FA_040FFF:
 	incbin "data/rom/bank_040000_07ffff.bin",$0009FA,$000606

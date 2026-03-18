@@ -16,9 +16,9 @@
 - `src/init.asm` owns `0x000200-0x004B57` through `data/rom/init_000200_004b57.bin`
 - `src/vblank.asm` owns `0x004B58-0x004FFF` through `data/rom/vblank_004b58_004fff.bin`
 - `src/core.asm` owns `0x005000-0x01FFFF` through `data/rom/core_005000_01ffff.bin`
-- `src/bank020000.asm` owns `0x020000-0x03FFFF` and now also splits two front bank-relative text/control record families at `0x0201D0-0x020539` and `0x020E4C-0x0211C9`, a front bank-relative text-index island at `0x0211CA-0x02135F`, a quiz/text/name band at `0x021360-0x02245F`, the first post-dictionary descriptor/index island at `0x022460-0x022DB7`, a later sentinel-delimited word-record band at `0x023AB6-0x024537`, and a partially decomposed compressed-data tail at `0x02482C-0x03FFFF` whose `0xFF7A`/`0xFF7B` block boundaries are now explicit through `0x03C6DF`
-- `src/bank040000.asm` owns `0x040000-0x07FFFF` and now also splits a flagged ROM-reference table cluster at `0x041000-0x041BFF`, an expanded local-target payload window at `0x041C00-0x07FF66`, a tiny trailing remainder at `0x07FF67-0x07FFFF`, and the confirmed `0xFF` fill run at `0x0409FA-0x040FFF`
-- `src/bank080000.asm` owns `0x080000-0x0BFFFF` and now also splits the former opaque pre-fill front at `0x0801CD-0x0961D7` into cross-bank table-targeted ROM-order payload records plus two explicit untargeted gaps (`0x093FD1-0x094149` and `0x0961D8-0x09622A`) based on the flagged ROM-reference tables in bank `0x040000`; the same owner also splits the `0x098000-0x09F776` non-fill island into a Z80-like opcode-dense block, descriptor records, a zero-fill gap, and a front command substructure (`0x099B00-0x099B31` lead-in plus `0x099B32-0x099BAF` bank-local offset table) followed by narrower ROM-order command-record slices instead of one monolithic trailing blob; it also splits the next non-fill island at `0x0A0000-0x0A4C76` into a front multi-level offset-table tree through `0x0A07C5`, a source-authored `0x0A07C6-0x0A0B25` continued band of repeated four-tuple records, a narrower mixed lead-in at `0x0A0B26-0x0A0C82`, four FF-terminated 6-byte record bands through `0x0A10AA`, a fully record-sliced `0x0A10AB-0x0A34FF` middle span of FF-terminated 5-byte tuples plus short anomaly gaps, and a table-targeted back half at `0x0A3500-0x0A4C76` where several compact record groups are now source-authored as explicit 3-word bands, local-offset triplets, and a self-referencing local-offset list, alongside the confirmed `0xFF` fill runs at `0x09622B-0x097FFF`, `0x09F777-0x09FFFF`, and `0x0A4C77-0x0BFFFF`
+- `src/bank020000.asm` owns `0x020000-0x03FFFF` and now also splits two front bank-relative text/control record families at `0x0201D0-0x020539` and `0x020E4C-0x0211C9`, a front bank-relative text-index island at `0x0211CA-0x02135F`, a quiz/text/name band at `0x021360-0x02245F`, the first post-dictionary descriptor/index island at `0x022460-0x022DB7`, a later sentinel-delimited word-record band at `0x023AB6-0x024537`, and a partially decomposed compressed-data tail at `0x02482C-0x03FFFF` whose `0xFF7A`/`0xFF7B` block boundaries are now explicit through `0x03C6DF` and whose final bank-end remainder is further split into five header-like sub-blocks at `0x03C6E0`, `0x03E846`, `0x03EF4E`, `0x03F4D1`, and `0x03FE24`
+- `src/bank040000.asm` owns `0x040000-0x07FFFF` and now also splits the front pre-table island at `0x040000-0x0409F9` into a lead-in plus six smaller header-like sub-blocks, a flagged ROM-reference table cluster at `0x041000-0x041BFF`, an expanded local-target payload window at `0x041C00-0x07FF66` whose repeated `0x4C0`-byte families now stand in their own ROM-order submodules at `0x04BFAA-0x04E5A9`, `0x05C5DA-0x05CA99`, `0x05D630-0x05FC2F`, and `0x06B192-0x06BB11`, a tiny trailing remainder at `0x07FF67-0x07FFFF`, and the confirmed `0xFF` fill run at `0x0409FA-0x040FFF`
+- `src/bank080000.asm` owns `0x080000-0x0BFFFF` and now also splits the former opaque pre-fill front at `0x0801CD-0x0961D7` into cross-bank table-targeted ROM-order payload records plus two explicit untargeted gaps (`0x093FD1-0x094149` and `0x0961D8-0x09622A`) based on the flagged ROM-reference tables in bank `0x040000`; the same owner also splits the `0x098000-0x09F776` non-fill island into a Z80-like front body at `0x098000-0x09907A`, two odd-aligned little-endian word lookup tables at `0x09907B-0x09913C` and `0x09913D-0x0991FE`, a trailing zero byte at `0x0991FF`, a newly source-authored pre-descriptor structural tail at `0x099200-0x09991F` (two monotone byte bands, a fixed 19-byte record family, a fixed 16-byte record family, a 3-byte lead-in plus a fixed 5-byte record family, local-offset words, packed bytes, repeated `0x01F1` words, and a short word trailer), descriptor records, a zero-fill gap, and a front command substructure (`0x099B00-0x099B31` lead-in plus `0x099B32-0x099BAF` bank-local offset table) followed by narrower ROM-order command-record slices instead of one monolithic trailing blob, with several of the longer pre-`0x09A348` command targets now also explicit as smaller FF-terminated subrecords at `0x099D05`, `0x099D48`, `0x09A10E`, `0x09A16A`, and `0x09A288`; it also splits the next non-fill island at `0x0A0000-0x0A4C76` into a front multi-level offset-table tree through `0x0A07C5`, a source-authored `0x0A07C6-0x0A0B25` continued band of repeated four-tuple records, a narrower mixed lead-in at `0x0A0B26-0x0A0C82`, four FF-terminated 6-byte record bands through `0x0A10AA`, a fully record-sliced `0x0A10AB-0x0A34FF` middle span of FF-terminated 5-byte tuples plus short anomaly gaps, and a table-targeted back half at `0x0A3500-0x0A4C76` where the front `0x0A3500-0x0A37AF` run is now source-authored as a compact local-offset/control family and several later compact record groups are explicit as 3-word bands, local-offset triplets, a self-referencing local-offset list, and a final compact local-offset/control tail pocket at `0x0A4AEC-0x0A4C76`, alongside the confirmed `0xFF` fill runs at `0x09622B-0x097FFF`, `0x09F777-0x09FFFF`, and `0x0A4C77-0x0BFFFF`
 
 ## Observations
 
@@ -29,10 +29,14 @@
 - Long repeated-byte runs exist throughout the ROM, so future splits should document
   whether each run is padding, compressed data, or structured fill.
 - The tail-bank island at `0x098000-0x09F776` is no longer treated as one opaque blob: the
-  front `0x098000-0x09991F` slice is strongly opcode-dense and Z80-like, while the later
+  front `0x098000-0x09907A` slice is strongly opcode-dense and Z80-like, `0x09907B-0x09913C` and
+  `0x09913D-0x0991FE` are now explicit as odd-aligned little-endian ascending/descending word
+  lookup tables, `0x0991FF` is a trailing zero byte, the next `0x099200-0x09991F` span is now
+  explicit as monotone byte bands, a fixed 19-byte record family, a fixed 16-byte record family,
+  a short 3-byte lead-in plus fixed 5-byte records, and a smaller structural trailer, while the later
   `0x099920-0x099A84` records and `0x099B00+` command region now show a clearer front split
   into a short lead-in, a mostly bank-local offset table, and a table-driven set of narrower
-  command-record slices through `0x09A347` before the still-large trailing record at `0x09A348`.
+  command-record slices through `0x09A347` before the still-large trailing record at `0x09A348`. Several of the longer pre-`0x09A348` command targets now also expose internal FF-terminated subrecords directly in source instead of staying as single coarse slices.
 - The earlier tail-bank front at `0x0801CD-0x0961D7` is no longer hidden inside one `0x080000+`
   coarse incbin either: the cross-bank flagged-reference tables in `src/bank040000_tables.asm`
   now expose 178 stable starts there, which makes the payload family and its two untargeted gaps
@@ -47,8 +51,12 @@
   one singleton `$FF` record at `0x0A1378` and two singleton `$FF` records at `0x0A1D4F-0x0A1D50`;
   and finally a table-targeted back half at `0x0A3500-0x0A4C76` whose stable record starts are now
   explicit in source because the front offset tree already references them, with several subfamilies
-  now tightened into explicit 3-word record bands, local-offset triplet records, and a small
-  self-referencing local-offset list even though the higher-level owner and field semantics remain unresolved.
+  now tightened into explicit 3-word record bands, local-offset triplet records, a small
+  self-referencing local-offset list, and a final compact local-offset/control tail pocket even though the
+  higher-level owner and field semantics remain unresolved.
+  The very front of that back-half target range is now cleaner too: `0x0A3500-0x0A37AF` is source-authored
+  as a compact record family with repeated `FC/FB` prefixes and local 24-bit offsets into the earlier tuple
+  bands instead of dozens of one-line `incbin` fragments.
 - The first post-dictionary bank `0x020000` island at `0x022460-0x022DB7` is no longer treated
   as one anonymous blob: the front `0x60` bytes are six same-bank reference descriptors, the next
   `0x118` bytes are a monotone local offset table that terminates with `0x0000`, the indexed payload
@@ -68,9 +76,9 @@
 - The back half of bank `0x020000` is also a little less opaque now: the tail owner at
   `0x02482C-0x03FFFF` no longer stops at nine `0xFF7B`-terminated compressed/data blocks. Three more
   blocks at `0x035078-0x03519D`, `0x03519E-0x0354F3`, and `0x0354F4-0x03C6DF` are now called out by
-  explicit `0xFF7A` terminators, and the front `0x02482C-0x024835` table is source-authored as literal
-  relative offsets instead of a blind `incbin`, leaving only `0x03C6E0-0x03FFFF` as the final grouped
-  tail remainder for that bank slice.
+  explicit `0xFF7A` terminators, the front `0x02482C-0x024835` table is source-authored as literal
+  relative offsets instead of a blind `incbin`, and the final `0x03C6E0-0x03FFFF` bank-end tail is now
+  split into five smaller header-like sub-blocks rather than one monolithic remainder.
 - Those earlier target bands are now explicit too instead of staying hidden inside one front-bank blob:
   `0x0201D0-0x020539` is split into 52 short ROM-order slices from the first offset table, and
   `0x020E4C-0x0211C9` is split into 131 short ROM-order slices from the second. The bytes still mix text
@@ -83,8 +91,11 @@
   and `0x041BC0-0x041BFF`, and an expanded local-target payload window at `0x041C00-0x07FF66` whose
   internal record starts are now split out directly from the monotone local table targets. The newly
   exposed tail also reveals fixed-stride runs of eight `0x4C0`-byte records at `0x04BFAA-0x04E5A9`
-  and `0x05D630-0x05FC2F`, an earlier isolated `0x4C0` record at `0x05C5DA`, and a shorter two-record
+  and `0x05D630-0x05FC2F`, an earlier isolated `0x4C0` record at `0x05C5DA-0x05CA99`, and a shorter two-record
   `0x4C0` run at `0x06B192-0x06BB11` before the final tiny remainder at `0x07FF67-0x07FFFF`.
+- The short bank-front lead-in before that table cluster is cleaner now too: `0x040000-0x0409F9` is
+  no longer one monolithic bank-front blob, but a unique lead-in plus six smaller header-like pockets
+  whose starts recur on short signatures `FFFF 000A`, `FFFF 000E`, and `0000 0102`.
 
 ## Known Padding And Fill Hotspots
 
@@ -95,13 +106,17 @@
   `0x0418AC-0x041B3F`, a short fill gap at `0x041B40-0x041B7F`, a short tail table at
   `0x041B80-0x041BBF`, another short fill gap at `0x041BC0-0x041BFF`, and a first local-target
   payload window with explicit ROM-order record starts at `0x041C00-0x07FF66`
+- Additional bank-front late-ROM structure now also called out explicitly at `0x040000-0x0409F9`: a
+  unique lead-in at `0x040000-0x0400FF`, followed by smaller header-like pockets at
+  `0x040100-0x04025B`, `0x04025C-0x0403FF`, `0x040400-0x04053B`, `0x04053C-0x0406C3`,
+  `0x0406C4-0x0408D3`, and `0x0408D4-0x0409F9`
 - Tail-bank `0xFF` runs now confirmed at `0x09622B-0x097FFF`, `0x09F777-0x09FFFF`, and `0x0A4C77-0x0BFFFF`
 - Additional tail-bank front structure now also called out explicitly: a small untargeted lead-in at `0x080000-0x0801CC`, a large cross-bank table-targeted payload region at `0x0801CD-0x093FD0`, an untargeted gap at `0x093FD1-0x094149`, a second cross-bank table-targeted payload region at `0x09414A-0x0961D7`, and a final untargeted gap at `0x0961D8-0x09622A`
-- Additional tail-bank structure now called out explicitly: a descriptor-header block at `0x099920-0x09997F`, a packed layout/coordinate table at `0x099980-0x099A84`, a zero-filled gap at `0x099A85-0x099AFF`, a command lead-in at `0x099B00-0x099B31`, a bank-local command offset table at `0x099B32-0x099BAF`, an unreferenced command-record prelude at `0x099BB0-0x099BD2`, and table-targeted record boundaries through `0x09A347`
-- Additional tail-bank structure now also called out explicitly at `0x0A0000-0x0A4C76`: a root offset table at `0x0A0000-0x0A01C7`, a larger nested offset-table block at `0x0A01C8-0x0A07BB`, a short offset-table tail at `0x0A07BC-0x0A07C5`, a continued four-tuple record band at `0x0A07C6-0x0A0B25`, a mixed lead-in at `0x0A0B26-0x0A0C82`, FF-terminated 6-byte record bands at `0x0A0C83-0x0A0D18`, `0x0A0D3F-0x0A0D74`, `0x0A0E85-0x0A0F2C`, and `0x0A0FA9-0x0A10AA`, long FF-terminated 5-byte-tuple runs at `0x0A10AB-0x0A1321`, `0x0A132D-0x0A136D`, `0x0A1378-0x0A1405`, `0x0A1411-0x0A1D3E`, `0x0A1D4F-0x0A23F5`, `0x0A2400-0x0A2585`, `0x0A258B-0x0A2605`, `0x0A2610-0x0A2764`, `0x0A27CB-0x0A2D85`, `0x0A2D9B-0x0A303F`, and `0x0A304B-0x0A34FF`, with all eleven runs now split to individual record starts, short anomaly gaps between those runs, and a table-targeted payload record region at `0x0A3500-0x0A4C76` that now also exposes a 12-record 3-word band at `0x0A37B0-0x0A37F7`, a 16-record local-offset-triplet band at `0x0A3B77-0x0A3C16`, and a small self-referencing 3-word/local-offset cluster at `0x0A4AA3-0x0A4AEB`
+- Additional tail-bank structure now called out explicitly: a fixed 16-byte pre-descriptor record band at `0x099649-0x099828`, a 3-byte lead-in plus fixed 5-byte pre-descriptor record band at `0x099829-0x09988F`, a descriptor-header block at `0x099920-0x09997F`, a packed layout/coordinate table at `0x099980-0x099A84`, a zero-filled gap at `0x099A85-0x099AFF`, a command lead-in at `0x099B00-0x099B31`, a bank-local command offset table at `0x099B32-0x099BAF`, an unreferenced command-record prelude at `0x099BB0-0x099BD2`, table-targeted record boundaries through `0x09A347`, and FF-terminated internal subrecord boundaries now made explicit inside the longer front command targets at `0x099D05`, `0x099D48`, `0x09A10E`, `0x09A16A`, and `0x09A288`
+- Additional tail-bank structure now also called out explicitly at `0x0A0000-0x0A4C76`: a root offset table at `0x0A0000-0x0A01C7`, a larger nested offset-table block at `0x0A01C8-0x0A07BB`, a short offset-table tail at `0x0A07BC-0x0A07C5`, a continued four-tuple record band at `0x0A07C6-0x0A0B25`, a mixed lead-in at `0x0A0B26-0x0A0C82`, FF-terminated 6-byte record bands at `0x0A0C83-0x0A0D18`, `0x0A0D3F-0x0A0D74`, `0x0A0E85-0x0A0F2C`, and `0x0A0FA9-0x0A10AA`, long FF-terminated 5-byte-tuple runs at `0x0A10AB-0x0A1321`, `0x0A132D-0x0A136D`, `0x0A1378-0x0A1405`, `0x0A1411-0x0A1D3E`, `0x0A1D4F-0x0A23F5`, `0x0A2400-0x0A2585`, `0x0A258B-0x0A2605`, `0x0A2610-0x0A2764`, `0x0A27CB-0x0A2D85`, `0x0A2D9B-0x0A303F`, and `0x0A304B-0x0A34FF`, with all eleven runs now split to individual record starts, short anomaly gaps between those runs, and a table-targeted payload record region at `0x0A3500-0x0A4C76` that now also exposes a compact local-offset/control pocket at `0x0A37FE-0x0A3B76`, a 12-record 3-word band at `0x0A37B0-0x0A37F7`, a 16-record local-offset-triplet band at `0x0A3B77-0x0A3C16`, a small self-referencing 3-word/local-offset cluster at `0x0A4AA3-0x0A4AEB`, and a final compact local-offset/control tail pocket at `0x0A4AEC-0x0A4C76`
 - Additional mid-bank structure now also called out explicitly at `0x022460-0x022DB7`: six same-bank reference descriptors at `0x022460-0x0224BF`, an indexed-payload offset table at `0x0224C0-0x0225D7`, a table-targeted short-record payload at `0x022662-0x02292B`, a repeated descriptor-record band at `0x02292C-0x022AEB`, a front `$FFFF`-delimited descriptor tail at `0x022AEC-0x022D3F`, a repeated `$0BFF` word band at `0x022D40-0x022D6B`, and compact `$FF00`-terminated word records at `0x022D6C-0x022DB7`
 - Additional mid-bank structure now also called out explicitly at `0x0211CA-0x02135F`: a local text-table pointer list at `0x0211CA-0x0211D9`, a bank-relative offset table at `0x0211DA-0x021257`, and a second bank-relative offset table at `0x021258-0x02135F`
 - Additional front-bank structure now also called out explicitly at `0x0201D0-0x0211C9`: a first bank-relative text/control record family at `0x0201D0-0x020539`, an untargeted front gap at `0x02053A-0x020E4B`, and a second bank-relative text/control record family at `0x020E4C-0x0211C9`
 - Additional mid-bank structure now also called out explicitly at `0x023AB6-0x024537`: a long band of `$FFFF`-delimited big-endian word records with narrower ROM-order record boundaries instead of one later-bank anonymous blob
-- Additional back-half bank `0x020000` structure now also called out explicitly at `0x02482C-0x03FFFF`: a source-authored 4-entry relative-offset table plus twelve compressed/data blocks with proven `0xFF7A`/`0xFF7B` terminators through `0x03C6DF`, followed by a smaller final remainder at `0x03C6E0-0x03FFFF`
+- Additional back-half bank `0x020000` structure now also called out explicitly at `0x02482C-0x03FFFF`: a source-authored 4-entry relative-offset table plus twelve compressed/data blocks with proven `0xFF7A`/`0xFF7B` terminators through `0x03C6DF`, followed by five smaller header-like sub-blocks at `0x03C6E0-0x03E845`, `0x03E846-0x03EF4D`, `0x03EF4E-0x03F4D0`, `0x03F4D1-0x03FE23`, and `0x03FE24-0x03FFFF`
 - Remaining non-fill slices in `0x080000-0x0BFFFF` still need code/data/text classification before deeper source-authoring

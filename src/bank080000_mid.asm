@@ -1,16 +1,21 @@
 ; ROM range: 0x098000-0x09F776
-; Conservative split of the first non-fill tail-bank island. The front block is strongly
-; Z80/opcode-dense rather than plain 68k or obvious asset data, but its caller and exact
-; subsystem owner are still unproven. The following slices are structurally clearer: a
-; compact descriptor-header region plus an adjacent fixed-record layout band, a small zero-fill
-; gap, and a larger command region whose front bytes now split into a short lead-in plus a
-; bank-local offset table before the denser command records. The formerly monolithic trailing
-; command body at 0x09A348-0x09F776 is now divided into three ROM-order source windows, each
-; further split at every proven local 0xFF terminator so the command-record cadence is explicit
-; even before the subsystem owner is clearer.
+; Conservative split of the first non-fill tail-bank island. The front 0x098000-0x0991FF
+; span still begins with a strongly Z80/opcode-dense code body rather than plain 68k or
+; obvious asset data, but it no longer stays monolithic: the final 0x185 bytes are now
+; explicit as two odd-aligned little-endian word lookup tables and one trailing zero byte.
+; The next 0x099200-0x09991F span is also split separately because it is structurally cleaner:
+; monotone byte bands, a fixed 19-byte record family, smaller mixed/control tails, and a short
+; local-offset/word trailer leading into the already split descriptor-header region plus the
+; adjacent fixed-record layout band. The larger command region still keeps its front lead-in
+; and bank-local offset table explicit before the denser command records, and the formerly
+; monolithic trailing command body at 0x09A348-0x09F776 remains divided into three ROM-order
+; source windows, each further split at every proven local 0xFF terminator so the
+; command-record cadence is explicit even before the subsystem owner is clearer.
 
-Bank080000_Z80LikeCodeBlock_098000:
-	incbin "data/rom/bank_080000_0bffff.bin",$018000,$001920
+	include "src/bank080000_mid_z80.asm"
+
+Bank080000_PreDescriptorStructuredData_099200:
+	include "src/bank080000_mid_front.asm"
 
 Bank080000_StructuredDescriptorAndLayoutRecords_099920:
 	include "src/bank080000_mid_descriptors.asm"
@@ -79,10 +84,30 @@ Bank080000_CommandRecord_099CFE:
 	incbin "data/rom/bank_080000_0bffff.bin",$019CFE,$000007
 
 Bank080000_CommandRecord_099D05:
-	incbin "data/rom/bank_080000_0bffff.bin",$019D05,$000043
+	; This table-targeted pocket tightens into smaller FF-terminated command slices instead of
+	; one opaque 0x43-byte record.
+Bank080000_CommandSubrecord_099D05:
+	dc.b	$F7,$04,$F0,$07,$F1,$0F,$F2,$80,$25,$F4,$00,$E2,$0C,$DB,$10,$1C
+	dc.b	$F3,$00,$00,$F5,$0C,$FE,$FF
+
+Bank080000_CommandSubrecord_099D1C:
+	dc.b	$20,$07,$21,$9D,$FF
+
+Bank080000_CommandSubrecord_099D21:
+	dc.b	$F6,$02,$F7,$04,$F0,$07,$F1,$0F,$F2,$80,$09,$F4,$00,$E2,$05,$D9
+	dc.b	$15,$0B,$F3,$00,$FC,$F5,$08,$FE,$F2,$80,$09,$F4,$00,$DB,$15,$15
+	dc.b	$F3,$00,$FC,$F5,$04,$FE,$FF
 
 Bank080000_CommandRecord_099D48:
-	incbin "data/rom/bank_080000_0bffff.bin",$019D48,$000030
+	; The next adjacent table target follows the same pattern: a short FF-terminated lead-in
+	; plus one larger FF-terminated continuation.
+Bank080000_CommandSubrecord_099D48:
+	dc.b	$20,$07,$4D,$9D,$FF
+
+Bank080000_CommandSubrecord_099D4D:
+	dc.b	$F6,$02,$F7,$04,$F0,$07,$F1,$0F,$F2,$80,$09,$F4,$00,$E2,$05,$D9
+	dc.b	$15,$0B,$F3,$00,$FC,$F5,$08,$FE,$F2,$00,$08,$F4,$00,$F0,$01,$E2
+	dc.b	$03,$D9,$DF,$FC,$10,$F3,$80,$01,$FE,$FE,$FF
 
 Bank080000_CommandRecord_099D78:
 	incbin "data/rom/bank_080000_0bffff.bin",$019D78,$00001C
@@ -184,7 +209,24 @@ Bank080000_CommandRecord_09A0F9:
 	incbin "data/rom/bank_080000_0bffff.bin",$01A0F9,$000015
 
 Bank080000_CommandRecord_09A10E:
-	incbin "data/rom/bank_080000_0bffff.bin",$01A10E,$00002E
+	; 0x09A10E-0x09A13B is another compound command record with four FF-terminated slices and
+	; one standalone FF byte made explicit.
+Bank080000_CommandSubrecord_09A10E:
+	dc.b	$0C,$D0,$17,$A1,$F5,$03,$FE,$FE,$FF
+
+Bank080000_CommandSubrecord_09A117:
+	dc.b	$F0,$04,$C2,$70,$17,$FF
+
+Bank080000_CommandSentinel_09A11D:
+Bank080000_CommandSubrecord_09A11D:
+	dc.b	$FF
+
+Bank080000_CommandSubrecord_09A11E:
+	dc.b	$44,$07,$23,$A1,$FF
+
+Bank080000_CommandSubrecord_09A123:
+	dc.b	$F6,$02,$F7,$06,$F1,$10,$DC,$DF,$F2,$00,$18,$D0,$17,$A1,$F2,$00
+	dc.b	$0C,$D0,$17,$A1,$F5,$01,$FE,$FE,$FF
 
 Bank080000_CommandRecord_09A13C:
 	incbin "data/rom/bank_080000_0bffff.bin",$01A13C,$00000D
@@ -193,7 +235,23 @@ Bank080000_CommandRecord_09A149:
 	incbin "data/rom/bank_080000_0bffff.bin",$01A149,$000021
 
 Bank080000_CommandRecord_09A16A:
-	incbin "data/rom/bank_080000_0bffff.bin",$01A16A,$00002F
+	; This later target also resolves into a short FF-terminated stub plus three compact
+	; follow-on slices.
+Bank080000_CommandSubrecord_09A16A:
+	dc.b	$1A,$07,$6F,$A1,$FF
+
+Bank080000_CommandSubrecord_09A16F:
+	dc.b	$F6,$02,$F7,$06,$F1,$0E,$F2,$00,$10,$F4,$04,$DA,$C1,$7C,$F3,$40
+	dc.b	$00,$1C,$F3,$C0,$FF
+
+Bank080000_CommandSubrecord_09A184:
+	dc.b	$70,$F3,$40,$00,$10,$F3,$C0,$FF
+
+Bank080000_CommandSubrecord_09A18C:
+	dc.b	$68,$F3,$40,$00,$08,$F3,$C0,$FF
+
+Bank080000_CommandSubrecord_09A194:
+	dc.b	$FB,$F5,$0C,$FE,$FF
 
 Bank080000_CommandRecord_09A199:
 	incbin "data/rom/bank_080000_0bffff.bin",$01A199,$000022
@@ -226,7 +284,34 @@ Bank080000_CommandRecord_09A26B:
 	incbin "data/rom/bank_080000_0bffff.bin",$01A26B,$00001D
 
 Bank080000_CommandRecord_09A288:
-	incbin "data/rom/bank_080000_0bffff.bin",$01A288,$0000C0
+	; The last front command-table target before 0x09A348 is a larger FF-terminated compound
+	; pocket rather than one indivisible 0xC0-byte blob.
+Bank080000_CommandSubrecord_09A288:
+	dc.b	$78,$06,$93,$A2,$07,$AA,$A2,$08,$D2,$A2,$FF
+
+Bank080000_CommandSubrecord_09A293:
+	dc.b	$F0,$24,$F7,$30,$F4,$00,$C7,$F1,$0D,$F5,$1C,$32,$9C,$3E,$37,$99
+	dc.b	$3A,$32,$3E,$C4,$99,$3B,$FF
+
+Bank080000_CommandSubrecord_09A2AA:
+	dc.b	$F0,$1F,$F7,$01,$F4,$00,$C3,$F1,$0C,$F5,$1C,$52,$53,$54,$4F,$50
+	dc.b	$51,$52,$4D,$4E,$4F,$50,$4C,$4B,$4D,$4E,$48,$3F,$40,$41,$3D,$3E
+	dc.b	$3A,$3B,$3D,$39,$38,$35,$CE,$FF
+
+Bank080000_CommandSubrecord_09A2D2:
+	dc.b	$F0,$04,$F7,$0E,$F4,$00,$C5,$F1,$0D,$F5,$1C,$9E,$43,$9E,$42,$9E
+	dc.b	$42,$9C,$41,$9C,$41,$9B,$40,$9B,$40,$9A,$3F,$97,$3E,$A3,$48,$94
+	dc.b	$3B,$AA,$4F,$94,$3B,$B1,$B6,$58,$C6,$FA,$FF
+
+Bank080000_CommandSubrecord_09A2FD:
+	dc.b	$88,$00,$03,$04,$A3,$00,$00,$F7,$01,$DA,$D0,$12,$9F,$C3,$FA,$FE
+	dc.b	$D0,$43,$A1,$C5,$FA,$D1,$43,$A1,$C4,$FA,$D0,$12,$9F,$D0,$43,$A1
+	dc.b	$C4,$FA,$D1,$12,$9F,$C6,$FA,$D0,$43,$A1,$D0,$12,$9F,$FD,$04,$A3
+	dc.b	$70,$06,$32,$A3,$FF
+
+Bank080000_CommandSubrecord_09A332:
+	dc.b	$F7,$3F,$F0,$27,$F4,$02,$F1,$0E,$C2,$50,$54,$57,$F5,$1C,$DB,$50
+	dc.b	$54,$57,$F5,$0E,$FE,$FF
 
 Bank080000_FFTerminatedCommandRecordWindowFront_09A348:
 	include "src/bank080000_mid_command_tail_front.asm"
