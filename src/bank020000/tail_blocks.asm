@@ -93,4 +93,4 @@ Bank020000_TailGfxBlock12_0354F4:
 ; 0x0B60-style header-like prefixes already seen in earlier tail blocks. Keep the names
 ; structural until a loader or decompressor proves whether these are true block headers,
 ; format variants, or nested substreams.
-	include "src/bank020000_tail_remainder.asm"
+	include "src/bank020000/tail_remainder.asm"

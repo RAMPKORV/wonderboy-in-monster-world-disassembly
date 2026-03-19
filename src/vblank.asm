@@ -1,4 +1,7 @@
-; ROM range: 0x004B58-0x004FFF
+; ======================================================================
+; src/vblank.asm
+; ROM range: 0x004B58-0x004FFF - VBlank dispatch and task scheduling
+; ======================================================================
 ; The front of this block is source-authored where interrupt/task-dispatch behavior is
 ; understood; the remainder stays in ROM order as an opaque blob.
 

@@ -1,4 +1,7 @@
-; ROM range: 0x005000-0x01FFFF
+; ======================================================================
+; src/core.asm
+; ROM range: 0x005000-0x01FFFF - early engine and menu/core gameplay logic
+; ======================================================================
 ; Early engine/core body kept mostly opaque until routine boundaries are mapped.
 ; The front of this file continues the task/input helper chain that begins at `0x004FEE`
 ; in `src/vblank.asm`. The `0x005016-0x00505C` helpers currently look like a compact

@@ -2,7 +2,7 @@
 
 - Tightened the front of bank `0x080000`'s `0x098000-0x0991FF` island without forcing a sound-driver
   guess.
-- Renamed `src/bank080000_mid_z80.asm` to `src/bank080000_mid_z80_program.asm` because the opening bytes
+- Renamed `src/bank080000_mid_z80.asm` to `src/bank080000_z80_program.asm` because the opening bytes
   now prove a real Z80 program front rather than a merely Z80-like blob.
 - `0x098000` now stands explicitly as a reset-style entry that opens on `DI`, `IM 1`, and an absolute
   jump to `0x09803B`.

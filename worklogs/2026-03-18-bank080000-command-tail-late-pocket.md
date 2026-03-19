@@ -2,7 +2,7 @@
 
 - Tightened another opaque pocket inside the tail-bank `0x09E028-0x09F776` command window without forcing a
   subsystem guess.
-- `src/bank080000_mid_command_tail_tail.asm` now source-authors sixteen more FF-terminated records as explicit
+- `src/bank080000_z80_command_records_c.asm` now source-authors sixteen more FF-terminated records as explicit
   `dc.b` data instead of raw `incbin` slices across `0x09E9E7-0x09ECD5`.
 - `0x09E9E7` now stands as one longer `F4 1B` literal/high-byte ladder continuation that reuses the recurring
   `0x43/0x46/0x48/0x4A/0x4D` band before ending in a short repeated `0x4A/0x56` tail.

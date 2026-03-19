@@ -395,7 +395,7 @@
   with eight short 4-byte literal rows. The next useful evidence target is still the loader or bank-switch
   path that enters the wider `0x099B00-0x09F776` command region, so these structural command families can
   move from byte-shape names to real subsystem ownership now that no raw coverage remains anywhere in the
-  dedicated `src/bank080000_mid_command_front.asm` owner for the `0x099A85-0x09A347` pre-window command front.
+  dedicated `src/bank080000_z80_command_front.asm` owner for the `0x099A85-0x09A347` pre-window command front.
   The newly explicit `0x09B8C7-0x09BFCF` follow-up
   now also sharpens that front command-window picture: it begins with a compact `F4 04` row neighborhood
   around `0x30/0x37/0x39/0x3C`, moves through a local-control plus `0x07/0x12/0x72/0x09` literal-control

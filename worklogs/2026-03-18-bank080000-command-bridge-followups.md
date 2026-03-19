@@ -2,12 +2,12 @@
 
 - Tightened two more opaque bridge pockets inside the bank `0x080000` command-tail body without forcing a
   subsystem guess.
-- `src/bank080000_mid_command_tail_mid.asm` now source-authors `0x09DB5B-0x09DBCB` as explicit `dc.b`
+- `src/bank080000_z80_command_records_b.asm` now source-authors `0x09DB5B-0x09DBCB` as explicit `dc.b`
   data instead of three raw `incbin` slices.
 - That mid-window bridge now reads as one compact setup/local-target sweep that reuses `E0/E1`-tagged
   local steps before ending in a short repeated literal row, followed by two neighboring compact
   literal-row continuations with the same `F4/C4/F1/F5` framing and one tiny `C2/F1` pivot.
-- `src/bank080000_mid_command_tail_tail.asm` now source-authors `0x09F51D-0x09F596` as explicit `dc.b`
+- `src/bank080000_z80_command_records_c.asm` now source-authors `0x09F51D-0x09F596` as explicit `dc.b`
   data instead of three raw `incbin` slices.
 - That late-tail bridge now exposes one more compact `CA/DF/FE`-style local-control sweep at `0x09F51D`,
   followed by a short `F4 00 C2` literal/control pair at `0x09F561` and `0x09F57C` that varies the same

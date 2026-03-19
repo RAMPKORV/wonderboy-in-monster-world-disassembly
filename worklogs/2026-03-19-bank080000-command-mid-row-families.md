@@ -1,7 +1,7 @@
 # 2026-03-19 bank080000 command mid row families
 
 - Tightened the next adjacent middle-window pocket in bank `0x080000` without forcing subsystem meaning.
-- `src/bank080000_mid_command_tail_mid.asm` now source-authors the former raw run at
+- `src/bank080000_z80_command_records_b.asm` now source-authors the former raw run at
   `0x09CFBD-0x09D341` as nineteen explicit FF-terminated records instead of `incbin` slices.
 - `0x09CFBD-0x09D093` now reads as one denser `F4 F0` literal-row cycle followed by a compact `F4 20`
   row-family pocket with two tiny cap records.

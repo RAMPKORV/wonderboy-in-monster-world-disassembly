@@ -27,9 +27,10 @@ node tools/run_checks.js
 
 ## Layout
 
-- `wonderboy.asm` - top-level include order for the rebuild
+- `wonderboy.asm` - top-level include order for the rebuild, mirroring the ROM module layout
 - `header.asm` - vector table and Mega Drive header in source form
-- `src/rom_body.asm` - remaining ROM body as `incbin`
+- `src/` - engine-facing source modules plus bank owners
+- `src/bank020000/`, `src/bank040000/`, `src/bank080000/` - bank-local leaf modules grouped by owner
 - `data/rom/` - extracted raw ROM segments that still need decoding
 - `original/` - immutable baseline ROM copy
 - `docs/` - baseline notes, process docs, and milestone planning

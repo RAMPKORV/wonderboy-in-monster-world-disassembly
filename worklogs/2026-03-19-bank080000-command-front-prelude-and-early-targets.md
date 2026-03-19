@@ -2,7 +2,7 @@
 
 - Tightened the very front of bank `0x080000`'s `0x099B00-0x09A347` command table without forcing subsystem
   ownership.
-- `src/bank080000_mid.asm` now source-authors the former raw `0x099BB0-0x099D04` stretch as explicit tuple-led,
+- `src/bank080000_z80_resources.asm` now source-authors the former raw `0x099BB0-0x099D04` stretch as explicit tuple-led,
   FF-terminated, and FD-bridged subrecords instead of ten `incbin` slices.
 - The unreferenced prelude at `0x099BB0-0x099BD2` is now clearer in source: one standalone lead byte at
   `0x099BB0`, one tuple-led FF-terminated setup record at `0x099BB1`, and one short `F3 ... FD` bridge at

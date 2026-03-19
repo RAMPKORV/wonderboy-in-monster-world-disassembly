@@ -1,7 +1,7 @@
 # 2026-03-18 bank080000 pre-descriptor records
 
 - Tightened the formerly incbin-backed `0x099649-0x09988F` span inside
-  `src/bank080000_mid_front.asm` into explicit source-authored records instead of two coarse
+  `src/bank080000_z80_pre_descriptor_data.asm` into explicit source-authored records instead of two coarse
   mixed/control byte bands.
 - Promoted `0x099649-0x099828` into thirty fixed 16-byte records. The byte cadence is now stable
   enough to justify ROM-order record ownership even though the field meanings are still unproven.

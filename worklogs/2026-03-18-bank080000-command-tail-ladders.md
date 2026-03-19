@@ -2,7 +2,7 @@
 
 - Tightened another opaque pocket inside the tail-bank `0x09E028-0x09F776` command window without forcing a
   subsystem guess.
-- `src/bank080000_mid_command_tail_tail.asm` now source-authors five more FF-terminated records as explicit
+- `src/bank080000_z80_command_records_c.asm` now source-authors five more FF-terminated records as explicit
   `dc.b` data instead of raw `incbin` slices: the compact low-byte ladder pair at `0x09E6B2-0x09E6E1`, the
   neighboring local-seed plus low-byte ladder pair at `0x09E73F-0x09E791`, and the later local-target sweep /
   high-byte pair pocket at `0x09F0AE-0x09F18B`.

@@ -2,7 +2,7 @@
 
 - Tightened another visible pocket inside bank `0x080000`'s middle command window without forcing subsystem
   meaning.
-- `src/bank080000_mid_command_tail_mid.asm` now source-authors the former raw run at
+- `src/bank080000_z80_command_records_b.asm` now source-authors the former raw run at
   `0x09CBEE-0x09CFBC` as thirty explicit FF-terminated records instead of `incbin` slices.
 - `0x09CBEE-0x09CC00` now stand explicitly as a short `F4 00` literal-control pair, `0x09CC16-0x09CCEC`
   expose three broader setup records with one low-byte ladder, one mixed literal/high-byte pocket, and one

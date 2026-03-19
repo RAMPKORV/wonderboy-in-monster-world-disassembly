@@ -2,7 +2,7 @@
 
 - Tightened another middle-window pocket in bank `0x080000`'s `0x09C008-0x09E027` command body without forcing
   subsystem meaning.
-- `src/bank080000_mid_command_tail_mid.asm` now source-authors the former raw `0x09C253-0x09C5B0` run as
+- `src/bank080000_z80_command_records_b.asm` now source-authors the former raw `0x09C253-0x09C5B0` run as
   eighteen explicit FF-terminated records instead of eighteen `incbin` slices.
 - `0x09C253` now stands explicitly as a compact alternating local-control bridge that falls into one short
   `F4 00` literal-row pocket around `0x30/0x2E/0x2B/0x31/0x34/0x35`, and `0x09C2BA-0x09C308` narrow that same

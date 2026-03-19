@@ -1,7 +1,7 @@
 # 2026-03-19 bank080000 command mid pair and high-byte bridges
 
 - Tightened the next adjacent middle-window pocket in bank `0x080000` without forcing subsystem meaning.
-- `src/bank080000_mid_command_tail_mid.asm` now source-authors the former raw run at
+- `src/bank080000_z80_command_records_b.asm` now source-authors the former raw run at
   `0x09D342-0x09D5BE` as fifteen explicit FF-terminated records instead of `incbin` slices.
 - `0x09D342-0x09D40F` now stays explicit as a continued `F4 FC` repeated-pair ladder neighborhood:
   two broader `0x29/0x30/0x35/0x37/0x32/0x34` row cycles, one mixed repeated-pair bridge, and one

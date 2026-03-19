@@ -1,7 +1,7 @@
 # 2026-03-19 bank080000 command front high-byte followup
 
 - Tightened the next adjacent pocket in bank `0x080000`'s front command window without forcing subsystem meaning.
-- `src/bank080000_mid_command_tail_front.asm` now source-authors the former raw run at
+- `src/bank080000_z80_command_records_a.asm` now source-authors the former raw run at
   `0x09AA5C-0x09AB29` as four explicit FF-terminated records instead of four `incbin` slices.
 - `0x09AA5C-0x09AA98` now stands explicitly as a compact local-control sweep into two short `F4 08`
   literal-control rows built around `0x00/0x0C/0x05/0x60`.

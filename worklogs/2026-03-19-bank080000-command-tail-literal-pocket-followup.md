@@ -2,7 +2,7 @@
 
 - Tightened the next adjacent late-tail pocket in bank `0x080000`'s `0x09E028-0x09F776` command window
   without forcing a loader guess.
-- `src/bank080000_mid_command_tail_tail.asm` now source-authors the former raw
+- `src/bank080000_z80_command_records_c.asm` now source-authors the former raw
   `0x09E385-0x09E604` run as sixteen explicit FF-terminated records instead of sixteen `incbin` slices.
 - `0x09E385-0x09E404` now stands as a short `F4 08` literal crest followed by two compact
   `F4 00` literal-control rows.

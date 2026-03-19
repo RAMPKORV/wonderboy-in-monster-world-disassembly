@@ -2,7 +2,7 @@
 
 - Tightened another opaque pocket inside the tail-bank `0x09E028-0x09F776` command window without forcing a
   subsystem guess.
-- `src/bank080000_mid_command_tail_tail.asm` now source-authors sixteen more FF-terminated records as explicit
+- `src/bank080000_z80_command_records_c.asm` now source-authors sixteen more FF-terminated records as explicit
   `dc.b` data instead of raw `incbin` slices across `0x09F272-0x09F4D4`.
 - The first and last records in that pocket (`0x09F272` and `0x09F489`) now read as compact local-control
   sweeps: each reuses the same `CA DF FA FE / DF FA FE` pocket and then walks a short `D0`-prefixed ladder

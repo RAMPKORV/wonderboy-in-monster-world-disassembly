@@ -2,7 +2,7 @@
 
 - Tightened another visible opaque pocket inside the bank `0x080000` tail command window without forcing a
   subsystem guess.
-- `src/bank080000_mid_command_tail_tail.asm` now source-authors four more FF-terminated records as explicit
+- `src/bank080000_z80_command_records_c.asm` now source-authors four more FF-terminated records as explicit
   `dc.b` data instead of raw `incbin` slices across `0x09E792-0x09E9A2`.
 - The front record at `0x09E792-0x09E8C9` now reads as one longer `F7/F0` local-target sweep that hands off
   into repeated `0x9x/0xAx` high-byte ladders and several `E4`-tagged local-offset tails before `0xFF`.

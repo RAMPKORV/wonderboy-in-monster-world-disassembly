@@ -1,7 +1,7 @@
 # 2026-03-19 bank080000 command tail front-edge ladders
 
 - Tightened the front edge of the bank `0x080000` tail command window one more step without forcing a subsystem guess.
-- `src/bank080000_mid_command_tail_tail.asm` now source-authors the former raw `0x09E237-0x09E384` run as ten
+- `src/bank080000_z80_command_records_c.asm` now source-authors the former raw `0x09E237-0x09E384` run as ten
   explicit FF-terminated records instead of ten `incbin` slices.
 - `0x09E237` keeps the same short local-control sweep shape already seen nearby, then climbs through a compact
   `0x4F/0x51/0x52/.../0x5B` literal band.

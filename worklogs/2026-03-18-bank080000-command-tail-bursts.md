@@ -3,7 +3,7 @@
 - Tightened three more late records inside the tail-bank `0x09E028-0x09F776` command window
   without forcing a subsystem guess.
 - The records at `0x09F597-0x09F5F7` and `0x09F5F8-0x09F669` are now explicit `dc.b` data in
-  `src/bank080000_mid_command_tail_tail.asm` instead of raw `incbin` slices.
+  `src/bank080000_z80_command_records_c.asm` instead of raw `incbin` slices.
 - Both records keep the same compact `F4 00 C2` header and a long repeated-literal rhythm built
   from `0x0F` bursts plus recurring `0x60/0x6C/0x6D/0x65` control bytes, with the second record
   extending the first family's pattern rather than introducing a new local shape.

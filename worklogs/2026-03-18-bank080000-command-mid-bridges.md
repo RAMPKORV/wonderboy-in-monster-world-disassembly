@@ -2,7 +2,7 @@
 
 - Tightened two more opaque bridges inside the tail-bank `0x09C008-0x09E027` command window without forcing a
   subsystem guess.
-- `src/bank080000_mid_command_tail_mid.asm` now source-authors sixteen more FF-terminated records as explicit
+- `src/bank080000_z80_command_records_b.asm` now source-authors sixteen more FF-terminated records as explicit
   `dc.b` data instead of raw `incbin` slices across `0x09DA43-0x09DB5A` and `0x09DCD6-0x09DE57`.
 - The first pocket at `0x09DA43-0x09DB5A` now reads as one compact `F4/F1/F5` family with short
   `0xBx/0x5x` and `0xAx/0x4x` high-byte pair ladders, two tiny literal-control pivots, and one longer mixed

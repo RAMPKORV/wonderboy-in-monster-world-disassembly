@@ -113,7 +113,7 @@ Bank040000_LocalTableTargetedPayloadRecord_0454FB:
 Bank040000_LocalTableTargetedPayloadRecord_0456A4:
 	incbin "data/rom/bank_040000_07ffff.bin",$0056A4,$00019E
 
-	include "src/bank040000_gfx_tiles_045842.asm"
+	include "src/bank040000/gfx_tiles_045842.asm"
 
 Bank040000_LocalTableTargetedPayloadRecord_045D02:
 	incbin "data/rom/bank_040000_07ffff.bin",$005D02,$0001A9

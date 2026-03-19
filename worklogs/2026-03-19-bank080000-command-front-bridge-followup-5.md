@@ -2,7 +2,7 @@
 
 - Tightened another adjacent bridge in bank `0x080000`'s `0x099B00-0x09A347` command front without forcing
   subsystem ownership.
-- `src/bank080000_mid.asm` now source-authors the former raw `0x099F24-0x09A10D` stretch as explicit tuple-led and
+- `src/bank080000_z80_resources.asm` now source-authors the former raw `0x099F24-0x09A10D` stretch as explicit tuple-led and
   FF-terminated subrecords instead of seventeen `incbin` slices.
 - `0x099F24-0x099FDA` now stands as a repeated tuple-plus-control family with compact `F5/FE` and local-offset tails,
   including the denser `0x099F63` control body and neighboring short literal/high-byte pockets at `0x099F93` and

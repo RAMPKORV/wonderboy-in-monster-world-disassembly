@@ -1,6 +1,6 @@
 # 2026-03-19 bank080000 Z80 main-body prelude
 
-- Tightened the remaining front-Z80 hole in `src/bank080000_mid_z80_program.asm` from `0x09803B` through `0x098274`.
+- Tightened the remaining front-Z80 hole in `src/bank080000_z80_program.asm` from `0x09803B` through `0x098274`.
 - The former `incbin` now stands directly in source as a startup / sequencing / slot-management bridge instead of one anonymous prelude.
 - `0x09803B-0x0980E1` resets the `0x1B80+`, `0x1C80+`, and `0x1ED1+` work areas, emits fixed setup bursts through already proven output helpers, and enters a three-step warmup loop.
 - `0x0980E2-0x09810A` is a short startup-burst helper plus an output-selector reset that clears the active output byte, selects page `2` in `0x1C10`, and pulses `RST 10` four times.

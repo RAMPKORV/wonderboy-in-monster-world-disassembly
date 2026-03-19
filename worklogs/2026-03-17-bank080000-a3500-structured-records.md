@@ -1,7 +1,7 @@
 # 2026-03-17 bank080000 `0x0A3500+` structured-record pass
 
 - Tightened the back half of bank `0x080000`'s `0x0A0000-0x0A4C76` island without forcing a
-  subsystem guess. The large table-targeted module `src/bank080000_a3500.asm` no longer treats every
+  subsystem guess. The large table-targeted module `src/bank080000_table_targeted_payload_records.asm` no longer treats every
   proven target as a raw sliced `incbin`.
 - Promoted the compact cluster at `0x0A37B0-0x0A37FD` into explicit source-authored data: twelve fixed
   3-word records at `0x0A37B0-0x0A37F7`, followed by two standalone local-offset values encoded as

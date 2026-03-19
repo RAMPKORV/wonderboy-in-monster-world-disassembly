@@ -2,6 +2,22 @@
 
 ## 2026-03-19
 
+- Renamed bank `0x080000`'s late non-fill owners away from temporary `mid` / `a0000` scaffold names.
+  `src/bank080000.asm` now includes `src/bank080000_z80_resources.asm` for `0x098000-0x09F776`
+  and `src/bank080000_offset_tree_payload.asm` for `0x0A0000-0x0A4C76`, while the former
+  `mid_*` child modules now read as `src/bank080000_z80_program.asm`,
+  `src/bank080000_z80_pre_descriptor_data.asm`, `src/bank080000_z80_descriptor_tables.asm`,
+  `src/bank080000_z80_command_front.asm`, and `src/bank080000_z80_command_records_{a,b,c}.asm`.
+- This is a naming-and-ownership maturity pass rather than new byte recovery, but it moves one of
+  the largest still-opaque late-ROM regions onto stable structural owners: a Z80-resource island
+  followed by an offset-tree payload island, instead of preserving temporary ROM-position labels.
+
+- Started `docs/blob_catalog.md` with a whole-ROM ownership inventory pass focused on bank `0x080000`.
+  The new catalog classifies the tail-bank front into cross-bank payload records, confirmed fill,
+  a Z80-resident program plus lookup tables, structured pre-descriptor / descriptor metadata,
+  Z80-side command windows, the offset-tree payload island, and the trailing fill, each with
+  conservative evidence, confidence, and next-proof notes.
+
 - Renamed bank `0x080000`'s `0x0A3500-0x0A4C76` table-targeted back-half owner from the old
   address-stamped `src/bank080000_a3500.asm` family to intention-revealing
   `src/bank080000_table_targeted_payload_records.asm` plus four ROM-order child modules
@@ -95,7 +111,7 @@
   and loader ownership rather than hidden payload bytes.
 
 - Tightened the front of bank `0x080000`'s Z80-program body again without forcing a subsystem name.
-  `src/bank080000_mid_z80_program.asm` now source-authors the former `0x09803B-0x098274` main-body
+  `src/bank080000_z80_program.asm` now source-authors the former `0x09803B-0x098274` main-body
   prelude instead of leaving it behind one `incbin`.
 - The newly explicit bytes now read as a startup / sequencing / slot-management bridge. `0x09803B-0x0980E1`
   resets the `0x1B80+`, `0x1C80+`, and `0x1ED1+` work areas, emits fixed setup bursts through the already
@@ -132,7 +148,7 @@
   `0x0A2606-0x0A260F`). The tuple meaning still is not proven, so the labels stay structural.
 
 - Tightened the front mixed lead-in inside bank `0x080000`'s `0x0A0000-0x0A4C76` island without forcing
-  subsystem meaning. The former single `incbin` at `0x0A0B26-0x0A0C82` in `src/bank080000_a0000.asm`
+  subsystem meaning. The former single `incbin` at `0x0A0B26-0x0A0C82` in `src/bank080000_offset_tree_payload.asm`
   now lives in `src/bank080000_a0b26.asm` as 26 explicit FF-terminated structural records plus one final
   10-byte unresolved tail at `0x0A0C79-0x0A0C82`.
 - The new proof is still local byte structure rather than loader evidence, but it is stronger than one
@@ -485,7 +501,7 @@
   continuation is state-init glue rather than part of the still byte-sensitive gauge renderer, so
   the remaining opaque core is now more tightly bounded to `0x0088C2-0x008C33`.
 - Tightened the front command window in bank `0x080000` again without forcing a subsystem guess.
-  `src/bank080000_mid_command_tail_front.asm` now source-authors the former raw
+  `src/bank080000_z80_command_records_a.asm` now source-authors the former raw
   `0x09A6D7-0x09AA5B` run as fourteen explicit FF-terminated records instead of fourteen `incbin`
   slices.
 - The new `0x09A6D7-0x09A7FC` pocket is now explicit as one local-control-plus-literal-control
@@ -500,7 +516,7 @@
   `E4`-tagged local-offset ladder carrying short 4-byte literal rows. The wider loader path into the
   `0x099B00-0x09F776` command region is still unproven, so the new names stay structural.
 - Tightened another middle-window pocket in bank `0x080000`'s `0x09C008-0x09E027` command body without forcing
-  subsystem meaning. `src/bank080000_mid_command_tail_mid.asm` now source-authors the former raw
+  subsystem meaning. `src/bank080000_z80_command_records_b.asm` now source-authors the former raw
   `0x09C0D7-0x09C252` run as nine explicit FF-terminated records instead of nine `incbin` slices.
 - That new source pass exposes two neighboring structural families: `0x09C0D7` now reads as one compact
   local-control sweep that falls into a dense `0x4F/0x4E/0x4D/0x4C/0x4B/0x48` literal/high-byte pocket,
@@ -512,7 +528,7 @@
   local-offset hop in the final record. The wider loader path into the `0x099B00-0x09F776` command region
   is still unproven, so the new names stay structural.
 - Tightened the next neighboring middle-window pocket in bank `0x080000` without forcing subsystem ownership.
-  `src/bank080000_mid_command_tail_mid.asm` now source-authors the former raw `0x09C253-0x09C5B0` run as
+  `src/bank080000_z80_command_records_b.asm` now source-authors the former raw `0x09C253-0x09C5B0` run as
   eighteen explicit FF-terminated records instead of eighteen `incbin` slices.
 - That follow-up pass exposes a broader bridge between the earlier `0x09C15B+` literal-control family and the
   later `0x09C62F+` pocket: `0x09C253` is now explicit as an alternating local-control sweep that hands off
@@ -528,7 +544,7 @@
   `0x60/0x10/0x05` literal-control row several times before FF. The loader path into the wider
   `0x099B00-0x09F776` command region still is not proven, so the labels stay structural.
 - Tightened the next adjacent front-window pocket in bank `0x080000` without forcing subsystem ownership.
-  `src/bank080000_mid_command_tail_front.asm` now source-authors the former raw `0x09AA5C-0x09AB29` run as
+  `src/bank080000_z80_command_records_a.asm` now source-authors the former raw `0x09AA5C-0x09AB29` run as
   four explicit FF-terminated records instead of four `incbin` slices.
 - That follow-up pass makes `0x09AA5C-0x09AA98` explicit as a compact local-control sweep into two short
   `F4 08` literal-control rows around `0x00/0x0C/0x05/0x60`, then resolves `0x09AA99-0x09AB29` as the next
@@ -537,7 +553,7 @@
   immediately before the already explicit `0x09AB2A-0x09AB71` triplet family. The loader path into the wider
   `0x099B00-0x09F776` command region still is not proven, so the labels stay structural.
 - Tightened the next front-window bridge in bank `0x080000` without forcing subsystem ownership.
-  `src/bank080000_mid_command_tail_front.asm` now source-authors the former raw `0x09B091-0x09B289` run as
+  `src/bank080000_z80_command_records_a.asm` now source-authors the former raw `0x09B091-0x09B289` run as
   eleven explicit FF-terminated records instead of eleven `incbin` slices.
 - That pass resolves `0x09B091-0x09B113` into one compact local-control-to-literal-row pocket followed by two
   shorter `F4 00` row continuations around `0x30/0x33/0x36/0x3A/0x39/0x37` and the recurring `0x2B` tail.
@@ -550,7 +566,7 @@
   The wider loader path into the `0x099B00-0x09F776` command region still is not proven, so the labels stay
   structural.
 - Tightened the next adjacent front-window pocket in bank `0x080000` without forcing subsystem ownership.
-  `src/bank080000_mid_command_tail_front.asm` now source-authors the former raw `0x09B28A-0x09B575` run as
+  `src/bank080000_z80_command_records_a.asm` now source-authors the former raw `0x09B28A-0x09B575` run as
   ten explicit FF-terminated records instead of ten `incbin` slices.
 - That follow-up pass makes `0x09B28A` explicit as one compact local-control sweep into repeated
   `0xAB/0xAA/0xA8/0xA6/0xA5/0xAD/0xAE/0xB1/0xB2` high-byte rows around
@@ -613,7 +629,7 @@
   strings are still not decoded enough to rename the driver format, so the new source keeps those
   records literal while still splitting the bank into readable ROM-order modules.
 - Split the first non-fill island inside bank `0x080000` out of one coarse `incbin` into a new
-  ROM-order module at `src/bank080000_mid.asm`. The front `0x098000-0x09991F` slice is now called
+  ROM-order module at `src/bank080000_z80_resources.asm`. The front `0x098000-0x09991F` slice is now called
   out separately as `Bank080000_Z80LikeCodeBlock_098000` because its bytes are strongly opcode-dense
   and fit Z80 instruction patterns far better than 68k or plain assets, though the exact loader and
   subsystem owner are still unproven.
@@ -632,7 +648,7 @@
   One outlier word (`$F7FD`) still falls outside that local range, so the table stays literal and
   structural rather than being forced into stronger script/credits/audio terminology.
 - Split the next non-fill tail-bank island at `0x0A0000-0x0A4C76` into its own ROM-order source
-  module `src/bank080000_a0000.asm` instead of leaving it as one monolithic `incbin` inside
+  module `src/bank080000_offset_tree_payload.asm` instead of leaving it as one monolithic `incbin` inside
   `src/bank080000.asm`.
 - The front `0x0A0000-0x0A07C5` bytes are now explicit `dc.w` data because they form a clear
   multi-level big-endian offset-table tree: an initial root table at `0x0A0000`, a much larger
@@ -650,7 +666,7 @@
   outlier word (`$F7FD`), but it still does not prove whether this region is audio, credits, a data
   interpreter, or another tail-bank subsystem, so the names stay at `CommandRecord_*` level until a
   68k-side loader or decoder path is recovered.
-- Split the front of the `0x0A07C6+` payload inside `src/bank080000_a0000.asm` one step further.
+- Split the front of the `0x0A07C6+` payload inside `src/bank080000_offset_tree_payload.asm` one step further.
   The first `0x120` bytes at `0x0A07C6-0x0A08E5` now stand alone in `src/bank080000_a07c6.asm` as
   twelve repeated `0x18`-byte records instead of one large trailing incbin.
 - Those new records are still labeled structurally rather than semantically. The strongest current
@@ -684,7 +700,7 @@
 - Pushed that `0x0A0000` tail-bank recovery one step farther without over-claiming semantics. The
   back half of the same island is no longer one anonymous `incbin`: `0x0A08E6-0x0A34FF` now stands
   alone as an unresolved payload lead-in, while the later `0x0A3500-0x0A4C76` span is split into
-  hundreds of ROM-order record slices in `src/bank080000_a3500.asm` because the front nested offset
+  hundreds of ROM-order record slices in `src/bank080000_table_targeted_payload_records.asm` because the front nested offset
   table already proves stable record starts throughout that range.
 - Kept the new `0x0A3500+` labels structural rather than subsystem-specific. The offset-table tree
   proves where many records begin and that the later payload is heavily table-targeted, but it still
@@ -804,11 +820,11 @@
   record families.
 - The same metadata refresh also marks the full `0x09E028-0x09F776` tail command window in bank `0x080000`
   as source-visible in `tools/index/rom_map.json`, matching the already explicit `dc.b` ownership in
-  `src/bank080000_mid_command_tail_tail.asm` after the final lead-out at `0x09F76A-0x09F776` was split.
+  `src/bank080000_z80_command_records_c.asm` after the final lead-out at `0x09F76A-0x09F776` was split.
 
 - Tightened the front of the bank `0x080000` back-half payload at `0x0A3500-0x0A37AF` into a new
   ROM-order source module `src/bank080000_a3500_front.asm` instead of leaving that whole opening run as
-  dozens of tiny `incbin` slices inside `src/bank080000_a3500.asm`.
+  dozens of tiny `incbin` slices inside `src/bank080000_table_targeted_payload_records.asm`.
 - The new front slice is still labeled structurally, but it is materially more readable now: most
   records begin with repeated `FC .. .. FB .. ..` prefixes, many embed local 24-bit offsets back into
   the earlier `0x0A07C6-0x0A0D80` tuple families, and several end in short `FF` or `FD`-terminated
@@ -829,7 +845,7 @@
 
 - Tightened another late pocket inside the bank `0x080000` command-tail window at
   `0x09E028-0x09F776` without forcing a loader guess. The former raw run at
-  `0x09F272-0x09F4D4` is now source-authored in `src/bank080000_mid_command_tail_tail.asm` as
+  `0x09F272-0x09F4D4` is now source-authored in `src/bank080000_z80_command_records_c.asm` as
   explicit FF-terminated records instead of sixteen `incbin` slices.
 - That new source pass exposes three more local structural families: a pair of compact
   D0/CA/DF/FE control sweeps at `0x09F272` and `0x09F351`, a neighboring `F4 18` / `F4 05`
@@ -839,12 +855,12 @@
   tail-bank interpreter, but they still do not prove whether the owner is audio, credits,
   animation, or another command-driven subsystem.
 - Tightened two more neighboring bridge pockets in the same tail-bank command body without forcing
-  a subsystem guess. `src/bank080000_mid_command_tail_mid.asm` now source-authors
+  a subsystem guess. `src/bank080000_z80_command_records_b.asm` now source-authors
   `0x09DE58-0x09DFB3` as explicit `dc.b` data instead of three raw `incbin` slices.
 - That middle-window follow-up now reads as one compact `F6/F7/F0` local-target setup bridge at
   `0x09DE58`, followed by a longer repeated `0x9x/0xAx` high-byte ladder around one recurring
   `B4 59` anchor at `0x09DF2B` and a short descending high-byte tail at `0x09DF92`.
-- `src/bank080000_mid_command_tail_tail.asm` also now source-authors `0x09E6E2-0x09E6F6` plus
+- `src/bank080000_z80_command_records_c.asm` also now source-authors `0x09E6E2-0x09E6F6` plus
   `0x09E9A3-0x09E9E6` as explicit `dc.b` data instead of four raw `incbin` slices.
 - Those late-tail follow-ups make one more compact low-byte ladder bridge explicit at `0x09E6E2`,
   then expose a short `F4 1B` literal-descent pocket across `0x09E9A3-0x09E9E6` with two smaller
@@ -867,7 +883,7 @@
   ownership, but the consuming loader is not yet tied to map pages, sprites, font pages, UI art, or
   another specific graphics subsystem.
 - Tightened the previously incbin-backed `0x099649-0x09988F` middle of bank `0x080000`'s pre-descriptor
-  tail into explicit source-authored data in `src/bank080000_mid_front.asm` instead of two coarse mixed
+  tail into explicit source-authored data in `src/bank080000_z80_pre_descriptor_data.asm` instead of two coarse mixed
   byte bands.
 - The front `0x099649-0x099828` span now stands as thirty fixed 16-byte records, which is a much cleaner
   cadence than the earlier catch-all mixed/control label. The bytes stay structural, but the stable
@@ -892,7 +908,7 @@
   decompressor path is recovered.
 - Tightened the mid-back pocket of bank `0x080000`'s `0x0A3500-0x0A4C76` table-targeted region without
   forcing subsystem meaning. The former run of tiny `incbin` slices at `0x0A37FE-0x0A3B76` is now
-  source-authored as explicit `dc.b` records in `src/bank080000_a3500.asm` instead of opaque byte slices.
+  source-authored as explicit `dc.b` records in `src/bank080000_table_targeted_payload_records.asm` instead of opaque byte slices.
 - The new proof is still structural but stronger than simple table-target boundaries: most records repeat
   `FC .. .. FB .. ..` front prefixes, then fan out through compact local 24-bit offsets back into the
   already split `0x0A0E85-0x0A12E5` and `0x0A12EC+` families, with short `FF`-terminated selector tails or
@@ -902,7 +918,7 @@
   comment for `0x0A37FE-0x0A3B76`, but they still do not prove whether the controlling loader is walking
   scripts, object layouts, sprite metadata, or another tail-bank resource family.
 - Extended that same bank `0x080000` back-half cleanup farther in ROM order. The next continuation at
-  `0x0A3C17-0x0A4AA2` is no longer a wall of tiny inline `incbin` slices inside `src/bank080000_a3500.asm`:
+  `0x0A3C17-0x0A4AA2` is no longer a wall of tiny inline `incbin` slices inside `src/bank080000_table_targeted_payload_records.asm`:
   it now lives in three ROM-order source modules, `src/bank080000_a3c17.asm`, `src/bank080000_a43d5.asm`,
   and `src/bank080000_a47d9.asm`, before the already explicit self-referencing cluster at `0x0A4AA3-0x0A4AEB`.
 - The newly exposed bytes keep reinforcing the same structural fit rather than a subsystem claim. Large parts
@@ -915,7 +931,7 @@
 - Tightened the far late tail of bank `0x080000`'s `0x09E028-0x09F776` command window again without forcing
   a loader guess. The former raw slices at `0x09F6AE-0x09F6C3`, `0x09F6C4-0x09F6D2`, `0x09F6DE-0x09F6F9`,
   `0x09F706-0x09F727`, and `0x09F738-0x09F769` are now explicit `dc.b` records in
-  `src/bank080000_mid_command_tail_tail.asm`.
+  `src/bank080000_z80_command_records_c.asm`.
 - The new evidence is still structural, but it is more specific than simple FF-terminated boundaries. That
   pocket now exposes one compact local-seeded setup ladder at `0x09F6AE`, one short header/literal burst at
   `0x09F6C4`, a compact paired `0x09F6DE/0x09F6E8` header-literal family, one two-row literal/control record
@@ -943,7 +959,7 @@
   `0x041000` table now lands on a `0x4C0`-byte / 38-tile 4bpp planar graphics block, while `$00` and `$02`
   still remain structural until the owning loader or consumer is recovered.
 - Tightened the same late bank `0x080000` command-tail window one more step without forcing a loader guess.
-  The former raw run at `0x09EFD3-0x09F00A` in `src/bank080000_mid_command_tail_tail.asm` is now explicit
+  The former raw run at `0x09EFD3-0x09F00A` in `src/bank080000_z80_command_records_c.asm` is now explicit
   `dc.b` data instead of one `incbin` slice.
 - That bridge now reads as one compact descending literal-pair ladder with the same `F4/F5` framing already
   proven nearby: it walks repeated `0x30`, `0x2F`, `0x2D`, `0x2B`, `0x29`, and `0x28` pair pockets with
@@ -952,7 +968,7 @@
   the neighborhood around `0x09EFD3` less opaque, but they still do not prove whether the broader
   `0x098000+` command region belongs to audio, credits, animation, or another tail-bank interpreter.
 - Tightened the neighboring middle-window pocket in bank `0x080000`'s `0x09C008-0x09E027` command body
-  again without forcing subsystem ownership. `src/bank080000_mid_command_tail_mid.asm` now source-authors
+  again without forcing subsystem ownership. `src/bank080000_z80_command_records_b.asm` now source-authors
   the former raw `0x09C687-0x09C98C` span as explicit `dc.b` records instead of five `incbin` slices.
 - That follow-up exposes two clearer structural pockets in the same neighborhood: `0x09C687-0x09C920`
   now reads as one broader literal-row cycle that repeatedly revisits `0x2B/0x29/0x27` rows before
@@ -963,7 +979,7 @@
   window, but they still do not prove whether the broader `0x099B00+` command family belongs to audio,
   credits, animation, or another tail-bank interpreter without the loader path that enters `0x098000+`.
 - Tightened the next neighboring middle-window bridge in bank `0x080000` without forcing subsystem
-  ownership. `src/bank080000_mid_command_tail_mid.asm` now source-authors the former raw
+  ownership. `src/bank080000_z80_command_records_b.asm` now source-authors the former raw
   `0x09C98D-0x09CBED` run as six explicit FF-terminated records instead of six `incbin` slices.
 - That follow-up keeps the same structural command neighborhood but makes three more local families easier
   to audit in source: `0x09C98D-0x09CA27` now stands as a compact `F4 00` high-byte ladder pair centered on
@@ -976,7 +992,7 @@
   audio, credits, animation, or another tail-bank interpreter without the loader path that enters
   `0x098000+`.
   without forcing subsystem meaning. The former raw run at `0x09D5BF-0x09D980` in
-  `src/bank080000_mid_command_tail_mid.asm` is now explicit `dc.b` data instead of twenty `incbin`
+  `src/bank080000_z80_command_records_b.asm` is now explicit `dc.b` data instead of twenty `incbin`
   slices.
 - That new source pass exposes another coherent structural neighborhood: `0x09D5BF-0x09D633` keeps a
   compact `F4 2C` family that alternates short `0x9E/0x9C/0x9B` high-byte descents with neighboring
@@ -991,7 +1007,7 @@
   credits, animation, or another tail-bank interpreter without the loader or bank-switch path that
   enters `0x098000+`.
 - Tightened the next adjacent late-tail pocket in the same bank `0x080000` command window without forcing a
-  loader guess. The former raw `0x09E385-0x09E604` run in `src/bank080000_mid_command_tail_tail.asm` is now
+  loader guess. The former raw `0x09E385-0x09E604` run in `src/bank080000_z80_command_records_c.asm` is now
   explicit `dc.b` data instead of sixteen `incbin` slices.
 - That new pass exposes another coherent bridge in the same local command neighborhood: `0x09E385-0x09E404`
   now stand as a short `F4 08` literal crest plus two compact `F4 00` literal-control rows, `0x09E424`
@@ -1005,7 +1021,7 @@
   command-driven subsystem without the loader or bank-switch path that enters `0x098000+`.
 - Tightened the very end of that same late tail-bank command window without forcing subsystem meaning.
   The former grouped non-terminated lead-out at `0x09F76A-0x09F776` in
-  `src/bank080000_mid_command_tail_tail.asm` is now source-authored as explicit `dc.b` bytes instead of
+  `src/bank080000_z80_command_records_c.asm` is now source-authored as explicit `dc.b` bytes instead of
   one short `incbin` slice.
 - The new evidence is still structural, but it is cleaner than a bare remainder: the lead-out starts with
   another local-offset-like seed (`88 78 01 D3`), steps through a compact `F6/F7` ladder, and then ends on
@@ -1037,7 +1053,7 @@
   ownership, but it still does not prove whether each 5-byte unit is layout, object, script, or another
   format without the decoder that consumes the surrounding `0x0A0000-0x0A4C76` table tree.
 - Split the neighboring bank `0x080000` command tail at `0x09A348-0x09F776` one level further without
-  forcing subsystem meaning. The former single large trailing record in `src/bank080000_mid.asm` now
+  forcing subsystem meaning. The former single large trailing record in `src/bank080000_z80_resources.asm` now
   breaks at later proven record starts into three ROM-order source windows:
   `0x09A348-0x09C007`, `0x09C008-0x09E027`, and `0x09E028-0x09F776`.
 - The new boundaries are still justified only by byte-level structure: the old trailing body contains
@@ -1046,7 +1062,7 @@
   `0x09F4D5-0x09F51C`, plus a short non-terminated lead-out at `0x09F76A-0x09F776`.
 - Tightened the front descriptor/layout pocket in that same bank `0x080000` island without forcing a
   subsystem name. The former raw `0x099920-0x099A84` span is now source-authored in
-  `src/bank080000_mid_descriptors.asm` as sixteen fixed 6-byte records at `0x099920-0x09997F`,
+  `src/bank080000_z80_descriptor_tables.asm` as sixteen fixed 6-byte records at `0x099920-0x09997F`,
   forty-nine fixed 5-byte records at `0x099980-0x099A74`, and a short 16-byte trailer at
   `0x099A75-0x099A84`.
 - Kept those new labels structural. The strongest new proof is cadence rather than semantics: the bytes
@@ -1101,9 +1117,9 @@
   with only the already-explicit anomaly gaps between runs still left as mixed payload. The tuple meaning is
   still unresolved, so the names stay structural until the surrounding offset-tree consumer is recovered.
 - Tightened the late tail of bank `0x080000`'s `0x09E028-0x09F776` command window without forcing subsystem
-  meaning. `src/bank080000_mid_command_tail_tail.asm` now makes two more short repeated-shape families explicit
+  meaning. `src/bank080000_z80_command_records_c.asm` now makes two more short repeated-shape families explicit
 - Tightened the front edge of that same `0x09E028-0x09F776` tail window without forcing a loader guess. The
-  former raw run at `0x09E028-0x09E22A` in `src/bank080000_mid_command_tail_tail.asm` is now explicit
+  former raw run at `0x09E028-0x09E22A` in `src/bank080000_z80_command_records_c.asm` is now explicit
   `dc.b` data instead of thirteen small `incbin` slices.
 - That new source pass makes the tail window's opening neighborhood materially clearer: `0x09E028` now reads
   as one compact local-control sweep into a descending `0xAA/0xB8/0xB6/...` high-byte ladder, `0x09E08A`
@@ -1117,7 +1133,7 @@
 
 - Tightened the `0x09E028-0x09F776` tail-bank command window again without forcing a loader guess. The
   former raw slices at `0x09E6B2-0x09E6E1`, `0x09E73F-0x09E791`, and `0x09F0AE-0x09F18B` are now explicit
-  `dc.b` records in `src/bank080000_mid_command_tail_tail.asm`.
+  `dc.b` records in `src/bank080000_z80_command_records_c.asm`.
 - The new proof is still structural, but clearer than simple FF-terminated boundaries: `0x09E6B2-0x09E6E1`
   now reads as a compact low-byte ladder pair with `C0/C2/C4/C6` control pockets, `0x09E73F-0x09E791`
   stands as an E3-seeded short record plus a longer low-byte ladder continuation, and
@@ -1128,7 +1144,7 @@
   animation, or another tail-bank subsystem without the loader or bank-switch path that enters
   `0x098000+`.
 - Tightened another front-table chunk inside bank `0x080000`'s `0x099B00-0x09A347` command front without
-  forcing subsystem meaning. `src/bank080000_mid.asm` now source-authors the former raw
+  forcing subsystem meaning. `src/bank080000_z80_resources.asm` now source-authors the former raw
   `0x099D78-0x099F23` run as explicit tuple-led and FF-terminated subrecords instead of twelve `incbin`
   slices.
 - That new source pass sharpens several neighboring structural fits at once: `0x099D78-0x099DE5` now reads
@@ -1144,7 +1160,7 @@
   `0x098000+`.
 - Tightened the middle `0x09C008-0x09E027` command window in bank `0x080000` again without forcing a
   subsystem guess. The former raw slices at `0x09DA43-0x09DB5A` and `0x09DCD6-0x09DE57` are now explicit
-  `dc.b` records in `src/bank080000_mid_command_tail_mid.asm` instead of two larger incbin-backed pockets.
+  `dc.b` records in `src/bank080000_z80_command_records_b.asm` instead of two larger incbin-backed pockets.
 - The newly exposed `0x09DA43-0x09DB5A` pocket now reads as a compact `F4/F1/F5` family with short
   `0xBx/0x5x` and `0xAx/0x4x` high-byte pair ladders, two tiny literal-control pivots, and one longer mixed
   literal-plus-high-byte continuation before the next local-target setup record at `0x09DB5B`.
@@ -1157,7 +1173,7 @@
   `0x098000+`.
 - Tightened two more short bridge pockets in that same bank `0x080000` command-tail body without forcing a
   subsystem guess. The former raw slices at `0x09DB5B-0x09DBCB` and `0x09F51D-0x09F596` are now explicit
-  `dc.b` records in `src/bank080000_mid_command_tail_mid.asm` and `src/bank080000_mid_command_tail_tail.asm`.
+  `dc.b` records in `src/bank080000_z80_command_records_b.asm` and `src/bank080000_z80_command_records_c.asm`.
 - The newly exposed `0x09DB5B-0x09DBCB` bridge now reads as one compact setup/local-target sweep that reuses
   `E0/E1`-tagged local steps before ending in a short repeated literal row, followed by two neighboring
   compact literal-row continuations with the same `F4/C4/F1/F5` framing and one tiny `C2/F1` pivot.
@@ -1196,7 +1212,7 @@
 
 - Tightened the back half of bank `0x080000`'s `0x0A3500-0x0A4C76` table-targeted payload family without
   forcing subsystem meaning. Several repeated subfamilies are now explicit data instead of raw sliced
-  `incbin`s inside `src/bank080000_a3500.asm`.
+  `incbin`s inside `src/bank080000_table_targeted_payload_records.asm`.
 - The front new cluster at `0x0A37B0-0x0A37FD` is now source-authored as twelve fixed 3-word records
   followed by two standalone local offsets, which is a stronger structural fit than leaving fourteen short
   table-targeted slices opaque.
@@ -1211,7 +1227,7 @@
   stronger ownership terms.
 - Tightened the remaining tail of that same `0x0A3500+` back-half pocket without forcing subsystem meaning.
   The former final run of tiny `incbin` slices at `0x0A4AEC-0x0A4C76` now lives in
-  `src/bank080000_a4aec.asm` as explicit `dc.b` records included from `src/bank080000_a3500.asm`.
+  `src/bank080000_a4aec.asm` as explicit `dc.b` records included from `src/bank080000_table_targeted_payload_records.asm`.
 - The newly exposed bytes continue the same structural motif already seen earlier in the back half: three
   standalone local offsets at `0x0A4AEC-0x0A4AF2`, then a compact control pocket whose records repeatedly
   start with `FC`/`FB`/`FE` prefix groups and end in short `FF`- or `FD`-terminated local-offset lists.
@@ -1264,9 +1280,9 @@
 
 - Tightened the bank `0x080000` pre-descriptor tail inside the `0x098000-0x09F776` non-fill island
   without forcing subsystem meaning. The former single `0x098000-0x09991F` front slice in
-  `src/bank080000_mid.asm` is now split at `0x099200`, leaving only `0x098000-0x0991FF` under the
+  `src/bank080000_z80_resources.asm` is now split at `0x099200`, leaving only `0x098000-0x0991FF` under the
   strongly Z80-like opcode-dense label and moving `0x099200-0x09991F` into the new ROM-order module
-  `src/bank080000_mid_front.asm`.
+  `src/bank080000_z80_pre_descriptor_data.asm`.
 - The front `0x099200-0x09927F` bytes are now explicit as two monotone byte bands, and the next
   `0x099280-0x099648` span is source-authored as 51 fixed 19-byte records because every record stays
   aligned on the same cadence and its third/fourth bytes are consistently one of `F0C0`, `D0C0`, or
@@ -1280,8 +1296,8 @@
   consuming loader, so this pass records a clearer pre-descriptor frontier without overcommitting to
   audio, credits, scripts, or another subsystem.
 - Tightened that same `0x098000-0x0991FF` front slice one step further without forcing subsystem meaning.
-  The former single Z80-like `incbin` in `src/bank080000_mid.asm` now lives in
-  `src/bank080000_mid_z80_program.asm`, where the front `0x098000-0x09907A` bytes are now treated as a
+  The former single Z80-like `incbin` in `src/bank080000_z80_resources.asm` now lives in
+  `src/bank080000_z80_program.asm`, where the front `0x098000-0x09907A` bytes are now treated as a
   real Z80 program front instead of a merely Z80-like blob: `0x098000` opens on `DI`, `IM 1`, and a
   jump to `0x09803B`, the pre-body cluster includes repeated absolute jump stubs plus a tiny `NOP` /
   `RETI` handler at `0x098038`, and the remaining `0x09803B-0x09907A` bytes stay grouped as the still-opaque
@@ -1297,17 +1313,17 @@
   consumer still needs to be found before stronger subsystem labels are safe.
 - Tightened the front of the same `0x099BD3-0x09A347` command region one step further without forcing a
   subsystem guess. Five longer table-targeted command records are no longer single `incbin`s in
-  `src/bank080000_mid.asm`: `0x099D05-0x099D47`, `0x099D48-0x099D77`, `0x09A10E-0x09A13B`,
+  `src/bank080000_z80_resources.asm`: `0x099D05-0x099D47`, `0x099D48-0x099D77`, `0x09A10E-0x09A13B`,
   `0x09A16A-0x09A198`, and `0x09A288-0x09A347` are now explicit as smaller FF-terminated subrecords.
 - That new split keeps the labels structural. The bytes prove repeated local `0xFF` terminators and one
   standalone `0xFF` sentinel at `0x09A11D`, but they still do not prove whether the command stream is audio,
   credits, animation, or another banked interpreter.
 - Tightened the same tail-bank command front again at `0x09A199-0x09A287` while keeping the build
-  bit-perfect. That whole pocket in `src/bank080000_mid.asm` is now source-authored as narrower
+  bit-perfect. That whole pocket in `src/bank080000_z80_resources.asm` is now source-authored as narrower
   FF-terminated command subrecords, with the two-byte bridge at `0x09A22B-0x09A22C` and the standalone
   `0xFF` byte at `0x09A26A` left explicit instead of hiding them inside neighboring slices.
 - Tightened two more adjacent front-table command targets in the same bank `0x080000` command front
-  without forcing subsystem meaning. `src/bank080000_mid.asm` now source-authors the former raw
+  without forcing subsystem meaning. `src/bank080000_z80_resources.asm` now source-authors the former raw
   `0x09A13C-0x09A169` continuation as explicit structural records instead of two `incbin` slices.
 - That follow-up makes the local shape clearer in source: `0x09A13C-0x09A148` now reads as a short
   tuple-style FF-terminated lead-in followed by one compact non-terminated local-target tail, while
@@ -1321,8 +1337,8 @@
   now exposes the same compact local cadence all the way up to the already-split `0x09A288` pocket.
 - Tightened two more high-visibility pockets inside the same bank `0x080000` command tail without forcing
   subsystem meaning. The repeated 24-byte triplets at `0x09AB2A-0x09AB71`, `0x09E6F7-0x09E73E`, and
-  `0x09F4D5-0x09F51C` are now explicit `dc.b` records in `src/bank080000_mid_command_tail_front.asm`
-  and `src/bank080000_mid_command_tail_tail.asm` instead of raw `incbin` slices, and the longer
+  `0x09F4D5-0x09F51C` are now explicit `dc.b` records in `src/bank080000_z80_command_records_a.asm`
+  and `src/bank080000_z80_command_records_c.asm` instead of raw `incbin` slices, and the longer
   neighboring `0xAB`-byte records at `0x09A3EC-0x09A496` and `0x09E607-0x09E6B1` are now source-authored
   too.
 - The new proof is still structural but it raises the local maturity: those two 0xAB-byte records now read
@@ -1331,7 +1347,7 @@
   notes. The owner is still unresolved, so the names stay at repeated-command-record level rather than
   forcing audio, credits, or animation semantics.
 - Tightened the same `0x09A348-0x09C007` command-tail front one step farther without forcing subsystem
-  meaning. Five more FF-terminated records in `src/bank080000_mid_command_tail_front.asm` are now explicit
+  meaning. Five more FF-terminated records in `src/bank080000_z80_command_records_a.asm` are now explicit
   `dc.b` data instead of raw `incbin` slices: `0x09A497-0x09A4F9`, `0x09A59B-0x09A613`,
   `0x09A63B-0x09A6D6`, `0x09AB72-0x09AB94`, and `0x09AB95-0x09ABE0`.
 - The new proof is still byte-local but it makes the command cadence materially clearer. The first, second,
@@ -1342,7 +1358,7 @@
 - Kept the new labels structural. This pass improves source readability inside the most active `0x09A348+`
   command window, but the controlling loader and subsystem owner are still unresolved.
 - Tightened the next neighboring front-window pocket in the same bank `0x080000` command body without
-  forcing subsystem meaning. `src/bank080000_mid_command_tail_front.asm` now source-authors the former raw
+  forcing subsystem meaning. `src/bank080000_z80_command_records_a.asm` now source-authors the former raw
   `0x09A4FA-0x09A63A` continuation as explicit `dc.b` records instead of six `incbin` slices.
 - That follow-up makes two local structural families easier to audit in source: `0x09A4FA-0x09A55A` now
   stands as a short `F4 15` literal-row pocket that revisits `0x29/0x30/0x35/0x3C`, then broadens into a
@@ -1354,7 +1370,7 @@
   audio, credits, animation, or another tail-bank interpreter without the loader path that enters
   `0x098000+`.
 - Tightened the next neighboring front-window pocket in that same bank `0x080000` command body without
-  forcing subsystem meaning. `src/bank080000_mid_command_tail_front.asm` now source-authors the former raw
+  forcing subsystem meaning. `src/bank080000_z80_command_records_a.asm` now source-authors the former raw
   `0x09ABE1-0x09AF25` continuation as explicit `dc.b` records instead of twenty-three `incbin` slices.
 - That follow-up makes several local structural families easier to audit in source: `0x09ABE1-0x09ABF7`
   now stands as a compact repeated literal rise around `0x4A/0x49/0x4D/0x4F/0x51`, `0x09AC0A-0x09ACA1`
@@ -1369,7 +1385,7 @@
   pocket. The loader path into the wider `0x099B00-0x09F776` command region is still unproven, so the
   labels stay structural.
 - Tightened the next neighboring front-window pocket in that same bank `0x080000` command body without
-  forcing subsystem meaning. `src/bank080000_mid_command_tail_front.asm` now source-authors the former raw
+  forcing subsystem meaning. `src/bank080000_z80_command_records_a.asm` now source-authors the former raw
   `0x09AF26-0x09B090` continuation as explicit `dc.b` records instead of eight `incbin` slices.
 - That follow-up keeps the same structural command neighborhood but makes three more families easier to
   audit in source: `0x09AF26-0x09AF6B` now stands as the next compact `F4 11` row-tail pocket around
@@ -1379,7 +1395,7 @@
   `0x60/0x08/0x00/0x6C/0x12/0x0D/0x07` with shorter `0x05` and `0x65` variations. The loader path into the
   wider `0x099B00-0x09F776` command region is still unproven, so the labels stay structural.
 - Tightened the middle `0x09C008-0x09E027` command window one step farther without forcing subsystem
-  meaning. Fourteen more FF-terminated records in `src/bank080000_mid_command_tail_mid.asm` are now explicit
+  meaning. Fourteen more FF-terminated records in `src/bank080000_z80_command_records_b.asm` are now explicit
   `dc.b` data instead of raw `incbin` slices: the repeated-shape cluster at `0x09D981-0x09D9FE`, the second
   repeated-shape cluster at `0x09DBCC-0x09DC59`, and the neighboring singleton record at `0x09DE91-0x09DEA8`.
 - The new proof is still byte-local but it sharpens a useful family pattern inside the mid command window.
@@ -1391,7 +1407,7 @@
   but the loader path and subsystem owner for the full `0x099B00-0x09F776` interpreter still need control-
   flow evidence before stronger names are safe.
 - Tightened that same middle `0x09C008-0x09E027` command window again without forcing subsystem meaning.
-  Three more longer FF-terminated records in `src/bank080000_mid_command_tail_mid.asm` are now explicit
+  Three more longer FF-terminated records in `src/bank080000_z80_command_records_b.asm` are now explicit
   `dc.b` data instead of raw `incbin` slices: `0x09D9FF-0x09DA42`, `0x09DC5A-0x09DCD5`, and
   `0x09DEAF-0x09DF2A`.
 - The new proof is still local byte structure, but the shared shape is clearer now. All three records open
@@ -1402,7 +1418,7 @@
   but the controlling loader and concrete subsystem owner for the `0x099B00-0x09F776` interpreter remain open.
 - Tightened the neighboring late-tail bridge in bank `0x080000` without forcing subsystem meaning. The former
   raw slices at `0x09E792-0x09E9A2` are now explicit `dc.b` records in
-  `src/bank080000_mid_command_tail_tail.asm` instead of four incbin-backed FF-terminated records.
+  `src/bank080000_z80_command_records_c.asm` instead of four incbin-backed FF-terminated records.
 - The new proof is still local byte structure, but it raises the maturity of that pocket: `0x09E792` now
   reads as one longer local-target sweep that falls into repeated `0x9x/0xAx` high-byte ladders and several
   `E4`-tagged local-offset tails, `0x09E8CA` narrows into repeated `0x9F/0x9E` byte-pair rows with short
@@ -1412,7 +1428,7 @@
   command tail, but the owning loader and subsystem meaning still need control-flow evidence before stronger
   names are safe.
 - Tightened the next adjacent front-window pocket in bank `0x080000` without forcing subsystem meaning.
-  `src/bank080000_mid_command_tail_front.asm` now source-authors the former raw `0x09B576-0x09B701`
+  `src/bank080000_z80_command_records_a.asm` now source-authors the former raw `0x09B576-0x09B701`
   continuation as explicit `dc.b` records instead of eight `incbin` slices.
 - That follow-up keeps the same structural command neighborhood but makes two more families easier to audit
   in source: `0x09B576-0x09B600` now stands as a compact `F4 02` literal-row ladder around
@@ -1423,7 +1439,7 @@
 - Kept the new labels structural. The loader path into the wider `0x099B00-0x09F776` command region is
   still unproven, so the new names stay anchored to byte-local behavior rather than subsystem guesses.
 - Tightened the next adjacent front-window pocket in bank `0x080000` without forcing subsystem meaning.
-  `src/bank080000_mid_command_tail_front.asm` now source-authors the former raw `0x09B702-0x09B8C6`
+  `src/bank080000_z80_command_records_a.asm` now source-authors the former raw `0x09B702-0x09B8C6`
   continuation as explicit `dc.b` records instead of eight `incbin` slices.
 - The new proof is still byte-local, but it makes another visible run inside the front command window easier to
   audit in source: `0x09B702-0x09B727` now stands as a short `F4 04` literal/high-byte ladder around
@@ -1438,7 +1454,7 @@
   stronger names are safe.
 - Tightened the next neighboring late-tail pocket in bank `0x080000` without forcing subsystem meaning. The
   former raw slices at `0x09E9E7-0x09ECD5` are now explicit `dc.b` records in
-  `src/bank080000_mid_command_tail_tail.asm` instead of sixteen incbin-backed FF-terminated records.
+  `src/bank080000_z80_command_records_c.asm` instead of sixteen incbin-backed FF-terminated records.
 - The new proof is still local byte structure, but it makes another visible command family readable in source:
   `0x09E9E7` continues the same `F4 1B` literal/high-byte ladder neighborhood, `0x09EA5F` and `0x09EBDB`
   each revisit compact local-control sweeps before short pair or literal tails, `0x09EAA0-0x09EAEA` now stand
@@ -1450,7 +1466,7 @@
   stronger names are safe.
 - Tightened the next late-tail bridge in that same bank `0x080000` command window without forcing subsystem
   meaning. The former raw slices at `0x09ECD6-0x09EFD2` are now explicit `dc.b` records in
-  `src/bank080000_mid_command_tail_tail.asm` instead of twenty-two incbin-backed FF-terminated records.
+  `src/bank080000_z80_command_records_c.asm` instead of twenty-two incbin-backed FF-terminated records.
 - The new proof is still local byte structure, but the pocket is materially clearer now: `0x09ECD6-0x09ED19`
   stands as one compact repeated `0x2D/0x2E` literal-pair family under the same `F4 F8` framing,
   `0x09ED1A`, `0x09ED4A`, `0x09EDE4`, `0x09EECB`, `0x09EF09`, `0x09EF52`, and `0x09EF81` each expose short
@@ -1461,7 +1477,7 @@
   controlling loader and subsystem meaning still need control-flow evidence before stronger names are safe.
 - Tightened one more adjacent pocket in the bank `0x080000` mid command window without forcing subsystem
   meaning. The former raw slices at `0x09DFB4-0x09E027` are now explicit `dc.b` records in
-  `src/bank080000_mid_command_tail_mid.asm` instead of two incbin-backed FF-terminated records.
+  `src/bank080000_z80_command_records_b.asm` instead of two incbin-backed FF-terminated records.
 - The byte proof is still local, but the family is clearer in source now: both records keep the same compact
   `F4 08` framing as the neighboring high-byte ladder pocket at `0x09DF2B`, the first stays in short
   `0xAC/0xAB/0xAA` to `0xA7/0xA5/0xA4/0xA3/0xA0` pair sweeps with repeated `F5 FB` pivots, and the second
@@ -1471,7 +1487,7 @@
   safe.
 - Tightened the front edge of the `0x09E028-0x09F776` tail command window again without forcing subsystem
   meaning. The former raw slices at `0x09E237-0x09E384` are now explicit `dc.b` records in
-  `src/bank080000_mid_command_tail_tail.asm` instead of ten incbin-backed FF-terminated records.
+  `src/bank080000_z80_command_records_c.asm` instead of ten incbin-backed FF-terminated records.
 - The byte proof is still local, but the neighboring family is materially clearer now: `0x09E237` opens with
   another short local-control sweep before climbing through a `0x4F/0x51/0x52/.../0x5B` literal band,
   `0x09E264-0x09E2C0` collapse into one descending `AF/AE/AD` high-byte-pair family plus two short AC-rooted
@@ -1482,7 +1498,7 @@
   controlling loader and subsystem meaning still need control-flow evidence before stronger names are safe.
 - Tightened another visible pocket inside the same bank `0x080000` middle command window without forcing
   subsystem meaning. The former raw slices at `0x09CBEE-0x09CFBC` are now explicit `dc.b` records in
-  `src/bank080000_mid_command_tail_mid.asm` instead of thirty incbin-backed FF-terminated records.
+  `src/bank080000_z80_command_records_b.asm` instead of thirty incbin-backed FF-terminated records.
 - The byte proof is still local, but the neighboring families are materially clearer now: `0x09CBEE-0x09CC00`
   keep one short `F4 00` literal-control pair explicit, `0x09CC16-0x09CCEC` now stand as three broader setup
   bridges that fall into a low-byte ladder, a mixed literal/high-byte pocket, and a `0x6D/0x6C` literal-
@@ -1494,7 +1510,7 @@
   the controlling loader and subsystem meaning still need control-flow evidence before stronger names are safe.
 - Tightened the next adjacent middle-window pocket in that same bank `0x080000` command body without forcing
   subsystem meaning. The former raw slices at `0x09CFBD-0x09D341` are now explicit `dc.b` records in
-  `src/bank080000_mid_command_tail_mid.asm` instead of nineteen incbin-backed FF-terminated records.
+  `src/bank080000_z80_command_records_b.asm` instead of nineteen incbin-backed FF-terminated records.
 - The byte proof is still local, but the neighboring families are materially clearer now: `0x09CFBD-0x09D093`
   now stand as one denser `F4 F0` literal-row cycle followed by a compact `F4 20` row-family pocket,
   `0x09D098-0x09D1C6` expose a broader setup bridge into mixed `0x3C/0x3E/0x40/0x41/...` literal rows, one
@@ -1505,7 +1521,7 @@
   controlling loader and subsystem meaning still need control-flow evidence before stronger names are safe.
 - Tightened the next adjacent middle-window pocket in that same bank `0x080000` command body without forcing
   subsystem meaning. The former raw slices at `0x09D342-0x09D5BE` are now explicit `dc.b` records in
-  `src/bank080000_mid_command_tail_mid.asm` instead of fifteen incbin-backed FF-terminated records.
+  `src/bank080000_z80_command_records_b.asm` instead of fifteen incbin-backed FF-terminated records.
 - The byte proof is still local, but the neighboring families are materially clearer now: `0x09D342-0x09D40F`
   continue the same `F4 FC` repeated-pair ladder neighborhood with two broader row cycles, one mixed bridge,
   and one shorter `0x30/0x2B/0x37/0x39/0x35` tail; `0x09D429-0x09D464` now expose the compact local-target setup
@@ -1516,7 +1532,7 @@
   controlling loader and subsystem meaning still need control-flow evidence before stronger names are safe.
 - Tightened that same middle `0x09C008-0x09E027` command window once more without forcing subsystem meaning.
   The former raw slices at `0x09C008-0x09C0D6` and the two tiny tails at `0x09DEA9-0x09DEAE` are now explicit
-  `dc.b` records in `src/bank080000_mid_command_tail_mid.asm` instead of six incbin-backed FF-terminated records.
+  `dc.b` records in `src/bank080000_z80_command_records_b.asm` instead of six incbin-backed FF-terminated records.
 - The new proof is still byte-local, but it makes both exposed edges of the current mid-window body read more
   cleanly in source. `0x09C008-0x09C044` now stands as a compact repeated `0xA2/0x43` high-byte pair family,
   `0x09C045-0x09C069` narrows into a shorter repeated `0x9F/0x42` ladder with one `0xA0/0x43` tail,
@@ -1524,11 +1540,11 @@
   `0x09C097-0x09C0D6` follows as a denser mixed continuation that revisits the same anchor family before the
   already explicit `0x09C0D7+` local-control bridge. The late singleton tails at `0x09DEA9` and `0x09DEAC`
   are now also visible as the same tiny `C8 FA FF` and `CA FA FF` caps that close the neighboring pocket.
-- Kept the names structural. This removes the last raw `incbin` slices from `src/bank080000_mid_command_tail_mid.asm`,
+- Kept the names structural. This removes the last raw `incbin` slices from `src/bank080000_z80_command_records_b.asm`,
   so the whole `0x09C008-0x09E027` middle command window is now source-visible as explicit FF-terminated records
   even though the owning loader and subsystem are still unresolved.
 - Tightened the next remaining front-window pocket in bank `0x080000` without forcing subsystem meaning.
-  The former raw `0x09B8C7-0x09BFCF` run in `src/bank080000_mid_command_tail_front.asm` is now source-authored as
+  The former raw `0x09B8C7-0x09BFCF` run in `src/bank080000_z80_command_records_a.asm` is now source-authored as
   forty-six explicit FF-terminated records instead of forty-six `incbin` slices.
 - The new byte-level proof keeps the same structural command vocabulary but removes most of the remaining blind spots in
   `0x09A348-0x09C007`. `0x09B8C7-0x09B95F` now reads as a compact `F4 04` literal-row neighborhood around
@@ -1542,10 +1558,10 @@
   literal-row families around `0x0C/0x0D/0x0E/0x0F/0x05`, `0x24/0x2A/0x2B`, `0x30/0x2B/0x27`, and
   `0x3C/0x3B/0x3A/0x38`.
 - Kept the names structural. This leaves only the tiny front `0x09A348-0x09A3EB` lead-in as raw `incbin` coverage in
-  `src/bank080000_mid_command_tail_front.asm`, while the rest of the front command window is now explicit source-owned
+  `src/bank080000_z80_command_records_a.asm`, while the rest of the front command window is now explicit source-owned
   FF-terminated record data pending loader/consumer proof.
 - Tightened that final front-window lead-in in bank `0x080000` too, again without forcing subsystem meaning.
-  The former raw `0x09A348-0x09A3EB` run in `src/bank080000_mid_command_tail_front.asm` is now source-authored as six
+  The former raw `0x09A348-0x09A3EB` run in `src/bank080000_z80_command_records_a.asm` is now source-authored as six
   explicit FF-terminated records instead of six `incbin` slices.
 - The new byte-level proof is still structural, but it finishes the front command window cleanly: `0x09A348-0x09A34C`
   is now one tiny tuple lead-in, `0x09A34D-0x09A360` is a compact local-control prelude, `0x09A361-0x09A3D1`
@@ -1553,11 +1569,11 @@
   `0xA0/0x9A/0xA1/0x9C`, and `0x09A3D2-0x09A3EB` closes as two short `0x9E/0xA0` pair tails immediately before the
   already explicit repeated-byte-pair record at `0x09A3EC`.
 - Kept the names structural. This removes the last raw `incbin` slices from
-  `src/bank080000_mid_command_tail_front.asm`, so the whole `0x09A348-0x09C007` front command window is now
+  `src/bank080000_z80_command_records_a.asm`, so the whole `0x09A348-0x09C007` front command window is now
   source-visible as explicit FF-terminated records even though the owning loader and subsystem are still unresolved.
 
 - Tightened another adjacent bridge in bank `0x080000`'s `0x099B00-0x09A347` pre-window command front without
-  forcing subsystem meaning. `src/bank080000_mid.asm` now source-authors the former raw `0x099F24-0x09A10D`
+  forcing subsystem meaning. `src/bank080000_z80_resources.asm` now source-authors the former raw `0x099F24-0x09A10D`
   continuation as explicit tuple-led and FF-terminated subrecords instead of seventeen `incbin` slices.
 - The new byte proof keeps the same structural command vocabulary but makes the late half of the front table much
   easier to audit in source: `0x099F24-0x099FDA` now reads as repeated tuple headers feeding compact control bodies,
@@ -1565,11 +1581,11 @@
   the following `0x09A01E` target, `0x09A02B-0x09A08D` narrows into several short tuple-plus-control records, and
   `0x09A0D6-0x09A10D` ends with two more explicit lead-outs into the already source-authored compound record at
   `0x09A10E`.
-- Kept the labels structural. This removes another visible raw pocket from `src/bank080000_mid.asm`, but the loader
+- Kept the labels structural. This removes another visible raw pocket from `src/bank080000_z80_resources.asm`, but the loader
   path and concrete subsystem owner for the wider `0x099B00-0x09F776` command region still need control-flow proof.
 
 - Tightened the very front of that same bank `0x080000` command region without forcing subsystem meaning.
-  `src/bank080000_mid.asm` now source-authors the former raw `0x099BB0-0x099D04` stretch as explicit tuple-led,
+  `src/bank080000_z80_resources.asm` now source-authors the former raw `0x099BB0-0x099D04` stretch as explicit tuple-led,
   FF-terminated, and FD-bridged subrecords instead of ten `incbin` slices.
 - The new source pass makes the opening command-table cadence much clearer in ROM order: the unreferenced prelude at
   `0x099BB0-0x099BD2` now stands as one lead byte, one tuple-led setup record, and one short bridge into the first
@@ -1583,7 +1599,7 @@
   and concrete subsystem owner for the wider `0x099B00-0x09F776` command region still need control-flow proof.
 
 - Tightened the remaining lead-in at the front of bank `0x080000`'s `0x099B00-0x09A347` command table without
-  forcing subsystem meaning. `src/bank080000_mid.asm` now source-authors the former raw `0x099B00-0x099B31`
+  forcing subsystem meaning. `src/bank080000_z80_resources.asm` now source-authors the former raw `0x099B00-0x099B31`
   pocket as an explicit structural word band instead of one last `incbin` slice.
 - The byte-level proof is still conservative: those 25 big-endian words continue to read best as a pre-table
   lead-in that the following `0x099B32-0x099BAF` offset list can target back into, but the range is now directly
@@ -1593,15 +1609,15 @@
   while the owning loader and subsystem remain open questions.
 
 - Promoted that same `0x099A85-0x09A347` front command ownership into its own ROM-order module,
-  `src/bank080000_mid_command_front.asm`, instead of keeping the zero fill, lead-in words, offset table,
-  and pre-`0x09A348` command records inside the broader `src/bank080000_mid.asm` catch-all.
+  `src/bank080000_z80_command_front.asm`, instead of keeping the zero fill, lead-in words, offset table,
+  and pre-`0x09A348` command records inside the broader `src/bank080000_z80_resources.asm` catch-all.
 - This is a structural ownership cleanup rather than a semantic rename: the bytes still only prove a dedicated
   command-front slice, not the final subsystem owner, but the bank now reads more like a maintained disassembly
   with separate owners for the Z80 program front, pre-descriptor records, descriptor/layout tables, command front,
   and later FF-terminated command windows.
 
 - Tightened the front of that same bank `0x080000` Z80-program owner without forcing a sound-driver guess.
-  `src/bank080000_mid_z80_program.asm` now source-authors `0x098000-0x09803A` as explicit bytes instead of four
+  `src/bank080000_z80_program.asm` now source-authors `0x098000-0x09803A` as explicit bytes instead of four
   tiny `incbin` slices.
 - The front control flow is unchanged but easier to audit in source: `0x098000` remains the reset-style `DI` / `IM 1`
   / `JP $003B` entry, `0x098006` is the short returning front stub, `0x098010-0x09801F` stays one mixed stub pocket,
@@ -1611,7 +1627,7 @@
   proven Z80 front stub boundaries in machine-readable form as well as source.
 
 - Tightened the first opaque slice inside that same Z80 program main body without forcing a subsystem guess.
-  `src/bank080000_mid_z80_program.asm` now exposes `0x098275-0x0982B9` directly in source instead of leaving the
+  `src/bank080000_z80_program.asm` now exposes `0x098275-0x0982B9` directly in source instead of leaving the
   whole `0x09803B-0x09907A` region behind one `incbin`.
 - The new split is structurally stronger than a blind byte dump: `0x098275-0x098280` is now explicit as a
   six-entry little-endian jump table for raw command bytes `$FF..$FA`, because the preceding code at
@@ -1641,7 +1657,7 @@
   Z80 main-body continuation now starts later at `0x098393`.
 
 - Tightened that same Z80 main-body frontier again through `0x098443` without forcing a subsystem guess.
-  `src/bank080000_mid_z80_program.asm` now source-authors the next routine/table/helper bridge instead of leaving
+  `src/bank080000_z80_program.asm` now source-authors the next routine/table/helper bridge instead of leaving
   it inside the post-`0x098393` incbin.
 - `0x098393-0x098403` now reads as a masked candidate selector across three 0x40-byte record banks. The routine uses
   an even-valued selector byte at `0x1C20` to index the new 3-byte descriptor table at `0x098404`, masks `0x1C21`
@@ -1657,7 +1673,7 @@
   index relative to the `0x1C80` base. The unresolved Z80 main-body continuation now starts later at `0x098446`.
 
 - Tightened that same Z80 main-body frontier again through `0x0984B0` without forcing a subsystem guess.
-  `src/bank080000_mid_z80_program.asm` now source-authors the next post-selector helper instead of leaving
+  `src/bank080000_z80_program.asm` now source-authors the next post-selector helper instead of leaving
   it inside the `0x098446+` incbin.
 - `0x098446-0x098468` now calls the shared helper at `0x0436`, stores one local selector byte at `0x1C11`,
   and for the low six-value case also splits a doubled low-bit flag into `0x1C10` before branching on `(IX+1)`.
@@ -1671,7 +1687,7 @@
 - The unresolved Z80 main-body continuation now starts later at `0x0984B1`.
 
 - Tightened that same Z80 main-body frontier again through `0x098535` without forcing a subsystem guess.
-  `src/bank080000_mid_z80_program.asm` now source-authors the next pair of lookup helpers plus a small threshold
+  `src/bank080000_z80_program.asm` now source-authors the next pair of lookup helpers plus a small threshold
   classifier instead of leaving them inside the post-`0x0984B1` incbin.
 - `0x0984B1-0x098515` now stands explicitly as two neighboring helper variants that derive a small table index from
   the high nibbles of `D/E` plus the incoming `HL` base, read one local 3-byte record, and fold the residual through
@@ -1683,7 +1699,7 @@
 - The unresolved Z80 main-body continuation now starts later at `0x09853C`.
 
 - Tightened that same Z80 main-body frontier again through `0x09867B` without forcing a subsystem guess.
-  `src/bank080000_mid_z80_program.asm` now source-authors the next output-emission and row-update band instead of
+  `src/bank080000_z80_program.asm` now source-authors the next output-emission and row-update band instead of
   leaving it inside the post-`0x09853C` incbin.
 - `0x09853C-0x098578` now stands explicitly as a nonzero-mode output emitter: after refreshing an IX-local cached
   target word through the new `0x0985A3` helper, it combines the descending odd-aligned table at `0x09913D` with the
@@ -1702,7 +1718,7 @@
 - The unresolved Z80 main-body continuation now starts later at `0x09867C`.
 
 - Tightened that same Z80 main-body frontier again through `0x09875A` while keeping the owner structural.
-  `src/bank080000_mid_z80_program.asm` now source-authors the next descriptor-expansion / latched-output / active-
+  `src/bank080000_z80_program.asm` now source-authors the next descriptor-expansion / latched-output / active-
   record sweep band instead of leaving it inside the post-`0x09867C` continuation.
 - `0x09867C-0x0986E1` now reads as an indexed 4-byte descriptor expander: it stores the incoming selector in `0x1C12`,
   conditionally mirrors one literal source byte, then uses the next stream byte as an index into the 4-byte table at
@@ -1724,7 +1740,7 @@
 - The remaining opaque Z80 main-body continuation now starts later at `0x098772`.
 
 - Tightened that same Z80 main-body frontier again through `0x098975` while keeping the owner structural.
-  `src/bank080000_mid_z80_program.asm` now source-authors the next paired stream-state bridge instead of leaving it
+  `src/bank080000_z80_program.asm` now source-authors the next paired stream-state bridge instead of leaving it
   inside the post-`0x098772` continuation.
 - `0x098772-0x098865` now reads as a primary stream/state updater over one IX-local control block: bytes below `$F8`
   load a countdown plus delta word, while `$FF` reloads HL from the stream, `$FE/$FD` manage a nested countdown plus
@@ -1743,7 +1759,7 @@
 - The remaining opaque Z80 main-body continuation now starts later at `0x098976`.
 
 - Tightened that same Z80 main-body frontier again through `0x098B7E` while keeping the owner structural.
-  `src/bank080000_mid_z80_program.asm` now source-authors the next post-dispatch bridge instead of leaving the full
+  `src/bank080000_z80_program.asm` now source-authors the next post-dispatch bridge instead of leaving the full
   `0x098976+` continuation opaque.
 - `0x098976-0x098A07` now reads as another IX-local countdown/pointer updater: it advances the local `+0x2C` timer,
   reloads bytes from the pointer at `+0x2A/+0x2B` when the timer expires, peels the fetched control byte into a low-
@@ -1765,7 +1781,7 @@
   because the next unresolved chunk is no longer mixed with this closed dispatch-owned bridge.
 
 - Tightened that same Z80 main-body frontier again through `0x098CA4` while keeping the owner structural.
-  `src/bank080000_mid_z80_program.asm` now source-authors the next slot-driven bridge instead of leaving the full
+  `src/bank080000_z80_program.asm` now source-authors the next slot-driven bridge instead of leaving the full
   `0x098B7F+` continuation opaque.
 - `0x098B7F-0x098B9B` now sweeps ten `0x1EC0`-rooted `0x20`-byte slot records, increments the shared counter at
   `0x1C07`, and calls the neighboring updater only for active entries whose flags byte at `+0x00` still has bit 7 set.
@@ -1779,7 +1795,7 @@
   the downstream local-handler table and its slot-state consumers rather than this now-closed marked-slot bridge.
 
 - Tightened that same Z80 main-body frontier again through `0x098F8B` while keeping the owner structural.
-  `src/bank080000_mid_z80_program.asm` now source-authors the next marked-slot continuation instead of leaving the full
+  `src/bank080000_z80_program.asm` now source-authors the next marked-slot continuation instead of leaving the full
   `0x098CA5+` range opaque.
 - `0x098CA5-0x098D80` now initializes one `IY`-local record from the current `IX` slot via two front paths: one path
   uses the incoming A value to index a 6-byte descriptor family rooted at local `0x19F1`, while the alternate path
@@ -1798,7 +1814,7 @@
 - The remaining opaque Z80 main-body continuation now starts later at `0x098F8C`, leaving the next pass focused on the
   state-save / loader-owned tail before the odd-aligned lookup tables at `0x09907B+`.
 - Tightened that same Z80 main-body frontier again through `0x09907A` while keeping the owner structural.
-  `src/bank080000_mid_z80_program.asm` now source-authors the former `0x098F8C-0x09907A` incbin as a state-snapshot /
+  `src/bank080000_z80_program.asm` now source-authors the former `0x098F8C-0x09907A` incbin as a state-snapshot /
   transfer-handshake routine reached by the repeated jump stubs at `0x098020`, `0x098028`, and `0x098030`.
 - `0x098F8C-0x098FBF` now stands explicitly as the register snapshot prologue: it stores the primary `BC/DE/HL`, `IX`,
   `IY`, popped return address, `SP`, primary `AF`, alternate `AF'`, and alternate `BC'/DE'/HL'` into the `0x1B80+`

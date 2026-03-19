@@ -1,7 +1,7 @@
 # 2026-03-18 bank080000 command-front subrecords
 
 - Tightened another opaque pocket inside the tail-bank `0x099B00+` command region without forcing a
-  subsystem guess. The formerly incbin-backed `0x09A199-0x09A287` span in `src/bank080000_mid.asm`
+  subsystem guess. The formerly incbin-backed `0x09A199-0x09A287` span in `src/bank080000_z80_resources.asm`
   is now source-authored as FF-terminated command subrecords plus the two tiny non-terminated gaps
   between them.
 - The first two records at `0x09A199-0x09A1BA` and `0x09A1BB-0x09A1D7` now expose the same local

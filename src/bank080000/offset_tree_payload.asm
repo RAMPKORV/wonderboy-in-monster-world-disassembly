@@ -144,19 +144,19 @@ Bank080000_MultiLevelOffsetTableTail_0A07BC:
 	dc.w	$4C20,$4C31,$4C42,$4C53,$4C64
 
 Bank080000_FourTupleRecordBand_0A07C6:
-	include "src/bank080000_a07c6.asm"
+	include "src/bank080000/four_tuple_record_band.asm"
 
 Bank080000_FourTupleRecordBandTail_0A08E6:
-	include "src/bank080000_a08e6.asm"
+	include "src/bank080000/four_tuple_record_band_tail.asm"
 
 Bank080000_MixedLeadInRecordFamily_0A0B26:
-	include "src/bank080000_a0b26.asm"
+	include "src/bank080000/mixed_lead_in_record_family.asm"
 
 Bank080000_FFTerminatedSixByteRecordFamilies_0A0C83:
-	include "src/bank080000_a0c83.asm"
+	include "src/bank080000/ff_terminated_six_byte_record_families.asm"
 
 Bank080000_FFTerminatedFiveByteTupleFamily_0A10AB:
-	include "src/bank080000_ff_terminated_five_byte_tuples.asm"
+	include "src/bank080000/ff_terminated_five_byte_tuples.asm"
 
-Bank080000_TableTargetedPayloadRecords_0A3500:
-	include "src/bank080000_table_targeted_payload_records.asm"
+Bank080000_TableTargetedPayload_0A3500:
+	include "src/bank080000/table_targeted_payload.asm"

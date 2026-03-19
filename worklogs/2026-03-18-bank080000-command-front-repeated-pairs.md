@@ -2,7 +2,7 @@
 
 - Tightened five more FF-terminated records inside the front tail-bank command window
   `0x09A348-0x09C007` without forcing a subsystem guess.
-- `src/bank080000_mid_command_tail_front.asm` now source-authors `0x09A497-0x09A4F9`,
+- `src/bank080000_z80_command_records_a.asm` now source-authors `0x09A497-0x09A4F9`,
   `0x09A59B-0x09A613`, `0x09A63B-0x09A6D6`, `0x09AB72-0x09AB94`, and
   `0x09AB95-0x09ABE0` as explicit `dc.b` data instead of raw `incbin` slices.
 - The first, second, third, and fifth records all keep the same compact command framing

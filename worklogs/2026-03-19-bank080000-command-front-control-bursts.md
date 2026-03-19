@@ -1,7 +1,7 @@
 # 2026-03-19 bank080000 command front control bursts
 
 - Tightened the front command window in bank `0x080000` one more step without forcing a subsystem guess.
-- `src/bank080000_mid_command_tail_front.asm` now source-authors the former raw `0x09A6D7-0x09AA5B` run as
+- `src/bank080000_z80_command_records_a.asm` now source-authors the former raw `0x09A6D7-0x09AA5B` run as
   fourteen explicit FF-terminated records instead of fourteen `incbin` slices.
 - `0x09A6D7-0x09A7FC` now stands explicitly as one local-control-plus-literal-control burst family built around
   recurring `0x60/0x61/0x00/0x05/0x0F/0x01` pockets.

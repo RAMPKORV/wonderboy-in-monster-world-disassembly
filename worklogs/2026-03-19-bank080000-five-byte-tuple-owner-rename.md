@@ -7,6 +7,6 @@
   proven starts (`0x0A1411`, `0x0A1D4F`, `0x0A2400`, `0x0A258B`, `0x0A2610`, `0x0A27CB`, `0x0A2D9B`,
   and `0x0A304B`), but the parent include now reflects the strongest current ownership evidence:
   one FF-terminated five-byte tuple family with a few explicit mixed bridge pockets.
-- Updated the ROM-order include in `src/bank080000_a0000.asm`, refreshed `tools/index/rom_map.json`,
+- Updated the ROM-order include in `src/bank080000_offset_tree_payload.asm`, refreshed `tools/index/rom_map.json`,
   and recorded the stronger format-owned naming in repo notes so future passes do not keep treating
   this family as a generic address-derived blob owner.

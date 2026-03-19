@@ -1,12 +1,11 @@
 {
   "_meta": {
     "project": "Wonder Boy in Monster World Disassembly",
-    "description": "Comprehensive roadmap from the current bootstrap split to a mature source-first Mega Drive disassembly with full 68k coverage, named tables, decoded data formats, and tooling/docs parity with a well-developed sibling project.",
+    "description": "Comprehensive roadmap from the current bootstrap split to a mature source-first Mega Drive disassembly with full 68k coverage, semantic subsystem ownership, classified levels/maps/gfx/text/sound data, and self-contained tooling/docs that describe the intended end state directly.",
     "created": "2026-03-17",
     "phase": 1,
     "current_state": "The project has a bit-perfect rebuild, header/source bootstrap, strong early VBlank/menu recovery, and bank-specific owners for all 0x020000+ banks. Bank 0x020000 now exposes a front dialogue/script continuation at 0x020000-0x0201CF, two front bank-relative text/control target families at 0x0201D0-0x020539 and 0x020E4C-0x0211C9, an intervening dialogue/script continuation at 0x02053A-0x020E4B, the already split index/text/name islands through 0x02245F, structured descriptor/index data through 0x022DB7, a partially split bridge at 0x022DB8-0x023AB5, sentinel-delimited word-record families through 0x02482B, and a now-further-decomposed compressed-data tail at 0x02482C-0x03FFFF where the front relative-offset table is source-authored, proven 0xFF7A/0xFF7B block boundaries are explicit through 0x03C6DF, and the former single bank-end remainder at 0x03C6E0-0x03FFFF is now split into five smaller header-like sub-blocks starting at 0x03C6E0, 0x03E846, 0x03EF4E, 0x03F4D1, and 0x03FE24. Bank 0x040000 now also exposes its pre-table front at 0x040000-0x0409F9 as a ROM-order lead-in plus six smaller header-like sub-blocks before the already split flagged ROM-reference tables and same-bank payload targets through 0x07FF66; the strongest repeated-size evidence in that same-bank payload is now cleaner too, with dedicated ROM-order graphics/tile submodules for the earlier isolated 0x045842-0x045D01 block plus the 0x4C0-byte families at 0x04BFAA-0x04E5A9, 0x05C5DA-0x05CA99, 0x05D630-0x05FC2F, and 0x06B192-0x06BB11 after byte review showed every same-bank /usr/bin/bash1-tagged target cleanly fits 38 4bpp planar tiles. Bank 0x080000 still has its cross-bank table-targeted payload front split through 0x0961D7, a structurally split 0x098000-0x09F776 island whose front Z80-like body is now narrowed to 0x098000-0x09907A with two odd-aligned little-endian word lookup tables made explicit at 0x09907B-0x09913C, 0x09913D-0x0991FE, and 0x0991FF, plus a pre-descriptor structural tail through 0x09991F, descriptor/layout bands through 0x099A84, a dedicated command-front owner through 0x09A347, a fully source-visible tail command window through 0x09F776, and the 0x0A0000 tail-bank offset-tree island split through 0x0A4C76.",
-    "last_progress_note": "2026-03-19: renamed bank 0x080000's 0x0A3500-0x0A4C76 back-half owner from the address-stamped src/bank080000_a3500.asm family to src/bank080000_table_targeted_payload_records.asm plus ROM-order child modules, so that mature table-targeted payload family now reads by proven structural ownership rather than raw start address while preserving the bit-perfect rebuild.",
-    "reference_project": "E:\\Romhacking\\vermilion",
+    "last_progress_note": "2026-03-19: renamed bank 0x080000's former mid/a0000 scaffold owners to semantic late-bank modules (`src/bank080000_z80_resources.asm`, `src/bank080000_z80_program.asm`, `src/bank080000_z80_pre_descriptor_data.asm`, `src/bank080000_z80_descriptor_tables.asm`, `src/bank080000_z80_command_front.asm`, `src/bank080000_z80_command_records_{a,b,c}.asm`, and `src/bank080000_offset_tree_payload.asm`) so the late non-fill islands now read by proven Z80-resource and offset-tree payload ownership rather than temporary ROM-position names while preserving the bit-perfect rebuild.",
     "ghidra_path": "ghidra/"
   },
   "schema_version": 2,
@@ -20,13 +19,15 @@
       "Every change preserves a bit-perfect rebuild unless the task explicitly establishes new generated assets that still round-trip to the original bytes.",
       "New labels, constants, and module boundaries follow repo conventions and prefer real game/domain meaning where the ROM proves it.",
       "Recovered code/data ownership is reflected in source files and machine-readable indexes, not only in notes or Ghidra.",
-      "Opaque bytes stay opaque only when their format or ownership is still unproven; monolithic bank-sized incbins are not an acceptable end state."
+      "Opaque bytes stay opaque only when their format or ownership is still unproven; monolithic bank-sized incbins are not an acceptable end state.",
+      "Every still-opaque region is tracked with a current classification such as code, level/map data, compressed graphics, text, script, sound, tables, or fill so the repo steadily converges on human-readable ownership."
     ],
     "editing_rules": [
       "Prefer source-authored ASM with labels and comments over coarse incbins once control flow or table structure is proven.",
       "Keep hex literals in dc.b/dc.w/dc.l data so byte identity is easy to audit.",
       "Put RAM, hardware, sound, script, and gameplay constants in the appropriate shared constant files rather than scattering new equates.",
-      "Use Node.js for repository tooling and round-trip extract/build helpers."
+      "Use Node.js for repository tooling and round-trip extract/build helpers.",
+      "Prefer semantic subsystem or asset-family filenames over address-stamped bank fragment names once the bytes have a defensible owner or format."
     ]
   },
   "quality_gates": {
@@ -40,10 +41,61 @@
       "Document proven code/data boundaries before moving bytes into new modules.",
       "Confirm branch sizing and absolute-vs-relative control flow remain byte-identical.",
       "Confirm any extracted asset or text bank can rebuild back to the exact original bytes.",
-      "Prefer bank/module decomposition and structural naming over cosmetic renaming passes."
+      "Prefer bank/module decomposition and structural naming over cosmetic renaming passes.",
+      "Describe final-form module boundaries and naming directly in repo docs and task descriptions, and only promote names and ownership that are supported by Wonder Boy's own ROM evidence."
     ]
   },
   "categories": {
+    "organization_and_classification_reset": {
+      "description": "Stop the spread of opaque bank-fragment naming and drive the repo toward stable subsystem ownership backed by explicit classification of what each remaining blob actually contains.",
+      "tasks": [
+        {
+          "id": "ORG-001",
+          "title": "Write the target module map for a mature Wonder Boy disassembly",
+          "description": "Define the intended steady-state modules for states, gameplay, player, enemy, items, strings, script, mapdata, gfxdata, sound, and other proven subsystems so future work lands in stable destinations instead of new bank-local fragments.",
+          "priority": "critical",
+          "effort": "medium",
+          "status": "in_progress",
+          "file": "docs/module_plan.md + src/*.asm"
+        },
+        {
+          "id": "ORG-002",
+          "title": "Build a whole-ROM blob classification catalog",
+          "description": "Catalog every remaining opaque or semi-opaque ROM region with its current best classification such as 68k code, pointer table, level/map data, compressed graphics, palette/tile metadata, text/dialogue, script/event data, sound/Z80 resources, or fill/padding, plus the evidence and consumer/loader links that support that call.",
+          "priority": "critical",
+          "effort": "large",
+          "status": "in_progress",
+          "file": "docs/blob_catalog.md + tools/index/rom_map.json"
+        },
+        {
+          "id": "ORG-003",
+          "title": "Rename mature bank-fragment modules to semantic owners",
+          "description": "Systematically replace files with names like bank080000_mid_front.asm, bank040000_payload_mid.asm, and similar address- or direction-stamped fragments once their content is understood, keeping only thin ROM-order wrappers while the real logic/data lives in human-meaningful subsystem or asset-family modules.",
+          "priority": "high",
+          "effort": "large",
+          "status": "in_progress",
+          "file": "src/*.asm + tools/index/rom_map.json"
+        },
+        {
+          "id": "ORG-004",
+          "title": "Classify level/map, graphics, and text ownership before deeper splits",
+          "description": "For each bank, explicitly answer which ranges are level or room data, compressed graphics of what, palettes/tilemaps, text/dialogue banks, script/event payloads, and loader metadata so later disassembly work stops treating those families as generic payloads or fronts/tails.",
+          "priority": "high",
+          "effort": "large",
+          "status": "todo",
+          "file": "docs/blob_catalog.md + src/bank020000.asm + src/bank040000.asm + src/bank080000.asm"
+        },
+        {
+          "id": "ORG-005",
+          "title": "Prevent new placeholder module names from becoming permanent",
+          "description": "Add and enforce repo guidance that temporary bank-local slice names are only short-lived scaffolding, must record the intended future owner, and should be retired as soon as a defensible subsystem or asset-family name is available.",
+          "priority": "high",
+          "effort": "small",
+          "status": "todo",
+          "file": "autopilot.bat + docs/naming_conventions.md + docs/module_boundaries.md"
+        }
+      ]
+    },
     "disassembly_completion_strategy": {
       "description": "Reshape the project around final-form module ownership so all later recovery work has stable destinations instead of accumulating inside coarse blobs.",
       "tasks": [
@@ -59,7 +111,7 @@
         {
           "id": "PLAN-002",
           "title": "Define target module map for a mature Wonder Boy split",
-          "description": "Design the intended steady-state source layout for gameplay, states, player, enemy, map/script, strings, graphics, sound, and bank-local data so future splits converge toward a stable architecture instead of ad hoc fragments.",
+          "description": "Design the intended steady-state source layout by mapping bytes into stable owners such as gameplay, states, player, enemy, items, strings, script, mapdata, gfxdata, sound, and other proven subsystems instead of ad hoc bank fragments.",
           "priority": "high",
           "effort": "medium",
           "status": "in_progress",
@@ -785,6 +837,12 @@
     }
   },
   "priority_order": [
+    "--- Organization reset ---",
+    "ORG-001",
+    "ORG-002",
+    "ORG-003",
+    "ORG-004",
+    "ORG-005",
     "--- Immediate structural work ---",
     "PLAN-001",
     "CORE-001",
@@ -824,19 +882,20 @@
     "REGR-006"
   ],
   "statistics": {
-    "total_tasks": 76,
+    "total_tasks": 81,
     "by_status": {
-      "done": 4,
-      "in_progress": 13,
-      "todo": 59
+      "in_progress": 16,
+      "todo": 61,
+      "done": 4
     },
     "by_priority": {
-      "critical": 26,
-      "high": 34,
+      "critical": 28,
+      "high": 37,
       "medium": 15,
       "low": 1
     },
     "by_category": {
+      "organization_and_classification_reset": 5,
       "disassembly_completion_strategy": 5,
       "core_frontier_recovery": 7,
       "bank_020000_recovery": 7,

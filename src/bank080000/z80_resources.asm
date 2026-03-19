@@ -12,21 +12,23 @@
 ; source windows, each further split at every proven local 0xFF terminator so the
 ; command-record cadence is explicit even before the subsystem owner is clearer.
 
-	include "src/bank080000_mid_z80_program.asm"
+Bank080000_Z80Program_098000:
+	include "src/bank080000/z80_program.asm"
 
 Bank080000_PreDescriptorStructuredData_099200:
-	include "src/bank080000_mid_front.asm"
+	include "src/bank080000/z80_pre_descriptor_data.asm"
 
 Bank080000_StructuredDescriptorAndLayoutRecords_099920:
-	include "src/bank080000_mid_descriptors.asm"
+	include "src/bank080000/z80_descriptor_tables.asm"
 
-	include "src/bank080000_mid_command_front.asm"
+Bank080000_Z80CommandFront_099A85:
+	include "src/bank080000/z80_command_front.asm"
 
 Bank080000_FFTerminatedCommandRecordWindowFront_09A348:
-	include "src/bank080000_mid_command_tail_front.asm"
+	include "src/bank080000/z80_command_records_a.asm"
 
 Bank080000_FFTerminatedCommandRecordWindowMid_09C008:
-	include "src/bank080000_mid_command_tail_mid.asm"
+	include "src/bank080000/z80_command_records_b.asm"
 
 Bank080000_FFTerminatedCommandRecordWindowTail_09E028:
-	include "src/bank080000_mid_command_tail_tail.asm"
+	include "src/bank080000/z80_command_records_c.asm"
