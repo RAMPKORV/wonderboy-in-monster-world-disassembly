@@ -1,6 +1,6 @@
 {
-  "generated": "2026-03-18",
-  "note": "Refreshed after extending the source-authored VBlank/task-dispatch, bootstrap/display setup, input-stream, controller helper chain, and the downstream selected-input inventory/equipment plus adjacent magic/status menu helpers while preserving ROM order with a bit-perfect rebuild. Current best fit: 0x00501C latches packed (duration,value) bytes from 0xFF1400 into 0x8A4E/0x8A4F, 0x005036 run-length encodes the same format, 0x00505C replays it through the selected-input mirror at 0x8A7A-0x8A7D, 0x007924-0x007D9B now source-authors the adjacent magic/status submode plus six-spell grid, 0x007D9C-0x008059 bridges that flow back into the generic inventory/equipment list UI, 0x00805A-0x0088C1 covers repeat-gated input and adjacent inventory/magic status drawing, 0x008C34-0x008C7F now initializes the visible-list state from local selection scratch, bank 0x020000 now source-authors an upstream quiz/trivia text block at 0x021360-0x02171F plus the inventory/equipment/magic/item name tables, world-keyword table, adjacent shop/inn/Ocarina/dictionary text through 0x02245F, and the first post-dictionary descriptor/index island at 0x022460-0x022DB7, the 0x020000+ top-level whole-bank blobs now route through bank-specific include owners, 0x0409FA-0x040FFF is split out as an explicit late-bank 0xFF fill slice, the 0x098000-0x09F776 tail-bank non-fill island is now decomposed into a Z80-like code body at 0x098000-0x09907A, two odd-aligned little-endian word lookup tables at 0x09907B-0x09913C and 0x09913D-0x0991FE plus a trailing zero byte at 0x0991FF, and a newly source-authored pre-descriptor structural tail at 0x099200-0x09991F (two monotone byte bands, a fixed 19-byte record family, mixed/control tails, local-offset words, packed bytes, repeated 0x01F1 words, and a short word trailer), the front 0x099BD3-0x09A347 command pocket is now slightly cleaner too because five longer table-targeted records at 0x099D05, 0x099D48, 0x09A10E, 0x09A16A, and 0x09A288 are explicit as smaller FF-terminated subrecords before 0x09A348, descriptor/layout records, zero fill, a command lead-in, a bank-local command offset table at 0x099B32-0x099BAF, an unreferenced command-record prelude at 0x099BB0-0x099BD2, narrower table-targeted command records through 0x09A347, and fully sliced FF-terminated command-record windows at 0x09A348-0x09C007, 0x09C008-0x09E027, and 0x09E028-0x09F776 with only the short non-terminated lead-out at 0x09F76A-0x09F776 still grouped, while the next 0x0A0000-0x0A4C76 island now begins with a source-authored multi-level offset-table tree through 0x0A07C5, continues with repeated four-tuple records through 0x0A0B25, four FF-terminated six-byte bands through 0x0A10AA, a fully record-sliced FF-terminated five-byte tuple family through 0x0A34FF, and a table-targeted back half that now also exposes explicit 3-word bands, local-offset triplet records, and a self-referencing local-offset list.",
+  "generated": "2026-03-19",
+  "note": "Refreshed after extending the source-authored VBlank/task-dispatch, bootstrap/display setup, input-stream, controller helper chain, and the downstream selected-input inventory/equipment plus adjacent magic/status menu helpers while preserving ROM order with a bit-perfect rebuild. Current best fit: 0x00501C latches packed (duration,value) bytes from 0xFF1400 into 0x8A4E/0x8A4F, 0x005036 run-length encodes the same format, 0x00505C replays it through the selected-input mirror at 0x8A7A-0x8A7D, 0x007924-0x007D9B now source-authors the adjacent magic/status submode plus six-spell grid, 0x007D9C-0x008059 bridges that flow back into the generic inventory/equipment list UI, 0x00805A-0x0088C1 covers repeat-gated input and adjacent inventory/magic status drawing, 0x008C34-0x008C7F now initializes the visible-list state from local selection scratch, bank 0x020000 now source-authors an upstream quiz/trivia text block at 0x021360-0x02171F plus the inventory/equipment/magic/item name tables, world-keyword table, adjacent shop/inn/Ocarina/dictionary text through 0x02245F, and the first post-dictionary descriptor/index island at 0x022460-0x022DB7, the 0x020000+ top-level whole-bank blobs now route through bank-specific include owners, bank 0x040000 now also isolates the earlier same-bank $01-tagged 0x045842 target as its own 38-tile planar graphics block ahead of the later 0x04BFAA, 0x05C5DA, 0x05D630, and 0x06B192 tile families, 0x0409FA-0x040FFF is split out as an explicit late-bank 0xFF fill slice, the 0x098000-0x09F776 tail-bank non-fill island is now decomposed into a Z80-like code body at 0x098000-0x09907A, two odd-aligned little-endian word lookup tables at 0x09907B-0x09913C and 0x09913D-0x0991FE plus a trailing zero byte at 0x0991FF, and a newly source-authored pre-descriptor structural tail at 0x099200-0x09991F (two monotone byte bands, a fixed 19-byte record family, mixed/control tails, local-offset words, packed bytes, repeated 0x01F1 words, and a short word trailer), the front 0x099BD3-0x09A347 command pocket is now slightly cleaner too because five longer table-targeted records at 0x099D05, 0x099D48, 0x09A10E, 0x09A16A, and 0x09A288 are explicit as smaller FF-terminated subrecords before 0x09A348, descriptor/layout records, zero fill, a command lead-in, a bank-local command offset table at 0x099B32-0x099BAF, an unreferenced command-record prelude at 0x099BB0-0x099BD2, narrower table-targeted command records through 0x09A347, and fully sliced FF-terminated command-record windows at 0x09A348-0x09C007, 0x09C008-0x09E027, and 0x09E028-0x09F776 with only the short non-terminated lead-out at 0x09F76A-0x09F776 still grouped, while the next 0x0A0000-0x0A4C76 island now begins with a source-authored multi-level offset-table tree through 0x0A07C5, continues with repeated four-tuple records through 0x0A0B25, four FF-terminated six-byte bands through 0x0A10AA, a fully record-sliced FF-terminated five-byte tuple family through 0x0A34FF, and a table-targeted back half that now also exposes explicit 3-word bands, local-offset triplet records, and a self-referencing local-offset list. More of the 0x09C008-0x09F776 command windows are now source-authored too: the former raw bridges at 0x09DE58-0x09DFB3 and 0x09E6E2-0x09E9E6 now stand explicitly as compact local-target setup, repeated 0x9x/0xAx high-byte ladder, low-byte ladder, and short F4 1B literal-descent records. The front of the 0x09E028 tail command window is now a little less opaque too: 0x09E028-0x09E22A is source-authored as one compact local-control-to-high-byte ladder bridge, a neighboring literal-control family, and a denser local-control-plus-literal-pair return before the later explicit tail pockets.",
   "rom_size": 786432,
   "ranges": [
     {
@@ -122,9 +122,9 @@
     {
       "start": "0x020000",
       "end": "0x0201CF",
-      "source": "src/bank020000.asm",
+      "source": "src/bank020000_dialogue_front.asm",
       "blob": "data/rom/bank_020000_03ffff.bin",
-      "kind": "opaque_front_bank_slice",
+      "kind": "dialogue_script_front_continuation_records",
       "status": "incbin"
     },
     {
@@ -138,9 +138,9 @@
     {
       "start": "0x02053A",
       "end": "0x020E4B",
-      "source": "src/bank020000.asm",
+      "source": "src/bank020000_dialogue_mid.asm",
       "blob": "data/rom/bank_020000_03ffff.bin",
-      "kind": "untargeted_front_bank_gap",
+      "kind": "dialogue_script_mid_continuation_records",
       "status": "incbin"
     },
     {
@@ -631,6 +631,22 @@
     },
     {
       "start": "0x041C00",
+      "end": "0x045841",
+      "source": "src/bank040000_payload_front.asm",
+      "blob": "data/rom/bank_040000_07ffff.bin",
+      "kind": "local_table_targeted_payload_records",
+      "status": "incbin"
+    },
+    {
+      "start": "0x045842",
+      "end": "0x045D01",
+      "source": "src/bank040000_gfx_tiles_045842.asm",
+      "blob": "data/rom/bank_040000_07ffff.bin",
+      "kind": "local_table_targeted_planar_tile_block",
+      "status": "incbin"
+    },
+    {
+      "start": "0x045D02",
       "end": "0x04A70E",
       "source": "src/bank040000_payload_front.asm",
       "blob": "data/rom/bank_040000_07ffff.bin",
@@ -648,9 +664,9 @@
     {
       "start": "0x04BFAA",
       "end": "0x04E5A9",
-      "source": "src/bank040000_payload_stride_04bfaa.asm",
+      "source": "src/bank040000_gfx_tiles_04bfaa.asm",
       "blob": "data/rom/bank_040000_07ffff.bin",
-      "kind": "local_table_targeted_fixed_stride_record_family",
+      "kind": "local_table_targeted_planar_tile_family",
       "status": "incbin"
     },
     {
@@ -664,9 +680,9 @@
     {
       "start": "0x05C5DA",
       "end": "0x05CA99",
-      "source": "src/bank040000_payload_stride_05c5da.asm",
+      "source": "src/bank040000_gfx_tiles_05c5da.asm",
       "blob": "data/rom/bank_040000_07ffff.bin",
-      "kind": "local_table_targeted_fixed_stride_record",
+      "kind": "local_table_targeted_planar_tile_block",
       "status": "incbin"
     },
     {
@@ -680,9 +696,9 @@
     {
       "start": "0x05D630",
       "end": "0x05FC2F",
-      "source": "src/bank040000_payload_stride_05d630.asm",
+      "source": "src/bank040000_gfx_tiles_05d630.asm",
       "blob": "data/rom/bank_040000_07ffff.bin",
-      "kind": "local_table_targeted_fixed_stride_record_family",
+      "kind": "local_table_targeted_planar_tile_family",
       "status": "incbin"
     },
     {
@@ -696,9 +712,9 @@
     {
       "start": "0x06B192",
       "end": "0x06BB11",
-      "source": "src/bank040000_payload_stride_06b192.asm",
+      "source": "src/bank040000_gfx_tiles_06b192.asm",
       "blob": "data/rom/bank_040000_07ffff.bin",
-      "kind": "local_table_targeted_fixed_stride_record_family",
+      "kind": "local_table_targeted_planar_tile_family",
       "status": "incbin"
     },
     {
@@ -767,31 +783,500 @@
     },
     {
       "start": "0x098000",
-      "end": "0x09907A",
-      "source": "src/bank080000_mid_z80.asm",
+      "end": "0x098005",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_reset_entry",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098006",
+      "end": "0x09800F",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_front_return_stub",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098010",
+      "end": "0x09801F",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_front_stub_cluster",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098020",
+      "end": "0x098027",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_repeated_jump_stub",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098028",
+      "end": "0x09802F",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_repeated_jump_stub",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098030",
+      "end": "0x098037",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_repeated_jump_stub",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098038",
+      "end": "0x09803A",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_reti_stub",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x09803B",
+      "end": "0x0980E1",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_sequencer_state_init",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x0980E2",
+      "end": "0x0980FA",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_startup_burst_emitter",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x0980FB",
+      "end": "0x09810A",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_output_selector_reset",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x09810B",
+      "end": "0x09813D",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_countdown_tick_and_pointer_advance",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x09813E",
+      "end": "0x098151",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_wide_record_phase_init",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098152",
+      "end": "0x09815F",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_latched_mode_mirror",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098160",
+      "end": "0x09819B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_inline_sequence_state_advance",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x09819C",
+      "end": "0x09820A",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_sequence_byte_consumer",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x09820B",
+      "end": "0x098229",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_linear_slot_descriptor_population",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x09822A",
+      "end": "0x098274",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_indexed_slot_descriptor_update",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098275",
+      "end": "0x098280",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_meta_command_dispatch_table",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098281",
+      "end": "0x098281",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_meta_command_dispatch_return",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098282",
+      "end": "0x098287",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_meta_command_handler",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098288",
+      "end": "0x09828C",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_meta_command_handler",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x09828D",
+      "end": "0x09829B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_meta_command_inline_record_table",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x09829C",
+      "end": "0x0982B0",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_meta_command_handler_with_shared_init",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x0982B1",
+      "end": "0x0982B9",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_meta_command_inline_record_table",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x0982BA",
+      "end": "0x0982E1",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_meta_command_handler",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x0982E2",
+      "end": "0x0982E7",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_meta_command_handler",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x0982E8",
+      "end": "0x0982F9",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_packed_slot_index_helper",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x0982FA",
+      "end": "0x098320",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_matching_packed_slot_scan",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098321",
+      "end": "0x098344",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_flagged_slot_drain",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098345",
+      "end": "0x098368",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_selected_slot_drain",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098369",
+      "end": "0x098392",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_meta_command_handler",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098393",
+      "end": "0x098403",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_masked_candidate_selector",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098404",
+      "end": "0x09840C",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_candidate_bank_descriptor_table",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x09840D",
+      "end": "0x098435",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_matching_packed_delta_scan",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098436",
+      "end": "0x098445",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_wide_record_index_helper",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098446",
+      "end": "0x0984B0",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_selection_finalize_helper",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x0984B1",
+      "end": "0x098515",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_triple_lookup_helpers",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098516",
+      "end": "0x09853B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_high_byte_threshold_bucket_helper",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x09853C",
+      "end": "0x098578",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_quantized_output_pair_emitter",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098579",
+      "end": "0x09859A",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_quantized_output_pair_zero_mode",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x09859B",
+      "end": "0x0985A2",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_masked_de_compare_helper",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x0985A3",
+      "end": "0x0985B9",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_masked_target_refresh_helper",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x0985BA",
+      "end": "0x0985C2",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_indexed_output_band_branch",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x0985C3",
+      "end": "0x0985EE",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_indexed_output_band_equal_case",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x0985EF",
+      "end": "0x098615",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_indexed_output_band_greater_case",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098616",
+      "end": "0x098666",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_indexed_output_band_low_mode_rows",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098667",
+      "end": "0x098673",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_low3_lookup_pointer_helper",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098674",
+      "end": "0x09867B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_low3_lookup_table",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x09867C",
+      "end": "0x0986E1",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_indexed_output_descriptor_expander",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x0986E2",
+      "end": "0x09870A",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_latched_output_pair_writer",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x09870B",
+      "end": "0x098755",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_active_wide_record_sweep",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098756",
+      "end": "0x09875B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_bit6_dispatch_gate",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x09875C",
+      "end": "0x098771",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_set_bit6_mode_dispatch",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098772",
+      "end": "0x098975",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_paired_stream_state_bridge",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098976",
+      "end": "0x098A07",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_indexed_countdown_state_advance",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098A08",
+      "end": "0x098AA8",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_low_mode_record_load_and_row_emit",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098AA9",
+      "end": "0x098AB1",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_high_mode_fixed_output_seed",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098AB2",
+      "end": "0x098B5A",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_indexed_mode_state_init",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098B5B",
+      "end": "0x098B65",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_indexed_scratch_pointer_helper",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098B66",
+      "end": "0x098B7E",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_indexed_scratch_scaler",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098B7F",
+      "end": "0x098B9B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_marked_slot_sweep",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098B9C",
+      "end": "0x098CA4",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_marked_slot_record_update",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098CA5",
+      "end": "0x098D80",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_descriptor_driven_record_init",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098D81",
+      "end": "0x098E12",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_slot_to_iy_record_finalize",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098E13",
+      "end": "0x098E1A",
+      "source": "src/bank080000_mid_z80_program.asm",
       "blob": "data/rom/bank_080000_0bffff.bin",
-      "kind": "opcode_dense_z80_like_code_body",
+      "kind": "z80_program_small_gap",
       "status": "incbin"
+    },
+    {
+      "start": "0x098E1B",
+      "end": "0x098E61",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_triplet_write_helpers",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098E62",
+      "end": "0x098F8B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_high_command_dispatch_family",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x098F8C",
+      "end": "0x09907A",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_state_snapshot_transfer_handshake",
+      "status": "source_authored_data"
     },
     {
       "start": "0x09907B",
       "end": "0x09913C",
-      "source": "src/bank080000_mid_z80.asm",
-      "kind": "odd_aligned_little_endian_ascending_word_table",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_odd_aligned_little_endian_ascending_word_table",
       "status": "source_authored_data"
     },
     {
       "start": "0x09913D",
       "end": "0x0991FE",
-      "source": "src/bank080000_mid_z80.asm",
-      "kind": "odd_aligned_little_endian_descending_word_table",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_odd_aligned_little_endian_descending_word_table",
       "status": "source_authored_data"
     },
     {
       "start": "0x0991FF",
       "end": "0x0991FF",
-      "source": "src/bank080000_mid_z80.asm",
-      "kind": "z80_lookup_table_tail_byte",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "z80_program_lookup_table_tail_byte",
       "status": "source_authored_data"
     },
     {
@@ -909,7 +1394,7 @@
     {
       "start": "0x099A85",
       "end": "0x099AFF",
-      "source": "src/bank080000_mid.asm",
+      "source": "src/bank080000_mid_command_front.asm",
       "blob": "data/rom/bank_080000_0bffff.bin",
       "kind": "confirmed_zero_fill",
       "status": "source_authored_data"
@@ -917,90 +1402,85 @@
     {
       "start": "0x099B00",
       "end": "0x099B31",
-      "source": "src/bank080000_mid.asm",
+      "source": "src/bank080000_mid_command_front.asm",
       "blob": "data/rom/bank_080000_0bffff.bin",
       "kind": "command_region_lead_in",
-      "status": "incbin"
+      "status": "source_authored_data"
     },
     {
       "start": "0x099B32",
       "end": "0x099BAF",
-      "source": "src/bank080000_mid.asm",
+      "source": "src/bank080000_mid_command_front.asm",
       "kind": "command_offset_table",
       "status": "source_authored_data"
     },
     {
       "start": "0x099BB0",
       "end": "0x099BD2",
-      "source": "src/bank080000_mid.asm",
-      "blob": "data/rom/bank_080000_0bffff.bin",
+      "source": "src/bank080000_mid_command_front.asm",
       "kind": "command_record_prelude",
-      "status": "incbin"
+      "status": "source_authored_data"
     },
     {
       "start": "0x099BD3",
       "end": "0x099D04",
-      "source": "src/bank080000_mid.asm",
-      "blob": "data/rom/bank_080000_0bffff.bin",
+      "source": "src/bank080000_mid_command_front.asm",
       "kind": "table_targeted_command_records",
-      "status": "incbin"
+      "status": "source_authored_data"
     },
     {
       "start": "0x099D05",
       "end": "0x099D47",
-      "source": "src/bank080000_mid.asm",
+      "source": "src/bank080000_mid_command_front.asm",
       "kind": "ff_terminated_table_targeted_command_subrecords",
       "status": "source_authored_data"
     },
     {
       "start": "0x099D48",
       "end": "0x099D77",
-      "source": "src/bank080000_mid.asm",
+      "source": "src/bank080000_mid_command_front.asm",
       "kind": "ff_terminated_table_targeted_command_subrecords",
       "status": "source_authored_data"
     },
     {
       "start": "0x099D78",
       "end": "0x09A10D",
-      "source": "src/bank080000_mid.asm",
-      "blob": "data/rom/bank_080000_0bffff.bin",
-      "kind": "table_targeted_command_records",
-      "status": "incbin"
+      "source": "src/bank080000_mid_command_front.asm",
+      "kind": "ff_terminated_table_targeted_command_subrecords_with_shared_bridge",
+      "status": "source_authored_data"
     },
     {
       "start": "0x09A10E",
       "end": "0x09A13B",
-      "source": "src/bank080000_mid.asm",
+      "source": "src/bank080000_mid_command_front.asm",
       "kind": "ff_terminated_table_targeted_command_subrecords",
       "status": "source_authored_data"
     },
     {
       "start": "0x09A13C",
       "end": "0x09A169",
-      "source": "src/bank080000_mid.asm",
-      "blob": "data/rom/bank_080000_0bffff.bin",
-      "kind": "table_targeted_command_records",
-      "status": "incbin"
+      "source": "src/bank080000_mid_command_front.asm",
+      "kind": "ff_terminated_table_targeted_command_subrecords_with_compact_leadout",
+      "status": "source_authored_data"
     },
     {
       "start": "0x09A16A",
       "end": "0x09A198",
-      "source": "src/bank080000_mid.asm",
+      "source": "src/bank080000_mid_command_front.asm",
       "kind": "ff_terminated_table_targeted_command_subrecords",
       "status": "source_authored_data"
     },
     {
       "start": "0x09A199",
       "end": "0x09A287",
-      "source": "src/bank080000_mid.asm",
-      "blob": "data/rom/bank_080000_0bffff.bin",
-      "kind": "table_targeted_command_records",
-      "status": "incbin"
+      "source": "src/bank080000_mid_command_front.asm",
+      "kind": "ff_terminated_table_targeted_command_subrecords_with_gap_bytes",
+      "status": "source_authored_data"
     },
     {
       "start": "0x09A288",
       "end": "0x09A347",
-      "source": "src/bank080000_mid.asm",
+      "source": "src/bank080000_mid_command_front.asm",
       "kind": "ff_terminated_table_targeted_command_subrecords",
       "status": "source_authored_data"
     },
@@ -1010,7 +1490,7 @@
       "source": "src/bank080000_mid_command_tail_front.asm",
       "blob": "data/rom/bank_080000_0bffff.bin",
       "kind": "ff_terminated_command_record_slices",
-      "status": "incbin"
+      "status": "source_authored_data"
     },
     {
       "start": "0x09C008",
@@ -1018,7 +1498,7 @@
       "source": "src/bank080000_mid_command_tail_mid.asm",
       "blob": "data/rom/bank_080000_0bffff.bin",
       "kind": "ff_terminated_command_record_slices",
-      "status": "incbin"
+      "status": "source_authored_data"
     },
     {
       "start": "0x09E028",
@@ -1026,7 +1506,7 @@
       "source": "src/bank080000_mid_command_tail_tail.asm",
       "blob": "data/rom/bank_080000_0bffff.bin",
       "kind": "ff_terminated_command_record_slices_with_tail_leadout",
-      "status": "incbin"
+      "status": "source_authored_data"
     },
     {
       "start": "0x09F777",
@@ -1076,10 +1556,17 @@
     },
     {
       "start": "0x0A0B26",
+      "end": "0x0A0C78",
+      "source": "src/bank080000_a0b26.asm",
+      "kind": "ff_terminated_mixed_lead_in_record_family",
+      "status": "source_authored_data"
+    },
+    {
+      "start": "0x0A0C79",
       "end": "0x0A0C82",
-      "source": "src/bank080000_a0000.asm",
+      "source": "src/bank080000_a0b26.asm",
       "blob": "data/rom/bank_080000_0bffff.bin",
-      "kind": "mixed_unresolved_payload_lead_in",
+      "kind": "mixed_lead_in_tail",
       "status": "incbin"
     },
     {
@@ -1093,9 +1580,8 @@
       "start": "0x0A0D19",
       "end": "0x0A0D3E",
       "source": "src/bank080000_a0c83.asm",
-      "blob": "data/rom/bank_080000_0bffff.bin",
-      "kind": "mixed_payload_gap",
-      "status": "incbin"
+      "kind": "ff_terminated_mixed_records_with_tail",
+      "status": "source_authored_data"
     },
     {
       "start": "0x0A0D3F",
@@ -1108,9 +1594,8 @@
       "start": "0x0A0D75",
       "end": "0x0A0E84",
       "source": "src/bank080000_a0c83.asm",
-      "blob": "data/rom/bank_080000_0bffff.bin",
-      "kind": "mixed_payload_gap",
-      "status": "incbin"
+      "kind": "ff_terminated_mixed_record_family_with_terminal_ff",
+      "status": "source_authored_data"
     },
     {
       "start": "0x0A0E85",
@@ -1123,9 +1608,8 @@
       "start": "0x0A0F2D",
       "end": "0x0A0FA8",
       "source": "src/bank080000_a0c83.asm",
-      "blob": "data/rom/bank_080000_0bffff.bin",
-      "kind": "mixed_payload_gap",
-      "status": "incbin"
+      "kind": "ff_terminated_mixed_records_with_tail",
+      "status": "source_authored_data"
     },
     {
       "start": "0x0A0FA9",
@@ -1137,29 +1621,28 @@
     {
       "start": "0x0A10AB",
       "end": "0x0A1321",
-      "source": "src/bank080000_a10ab.asm",
+      "source": "src/bank080000_ff_terminated_five_byte_tuples.asm",
       "kind": "ff_terminated_five_byte_tuple_run",
       "status": "source_authored_data"
     },
     {
       "start": "0x0A1322",
       "end": "0x0A132C",
-      "source": "src/bank080000_a10ab.asm",
-      "blob": "data/rom/bank_080000_0bffff.bin",
-      "kind": "mixed_payload_gap",
-      "status": "incbin"
+      "source": "src/bank080000_ff_terminated_five_byte_tuples.asm",
+      "kind": "ff_terminated_five_byte_tuple_record",
+      "status": "source_authored_data"
     },
     {
       "start": "0x0A132D",
       "end": "0x0A136D",
-      "source": "src/bank080000_a10ab.asm",
+      "source": "src/bank080000_ff_terminated_five_byte_tuples.asm",
       "kind": "ff_terminated_five_byte_tuple_run",
       "status": "source_authored_data"
     },
     {
       "start": "0x0A136E",
       "end": "0x0A1377",
-      "source": "src/bank080000_a10ab.asm",
+      "source": "src/bank080000_ff_terminated_five_byte_tuples.asm",
       "blob": "data/rom/bank_080000_0bffff.bin",
       "kind": "mixed_payload_gap",
       "status": "incbin"
@@ -1167,17 +1650,16 @@
     {
       "start": "0x0A1378",
       "end": "0x0A1405",
-      "source": "src/bank080000_a10ab.asm",
+      "source": "src/bank080000_ff_terminated_five_byte_tuples.asm",
       "kind": "ff_terminated_five_byte_tuple_run",
       "status": "source_authored_data"
     },
     {
       "start": "0x0A1406",
       "end": "0x0A1410",
-      "source": "src/bank080000_a10ab.asm",
-      "blob": "data/rom/bank_080000_0bffff.bin",
-      "kind": "mixed_payload_gap",
-      "status": "incbin"
+      "source": "src/bank080000_ff_terminated_five_byte_tuples.asm",
+      "kind": "ff_terminated_five_byte_tuple_record",
+      "status": "source_authored_data"
     },
     {
       "start": "0x0A1411",
@@ -1189,7 +1671,7 @@
     {
       "start": "0x0A1D3F",
       "end": "0x0A1D4E",
-      "source": "src/bank080000_a10ab.asm",
+      "source": "src/bank080000_ff_terminated_five_byte_tuples.asm",
       "blob": "data/rom/bank_080000_0bffff.bin",
       "kind": "mixed_payload_gap",
       "status": "incbin"
@@ -1204,7 +1686,7 @@
     {
       "start": "0x0A23F6",
       "end": "0x0A23FF",
-      "source": "src/bank080000_a10ab.asm",
+      "source": "src/bank080000_ff_terminated_five_byte_tuples.asm",
       "blob": "data/rom/bank_080000_0bffff.bin",
       "kind": "mixed_payload_gap",
       "status": "incbin"
@@ -1219,7 +1701,7 @@
     {
       "start": "0x0A2586",
       "end": "0x0A258A",
-      "source": "src/bank080000_a10ab.asm",
+      "source": "src/bank080000_ff_terminated_five_byte_tuples.asm",
       "blob": "data/rom/bank_080000_0bffff.bin",
       "kind": "mixed_payload_gap",
       "status": "incbin"
@@ -1234,7 +1716,7 @@
     {
       "start": "0x0A2606",
       "end": "0x0A260F",
-      "source": "src/bank080000_a10ab.asm",
+      "source": "src/bank080000_ff_terminated_five_byte_tuples.asm",
       "blob": "data/rom/bank_080000_0bffff.bin",
       "kind": "mixed_payload_gap",
       "status": "incbin"
@@ -1249,10 +1731,9 @@
     {
       "start": "0x0A2765",
       "end": "0x0A27CA",
-      "source": "src/bank080000_a10ab.asm",
-      "blob": "data/rom/bank_080000_0bffff.bin",
-      "kind": "mixed_payload_gap",
-      "status": "incbin"
+      "source": "src/bank080000_ff_terminated_five_byte_tuples.asm",
+      "kind": "ff_terminated_five_byte_tuple_records",
+      "status": "source_authored_data"
     },
     {
       "start": "0x0A27CB",
@@ -1264,10 +1745,9 @@
     {
       "start": "0x0A2D86",
       "end": "0x0A2D9A",
-      "source": "src/bank080000_a10ab.asm",
-      "blob": "data/rom/bank_080000_0bffff.bin",
-      "kind": "mixed_payload_gap",
-      "status": "incbin"
+      "source": "src/bank080000_ff_terminated_five_byte_tuples.asm",
+      "kind": "ff_terminated_five_byte_tuple_record",
+      "status": "source_authored_data"
     },
     {
       "start": "0x0A2D9B",
@@ -1279,10 +1759,9 @@
     {
       "start": "0x0A3040",
       "end": "0x0A304A",
-      "source": "src/bank080000_a10ab.asm",
-      "blob": "data/rom/bank_080000_0bffff.bin",
-      "kind": "mixed_payload_gap",
-      "status": "incbin"
+      "source": "src/bank080000_ff_terminated_five_byte_tuples.asm",
+      "kind": "ff_terminated_five_byte_tuple_record",
+      "status": "source_authored_data"
     },
     {
       "start": "0x0A304B",
@@ -1294,56 +1773,56 @@
     {
       "start": "0x0A3500",
       "end": "0x0A37AF",
-      "source": "src/bank080000_a3500_front.asm",
+      "source": "src/bank080000_table_targeted_payload_front.asm",
       "kind": "front_table_targeted_local_offset_records",
       "status": "source_authored_data"
     },
     {
       "start": "0x0A37B0",
       "end": "0x0A3B76",
-      "source": "src/bank080000_a3500.asm",
+      "source": "src/bank080000_table_targeted_payload_records.asm",
       "kind": "table_targeted_compact_local_offset_control_records",
       "status": "source_authored_data"
     },
     {
       "start": "0x0A3B77",
       "end": "0x0A3C16",
-      "source": "src/bank080000_a3500.asm",
+      "source": "src/bank080000_table_targeted_payload_records.asm",
       "kind": "local_offset_triplet_records",
       "status": "source_authored_data"
     },
     {
       "start": "0x0A3C17",
       "end": "0x0A43D4",
-      "source": "src/bank080000_a3c17.asm",
+      "source": "src/bank080000_table_targeted_payload_mid.asm",
       "kind": "compact_local_offset_control_records",
       "status": "source_authored_data"
     },
     {
       "start": "0x0A43D5",
       "end": "0x0A47D8",
-      "source": "src/bank080000_a43d5.asm",
+      "source": "src/bank080000_table_targeted_payload_late.asm",
       "kind": "compact_local_offset_control_records",
       "status": "source_authored_data"
     },
     {
       "start": "0x0A47D9",
       "end": "0x0A4AA2",
-      "source": "src/bank080000_a47d9.asm",
+      "source": "src/bank080000_table_targeted_payload_late_tail.asm",
       "kind": "compact_local_offset_control_records",
       "status": "source_authored_data"
     },
     {
       "start": "0x0A4AA3",
       "end": "0x0A4AEB",
-      "source": "src/bank080000_a3500.asm",
+      "source": "src/bank080000_table_targeted_payload_records.asm",
       "kind": "self_referencing_local_offset_cluster",
       "status": "source_authored_data"
     },
     {
       "start": "0x0A4AEC",
       "end": "0x0A4C76",
-      "source": "src/bank080000_a4aec.asm",
+      "source": "src/bank080000_table_targeted_payload_tail.asm",
       "kind": "compact_local_offset_control_tail_records",
       "status": "source_authored_data"
     },

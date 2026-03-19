@@ -1,9 +1,12 @@
 ; ROM range: 0x0A10AB-0x0A34FF
+; FF-terminated five-byte tuple family inside the second non-fill tail-bank island.
+;
 ; The middle tail-bank lead-in is no longer one monolithic blob. Most of this span breaks into
-; FF-terminated records whose pre-terminator payload length is a multiple of 5 bytes, with only
-; a handful of short anomaly gaps between longer regular runs. All eleven regular runs are now
-; source-authored down to individual record starts; keep the labels structural until the loader
-; proves whether these tuples are layout, object, script, or another resource family.
+; FF-terminated records whose pre-terminator payload length is a multiple of 5 bytes. The few
+; bridge pockets that do not fit that cadence are now explicit as short FF-terminated mixed
+; records, and several former anomaly pockets also stand explicitly as isolated FF-terminated
+; records whose tuples merely embed $FF in data fields. Keep the labels structural until the
+; loader proves whether these tuples are layout, object, script, or another resource family.
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A10AB:
 	dc.b	$0B,$60,$0C,$F8,$F8
@@ -260,8 +263,8 @@ Bank080000_FFTerminatedFiveByteTupleRecord_0A1317:
 	dc.b	$04,$10,$0E,$02,$0E
 	dc.b	$FF
 
-Bank080000_MixedPayloadGap_0A1322:
-	incbin "data/rom/bank_080000_0bffff.bin",$021322,$00000B
+Bank080000_FFTerminatedFiveByteTupleRecord_0A1322:
+	dc.b	$01,$10,$15,$0F,$00,$08,$10,$12,$FF,$0F,$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A132D:
 	dc.b	$01,$10,$19,$10,$00
@@ -290,8 +293,8 @@ Bank080000_FFTerminatedFiveByteTupleRecord_0A1363:
 	dc.b	$04,$18,$0E,$EE,$0E
 	dc.b	$FF
 
-Bank080000_MixedPayloadGap_0A136E:
-	incbin "data/rom/bank_080000_0bffff.bin",$02136E,$00000A
+Bank080000_FFTerminatedMixedBridgeRecord_0A136E:
+	dc.b	$08,$18,$12,$E9,$0F,$01,$18,$15,$E9,$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A1378:
 	dc.b	$FF
@@ -355,50 +358,63 @@ Bank080000_FFTerminatedFiveByteTupleRecord_0A13FB:
 	dc.b	$04,$00,$0E,$02,$EA
 	dc.b	$FF
 
-Bank080000_MixedPayloadGap_0A1406:
-	incbin "data/rom/bank_080000_0bffff.bin",$021406,$00000B
+Bank080000_FFTerminatedFiveByteTupleRecord_0A1406:
+	dc.b	$01,$00,$15,$0F,$F0,$08,$00,$12,$FF,$E9,$FF
 
-Bank080000_FFTerminatedFiveByteTupleRun_0A1411:
+; The whole 0x0A10AB-0x0A34FF window now belongs to one proven record family, but the larger
+; loader-owned subfamilies inside it are still unresolved. Keep the child segments in ROM order
+; and let their filenames stay address-stamped until stronger ownership than local subdivision is
+; proven.
+Bank080000_FFTerminatedFiveByteTupleSegment_0A1411:
 	include "src/bank080000_a1411.asm"
 
-Bank080000_MixedPayloadGap_0A1D3F:
-	incbin "data/rom/bank_080000_0bffff.bin",$021D3F,$000010
+Bank080000_FFTerminatedFiveByteTupleRecord_0A1D3F:
+	dc.b	$00,$02,$52,$FF,$FF,$FF,$00,$02,$53,$FF,$FF,$FF,$00,$02,$54,$FF
 
-Bank080000_FFTerminatedFiveByteTupleRun_0A1D4F:
+Bank080000_FFTerminatedFiveByteTupleSegment_0A1D4F:
 	include "src/bank080000_a1d4f.asm"
 
-Bank080000_MixedPayloadGap_0A23F6:
-	incbin "data/rom/bank_080000_0bffff.bin",$0223F6,$00000A
+Bank080000_FFTerminatedMixedBridgeRecord_0A23F6:
+	dc.b	$04,$48,$26,$03,$FF,$04,$40,$26,$ED,$FF
 
-Bank080000_FFTerminatedFiveByteTupleRun_0A2400:
+Bank080000_FFTerminatedFiveByteTupleSegment_0A2400:
 	include "src/bank080000_a2400.asm"
 
-Bank080000_MixedPayloadGap_0A2586:
-	incbin "data/rom/bank_080000_0bffff.bin",$022586,$000005
+Bank080000_FFTerminatedMixedBridgeRecord_0A2586:
+	dc.b	$00,$43,$9C,$F0,$FF
 
-Bank080000_FFTerminatedFiveByteTupleRun_0A258B:
+Bank080000_FFTerminatedFiveByteTupleSegment_0A258B:
 	include "src/bank080000_a258b.asm"
 
-Bank080000_MixedPayloadGap_0A2606:
-	incbin "data/rom/bank_080000_0bffff.bin",$022606,$00000A
+Bank080000_FFTerminatedMixedBridgeRecord_0A2606:
+	dc.b	$00,$43,$9D,$06,$07,$00,$43,$9E,$F5,$FF
 
-Bank080000_FFTerminatedFiveByteTupleRun_0A2610:
+Bank080000_FFTerminatedFiveByteTupleSegment_0A2610:
 	include "src/bank080000_a2610.asm"
 
-Bank080000_MixedPayloadGap_0A2765:
-	incbin "data/rom/bank_080000_0bffff.bin",$022765,$000066
+Bank080000_FFTerminatedFiveByteTupleRecord_0A2765:
+	dc.b	$08,$61,$08,$08,$08,$08,$61,$05,$08,$00,$08,$61,$02,$08,$F8,$08
+	dc.b	$60,$FF,$08,$F0,$0C,$60,$F8,$E8,$08,$0C,$60,$F8,$E8,$F0,$0C,$60
+	dc.b	$F8,$E8,$00,$0C,$60,$F8,$E8,$F8,$FF
 
-Bank080000_FFTerminatedFiveByteTupleRun_0A27CB:
+Bank080000_FFTerminatedFiveByteTupleRecord_0A278E:
+	dc.b	$08,$61,$0B,$08,$10,$08,$61,$08,$08,$08,$08,$61,$05,$08,$00,$08
+	dc.b	$61,$02,$08,$F8,$08,$60,$FF,$08,$F0,$08,$60,$FC,$08,$E8,$0C,$60
+	dc.b	$F8,$E8,$10,$0C,$60,$F8,$E8,$E8,$0C,$60,$F8,$E8,$08,$0C,$60,$F8
+	dc.b	$E8,$F0,$0C,$60,$F8,$E8,$00,$0C,$60,$F8,$E8,$F8,$FF
+
+Bank080000_FFTerminatedFiveByteTupleSegment_0A27CB:
 	include "src/bank080000_a27cb.asm"
 
-Bank080000_MixedPayloadGap_0A2D86:
-	incbin "data/rom/bank_080000_0bffff.bin",$022D86,$000015
+Bank080000_FFTerminatedFiveByteTupleRecord_0A2D86:
+	dc.b	$00,$60,$FF,$0C,$08,$0C,$60,$FB,$EC,$08,$03,$60,$F7,$0C,$E8,$0F
+	dc.b	$60,$E7,$EC,$E8,$FF
 
-Bank080000_FFTerminatedFiveByteTupleRun_0A2D9B:
+Bank080000_FFTerminatedFiveByteTupleSegment_0A2D9B:
 	include "src/bank080000_a2d9b.asm"
 
-Bank080000_MixedPayloadGap_0A3040:
-	incbin "data/rom/bank_080000_0bffff.bin",$023040,$00000B
+Bank080000_FFTerminatedFiveByteTupleRecord_0A3040:
+	dc.b	$0E,$03,$FF,$F0,$F8,$09,$03,$E1,$F8,$E8,$FF
 
-Bank080000_FFTerminatedFiveByteTupleRun_0A304B:
+Bank080000_FFTerminatedFiveByteTupleSegment_0A304B:
 	include "src/bank080000_a304b.asm"

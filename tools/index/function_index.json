@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-17",
+  "generated": "2026-03-19",
   "note": "Bootstrap seed index derived from vector/header work, then extended with the source-authored VBlank/task-dispatch, bootstrap/display setup, input-stream, controller helper chain, and the downstream selected-input inventory/equipment plus adjacent magic/status menu helpers through 0x0088C1 and 0x008C34-0x008C7F. Current best fit: 0x00501C latches packed (duration,value) bytes from 0xFF1400 into 0x8A4E/0x8A4F, 0x005036 is the matching run-length writer, 0x00505C feeds playback into the selected-input mirror at 0x8A7A-0x8A7D, 0x007924-0x007D9B owns the adjacent magic/status submode plus localized six-spell grid, 0x007D9C-0x008059 bridges back into the visible inventory/equipment list UI, 0x00805A-0x0088C1 covers repeat-gated input and nearby inventory/magic status drawing, 0x0088D6+ still holds the byte-sensitive gauge/spell-bar renderer, 0x008C34 now snapshots the local selector scratch, clears visible-list state, and keeps only sub-0x08 top-row selector ids in 0x95E2/0x95E3, and the `0x020000+` ROM body now flows through bank-local include owners rather than top-level whole-bank blobs.",
   "entries": [
     {
@@ -979,6 +979,822 @@
       "address": "0x00008C34",
       "source": "src/core.asm",
       "kind": "subroutine"
+    },
+    {
+      "name": "Bank080000_Z80ProgramResetEntry_098000",
+      "address": "0x00098000",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "entrypoint"
+    },
+    {
+      "name": "Bank080000_Z80ProgramFrontReturnStub_098006",
+      "address": "0x00098006",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramFrontStubCluster_098010",
+      "address": "0x00098010",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramJumpStub_098020",
+      "address": "0x00098020",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramJumpStub_098028",
+      "address": "0x00098028",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramJumpStub_098030",
+      "address": "0x00098030",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramRetiStub_098038",
+      "address": "0x00098038",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramMainBody_09803B",
+      "address": "0x0009803B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramInitializeSequencerState_09803B",
+      "address": "0x0009803B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramEmitStartupBurst_0980E2",
+      "address": "0x000980E2",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramResetOutputSelector_0980FB",
+      "address": "0x000980FB",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramTickCountdownAndAdvancePointer_09810B",
+      "address": "0x0009810B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramInitializeWideRecordPhaseBytes_09813E",
+      "address": "0x0009813E",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramMirrorLatchedModeByte_098152",
+      "address": "0x00098152",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramAdvanceInlineSequenceState_098160",
+      "address": "0x00098160",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramConsumeSequenceByte_09819C",
+      "address": "0x0009819C",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramPopulateLinearSlotDescriptors_09820B",
+      "address": "0x0009820B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramUpdateIndexedSlotDescriptor_09822A",
+      "address": "0x0009822A",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramMetaCommandDispatchTable_098275",
+      "address": "0x00098275",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "data"
+    },
+    {
+      "name": "Bank080000_Z80ProgramMetaCommandDispatchReturn_098281",
+      "address": "0x00098281",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramMetaCommandHandler_FB_098282",
+      "address": "0x00098282",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramMetaCommandHandler_FA_098288",
+      "address": "0x00098288",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramMetaCommandTableA_09828D",
+      "address": "0x0009828D",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "data"
+    },
+    {
+      "name": "Bank080000_Z80ProgramMetaCommandHandler_FE_09829C",
+      "address": "0x0009829C",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramSharedMetaCommandTableInit_09829F",
+      "address": "0x0009829F",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramMetaCommandTableB_0982B1",
+      "address": "0x000982B1",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "data"
+    },
+    {
+      "name": "Bank080000_Z80ProgramMetaCommandHandler_FC_0982BA",
+      "address": "0x000982BA",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramMetaCommandHandler_FD_0982E2",
+      "address": "0x000982E2",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramPackSlotIndexFromIX_0982E8",
+      "address": "0x000982E8",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramVisitMatchingPackedSlotRecords_0982FA",
+      "address": "0x000982FA",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramDrainFlaggedSlotRecords_098321",
+      "address": "0x00098321",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramDrainSelectedSlotRecords_098345",
+      "address": "0x00098345",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramMetaCommandHandler_FF_098369",
+      "address": "0x00098369",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramSelectMaskedCandidateRecord_098393",
+      "address": "0x00098393",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramCandidateBankDescriptorTable_098404",
+      "address": "0x00098404",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "data"
+    },
+    {
+      "name": "Bank080000_Z80ProgramFindMatchingPackedDeltaRecord_09840D",
+      "address": "0x0009840D",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramPackWideRecordIndexFromIX_098436",
+      "address": "0x00098436",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramFinalizeIndexedSelection_098446",
+      "address": "0x00098446",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramStoreSplitLocalSelector_098454",
+      "address": "0x00098454",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramFinalizeSelectionEqualCase_098469",
+      "address": "0x00098469",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramFinalizeSelectionGreaterCase_09847D",
+      "address": "0x0009847D",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramClearSelectionOutputPaths_09848C",
+      "address": "0x0009848C",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramResolveTripleLookupVariantA_0984B1",
+      "address": "0x000984B1",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramResolveTripleLookupVariantB_0984E4",
+      "address": "0x000984E4",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramBucketizeHighByteThresholds_098516",
+      "address": "0x00098516",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramEmitQuantizedOutputPair_09853C",
+      "address": "0x0009853C",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramEmitQuantizedOutputPair_ZeroMode_098579",
+      "address": "0x00098579",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramCompareMaskedDEAgainstHL_09859B",
+      "address": "0x0009859B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramRefreshMaskedTargetWord_0985A3",
+      "address": "0x000985A3",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramRefreshIndexedOutputBand_0985BA",
+      "address": "0x000985BA",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramRefreshIndexedOutputBand_EqualCase_0985C3",
+      "address": "0x000985C3",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramRefreshIndexedOutputBand_GreaterCase_0985EF",
+      "address": "0x000985EF",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramRefreshIndexedOutputBand_LowModeRows_098616",
+      "address": "0x00098616",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramResolveLow3LookupPointer_098667",
+      "address": "0x00098667",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramLow3LookupTable_098674",
+      "address": "0x00098674",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "data"
+    },
+    {
+      "name": "Bank080000_Z80ProgramExpandIndexedOutputDescriptor_09867C",
+      "address": "0x0009867C",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramWriteLatchedOutputPair_0986E2",
+      "address": "0x000986E2",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramSweepActiveWideRecords_09870B",
+      "address": "0x0009870B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramBit6Gate_098756",
+      "address": "0x00098756",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramSetBit6AndDispatchByMode_09875C",
+      "address": "0x0009875C",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramAdvancePrimaryStreamState_098772",
+      "address": "0x00098772",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramPrimaryStreamLoop_0987D2",
+      "address": "0x000987D2",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramReloadPrimaryStreamPointer_0987E7",
+      "address": "0x000987E7",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramPrimaryStreamCommand_FE_0987ED",
+      "address": "0x000987ED",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramPrimaryStreamCommand_FD_0987FC",
+      "address": "0x000987FC",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramPrimaryStreamCommand_FC_09880C",
+      "address": "0x0009880C",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramPrimaryStreamCommand_FB_098821",
+      "address": "0x00098821",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramPrimaryStreamCommand_FA_09882F",
+      "address": "0x0009882F",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramPrimaryStreamCommand_F9_09883E",
+      "address": "0x0009883E",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramLoadPrimaryLiteralState_09884B",
+      "address": "0x0009884B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramLoadPrimaryLiteralDeltaWord_09885B",
+      "address": "0x0009885B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramStorePrimaryLiteralState_098865",
+      "address": "0x00098865",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramApplyPrimaryWorkingOffset_09886E",
+      "address": "0x0009886E",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramResolveSecondaryTargetWord_0988A1",
+      "address": "0x000988A1",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramAdvanceSecondaryStreamState_0988CE",
+      "address": "0x000988CE",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramReloadSecondaryStreamPointer_098902",
+      "address": "0x00098902",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramSecondaryStreamCommand_FE_098908",
+      "address": "0x00098908",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramSecondaryStreamCommand_FD_098917",
+      "address": "0x00098917",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramSecondaryStreamCommand_FC_098927",
+      "address": "0x00098927",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramSecondaryStreamCommand_FB_098935",
+      "address": "0x00098935",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramSecondaryStreamCommand_FA_09893E",
+      "address": "0x0009893E",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramSecondaryStreamCommand_F9_09894A",
+      "address": "0x0009894A",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramLoadSecondaryLiteralState_098954",
+      "address": "0x00098954",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramFinalizeSecondaryStreamState_098962",
+      "address": "0x00098962",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramAdvanceIndexedCountdownState_098976",
+      "address": "0x00098976",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramLoadLowModeRecordAndEmitRows_098A08",
+      "address": "0x00098A08",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramSeedHighModeFixedOutput_098AA9",
+      "address": "0x00098AA9",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramInitializeIndexedModeState_098AB2",
+      "address": "0x00098AB2",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramResolveIndexedScratchPointer_098B5B",
+      "address": "0x00098B5B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramScaleIndexedScratchByte_098B66",
+      "address": "0x00098B66",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramSweepMarkedSlotRecords_098B7F",
+      "address": "0x00098B7F",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramAdvanceMarkedSlotRecord_098B9C",
+      "address": "0x00098B9C",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramInitializeDescriptorDrivenRecord_098CA5",
+      "address": "0x00098CA5",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramInitializeIndexedTargetRecord_098CE8",
+      "address": "0x00098CE8",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramInitializeMatchedTargetRecord_098D81",
+      "address": "0x00098D81",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramFinalizeSlotTransferToIY_098DA5",
+      "address": "0x00098DA5",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramCommitInitializedIYRecord_098E12",
+      "address": "0x00098E12",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramLoadIYByteFromModeTable_098E1B",
+      "address": "0x00098E1B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramArgumentScaleTable_098E35",
+      "address": "0x00098E35",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "data"
+    },
+    {
+      "name": "Bank080000_Z80ProgramResolveTripletWritePointer_098E45",
+      "address": "0x00098E45",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramAppendTripletWrite_098E55",
+      "address": "0x00098E55",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandDispatchTable_098E62",
+      "address": "0x00098E62",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "data"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_E0_098EA2",
+      "address": "0x00098EA2",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_NoOp_098EAB",
+      "address": "0x00098EAB",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_E1_098EAC",
+      "address": "0x00098EAC",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_E2_098EB1",
+      "address": "0x00098EB1",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_E3_098EB8",
+      "address": "0x00098EB8",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_E4_098ECC",
+      "address": "0x00098ECC",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_F0_098ED7",
+      "address": "0x00098ED7",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_F1_098EDD",
+      "address": "0x00098EDD",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_F2_098EE3",
+      "address": "0x00098EE3",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_F3_098EEE",
+      "address": "0x00098EEE",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_F4_098EFF",
+      "address": "0x00098EFF",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_F5_098F05",
+      "address": "0x00098F05",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_F6_098F0E",
+      "address": "0x00098F0E",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_F7_098F25",
+      "address": "0x00098F25",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_F8_098F2B",
+      "address": "0x00098F2B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_F9_098F34",
+      "address": "0x00098F34",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_FA_098F41",
+      "address": "0x00098F41",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_FB_098F45",
+      "address": "0x00098F45",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_FC_098F4B",
+      "address": "0x00098F4B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_FD_098F51",
+      "address": "0x00098F51",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_FE_098F56",
+      "address": "0x00098F56",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramHighCommandHandler_FF_098F66",
+      "address": "0x00098F66",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramStateSnapshotAndTransferHandshake_098F8C",
+      "address": "0x00098F8C",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramCopyOutTransferSlot0_098FC0",
+      "address": "0x00098FC0",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramCopyOutTransferSlot1_098FD2",
+      "address": "0x00098FD2",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramCopyOutTransferSlot2_098FE4",
+      "address": "0x00098FE4",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramWaitForExternalAck_098FF6",
+      "address": "0x00098FF6",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramCopyBackAndClearTransferSlot0_099004",
+      "address": "0x00099004",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramCopyBackAndClearTransferSlot1_099022",
+      "address": "0x00099022",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramCopyBackAndClearTransferSlot2_099040",
+      "address": "0x00099040",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramRestoreStateAndReturn_09905E",
+      "address": "0x0009905E",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "code_label"
+    },
+    {
+      "name": "Bank080000_Z80ProgramOddAlignedAscendingWordTable_09907B",
+      "address": "0x0009907B",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "data"
+    },
+    {
+      "name": "Bank080000_Z80ProgramOddAlignedDescendingWordTable_09913D",
+      "address": "0x0009913D",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "data"
+    },
+    {
+      "name": "Bank080000_Z80ProgramLookupTableTailByte_0991FF",
+      "address": "0x000991FF",
+      "source": "src/bank080000_mid_z80_program.asm",
+      "kind": "data"
     }
   ]
 }

@@ -317,7 +317,7 @@ Bank040000_LocalTableTargetedPayloadRecord_06AE42:
 Bank040000_LocalTableTargetedPayloadRecord_06AFB7:
 	incbin "data/rom/bank_040000_07ffff.bin",$02AFB7,$0001DB
 
-	include "src/bank040000_payload_stride_06b192.asm"
+	include "src/bank040000_gfx_tiles_06b192.asm"
 
 Bank040000_LocalTableTargetedPayloadRecord_06BB12:
 	incbin "data/rom/bank_040000_07ffff.bin",$02BB12,$00021B

@@ -4,11 +4,12 @@
 ; region, forming a nested offset-table tree rather than plain opaque blob data. The
 ; downstream payload bytes are still structurally dense and unresolved. The first proven
 ; regular band now extends through 0x0A0B25 as a continued 0x18-byte four-tuple family.
-; The following lead-in is still mixed overall, but several narrower FF-terminated 6-byte
-; record bands now stand apart from the surrounding patch-like payload, and the next large
-; span at 0x0A10AB-0x0A34FF now further decomposes into long FF-terminated 5-byte-tuple
-; runs separated by short anomaly gaps. Keep the remaining ownership structural until the
-; consuming loader/decoder is identified.
+; The following lead-in is no longer one opaque mixed patch either: its front 0x153 bytes
+; now resolve into 26 short FF-terminated structural records before a final 10-byte tail,
+; then several narrower FF-terminated 6-byte record bands stand apart from the surrounding
+; patch-like payload, and the next large span at 0x0A10AB-0x0A34FF further decomposes into
+; long FF-terminated 5-byte-tuple runs separated by short anomaly gaps. Keep the remaining
+; ownership structural until the consuming loader/decoder is identified.
 
 Bank080000_MultiLevelOffsetTableRoot_0A0000:
 	dc.w	$0018,$001E,$0026,$0034,$004E,$005A,$00CE,$00F6
@@ -148,14 +149,14 @@ Bank080000_FourTupleRecordBand_0A07C6:
 Bank080000_FourTupleRecordBandTail_0A08E6:
 	include "src/bank080000_a08e6.asm"
 
-Bank080000_UnresolvedPayloadLeadIn_0A0B26:
-	incbin "data/rom/bank_080000_0bffff.bin",$020B26,$00015D
+Bank080000_MixedLeadInRecordFamily_0A0B26:
+	include "src/bank080000_a0b26.asm"
 
 Bank080000_FFTerminatedSixByteRecordFamilies_0A0C83:
 	include "src/bank080000_a0c83.asm"
 
-Bank080000_FFTerminatedFiveByteTupleTail_0A10AB:
-	include "src/bank080000_a10ab.asm"
+Bank080000_FFTerminatedFiveByteTupleFamily_0A10AB:
+	include "src/bank080000_ff_terminated_five_byte_tuples.asm"
 
 Bank080000_TableTargetedPayloadRecords_0A3500:
-	include "src/bank080000_a3500.asm"
+	include "src/bank080000_table_targeted_payload_records.asm"

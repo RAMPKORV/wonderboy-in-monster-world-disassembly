@@ -5,346 +5,564 @@
 ; order while keeping the labels structural.
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A304B:
-	incbin "data/rom/bank_080000_0bffff.bin",$02304B,$00000B
+	dc.b	$0E,$04,$0B,$F0,$F8
+	dc.b	$09,$04,$17,$F8,$E8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3056:
-	incbin "data/rom/bank_080000_0bffff.bin",$023056,$00000B
+	dc.b	$0D,$04,$23,$F2,$00
+	dc.b	$09,$04,$1D,$F2,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3061:
-	incbin "data/rom/bank_080000_0bffff.bin",$023061,$000006
+	dc.b	$0D,$04,$2B,$F0,$00
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3067:
-	incbin "data/rom/bank_080000_0bffff.bin",$023067,$00000B
+	dc.b	$04,$02,$F6,$F9,$04
+	dc.b	$09,$02,$F0,$F5,$F4
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3072:
-	incbin "data/rom/bank_080000_0bffff.bin",$023072,$00000B
+	dc.b	$01,$02,$FE,$04,$F9
+	dc.b	$06,$02,$F8,$F4,$F5
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A307D:
-	incbin "data/rom/bank_080000_0bffff.bin",$02307D,$000006
+	dc.b	$05,$61,$80,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3083:
-	incbin "data/rom/bank_080000_0bffff.bin",$023083,$000006
+	dc.b	$0A,$61,$84,$F4,$F4
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3089:
-	incbin "data/rom/bank_080000_0bffff.bin",$023089,$000010
+	dc.b	$06,$61,$95,$00,$F8
+	dc.b	$05,$61,$91,$F0,$00
+	dc.b	$05,$61,$8D,$F0,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3099:
-	incbin "data/rom/bank_080000_0bffff.bin",$023099,$00000B
+	dc.b	$0D,$61,$A0,$F4,$00
+	dc.b	$05,$61,$9B,$EC,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A30A4:
-	incbin "data/rom/bank_080000_0bffff.bin",$0230A4,$000015
+	dc.b	$01,$61,$B0,$10,$00
+	dc.b	$05,$61,$AC,$00,$00
+	dc.b	$05,$61,$A8,$F0,$00
+	dc.b	$05,$61,$8D,$E8,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A30B9:
-	incbin "data/rom/bank_080000_0bffff.bin",$0230B9,$000015
+	dc.b	$01,$61,$BA,$10,$00
+	dc.b	$05,$61,$B6,$00,$00
+	dc.b	$05,$61,$B2,$F0,$00
+	dc.b	$05,$61,$9B,$E8,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A30CE:
-	incbin "data/rom/bank_080000_0bffff.bin",$0230CE,$000006
+	dc.b	$01,$60,$36,$FC,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A30D4:
-	incbin "data/rom/bank_080000_0bffff.bin",$0230D4,$000006
+	dc.b	$05,$60,$38,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A30DA:
-	incbin "data/rom/bank_080000_0bffff.bin",$0230DA,$000006
+	dc.b	$00,$60,$40,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A30E0:
-	incbin "data/rom/bank_080000_0bffff.bin",$0230E0,$000006
+	dc.b	$04,$60,$41,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A30E6:
-	incbin "data/rom/bank_080000_0bffff.bin",$0230E6,$000006
+	dc.b	$04,$60,$43,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A30EC:
-	incbin "data/rom/bank_080000_0bffff.bin",$0230EC,$000006
+	dc.b	$00,$60,$24,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A30F2:
-	incbin "data/rom/bank_080000_0bffff.bin",$0230F2,$000006
+	dc.b	$05,$07,$C8,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A30F8:
-	incbin "data/rom/bank_080000_0bffff.bin",$0230F8,$000006
+	dc.b	$05,$07,$CC,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A30FE:
-	incbin "data/rom/bank_080000_0bffff.bin",$0230FE,$000006
+	dc.b	$05,$20,$08,$F9,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3104:
-	incbin "data/rom/bank_080000_0bffff.bin",$023104,$00000B
+	dc.b	$01,$20,$0C,$FD,$00
+	dc.b	$05,$20,$08,$F9,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A310F:
-	incbin "data/rom/bank_080000_0bffff.bin",$02310F,$00000B
+	dc.b	$03,$20,$0C,$FD,$F8
+	dc.b	$05,$20,$08,$F9,$E8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A311A:
-	incbin "data/rom/bank_080000_0bffff.bin",$02311A,$000010
+	dc.b	$01,$20,$0C,$FD,$10
+	dc.b	$03,$20,$0C,$FD,$F0
+	dc.b	$05,$20,$08,$F9,$E0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A312A:
-	incbin "data/rom/bank_080000_0bffff.bin",$02312A,$00000B
+	dc.b	$04,$32,$62,$F8,$00
+	dc.b	$04,$22,$62,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3135:
-	incbin "data/rom/bank_080000_0bffff.bin",$023135,$000006
+	dc.b	$05,$32,$64,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A313B:
-	incbin "data/rom/bank_080000_0bffff.bin",$02313B,$00000B
+	dc.b	$01,$3A,$60,$00,$F8
+	dc.b	$01,$32,$60,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3146:
-	incbin "data/rom/bank_080000_0bffff.bin",$023146,$000006
+	dc.b	$05,$3A,$64,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A314C:
-	incbin "data/rom/bank_080000_0bffff.bin",$02314C,$00000B
+	dc.b	$04,$3A,$62,$F8,$00
+	dc.b	$04,$2A,$62,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3157:
-	incbin "data/rom/bank_080000_0bffff.bin",$023157,$000006
+	dc.b	$05,$2A,$64,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A315D:
-	incbin "data/rom/bank_080000_0bffff.bin",$02315D,$00000B
+	dc.b	$01,$2A,$60,$00,$F8
+	dc.b	$01,$22,$60,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3168:
-	incbin "data/rom/bank_080000_0bffff.bin",$023168,$000006
+	dc.b	$05,$22,$64,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A316E:
-	incbin "data/rom/bank_080000_0bffff.bin",$02316E,$000006
+	dc.b	$00,$2A,$6B,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3174:
-	incbin "data/rom/bank_080000_0bffff.bin",$023174,$000006
+	dc.b	$00,$32,$69,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A317A:
-	incbin "data/rom/bank_080000_0bffff.bin",$02317A,$000006
+	dc.b	$00,$32,$68,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3180:
-	incbin "data/rom/bank_080000_0bffff.bin",$023180,$000006
+	dc.b	$00,$32,$6A,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3186:
-	incbin "data/rom/bank_080000_0bffff.bin",$023186,$000006
+	dc.b	$00,$32,$6B,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A318C:
-	incbin "data/rom/bank_080000_0bffff.bin",$02318C,$000006
+	dc.b	$00,$2A,$69,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3192:
-	incbin "data/rom/bank_080000_0bffff.bin",$023192,$000006
+	dc.b	$00,$2A,$68,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3198:
-	incbin "data/rom/bank_080000_0bffff.bin",$023198,$000006
+	dc.b	$00,$2A,$6A,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A319E:
-	incbin "data/rom/bank_080000_0bffff.bin",$02319E,$000006
+	dc.b	$00,$24,$67,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A31A4:
-	incbin "data/rom/bank_080000_0bffff.bin",$0231A4,$000006
+	dc.b	$00,$24,$68,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A31AA:
-	incbin "data/rom/bank_080000_0bffff.bin",$0231AA,$000006
+	dc.b	$00,$24,$69,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A31B0:
-	incbin "data/rom/bank_080000_0bffff.bin",$0231B0,$00000B
+	dc.b	$09,$00,$09,$F4,$00
+	dc.b	$0A,$00,$00,$F4,$E8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A31BB:
-	incbin "data/rom/bank_080000_0bffff.bin",$0231BB,$000006
+	dc.b	$00,$61,$33,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A31C1:
-	incbin "data/rom/bank_080000_0bffff.bin",$0231C1,$000006
+	dc.b	$01,$60,$10,$FC,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A31C7:
-	incbin "data/rom/bank_080000_0bffff.bin",$0231C7,$000006
+	dc.b	$02,$60,$10,$FC,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A31CD:
-	incbin "data/rom/bank_080000_0bffff.bin",$0231CD,$000006
+	dc.b	$03,$60,$10,$FC,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A31D3:
-	incbin "data/rom/bank_080000_0bffff.bin",$0231D3,$00000B
+	dc.b	$00,$60,$10,$FC,$18
+	dc.b	$03,$60,$10,$FC,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A31DE:
-	incbin "data/rom/bank_080000_0bffff.bin",$0231DE,$00000B
+	dc.b	$01,$60,$10,$FC,$18
+	dc.b	$03,$60,$10,$FC,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A31E9:
-	incbin "data/rom/bank_080000_0bffff.bin",$0231E9,$00000B
+	dc.b	$02,$60,$10,$FC,$18
+	dc.b	$03,$60,$10,$FC,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A31F4:
-	incbin "data/rom/bank_080000_0bffff.bin",$0231F4,$00000B
+	dc.b	$03,$60,$10,$FC,$18
+	dc.b	$03,$60,$10,$FC,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A31FF:
-	incbin "data/rom/bank_080000_0bffff.bin",$0231FF,$000010
+	dc.b	$00,$60,$10,$FC,$38
+	dc.b	$03,$60,$10,$FC,$18
+	dc.b	$03,$60,$10,$FC,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A320F:
-	incbin "data/rom/bank_080000_0bffff.bin",$02320F,$000010
+	dc.b	$01,$60,$10,$FC,$38
+	dc.b	$03,$60,$10,$FC,$18
+	dc.b	$03,$60,$10,$FC,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A321F:
-	incbin "data/rom/bank_080000_0bffff.bin",$02321F,$000010
+	dc.b	$02,$60,$10,$FC,$38
+	dc.b	$03,$60,$10,$FC,$18
+	dc.b	$03,$60,$10,$FC,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A322F:
-	incbin "data/rom/bank_080000_0bffff.bin",$02322F,$000010
+	dc.b	$03,$60,$10,$FC,$38
+	dc.b	$03,$60,$10,$FC,$18
+	dc.b	$03,$60,$10,$FC,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A323F:
-	incbin "data/rom/bank_080000_0bffff.bin",$02323F,$00000B
+	dc.b	$0D,$44,$0C,$F0,$08
+	dc.b	$0E,$44,$00,$F0,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A324A:
-	incbin "data/rom/bank_080000_0bffff.bin",$02324A,$00000B
+	dc.b	$0D,$44,$0C,$F0,$08
+	dc.b	$0E,$44,$14,$F0,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3255:
-	incbin "data/rom/bank_080000_0bffff.bin",$023255,$00000B
+	dc.b	$0D,$44,$0C,$F0,$08
+	dc.b	$0E,$44,$20,$F0,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3260:
-	incbin "data/rom/bank_080000_0bffff.bin",$023260,$00000B
+	dc.b	$0D,$44,$0C,$F0,$08
+	dc.b	$0E,$44,$2C,$F0,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A326B:
-	incbin "data/rom/bank_080000_0bffff.bin",$02326B,$00000B
+	dc.b	$0D,$44,$0C,$F0,$08
+	dc.b	$0E,$44,$38,$F0,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3276:
-	incbin "data/rom/bank_080000_0bffff.bin",$023276,$000006
+	dc.b	$05,$44,$44,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A327C:
-	incbin "data/rom/bank_080000_0bffff.bin",$02327C,$000006
+	dc.b	$00,$44,$48,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3282:
-	incbin "data/rom/bank_080000_0bffff.bin",$023282,$000006
+	dc.b	$00,$44,$49,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3288:
-	incbin "data/rom/bank_080000_0bffff.bin",$023288,$000006
+	dc.b	$00,$44,$4A,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A328E:
-	incbin "data/rom/bank_080000_0bffff.bin",$02328E,$00000B
+	dc.b	$00,$4C,$4B,$00,$FC
+	dc.b	$00,$44,$4B,$F8,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3299:
-	incbin "data/rom/bank_080000_0bffff.bin",$023299,$00000B
+	dc.b	$00,$4C,$4C,$00,$FC
+	dc.b	$00,$44,$4C,$F8,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A32A4:
-	incbin "data/rom/bank_080000_0bffff.bin",$0232A4,$000006
+	dc.b	$00,$44,$4D,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A32AA:
-	incbin "data/rom/bank_080000_0bffff.bin",$0232AA,$000006
+	dc.b	$00,$44,$4E,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A32B0:
-	incbin "data/rom/bank_080000_0bffff.bin",$0232B0,$000006
+	dc.b	$00,$44,$4F,$FC,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A32B6:
-	incbin "data/rom/bank_080000_0bffff.bin",$0232B6,$000006
+	dc.b	$05,$02,$6C,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A32BC:
-	incbin "data/rom/bank_080000_0bffff.bin",$0232BC,$000006
+	dc.b	$05,$12,$6C,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A32C2:
-	incbin "data/rom/bank_080000_0bffff.bin",$0232C2,$000006
+	dc.b	$05,$1A,$6C,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A32C8:
-	incbin "data/rom/bank_080000_0bffff.bin",$0232C8,$00000B
+	dc.b	$01,$2C,$64,$00,$F8
+	dc.b	$01,$24,$64,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A32D3:
-	incbin "data/rom/bank_080000_0bffff.bin",$0232D3,$00000B
+	dc.b	$01,$3C,$64,$00,$F8
+	dc.b	$01,$34,$64,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A32DE:
-	incbin "data/rom/bank_080000_0bffff.bin",$0232DE,$00000B
+	dc.b	$00,$2C,$60,$00,$F8
+	dc.b	$00,$24,$60,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A32E9:
-	incbin "data/rom/bank_080000_0bffff.bin",$0232E9,$00000B
+	dc.b	$00,$2C,$61,$00,$F8
+	dc.b	$00,$24,$61,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A32F4:
-	incbin "data/rom/bank_080000_0bffff.bin",$0232F4,$00000B
+	dc.b	$00,$2C,$62,$00,$F8
+	dc.b	$00,$24,$62,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A32FF:
-	incbin "data/rom/bank_080000_0bffff.bin",$0232FF,$00000B
+	dc.b	$00,$2C,$63,$00,$F8
+	dc.b	$00,$24,$63,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A330A:
-	incbin "data/rom/bank_080000_0bffff.bin",$02330A,$000006
+	dc.b	$05,$23,$C0,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3310:
-	incbin "data/rom/bank_080000_0bffff.bin",$023310,$000006
+	dc.b	$05,$23,$C4,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3316:
-	incbin "data/rom/bank_080000_0bffff.bin",$023316,$000015
+	dc.b	$05,$3B,$D0,$00,$00
+	dc.b	$05,$33,$D0,$F0,$00
+	dc.b	$05,$2B,$D0,$00,$F0
+	dc.b	$05,$23,$D0,$F0,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A332B:
-	incbin "data/rom/bank_080000_0bffff.bin",$02332B,$000015
+	dc.b	$0D,$3B,$C8,$00,$00
+	dc.b	$0D,$33,$C8,$E0,$00
+	dc.b	$0D,$2B,$C8,$00,$F0
+	dc.b	$0D,$23,$C8,$E0,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3340:
-	incbin "data/rom/bank_080000_0bffff.bin",$023340,$000015
+	dc.b	$00,$3B,$D4,$00,$00
+	dc.b	$00,$33,$D4,$F8,$00
+	dc.b	$00,$2B,$D4,$00,$F8
+	dc.b	$00,$23,$D4,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3355:
-	incbin "data/rom/bank_080000_0bffff.bin",$023355,$000015
+	dc.b	$04,$3B,$D5,$00,$00
+	dc.b	$04,$33,$D5,$F0,$00
+	dc.b	$04,$2B,$D5,$00,$F8
+	dc.b	$04,$23,$D5,$F0,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A336A:
-	incbin "data/rom/bank_080000_0bffff.bin",$02336A,$000015
+	dc.b	$0C,$3B,$E0,$00,$00
+	dc.b	$0C,$33,$E0,$E0,$00
+	dc.b	$0C,$2B,$E0,$00,$F8
+	dc.b	$0C,$23,$E0,$E0,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A337F:
-	incbin "data/rom/bank_080000_0bffff.bin",$02337F,$000029
+	dc.b	$04,$3B,$E4,$20,$00
+	dc.b	$04,$33,$E4,$D0,$00
+	dc.b	$04,$2B,$E4,$20,$F8
+	dc.b	$04,$23,$E4,$D0,$F8
+	dc.b	$0C,$3B,$E6,$00,$00
+	dc.b	$0C,$33,$E6,$E0,$00
+	dc.b	$0C,$2B,$E6,$00,$F8
+	dc.b	$0C,$23,$E6,$E0,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A33A8:
-	incbin "data/rom/bank_080000_0bffff.bin",$0233A8,$000029
+	dc.b	$0C,$3B,$F0,$20,$00
+	dc.b	$0C,$33,$F0,$C0,$00
+	dc.b	$0C,$2B,$F0,$20,$F8
+	dc.b	$0C,$23,$F0,$C0,$F8
+	dc.b	$0C,$3B,$F4,$00,$00
+	dc.b	$0C,$33,$F4,$E0,$00
+	dc.b	$0C,$2B,$F4,$00,$F8
+	dc.b	$0C,$23,$F4,$E0,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A33D1:
-	incbin "data/rom/bank_080000_0bffff.bin",$0233D1,$000029
+	dc.b	$0C,$3B,$F8,$20,$00
+	dc.b	$0C,$33,$F8,$C0,$00
+	dc.b	$0C,$2B,$F8,$20,$F8
+	dc.b	$0C,$23,$F8,$C0,$F8
+	dc.b	$0C,$3B,$FC,$00,$00
+	dc.b	$0C,$33,$FC,$E0,$00
+	dc.b	$0C,$2B,$FC,$00,$F8
+	dc.b	$0C,$23,$FC,$E0,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A33FA:
-	incbin "data/rom/bank_080000_0bffff.bin",$0233FA,$000029
+	dc.b	$08,$3B,$D7,$20,$00
+	dc.b	$08,$33,$D7,$C8,$00
+	dc.b	$08,$2B,$D7,$20,$F8
+	dc.b	$08,$23,$D7,$C8,$F8
+	dc.b	$0C,$3B,$DA,$00,$00
+	dc.b	$0C,$33,$DA,$E0,$00
+	dc.b	$0C,$2B,$DA,$00,$F8
+	dc.b	$0C,$23,$DA,$E0,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3423:
-	incbin "data/rom/bank_080000_0bffff.bin",$023423,$000029
+	dc.b	$00,$3B,$DE,$20,$00
+	dc.b	$00,$33,$DE,$D8,$00
+	dc.b	$00,$2B,$DE,$20,$F8
+	dc.b	$00,$23,$DE,$D8,$F8
+	dc.b	$0C,$3B,$BC,$00,$00
+	dc.b	$0C,$33,$BC,$E0,$00
+	dc.b	$0C,$2B,$BC,$00,$F8
+	dc.b	$0C,$23,$BC,$E0,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A344C:
-	incbin "data/rom/bank_080000_0bffff.bin",$02344C,$000015
+	dc.b	$08,$3B,$EA,$00,$00
+	dc.b	$08,$33,$EA,$E8,$00
+	dc.b	$08,$2B,$EA,$00,$F8
+	dc.b	$08,$23,$EA,$E8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3461:
-	incbin "data/rom/bank_080000_0bffff.bin",$023461,$000015
+	dc.b	$08,$3B,$ED,$00,$00
+	dc.b	$08,$33,$ED,$E8,$00
+	dc.b	$08,$2B,$ED,$00,$F8
+	dc.b	$08,$23,$ED,$E8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3476:
-	incbin "data/rom/bank_080000_0bffff.bin",$023476,$000006
+	dc.b	$05,$1A,$70,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A347C:
-	incbin "data/rom/bank_080000_0bffff.bin",$02347C,$000006
+	dc.b	$05,$1A,$74,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3482:
-	incbin "data/rom/bank_080000_0bffff.bin",$023482,$000006
+	dc.b	$05,$02,$70,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3488:
-	incbin "data/rom/bank_080000_0bffff.bin",$023488,$000006
+	dc.b	$05,$02,$74,$F8,$F8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A348E:
-	incbin "data/rom/bank_080000_0bffff.bin",$02348E,$000006
+	dc.b	$04,$00,$00,$F8,$FC
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3494:
-	incbin "data/rom/bank_080000_0bffff.bin",$023494,$000006
+	dc.b	$05,$00,$02,$F8,$F4
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A349A:
-	incbin "data/rom/bank_080000_0bffff.bin",$02349A,$000006
+	dc.b	$05,$00,$06,$F8,$F4
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34A0:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234A0,$000006
+	dc.b	$05,$00,$0A,$F8,$F4
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34A6:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234A6,$000006
+	dc.b	$05,$00,$0E,$F8,$F4
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34AC:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234AC,$000006
+	dc.b	$05,$00,$12,$F8,$F4
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34B2:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234B2,$000006
+	dc.b	$05,$00,$16,$F8,$F6
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34B8:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234B8,$000006
+	dc.b	$05,$00,$1A,$F8,$F6
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34BE:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234BE,$000006
+	dc.b	$05,$00,$1E,$F8,$F6
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34C4:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234C4,$000006
+	dc.b	$07,$00,$22,$F8,$E8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34CA:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234CA,$000006
+	dc.b	$07,$00,$2A,$F8,$E8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34D0:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234D0,$000006
+	dc.b	$07,$00,$32,$F8,$E8
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34D6:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234D6,$000006
+	dc.b	$07,$00,$3A,$F8,$EA
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34DC:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234DC,$000006
+	dc.b	$07,$00,$42,$F8,$EA
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34E2:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234E2,$000006
+	dc.b	$07,$00,$4A,$F8,$EA
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34E8:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234E8,$000006
+	dc.b	$0D,$40,$00,$F0,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34EE:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234EE,$000006
+	dc.b	$0D,$40,$08,$F0,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34F4:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234F4,$000006
+	dc.b	$0D,$40,$10,$F0,$F0
+	dc.b	$FF
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A34FA:
-	incbin "data/rom/bank_080000_0bffff.bin",$0234FA,$000006
+	dc.b	$0D,$40,$18,$F0,$F0
+	dc.b	$FF

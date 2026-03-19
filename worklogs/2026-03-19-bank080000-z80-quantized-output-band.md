@@ -1,0 +1,9 @@
+# 2026-03-19 bank080000 Z80 quantized output band
+
+- Tightened the next proven Z80 main-body frontier in `src/bank080000_mid_z80_program.asm` from `0x09853C` through `0x09867B`.
+- `0x09853C-0x098578` is now source-visible as a nonzero-mode output emitter: it first refreshes the masked IX-local target word through the new `0x0985A3` helper, then combines the descending odd-aligned lookup table at `0x09913D` with the already split threshold bucketizer at `0x098516` / lookup helper at `0x0984E4` to write two encoded bytes to `0x7F11`.
+- `0x098579-0x09859A` is a neighboring zero-mode variant that instead uses `0x1C11 + 0xA4`, the ascending odd-aligned table at `0x09907B`, and two calls to `0x06CD` before tail-jumping into the same local output path.
+- `0x09859B-0x0985B9` now exposes the refresh glue around those emitters: `0x09859B` compares a low-byte value rounded down to an 8-byte boundary against `HL`, and `0x0985A3` only copies the IX-local source word at `+0x08/+0x09` into the cached target word at `+0x0A/+0x0B` when that rounded pair changes.
+- `0x0985BA-0x098615` is now explicit as an indexed output-band updater keyed by `(IX+1)-2`. The equal and greater-than paths clamp one IX-local accumulator around `+0x28/+0x29`, cache the last emitted band in `0x1C13`, and emit one encoded byte to `0x7F11`.
+- `0x098616-0x09867B` now exposes the `<2` path too: it resolves an 8-entry lookup table from the low three bits of `(IX+0x24)`, walks four IX-local rows in 3-byte steps, conditionally updates each cached row byte, and emits row-specific updates through `0x06C7` while using `0x1C08` as a local clamp/ceiling byte.
+- The unresolved Z80 main-body continuation now starts later at `0x09867C`, leaving a meaningfully smaller opaque block before the already split odd-aligned word tables at `0x09907B+`.

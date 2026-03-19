@@ -3,6 +3,10 @@
 ; table at 0x041000-0x0418AB. Those table entries point monotonically into the larger
 ; 0x041C00-0x07FF66 payload region; this first 0x8B0F-byte window now keeps the proven
 ; ROM-order starts explicit instead of leaving the entire local-target body monolithic.
+;
+; The tagged front table now also proves that the isolated 0x045842 target belongs with the
+; later planar tile blocks rather than the surrounding irregular payload records, so that one
+; block now lives in its own graphics-oriented child module too.
 
 Bank040000_LocalTableTargetedPayloadRecord_041C00:
 	incbin "data/rom/bank_040000_07ffff.bin",$001C00,$0000CF
@@ -109,8 +113,7 @@ Bank040000_LocalTableTargetedPayloadRecord_0454FB:
 Bank040000_LocalTableTargetedPayloadRecord_0456A4:
 	incbin "data/rom/bank_040000_07ffff.bin",$0056A4,$00019E
 
-Bank040000_LocalTableTargetedPayloadRecord_045842:
-	incbin "data/rom/bank_040000_07ffff.bin",$005842,$0004C0
+	include "src/bank040000_gfx_tiles_045842.asm"
 
 Bank040000_LocalTableTargetedPayloadRecord_045D02:
 	incbin "data/rom/bank_040000_07ffff.bin",$005D02,$0001A9

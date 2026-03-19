@@ -1,0 +1,4 @@
+Microsoft Windows [Version 10.0.26200.8037]
+(c) Microsoft Corporation. All rights reserved.
+
+Continue executing todos.json and mark progress as you go. If everything in todos.json is done, continue working on the assembly in the most productive way while preserving a bit-perfect rebuild, keeping todos.json updated, and choosing the next maturity-improving step yourself. After every non-trivial change or completed task, run cmd /c verify.bat plus the repo checks in todos.json, and fix the cause of any failure instead of reverting unrelated work. Prioritize visible progress on the large still-opaque

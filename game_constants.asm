@@ -69,3 +69,8 @@ MagicMenuStatusGaugeSelectionValueOffset equ $000A
 MagicMenuStatusGaugeMaxFillValue equ $000C
 MagicMenuStatusGaugePageSelectionCutoff equ $0008
 MagicMenuStatusTopRowSelectionCutoff equ $0008
+FlaggedRomReferenceTag_00         equ $00
+FlaggedRomReferenceTag_PlanarTiles equ $01
+FlaggedRomReferenceTag_02         equ $02
+FlaggedRomReferenceTag_Unused     equ $FF
+FlaggedRomReferenceUnusedValue    equ $FFFFFFFF

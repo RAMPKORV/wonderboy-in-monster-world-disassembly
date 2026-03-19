@@ -1,9 +1,12 @@
 ; ROM range: 0x04E5AA-0x05FC2F
 ; Continued local-target payload window reached from the same flagged ROM-reference
 ; table at 0x041000-0x0418AB. This span now calls out both the isolated 0x05C5DA 0x4C0-byte
-; record and the later eight-record 0x05D630-0x05FC2F stride family. Keep the labels
-; structural until a loader or decoder proves what resource family these records actually
-; belong to.
+; record and the later eight-record 0x05D630-0x05FC2F family.
+;
+; Those dedicated child modules now use graphics-oriented ownership because the repeated
+; 0x4C0-byte records consistently parse as 38-tile 4bpp planar art blocks. The shared
+; table/loader path is still unresolved, so the names stay at tile-family level rather than
+; forcing a map, font, sprite-set, or UI-specific subsystem guess.
 
 Bank040000_LocalTableTargetedPayloadRecord_04E5AA:
 	incbin "data/rom/bank_040000_07ffff.bin",$00E5AA,$0001EC
@@ -431,7 +434,7 @@ Bank040000_LocalTableTargetedPayloadRecord_05C164:
 Bank040000_LocalTableTargetedPayloadRecord_05C34A:
 	incbin "data/rom/bank_040000_07ffff.bin",$01C34A,$000290
 
-	include "src/bank040000_payload_stride_05c5da.asm"
+	include "src/bank040000_gfx_tiles_05c5da.asm"
 
 Bank040000_LocalTableTargetedPayloadRecord_05CA9A:
 	incbin "data/rom/bank_040000_07ffff.bin",$01CA9A,$000170
@@ -460,4 +463,4 @@ Bank040000_LocalTableTargetedPayloadRecord_05D3BD:
 Bank040000_LocalTableTargetedPayloadRecord_05D47B:
 	incbin "data/rom/bank_040000_07ffff.bin",$01D47B,$0001B5
 
-	include "src/bank040000_payload_stride_05d630.asm"
+	include "src/bank040000_gfx_tiles_05d630.asm"

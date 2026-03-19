@@ -1,8 +1,12 @@
 ; ROM range: 0x04A70F-0x04E5A9
 ; Continued local-target payload window reached from the same flagged ROM-reference
 ; table at 0x041000-0x0418AB. This span now separates the irregular front records from
-; the first long fixed-stride run at 0x04BFAA. The labels stay structural until a loader
-; or decoder proves what resource family these records actually belong to.
+; the first long fixed-stride run at 0x04BFAA.
+;
+; That run is no longer treated as a generic payload stride family: each 0x4C0-byte record
+; divides cleanly into 38 32-byte tiles and the byte planes read like 4bpp Mega Drive art,
+; so the dedicated child module now records it as a planar tile family while the higher-level
+; loader and asset owner remain open.
 
 Bank040000_LocalTableTargetedPayloadRecord_04A70F:
 	incbin "data/rom/bank_040000_07ffff.bin",$00A70F,$000194
@@ -49,4 +53,4 @@ Bank040000_LocalTableTargetedPayloadRecord_04BD11:
 Bank040000_LocalTableTargetedPayloadRecord_04BEA1:
 	incbin "data/rom/bank_040000_07ffff.bin",$00BEA1,$000109
 
-	include "src/bank040000_payload_stride_04bfaa.asm"
+	include "src/bank040000_gfx_tiles_04bfaa.asm"
