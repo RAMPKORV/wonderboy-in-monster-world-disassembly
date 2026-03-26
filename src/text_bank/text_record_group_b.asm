@@ -4,352 +4,352 @@
 ; structural until the consumer and record format are recovered.
 
 Bank020000_BankRelativeTextRecordB_020E4C:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E4C,$000007
+	dc.b	"erts ",$0C,$D3
 
 Bank020000_BankRelativeTextRecordB_020E53:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E53,$000007
+	dc.b	$02,$04,$01,"Blue"
 
 Bank020000_BankRelativeTextRecordB_020E5A:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E5A,$000004
+	dc.b	" Gem"
 
 Bank020000_BankRelativeTextRecordB_020E5E:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E5E,$00000B
+	dc.b	".",$0B,$0A,$37,$0B,$29,$05,$00,$0C,$06,"A"
 
 Bank020000_BankRelativeTextRecordB_020E69:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E69,$000009
+	dc.b	" secret l"
 
 Bank020000_BankRelativeTextRecordB_020E72:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E72,$000007
+	dc.b	"ies in "
 
 Bank020000_BankRelativeTextRecordB_020E79:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E79,$00000B
+	dc.b	$0C,$D3,$09,"surface "
 
 Bank020000_BankRelativeTextRecordB_020E84:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E84,$00000C
+	dc.b	"of ",$0C,$D3," walls",$09
 
 Bank020000_BankRelativeTextRecordB_020E90:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E90,$000005
+	dc.b	"of Ic"
 
 Bank020000_BankRelativeTextRecordB_020E95:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E95,$000009
+	dc.b	"e ",$0C,$45,".",$05,$00,$0C,$06
 
 Bank020000_BankRelativeTextRecordB_020E9E:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E9E,$000007
+	dc.b	$0B,$12,$44,$00,$22,"Do"
 
 Bank020000_BankRelativeTextRecordB_020EA5:
-	incbin "data/rom/bank_020000_03ffff.bin",$000EA5,$000007
+	dc.b	" ",$0C,$E6," ",$0C,$9D," "
 
 Bank020000_BankRelativeTextRecordB_020EAC:
-	incbin "data/rom/bank_020000_03ffff.bin",$000EAC,$000006
+	dc.b	"where "
 
 Bank020000_BankRelativeTextRecordB_020EB2:
-	incbin "data/rom/bank_020000_03ffff.bin",$000EB2,$000009
+	dc.b	$0C,$D3,$09,"prince"
 
 Bank020000_BankRelativeTextRecordB_020EBB:
-	incbin "data/rom/bank_020000_03ffff.bin",$000EBB,$000005
+	dc.b	" went"
 
 Bank020000_BankRelativeTextRecordB_020EC0:
-	incbin "data/rom/bank_020000_03ffff.bin",$000EC0,$000005
+	dc.b	"?",$05,$00,$0B,$12
 
 Bank020000_BankRelativeTextRecordB_020EC5:
-	incbin "data/rom/bank_020000_03ffff.bin",$000EC5,$000005
+	dc.b	$4E,$00,$26,"I "
 
 Bank020000_BankRelativeTextRecordB_020ECA:
-	incbin "data/rom/bank_020000_03ffff.bin",$000ECA,$000008
+	dc.b	"think he"
 
 Bank020000_BankRelativeTextRecordB_020ED2:
-	incbin "data/rom/bank_020000_03ffff.bin",$000ED2,$000006
+	dc.b	"'s gon"
 
 Bank020000_BankRelativeTextRecordB_020ED8:
-	incbin "data/rom/bank_020000_03ffff.bin",$000ED8,$000008
+	dc.b	"e",$09,"to Nig"
 
 Bank020000_BankRelativeTextRecordB_020EE0:
-	incbin "data/rom/bank_020000_03ffff.bin",$000EE0,$000008
+	dc.b	"htmare ",$0C
 
 Bank020000_BankRelativeTextRecordB_020EE8:
-	incbin "data/rom/bank_020000_03ffff.bin",$000EE8,$000004
+	dc.b	$45,".",$05,$00
 
 Bank020000_BankRelativeTextRecordB_020EEC:
-	incbin "data/rom/bank_020000_03ffff.bin",$000EEC,$000008
+	dc.b	"He's ",$0C,$B8,$09
 
 Bank020000_BankRelativeTextRecordB_020EF4:
-	incbin "data/rom/bank_020000_03ffff.bin",$000EF4,$000007
+	dc.b	"attempt"
 
 Bank020000_BankRelativeTextRecordB_020EFB:
-	incbin "data/rom/bank_020000_03ffff.bin",$000EFB,$000009
+	dc.b	"ing to co"
 
 Bank020000_BankRelativeTextRecordB_020F04:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F04,$00000A
+	dc.b	"llect",$09,$0C,$D3," ",$0C
 
 Bank020000_BankRelativeTextRecordB_020F0E:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F0E,$000009
+	dc.b	$9F,$05,$09,"weapon"
 
 Bank020000_BankRelativeTextRecordB_020F17:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F17,$000006
+	dc.b	"s.",$05,$09,$09,"I"
 
 Bank020000_BankRelativeTextRecordB_020F1D:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F1D,$000006
+	dc.b	"t ",$0C,$A3," a"
 
 Bank020000_BankRelativeTextRecordB_020F23:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F23,$000009
+	dc.b	"s ",$0C,$D9,$09,"he's"
 
 Bank020000_BankRelativeTextRecordB_020F2C:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F2C,$000006
+	dc.b	" ",$0C,$8E," ",$0C,$6D
 
 Bank020000_BankRelativeTextRecordB_020F32:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F32,$000007
+	dc.b	" ",$0C,$77," ",$0C,$AF,$09
 
 Bank020000_BankRelativeTextRecordB_020F39:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F39,$000005
+	dc.b	"of ",$0C,$D5
 
 Bank020000_BankRelativeTextRecordB_020F3E:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F3E,$000006
+	dc.b	"...",$05,$00,$07
 
 Bank020000_BankRelativeTextRecordB_020F44:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F44,$000004
+	dc.b	$04,$02,$03,$06
 
 Bank020000_BankRelativeTextRecordB_020F48:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F48,$000006
+	dc.b	"It's s"
 
 Bank020000_BankRelativeTextRecordB_020F4E:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F4E,$000005
+	dc.b	"ealed"
 
 Bank020000_BankRelativeTextRecordB_020F53:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F53,$000008
+	dc.b	".",$05,$00,$07,$03,$06,$0C,$68
 
 Bank020000_BankRelativeTextRecordB_020F5B:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F5B,$000005
+	dc.b	" ",$0C,$78," r"
 
 Bank020000_BankRelativeTextRecordB_020F60:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F60,$000006
+	dc.b	"ide a "
 
 Bank020000_BankRelativeTextRecordB_020F66:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F66,$000004
+	dc.b	$0C,$99,"!",$05
 
 Bank020000_BankRelativeTextRecordB_020F6A:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F6A,$000005
+	dc.b	$00,$0A,$02,$03,$06
 
 Bank020000_BankRelativeTextRecordB_020F6F:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F6F,$000006
+	dc.b	$04,$02,$0C,$62," ",$0C
 
 Bank020000_BankRelativeTextRecordB_020F75:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F75,$000006
+	dc.b	$A7," ",$0C,$91,$09,$0C
 
 Bank020000_BankRelativeTextRecordB_020F7B:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F7B,$000006
+	dc.b	$7D," ",$0C,$6F," m"
 
 Bank020000_BankRelativeTextRecordB_020F81:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F81,$000004
+	dc.b	"ade "
 
 Bank020000_BankRelativeTextRecordB_020F85:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F85,$000008
+	dc.b	$0C,$D8,$09,$0C,$D4," ho"
 
 Bank020000_BankRelativeTextRecordB_020F8D:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F8D,$000004
+	dc.b	"me, "
 
 Bank020000_BankRelativeTextRecordB_020F91:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F91,$000009
+	dc.b	"so no ",$0C,$AF,$05
 
 Bank020000_BankRelativeTextRecordB_020F9A:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F9A,$000005
+	dc.b	$09,$0C,$A5," ",$0C
 
 Bank020000_BankRelativeTextRecordB_020F9F:
-	incbin "data/rom/bank_020000_03ffff.bin",$000F9F,$000005
+	dc.b	$82,"!",$05,$00,$07
 
 Bank020000_BankRelativeTextRecordB_020FA4:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FA4,$000007
+	dc.b	$0A,$02,$03,$08,$04,$02,"F"
 
 Bank020000_BankRelativeTextRecordB_020FAB:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FAB,$000007
+	dc.b	"inally,"
 
 Bank020000_BankRelativeTextRecordB_020FB2:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FB2,$000007
+	dc.b	" ",$0C,$D3," ",$0C,$A1,","
 
 Bank020000_BankRelativeTextRecordB_020FB9:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FB9,$000008
+	dc.b	$09,"treache"
 
 Bank020000_BankRelativeTextRecordB_020FC1:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FC1,$000004
+	dc.b	"rous"
 
 Bank020000_BankRelativeTextRecordB_020FC5:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FC5,$000004
+	dc.b	" ",$0C,$9A,$09
 
 Bank020000_BankRelativeTextRecordB_020FC9:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FC9,$000007
+	dc.b	$0C,$90," reac"
 
 Bank020000_BankRelativeTextRecordB_020FD0:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FD0,$000005
+	dc.b	"hed i"
 
 Bank020000_BankRelativeTextRecordB_020FD5:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FD5,$000006
+	dc.b	"ts end"
 
 Bank020000_BankRelativeTextRecordB_020FDB:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FDB,$000007
+	dc.b	".",$0B,$18,"H",$00,$07,$0A
 
 Bank020000_BankRelativeTextRecordB_020FE2:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FE2,$000005
+	dc.b	$02,$03,$08,$04,$02
 
 Bank020000_BankRelativeTextRecordB_020FE7:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FE7,$000007
+	dc.b	"None of"
 
 Bank020000_BankRelativeTextRecordB_020FEE:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FEE,$000004
+	dc.b	" ",$0C,$D3," "
 
 Bank020000_BankRelativeTextRecordB_020FF2:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FF2,$000005
+	dc.b	$0C,$B4," in"
 
 Bank020000_BankRelativeTextRecordB_020FF7:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FF7,$000006
+	dc.b	$09,$0C,$54," ",$0C,$67
 
 Bank020000_BankRelativeTextRecordB_020FFD:
-	incbin "data/rom/bank_020000_03ffff.bin",$000FFD,$000006
+	dc.b	" ",$0C,$E4,$09,$0C,$83
 
 Bank020000_BankRelativeTextRecordB_021003:
-	incbin "data/rom/bank_020000_03ffff.bin",$001003,$000005
+	dc.b	" ",$0C,$87," ",$0C
 
 Bank020000_BankRelativeTextRecordB_021008:
-	incbin "data/rom/bank_020000_03ffff.bin",$001008,$00000B
+	dc.b	$E3,$09,"they've ",$0C
 
 Bank020000_BankRelativeTextRecordB_021013:
-	incbin "data/rom/bank_020000_03ffff.bin",$001013,$000005
+	dc.b	"r thr"
 
 Bank020000_BankRelativeTextRecordB_021018:
-	incbin "data/rom/bank_020000_03ffff.bin",$001018,$000004
+	dc.b	"ough"
 
 Bank020000_BankRelativeTextRecordB_02101C:
-	incbin "data/rom/bank_020000_03ffff.bin",$00101C,$000007
+	dc.b	",",$0B,$18,"H",$00,$07,$0A
 
 Bank020000_BankRelativeTextRecordB_021023:
-	incbin "data/rom/bank_020000_03ffff.bin",$001023,$000005
+	dc.b	$02,$03,$08,$04,$02
 
 Bank020000_BankRelativeTextRecordB_021028:
-	incbin "data/rom/bank_020000_03ffff.bin",$001028,$000005
+	dc.b	"nor ",$0C
 
 Bank020000_BankRelativeTextRecordB_02102D:
-	incbin "data/rom/bank_020000_03ffff.bin",$00102D,$00000B
+	dc.b	$E4," they ",$0C,$87,$09,$0C
 
 Bank020000_BankRelativeTextRecordB_021038:
-	incbin "data/rom/bank_020000_03ffff.bin",$001038,$000006
+	dc.b	$D3," ",$0C,$94," w"
 
 Bank020000_BankRelativeTextRecordB_02103E:
-	incbin "data/rom/bank_020000_03ffff.bin",$00103E,$000006
+	dc.b	"ho gav"
 
 Bank020000_BankRelativeTextRecordB_021044:
-	incbin "data/rom/bank_020000_03ffff.bin",$001044,$000005
+	dc.b	"e",$09,$0C,$D4," "
 
 Bank020000_BankRelativeTextRecordB_021049:
-	incbin "data/rom/bank_020000_03ffff.bin",$001049,$000004
+	dc.b	"live"
 
 Bank020000_BankRelativeTextRecordB_02104D:
-	incbin "data/rom/bank_020000_03ffff.bin",$00104D,$000009
+	dc.b	"s ",$0C,$71," to",$09,$0C
 
 Bank020000_BankRelativeTextRecordB_021056:
-	incbin "data/rom/bank_020000_03ffff.bin",$001056,$000004
+	dc.b	$D5,".",$0B,$18
 
 Bank020000_BankRelativeTextRecordB_02105A:
-	incbin "data/rom/bank_020000_03ffff.bin",$00105A,$000005
+	dc.b	"H",$00,$07,$0A,$02
 
 Bank020000_BankRelativeTextRecordB_02105F:
-	incbin "data/rom/bank_020000_03ffff.bin",$00105F,$000006
+	dc.b	$03,$08,$04,$02,$0C,$62
 
 Bank020000_BankRelativeTextRecordB_021065:
-	incbin "data/rom/bank_020000_03ffff.bin",$001065,$000005
+	dc.b	" stor"
 
 Bank020000_BankRelativeTextRecordB_02106A:
-	incbin "data/rom/bank_020000_03ffff.bin",$00106A,$000005
+	dc.b	"y of "
 
 Bank020000_BankRelativeTextRecordB_02106F:
-	incbin "data/rom/bank_020000_03ffff.bin",$00106F,$000007
+	dc.b	$0C,$5E,"'s",$09,"va"
 
 Bank020000_BankRelativeTextRecordB_021076:
-	incbin "data/rom/bank_020000_03ffff.bin",$001076,$000009
+	dc.b	"liant str"
 
 Bank020000_BankRelativeTextRecordB_02107F:
-	incbin "data/rom/bank_020000_03ffff.bin",$00107F,$000005
+	dc.b	"uggle"
 
 Bank020000_BankRelativeTextRecordB_021084:
-	incbin "data/rom/bank_020000_03ffff.bin",$001084,$000006
+	dc.b	$09,$0C,$E4," no"
 
 Bank020000_BankRelativeTextRecordB_02108A:
-	incbin "data/rom/bank_020000_03ffff.bin",$00108A,$00000A
+	dc.b	" doubt be",$09
 
 Bank020000_BankRelativeTextRecordB_021094:
-	incbin "data/rom/bank_020000_03ffff.bin",$001094,$000008
+	dc.b	"passed o"
 
 Bank020000_BankRelativeTextRecordB_02109C:
-	incbin "data/rom/bank_020000_03ffff.bin",$00109C,$000005
+	dc.b	"n ",$0C,$89,$09
 
 Bank020000_BankRelativeTextRecordB_0210A1:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010A1,$00000A
+	dc.b	$0C,$8A," to",$09,$0C,$8A,".",$0B
 
 Bank020000_BankRelativeTextRecordB_0210AB:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010AB,$000005
+	dc.b	$18,"H",$00,$07,$0A
 
 Bank020000_BankRelativeTextRecordB_0210B0:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010B0,$000005
+	dc.b	$02,$03,$06,$04,$02
 
 Bank020000_BankRelativeTextRecordB_0210B5:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010B5,$00000A
+	dc.b	"And so end"
 
 Bank020000_BankRelativeTextRecordB_0210BF:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010BF,$000005
+	dc.b	"s ano"
 
 Bank020000_BankRelativeTextRecordB_0210C4:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010C4,$000005
+	dc.b	"ther",$09
 
 Bank020000_BankRelativeTextRecordB_0210C9:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010C9,$000005
+	dc.b	"episo"
 
 Bank020000_BankRelativeTextRecordB_0210CE:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010CE,$000006
+	dc.b	"de in "
 
 Bank020000_BankRelativeTextRecordB_0210D4:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010D4,$000006
+	dc.b	$0C,$D3,$09,"adv"
 
 Bank020000_BankRelativeTextRecordB_0210DA:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010DA,$000004
+	dc.b	"ent"
 
 Bank020000_BankRelativeTextRecordB_0210DE:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010DE,$000009
+	dc.b	"ures ","of",$09,$22,"Wo"
 
 Bank020000_BankRelativeTextRecordB_0210E7:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010E7,$000009
+	dc.b	"nder Boy",$22
 
 Bank020000_BankRelativeTextRecordB_0210F0:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010F0,$000005
+	dc.b	".",$0B,$18,"H",$00
 
 Bank020000_BankRelativeTextRecordB_0210F5:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010F5,$000005
+	dc.b	$07,$0C,$06,$0C,$65
 
 Bank020000_BankRelativeTextRecordB_0210FA:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010FA,$000005
+	dc.b	" home"
 
 Bank020000_BankRelativeTextRecordB_0210FF:
-	incbin "data/rom/bank_020000_03ffff.bin",$0010FF,$000005
+	dc.b	", ",$0C,$5E,"."
 
 Bank020000_BankRelativeTextRecordB_021104:
-	incbin "data/rom/bank_020000_03ffff.bin",$001104,$000004
+	dc.b	$09,"I'"
 
 Bank020000_BankRelativeTextRecordB_021108:
-	incbin "data/rom/bank_020000_03ffff.bin",$001108,$000008
+	dc.b	"m so hap"
 
 Bank020000_BankRelativeTextRecordB_021110:
-	incbin "data/rom/bank_020000_03ffff.bin",$001110,$000004
+	dc.b	"py ",$0C
 
 Bank020000_BankRelativeTextRecordB_021114:
-	incbin "data/rom/bank_020000_03ffff.bin",$001114,$000004
+	dc.b	$E6," ma"
 
 Bank020000_BankRelativeTextRecordB_021118:
-	incbin "data/rom/bank_020000_03ffff.bin",$001118,$000005
+	dc.b	"de",$09,"it"
 
 Bank020000_BankRelativeTextRecordB_02111D:
-	incbin "data/rom/bank_020000_03ffff.bin",$00111D,$000006
+	dc.b	" ",$0C,$71," ",$0C,$BE
 
 Bank020000_BankRelativeTextRecordB_021123:
-	incbin "data/rom/bank_020000_03ffff.bin",$001123,$000004
+	dc.b	".",$09,"I "
 
 Bank020000_BankRelativeTextRecordB_021127:
-	incbin "data/rom/bank_020000_03ffff.bin",$001127,$000009
+	dc.b	$0C,$7F,"'t thin"
 
 Bank020000_BankRelativeTextRecordB_021130:
 	incbin "data/rom/bank_020000_03ffff.bin",$001130,$000007

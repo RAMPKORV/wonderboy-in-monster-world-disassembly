@@ -19,11 +19,13 @@
       "Every change preserves a bit-perfect rebuild unless the task explicitly establishes new generated assets that still round-trip to the original bytes.",
       "New labels, constants, and module boundaries follow repo conventions and prefer real game/domain meaning where the ROM proves it.",
       "Recovered code/data ownership is reflected in source files and machine-readable indexes, not only in notes or Ghidra.",
+      "Significant recovered code or annotateable structured data must live in source-authored .asm, not remain trapped inside coarse .bin blobs with comment-only descriptions.",
       "Opaque bytes stay opaque only when their format or ownership is still unproven; monolithic bank-sized incbins are not an acceptable end state.",
       "Every still-opaque region is tracked with a current classification such as code, level/map data, compressed graphics, text, script, sound, tables, or fill so the repo steadily converges on human-readable ownership."
     ],
     "editing_rules": [
       "Prefer source-authored ASM with labels and comments over coarse incbins once control flow or table structure is proven.",
+      "When a .bin-backed region is proven to contain significant code or maintainable structured data, extract it into .asm instead of leaving the understanding in comments alone.",
       "Keep hex literals in dc.b/dc.w/dc.l data so byte identity is easy to audit.",
       "Put RAM, hardware, sound, script, and gameplay constants in the appropriate shared constant files rather than scattering new equates.",
       "Use Node.js for repository tooling and round-trip extract/build helpers.",
@@ -91,8 +93,17 @@
           "description": "Add and enforce repo guidance that temporary bank-local slice names are only short-lived scaffolding, must record the intended future owner, and should be retired as soon as a defensible subsystem or asset-family name is available.",
           "priority": "high",
           "effort": "small",
-          "status": "todo",
+          "status": "in_progress",
           "file": "autopilot.bat + docs/naming_conventions.md + docs/module_boundaries.md"
+        },
+        {
+          "id": "ORG-006",
+          "title": "Audit .bin scaffolds for hidden code and maintainable data",
+          "description": "Systematically inspect existing data/rom/*.bin-backed regions for significant 68k routines, pointer tables, price/value tables, string/name tables, script records, and other annotateable formats that should be moved into source-authored .asm instead of remaining in coarse blobs.",
+          "priority": "critical",
+          "effort": "very_large",
+          "status": "in_progress",
+          "file": "src/*.asm + data/rom/*.bin + tools/index/rom_map.json + docs/blob_catalog.md"
         }
       ]
     },
@@ -882,20 +893,20 @@
     "REGR-006"
   ],
   "statistics": {
-    "total_tasks": 81,
+    "total_tasks": 82,
     "by_status": {
-      "in_progress": 16,
-      "todo": 61,
+      "in_progress": 18,
+      "todo": 60,
       "done": 4
     },
     "by_priority": {
-      "critical": 28,
+      "critical": 29,
       "high": 37,
       "medium": 15,
       "low": 1
     },
     "by_category": {
-      "organization_and_classification_reset": 5,
+      "organization_and_classification_reset": 6,
       "disassembly_completion_strategy": 5,
       "core_frontier_recovery": 7,
       "bank_020000_recovery": 7,

@@ -160,209 +160,232 @@ Bank020000_DialogueScriptMidBlock_0208D6:
 ; "To [sell] [the] [?], [...] [sell] [the] room on [the] [?]
 ;  side of [?] [search], [princess] in order to [sell], [you] [sell] [thank]
 ;  [the] following [this]: [the] [just] Sword / [just] Armor / [just] Shield [one] [just] Boots."
-; Likely upstream shop-inventory/control script, but still undecoded. The explicit item-name
-; strings recovered so far live either in Bank020000_InventoryNameOffsetTable_021720 or as
-; quiz-only inline literals in Bank020000_QuizQuestion05Text_02154C and nearby answers.
+; Likely upstream shop-inventory/control script. The control bytes are still only partly
+; decoded, but the mixed text/control payload is now source-authored instead of hiding in the
+; ROM blob. The explicit item-name strings recovered so far live either in
+; Bank020000_InventoryNameOffsetTable_021720 or as quiz-only inline literals in
+; Bank020000_QuizQuestion05Text_02154C and nearby answers.
 Bank020000_DialogueScript_ShopInventoryBlock_0208D7:
-	incbin "data/rom/bank_020000_03ffff.bin",$0008D7,$00009C
+	dc.b	$0C,$06,"To ",$0C,$82," ",$0C,$D3," ",$0C,$DE,",",$09
+	dc.b	$0C,$E6," ",$0C,$AA," ",$0C,$82," ",$0C,$D3,$09,"room on ",$0C,$D3," ",$0C,$B1,$05
+	dc.b	$09,"side of ",$0C,$D8," ",$0C,$80,",",$09,$0C,$77," in order to",$09,$0C,$82,", ",$0C,$E6
+	dc.b	" ",$0C,$AA," ",$0C,$91,$05,$09,$0C,$D3," following ",$0C,$98,":",$05,$09,$0C,$D3," ",$0C,$5B," Sw"
+	dc.b	"ord,",$09
+	dc.b	$0C,$5B," Armor,",$05,$09,$0C,$5B," Shield, ",$0C,$6F,$09,$0C,$5B," Boots.",$05,$09,$09,$0B,$27
 
 Bank020000_DialogueScriptMidBlock_020973:
-	incbin "data/rom/bank_020000_03ffff.bin",$000973,$000001
+	dc.b	$00
 
 Bank020000_DialogueScriptMidBlock_020974:
-	incbin "data/rom/bank_020000_03ffff.bin",$000974,$000001
+	dc.b	$A0
 
 Bank020000_DialogueScriptMidBlock_020975:
-	incbin "data/rom/bank_020000_03ffff.bin",$000975,$000001
+	dc.b	$00
 
 Bank020000_DialogueScriptMidBlock_020976:
-	incbin "data/rom/bank_020000_03ffff.bin",$000976,$000001
+	dc.b	$76
 
 Bank020000_DialogueScriptMidBlock_020977:
-	incbin "data/rom/bank_020000_03ffff.bin",$000977,$000001
+	dc.b	$00
 
 Bank020000_DialogueScriptMidBlock_020978:
-	incbin "data/rom/bank_020000_03ffff.bin",$000978,$000001
+	dc.b	$57
 
 Bank020000_DialogueScriptMidBlock_020979:
-	incbin "data/rom/bank_020000_03ffff.bin",$000979,$000001
+	dc.b	$00
 
 Bank020000_DialogueScriptMidBlock_02097A:
-	incbin "data/rom/bank_020000_03ffff.bin",$00097A,$000001
+	dc.b	$30
 
 Bank020000_DialogueScriptMidBlock_02097B:
-	incbin "data/rom/bank_020000_03ffff.bin",$00097B,$000001
+	dc.b	$00
 
 ; "[more] [thank] satisfied [the] requirements." / "[more] [?] [sell]."
 Bank020000_DialogueScript_EquipmentRequirements_02097C:
-	incbin "data/rom/bank_020000_03ffff.bin",$00097C,$00002C
+	dc.b	$02,$0C,$68," ",$0C,$91," satisfied",$09,$0C,$D3," requirements.",$09,$0C,$68," ",$0C,$A5," ",$0C,$82,".",$05
 
 Bank020000_DialogueScriptMidBlock_0209A8:
-	incbin "data/rom/bank_020000_03ffff.bin",$0009A8,$000001
+	dc.b	$00
 
 ; "One of [the] [this] is missing." / "I [?] [?] [close]."
 Bank020000_DialogueScript_ItemMissing_0209A9:
-	incbin "data/rom/bank_020000_03ffff.bin",$0009A9,$000024
+	dc.b	"One of ",$0C,$D3," ",$0C,$98," is",$09,"missing.",$05,$09,$0C,$49," ",$0C,$E7," ",$0C,$C0,".",$05
 
 Bank020000_DialogueScriptMidBlock_0209CD:
-	incbin "data/rom/bank_020000_03ffff.bin",$0009CD,$000001
+	dc.b	$00
 
 ; "[more] [?] two [?] [this]." / "I [?] [?] [close]."
 Bank020000_DialogueScript_TwoItems_0209CE:
-	incbin "data/rom/bank_020000_03ffff.bin",$0009CE,$00001C
+	dc.b	$0C,$68," ",$0C,$AB," two ",$0C,$A8,$09,$0C,$98,".",$05,$09,$0C,$49," ",$0C,$E7," ",$0C,$C0,".",$05
 
 Bank020000_DialogueScriptMidBlock_0209EA:
-	incbin "data/rom/bank_020000_03ffff.bin",$0009EA,$000001
+	dc.b	$00
 
 ; "[more] [?] [?] [?] of [the] [?] [you] [?]." / "I [?] [?] [close]."
 Bank020000_DialogueScript_ThreeItems_0209EB:
-	incbin "data/rom/bank_020000_03ffff.bin",$0009EB,$000027
+	dc.b	$0C,$68," ",$0C,$91," ",$0C,$B0," ",$0C,$AF," of",$09,$0C,$D3," ",$0C,$88," ",$0C,$E6," ",$0C,$AB,".",$05
+	dc.b	$09,$0C,$49," ",$0C,$E7," ",$0C,$C0,".",$05
 
 Bank020000_DialogueScriptMidBlock_020A12:
-	incbin "data/rom/bank_020000_03ffff.bin",$000A12,$000001
+	dc.b	$00
 
 Bank020000_DialogueScript_AllItems_020A13:
-	incbin "data/rom/bank_020000_03ffff.bin",$000A13,$000034
+	dc.b	$0C,$68," ",$0C,$91," yet to ",$0C,$85,$09,"even ",$0C,$AF," of ",$0C,$D3,$09,$0C,$98,".",$05
+	dc.b	$09,$0C,$68," ",$0C,$AA," ",$0C,$85," ",$0C,$6D,$09,$0C,$88,".",$09,$05
 
 Bank020000_DialogueScriptMidBlock_020A47:
-	incbin "data/rom/bank_020000_03ffff.bin",$000A47,$000001
+	dc.b	$00
 
 ; "Gragg & Glagg!"
 Bank020000_DialogueScript_GraggGlagg_020A48:
-	incbin "data/rom/bank_020000_03ffff.bin",$000A48,$000015
+	dc.b	$07,$04,$02,"Gragg & Glagg!",$0B,$18,$1E,$05
 
 Bank020000_DialogueScriptMidBlock_020A5D:
-	incbin "data/rom/bank_020000_03ffff.bin",$000A5D,$000001
+	dc.b	$00
 
 ; "[look] Ice Bomber!"
 Bank020000_DialogueScript_IceBomber_020A5E:
-	incbin "data/rom/bank_020000_03ffff.bin",$000A5E,$000015
+	dc.b	$07,$04,$01,$0C,$62," Ice Bomber!",$0B,$18,$1E,$05
 
 Bank020000_DialogueScriptMidBlock_020A73:
-	incbin "data/rom/bank_020000_03ffff.bin",$000A73,$000001
+	dc.b	$00
 
 ; "[look] Tyrant [going]!"
 Bank020000_DialogueScript_Tyrant_020A74:
-	incbin "data/rom/bank_020000_03ffff.bin",$000A74,$000014
+	dc.b	$07,$04,$04,$0C,$62," Tyrant ",$0C,$4B,"!",$0B,$18,$1E,$05
 
 Bank020000_DialogueScriptMidBlock_020A88:
-	incbin "data/rom/bank_020000_03ffff.bin",$000A88,$000001
+	dc.b	$00
 
 ; "[look] Almighty Demon King!"
 Bank020000_DialogueScript_AlmightyDemonKing_020A89:
-	incbin "data/rom/bank_020000_03ffff.bin",$000A89,$00001E
+	dc.b	$07,$04,$01,$0C,$62," Almighty Demon King!",$0B,$18,$1E,$05
 
 Bank020000_DialogueScriptMidBlock_020AA7:
-	incbin "data/rom/bank_020000_03ffff.bin",$000AA7,$000001
+	dc.b	$00
 
 ; "I've [that] [?] [legendary] [just] in [the] Pyramid likes quizzes."
 Bank020000_DialogueScript_PyramidQuizzes_020AA8:
-	incbin "data/rom/bank_020000_03ffff.bin",$000AA8,$000030
+	dc.b	$0C,$06,"I've ",$0C,$92," ",$0C,$D2," ",$0C,$D3,$09,$0C,$5F," in ",$0C,$D3," Pyramid",$09
+	dc.b	"likes quizzes.",$05
 
 Bank020000_DialogueScriptMidBlock_020AD8:
-	incbin "data/rom/bank_020000_03ffff.bin",$000AD8,$000001
+	dc.b	$00
 
 ; "If [you] [thank] a certain special [there], [you] [probably] swim [?]."
 Bank020000_DialogueScript_SpecialItem_020AD9:
-	incbin "data/rom/bank_020000_03ffff.bin",$000AD9,$000030
+	dc.b	$0C,$06,"If ",$0C,$E6," ",$0C,$91," a certain",$09,"special ",$0C,$97,", ",$0C,$E6," ",$0C,$78,$09
+	dc.b	"swim ",$0C,$DB,".",$05
 
 Bank020000_DialogueScriptMidBlock_020B09:
-	incbin "data/rom/bank_020000_03ffff.bin",$000B09,$000001
+	dc.b	$00
 
 ; "[look] star crest on [the] Bell Tower is [the] same as [the] [?]..."
 Bank020000_DialogueScript_BellTower_020B0A:
-	incbin "data/rom/bank_020000_03ffff.bin",$000B0A,$000073
+	dc.b	$0C,$06,$0C,$62," star crest on",$09,$0C,$D8," Bell Tower is",$09,$0C,$D3," same as ",$0C,$D3,$05,$09
+	dc.b	"insignia on ",$0C,$D3,$09,$0C,$E1," of ",$0C,$D3,$09,$0C,$9F," ",$0C,$94,".",$05,$09,$09,$0C,$62
+	dc.b	" ",$0C,$B7," told me",$09,$0C,$D8," a ",$0C,$A1," ",$0C,$DA," ago.",$09,$05
 
 Bank020000_DialogueScriptMidBlock_020B7D:
-	incbin "data/rom/bank_020000_03ffff.bin",$000B7D,$000001
+	dc.b	$00
 
 Bank020000_DialogueScriptMidBlock_020B7E:
-	incbin "data/rom/bank_020000_03ffff.bin",$000B7E,$000005
+	dc.b	$0C,$06,$0B,$17,$05
 
 Bank020000_DialogueScriptMidBlock_020B83:
-	incbin "data/rom/bank_020000_03ffff.bin",$000B83,$000001
+	dc.b	$00
 
 ; "[Shion]'re [?] strong." / "I hope [?] day I'll be so strong."
 Bank020000_DialogueScript_Strong_020B84:
-	incbin "data/rom/bank_020000_03ffff.bin",$000B84,$000036
+	dc.b	$38,$0C,$68,"'re ",$0C,$DC," strong.",$05,$09,$09,"I hope ",$0C,$AF," day I'll",$09,"be so strong.",$09,$05
 
 Bank020000_DialogueScriptMidBlock_020BBA:
-	incbin "data/rom/bank_020000_03ffff.bin",$000BBA,$000001
+	dc.b	$00
 
 ; "It is said [that] [?]'s a [?] at [the] [place] of [the] sea..."
 Bank020000_DialogueScript_SeaShrineHint_020BBB:
-	incbin "data/rom/bank_020000_03ffff.bin",$000BBB,$000055
+	dc.b	"It is said ",$0C,$D2,$09,$0C,$D7,"'s a ",$0C,$C4," at",$09,$0C,$D3," ",$0C,$75," of ",$0C,$D3,$05
+	dc.b	$09,$09,"sea, ",$0C,$77," no ",$0C,$AF,"'s",$09,$0C,$83," ",$0C,$72," ",$0C,$69," to",$09,$0C,$85," ",$0C,$D3
+	dc.b	" entrance.",$05
 
 Bank020000_DialogueScriptMidBlock_020C10:
-	incbin "data/rom/bank_020000_03ffff.bin",$000C10,$000001
+	dc.b	$00
 
 ; "I am [the] Prince of DarkWorld, [one] [you] be [the]..." (boss pre-battle speech)
 Bank020000_DialogueScript_DarkWorldPrince_020C11:
-	incbin "data/rom/bank_020000_03ffff.bin",$000C11,$0000B3
+	dc.b	$0C,$06,$07,"I am ",$0C,$D3," Prince of",$09,"DarkWorld, ",$0C,$6F," ",$0C,$E6,$09,$0C,$AA," be ",$0C,$D3,$05
+	dc.b	$09,$0C,$9F," ",$0C,$94,".",$05,$09,$09,"I ",$0C,$E0," under ",$0C,$D3,$09,"control of Biomeka,",$09
+	dc.b	"a deadly creature",$05,$09,$0C,$89," outer space, ",$0C,$77,$09,"I'm alright ",$0C,$AE,".",$05
+	dc.b	$09,$09,$0C,$61," ",$0C,$E6," ",$0C,$86," coming",$09,"to my aid....",$08,$09,$05
 
 Bank020000_DialogueScriptMidBlock_020CC4:
-	incbin "data/rom/bank_020000_03ffff.bin",$000CC4,$000001
+	dc.b	$00
 
 ; "Some [magic]." / "Is [that] [the] best [you] [probably] do?" / "Well, watch [?]!"
 Bank020000_DialogueScript_SomeMagic_020CC5:
-	incbin "data/rom/bank_020000_03ffff.bin",$000CC5,$000036
+	dc.b	$0C,$06,$07,"Some ",$0C,$94,".",$09,"Is ",$0C,$D2," ",$0C,$D3," best ",$0C,$E6,$09,$0C,$78," do?",$05
+	dc.b	$09,$09,"Well, watch ",$0C,$D8,"!",$05
 
 Bank020000_DialogueScriptMidBlock_020CFB:
-	incbin "data/rom/bank_020000_03ffff.bin",$000CFB,$000001
+	dc.b	$00
 
 ; "Not too bad, eh?" / "[Shion], let's [close] if [you]'ve [sword] [?] it takes."
 Bank020000_DialogueScript_NotTooBad_020CFC:
-	incbin "data/rom/bank_020000_03ffff.bin",$000CFC,$00003D
+	dc.b	$0C,$06,$07,"Not too bad, eh?",$09,$0C,$55,", let's ",$0C,$C1," if",$09,$0C,$E6,"'ve ",$0C,$8E," ",$0C,$E3," it",$05
+	dc.b	$09,"takes.",$0B,$28,$05
 
 Bank020000_DialogueScriptMidBlock_020D39:
-	incbin "data/rom/bank_020000_03ffff.bin",$000D39,$000001
+	dc.b	$00
 
 ; "[more]'re really [stock] to go, aren't [you]..." multi-string farewell block
 Bank020000_DialogueScript_FarewellBlock_020D3A:
-	incbin "data/rom/bank_020000_03ffff.bin",$000D3A,$000091
+	dc.b	$0C,$06,$0C,$68,"'re really ",$0C,$8B,$09,"to go,aren't ",$0C,$E6,"...",$05,$09,$09,"Can't ",$0C,$E6
+	dc.b	" stay ",$0C,$E5,$09,"me?",$09,$05,$09,"No, ",$0C,$E6,"'re ",$0C,$D3,$09,$0C,$9F," ",$0C,$94,".",$09,$05
+	dc.b	$09,$0C,$68," ",$0C,$AA," go.",$09,$05,$09,"Be sure to ",$0C,$7D,$09,$0C,$71," ",$0C,$BE,".",$05,$09,$09
+	dc.b	"I'll be ",$0C,$DF," ",$0C,$BD,$09,"here ",$0C,$86," ",$0C,$E6,".",$05
 
 Bank020000_DialogueScriptMidBlock_020DCB:
-	incbin "data/rom/bank_020000_03ffff.bin",$000DCB,$000001
+	dc.b	$00
 
 Bank020000_DialogueScriptMidBlock_020DCC:
-	incbin "data/rom/bank_020000_03ffff.bin",$000DCC,$000008
+	dc.b	$03,$06,$04,$01,$07,$0B,$17,$36
 
 Bank020000_DialogueScriptMidBlock_020DD4:
-	incbin "data/rom/bank_020000_03ffff.bin",$000DD4,$000001
+	dc.b	$00
 
 Bank020000_DialogueScriptMidBlock_020DD5:
-	incbin "data/rom/bank_020000_03ffff.bin",$000DD5,$000004
+	dc.b	$25,$0B,$17,$37
 
 Bank020000_DialogueScriptMidBlock_020DD9:
-	incbin "data/rom/bank_020000_03ffff.bin",$000DD9,$000001
+	dc.b	$00
 
 ; "[Charmstone].c's a convenient [?] slot...."
 Bank020000_DialogueScript_ConvenientSlot_020DDA:
-	incbin "data/rom/bank_020000_03ffff.bin",$000DDA,$00001E
+	dc.b	"C",$0C,$63,"'s a convenient",$02,$04,$01,"slot....",$05
 
 Bank020000_DialogueScriptMidBlock_020DF8:
-	incbin "data/rom/bank_020000_03ffff.bin",$000DF8,$000001
+	dc.b	$00
 
 ; "[?] [R] [Sphinx] inserts [the] [?] Gold Gem."
 Bank020000_DialogueScript_InsertGoldGem_020DF9:
-	incbin "data/rom/bank_020000_03ffff.bin",$000DF9,$000022
+	dc.b	$0B,$14,$52,$0C,$5E," inserts ",$0C,$D3,$02,$04,$01,"Gold Gem.",$0B,$0A,$36,$0B,$29,$05
 
 Bank020000_DialogueScriptMidBlock_020E1B:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E1B,$000001
+	dc.b	$00
 
 ; "[look] Gem doesn't fit!"
 Bank020000_DialogueScript_GemDoesntFit_020E1C:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E1C,$000014
+	dc.b	$0C,$62," Gem doesn't fit!",$05
 
 Bank020000_DialogueScriptMidBlock_020E30:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E30,$000001
+	dc.b	$00
 
 Bank020000_DialogueScriptMidBlock_020E31:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E31,$000008
+	dc.b	$03,$06,$04,$01,$07,$0B,$17,$37
 
 Bank020000_DialogueScriptMidBlock_020E39:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E39,$000001
+	dc.b	$00
 
 ; Tail fragment: "[?][R][Sphinx] ins[erts...]" (continues into front_records_b)
 Bank020000_DialogueScriptMidBlock_020E3A:
-	incbin "data/rom/bank_020000_03ffff.bin",$000E3A,$000012
+	dc.b	$0A,$0B,$17,$36,$FF,$DE,$06,$FF,$9A,$0B,$14,$53,$0C,$5E," ins"

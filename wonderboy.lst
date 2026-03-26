@@ -217,6 +217,8 @@
 00000200 =FFFF8B3A                  BootstrapPatchSlot3_Short equ $FFFF8B3A
 00000200 =00FF8A5D                  TaskDispatchTimingFlags  equ $00FF8A5D
 00000200 =FFFF8A5D                  TaskDispatchTimingFlags_Short equ $FFFF8A5D
+00000200 =00FF8A8B                  MenuTextMetricNormalizeFlag equ $00FF8A8B
+00000200 =FFFF8A8B                  MenuTextMetricNormalizeFlag_Short equ $FFFF8A8B
 00000200 =00FF8C56                  TaskAdvanceReadyFlags    equ $00FF8C56
 00000200 =FFFF8C56                  TaskAdvanceReadyFlags_Short equ $FFFF8C56
 00000200 =00FF8CDE                  InventoryMenuEntryTextWidth equ $00FF8CDE
@@ -225,6 +227,36 @@
 00000200 =FFFF8CE0                  InventoryMenuEntryTileRow0Buffer_Short equ $FFFF8CE0
 00000200 =00FF8CF0                  InventoryMenuEntryTileRow1Buffer equ $00FF8CF0
 00000200 =FFFF8CF0                  InventoryMenuEntryTileRow1Buffer_Short equ $FFFF8CF0
+00000200 =00FF8D10                  InventoryMenuNestedTextStreamStackOffset equ $00FF8D10
+00000200 =FFFF8D10                  InventoryMenuNestedTextStreamStackOffset_Short equ $FFFF8D10
+00000200 =00FF8D12                  MenuTextOutputFrameBuffer equ $00FF8D12
+00000200 =FFFF8D12                  MenuTextOutputFrameBuffer_Short equ $FFFF8D12
+00000200 =00FF8D92                  MenuTextMetricBaseX equ $00FF8D92
+00000200 =FFFF8D92                  MenuTextMetricBaseX_Short equ $FFFF8D92
+00000200 =00FF8D94                  MenuTextMetricBaseY equ $00FF8D94
+00000200 =FFFF8D94                  MenuTextMetricBaseY_Short equ $FFFF8D94
+00000200 =00FF8D9A                  MenuTextMetricCursorX equ $00FF8D9A
+00000200 =FFFF8D9A                  MenuTextMetricCursorX_Short equ $FFFF8D9A
+00000200 =00FF8D9C                  MenuTextMetricCursorY equ $00FF8D9C
+00000200 =FFFF8D9C                  MenuTextMetricCursorY_Short equ $FFFF8D9C
+00000200 =00FF8C9E                  MenuTextMetricWidth equ $00FF8C9E
+00000200 =FFFF8C9E                  MenuTextMetricWidth_Short equ $FFFF8C9E
+00000200 =00FF8CA0                  MenuTextMetricHeight equ $00FF8CA0
+00000200 =FFFF8CA0                  MenuTextMetricHeight_Short equ $FFFF8CA0
+00000200 =00FF8CA4                  MenuTextMetricFlags equ $00FF8CA4
+00000200 =FFFF8CA4                  MenuTextMetricFlags_Short equ $FFFF8CA4
+00000200 =00FF8D9E                  MenuTextUploadWidth equ $00FF8D9E
+00000200 =FFFF8D9E                  MenuTextUploadWidth_Short equ $FFFF8D9E
+00000200 =00FF8DA0                  MenuTextUploadHeight equ $00FF8DA0
+00000200 =FFFF8DA0                  MenuTextUploadHeight_Short equ $FFFF8DA0
+00000200 =00FF8DA2                  MenuTextRectColumnCount equ $00FF8DA2
+00000200 =FFFF8DA2                  MenuTextRectColumnCount_Short equ $FFFF8DA2
+00000200 =00FF8DA4                  MenuTextRectRowCount equ $00FF8DA4
+00000200 =FFFF8DA4                  MenuTextRectRowCount_Short equ $FFFF8DA4
+00000200 =00FF8DA6                  MenuTextUploadTileStride equ $00FF8DA6
+00000200 =FFFF8DA6                  MenuTextUploadTileStride_Short equ $FFFF8DA6
+00000200 =00FF8DA8                  MenuTextUploadScratchBuffer equ $00FF8DA8
+00000200 =FFFF8DA8                  MenuTextUploadScratchBuffer_Short equ $FFFF8DA8
 00000200 =00FF95B7                  MagicMenuSpellBarEmptyTileCountScratch equ $00FF95B7
 00000200 =FFFF95B7                  MagicMenuSpellBarEmptyTileCountScratch_Short equ $FFFF95B7
 00000200 =00FF95B2                  MagicMenuSpellBarFillDeltaScratch equ $00FF95B2
@@ -357,6 +389,8 @@
 00000200 =FFFF963C                  MagicMenuTopRowAssignmentReturnVector_Short equ $FFFF963C
 00000200 =00FF963C                  MenuTransferReturnVector equ $00FF963C
 00000200 =FFFF963C                  MenuTransferReturnVector_Short equ $FFFF963C
+00000200 =00FF965C                  MenuTextDisplayTimeout equ $00FF965C
+00000200 =FFFF965C                  MenuTextDisplayTimeout_Short equ $FFFF965C
 00000200 =00FF9640                  MagicMenuSubmodeReturnVector equ $00FF9640
 00000200 =FFFF9640                  MagicMenuSubmodeReturnVector_Short equ $FFFF9640
 00000200 =00FF9648                  InventoryMenuBlinkReturnVector equ $00FF9648
@@ -375,6 +409,8 @@
 00000200 =FFFFC00C                  MagicMenuSubmodeActionFlag_Short equ $FFFFC00C
 00000200 =00FF966B                  MagicMenuSpellPageFlag equ $00FF966B
 00000200 =FFFF966B                  MagicMenuSpellPageFlag_Short equ $FFFF966B
+00000200 =00FF9EEE                  MagicMenuStatusGaugeSourcePointer equ $00FF9EEE
+00000200 =FFFF9EEE                  MagicMenuStatusGaugeSourcePointer_Short equ $FFFF9EEE
 00000200 =00FF9EF1                  MagicMenuStatusLayoutFlags equ $00FF9EF1
 00000200 =FFFF9EF1                  MagicMenuStatusLayoutFlags_Short equ $FFFF9EF1
 00000200 =00FF9EFA                  MagicMenuStatusLayoutConfigLong0 equ $00FF9EFA
@@ -557,22 +593,358 @@
 00000200                            ; Top-level build order for the rebuildable ROM image
 00000200                            ; ======================================================================
 00000200                            
-00000200                            	include "src/init.asm"
+00000200                            	include "src/bootstrap_init.asm"
 00000200                            ; ======================================================================
-00000200                            ; src/init.asm
+00000200                            ; src/bootstrap_init.asm
 00000200                            ; ROM range: 0x000200-0x004B57 - bootstrap blob kept in physical ROM order
 00000200                            ; ======================================================================
+00000200                            ; The front bootstrap text-helper island at 0x001E20-0x00210F is now source-authored,
+00000200                            ; including the mixed text/control decoder, found-item/found-gold message builders, and the
+00000200                            ; adjacent numeric value table used by that path.
 00000200                            
 00000200                            InitRegion:
-00000200                            	incbin "data/rom/init_000200_004b57.bin"
-00000200                            	incbin "data/rom/init_000200_004b57.bin"
-00004B58                            	include "src/vblank.asm"
+00000200                            	incbin "data/rom/init_000200_004b57.bin",$000000,$001C20
+00001E20                            
+00001E20                            BootstrapMenuTextHelpers_001E20:
+00001E20                            	include "src/bootstrap_menu_text_helpers.asm"
+00001E20                            ; ROM range: 0x001E20-0x00210F
+00001E20                            ; Recovered bootstrap menu-text helper island: one leading word, an adjacent longword
+00001E20                            ; value table, the mixed text/control string expander used by the inventory/shop UI,
+00001E20                            ; found-item / found-gold message builders, and a small follow-on metric/upload block.
+00001E20                            ; This is real decoded code/data pulled out of `init_000200_004b57.bin`, not a comment-only
+00001E20                            ; note. The longword table at 0x001E22 is a concrete source-owned candidate price/fee table.
+00001E20                            
+00001E20                            MenuTextNumericPreludeWord_001E20:
+00001E20 0032                       	dc.w	$0032
+00001E22                            
+00001E22                            MenuTextNumericValueTable_001E22:
+00001E22                            	; Candidate service/item price values consumed by the same menu-text helper family.
+00001E22                            	; Includes the proven 500000 value that matches the Charmstone quiz answer.
+00001E22 0000 001E                  	dc.l	$0000001E
+00001E26 0000 0014                  	dc.l	$00000014
+00001E2A 0000 1388                  	dc.l	$00001388
+00001E2E 0000 01F4                  	dc.l	$000001F4
+00001E32 0000 01F4                  	dc.l	$000001F4
+00001E36 0000 01F4                  	dc.l	$000001F4
+00001E3A 0000 01F4                  	dc.l	$000001F4
+00001E3E 0000 01F4                  	dc.l	$000001F4
+00001E42 0000 01F4                  	dc.l	$000001F4
+00001E46 0000 0064                  	dc.l	$00000064
+00001E4A 0001 E240                  	dc.l	$0001E240
+00001E4E 0000 09C4                  	dc.l	$000009C4
+00001E52 0007 A120                  	dc.l	$0007A120
+00001E56 0000 0BB8                  	dc.l	$00000BB8
+00001E5A 0000 000A                  	dc.l	$0000000A
+00001E5E 0000 0032                  	dc.l	$00000032
+00001E62 0000 00C8                  	dc.l	$000000C8
+00001E66 0000 1388                  	dc.l	$00001388
+00001E6A                            
+00001E6A                            BuildInventoryMenuEntryTileRows_001E6A:
+00001E6A 4278 8D10                  	clr.w	(InventoryMenuNestedTextStreamStackOffset_Short).w
+00001E6E 4278 8CDE                  	clr.w	(InventoryMenuEntryTextWidth_Short).w
+00001E72 47F8 8CE0                  	lea	(InventoryMenuEntryTileRow0Buffer_Short).w,a3
+00001E76 760D                       	moveq	#$0D,d3
+00001E78 6100 0000                  	bsr.w	ResolveMenuTextControlStream_001ED0
+00001E7C                            
+00001E7C                            BuildInventoryMenuEntryTileRows_NextByte_001E7C:
+00001E7C 161A                       	move.b	(a2)+,d3
+00001E7E 6600                       	bne.s	BuildInventoryMenuEntryTileRows_CheckControlFamily_001E92
+00001E80 3038 8D10                  	move.w	(InventoryMenuNestedTextStreamStackOffset_Short).w,d0
+00001E84 6600                       	bne.s	BuildInventoryMenuEntryTileRows_PopNestedStream_001E88
+00001E86 4E75                       	rts
+00001E88                            
+00001E88                            BuildInventoryMenuEntryTileRows_PopNestedStream_001E88:
+00001E88 5940                       	subq.w	#$4,d0
+00001E8A 3040                       	movea.w	d0,a0
+00001E8C 2468 8D00                  	movea.l	-$7300(a0),a2
+00001E90 60EA                       	bra.s	BuildInventoryMenuEntryTileRows_NextByte_001E7C
+00001E92                            
+00001E92                            BuildInventoryMenuEntryTileRows_CheckControlFamily_001E92:
+00001E92 0C03 0010                  	cmpi.b	#$10,d3
+00001E96 6400                       	bcc.s	BuildInventoryMenuEntryTileRows_StoreGlyph_001EB4
+00001E98 0C03 000C                  	cmpi.b	#$0C,d3
+00001E9C 6500 FFFE                  	dc.b	$65,$00,$FF,$FE
+00001EA0                            
+00001EA0                            BuildInventoryMenuEntryTileRows_PushNestedStream_001EA0:
+00001EA0 101A                       	move.b	(a2)+,d0
+00001EA2 3078 8D10                  	movea.w	(InventoryMenuNestedTextStreamStackOffset_Short).w,a0
+00001EA6 214A 8D00                  	move.l	a2,-$7300(a0)
+00001EAA 5848                       	addq.w	#$4,a0
+00001EAC 31C8 8D10                  	move.w	a0,(InventoryMenuNestedTextStreamStackOffset_Short).w
+00001EB0 6100                       	bsr.s	ResolveMenuTextControlStream_001ED0
+00001EB2 60C8                       	bra.s	BuildInventoryMenuEntryTileRows_NextByte_001E7C
+00001EB4                            
+00001EB4                            BuildInventoryMenuEntryTileRows_StoreGlyph_001EB4:
+00001EB4 7420                       	moveq	#$20,d2
+00001EB6 0C03 00FE                  	cmpi.b	#$FE,d3
+00001EBA 6500                       	bcs.s	BuildInventoryMenuEntryTileRows_WriteGlyph_001EC4
+00001EBC 0403 0040                  	subi.b	#$40,d3
+00001EC0 1403                       	move.b	d3,d2
+00001EC2 161A                       	move.b	(a2)+,d3
+00001EC4                            
+00001EC4                            BuildInventoryMenuEntryTileRows_WriteGlyph_001EC4:
+00001EC4 1743 0010                  	move.b	d3,$10(a3)
+00001EC8 16C2                       	move.b	d2,(a3)+
+00001ECA 5278 8CDE                  	addq.w	#$1,(InventoryMenuEntryTextWidth_Short).w
+00001ECE 60AC                       	bra.s	BuildInventoryMenuEntryTileRows_NextByte_001E7C
+00001ED0                            
+00001ED0                            ResolveMenuTextControlStream_001ED0:
+00001ED0 0243 0003                  	andi.w	#$0003,d3
+00001ED4 E54B                       	lsl.w	#$2,d3
+00001ED6 2479 0000 0000             	movea.l	(MenuTextRootPointerTable_01CC10).l,a2
+00001EDC 2472 3000                  	movea.l	(a2,d3.w),a2
+00001EE0 0240 00FF                  	andi.w	#$00FF,d0
+00001EE4 D040                       	add.w	d0,d0
+00001EE6 D4F2 0000                  	adda.w	(a2,d0.w),a2
+00001EEA 4E75                       	rts
+00001EEC                            
+00001EEC                            BuildFoundItemTextBuffer_001EEC:
+00001EEC 6100 FF7C                  	bsr.w	BuildInventoryMenuEntryTileRows_001E6A
+00001EF0 6100 0000                  	bsr.w	InitializeMenuTextOutputFrame_001FAC
+00001EF4 3038 8CDE                  	move.w	(InventoryMenuEntryTextWidth_Short).w,d0
+00001EF8 0640 0006                  	addi.w	#$0006,d0
+00001EFC 721C                       	moveq	#$1C,d1
+00001EFE 9240                       	sub.w	d0,d1
+00001F00 0241 FFFE                  	andi.w	#$FFFE,d1
+00001F04 45F8 8D12                  	lea	(MenuTextOutputFrameBuffer_Short).w,a2
+00001F08 D4C1                       	adda.w	d1,a2
+00001F0A 323C 8020                  	move.w	#$8020,d1
+00001F0E 3001                       	move.w	d1,d0
+00001F10 41FA 0000                  	lea	MenuTextLiteral_FoundThe_001FE6(pc),a0
+00001F14 6100 0000                  	bsr.w	AppendMenuTextLiteralToBuffer_001F8E
+00001F18 41F8 8CE0                  	lea	(InventoryMenuEntryTileRow0Buffer_Short).w,a0
+00001F1C 303C A000                  	move.w	#$A000,d0
+00001F20 3238 8CDE                  	move.w	(InventoryMenuEntryTextWidth_Short).w,d1
+00001F24 6700                       	beq.s	BuildFoundItemTextBuffer_Suffix_001F36
+00001F26                            
+00001F26                            BuildFoundItemTextBuffer_CopyExpandedText_001F26:
+00001F26 1028 0010                  	move.b	$10(a0),d0
+00001F2A 3540 0040                  	move.w	d0,$40(a2)
+00001F2E 1018                       	move.b	(a0)+,d0
+00001F30 34C0                       	move.w	d0,(a2)+
+00001F32 5341                       	subq.w	#$1,d1
+00001F34 66F0                       	bne.s	BuildFoundItemTextBuffer_CopyExpandedText_001F26
+00001F36                            
+00001F36                            BuildFoundItemTextBuffer_Suffix_001F36:
+00001F36 323C 8020                  	move.w	#$8020,d1
+00001F3A 3001                       	move.w	d1,d0
+00001F3C 41FA 0000                  	lea	MenuTextLiteral_Period_001FFF(pc),a0
+00001F40 6100 0000                  	bsr.w	AppendMenuTextLiteralToBuffer_001F8E
+00001F44 4E75                       	rts
+00001F46                            
+00001F46                            FormatFoundGoldTextBuffer_001F46:
+00001F46 4E56 FFF4                  	link	a6,#-$0C
+00001F4A 6100                       	bsr.s	InitializeMenuTextOutputFrame_001FAC
+00001F4C 2200                       	move.l	d0,d1
+00001F4E 43EE FFFE                  	lea	-$2(a6),a1
+00001F52 2049                       	movea.l	a1,a0
+00001F54 6100 F8E8                  	bsr.w	$183E
+00001F58 91C9                       	suba.l	a1,a0
+00001F5A 3008                       	move.w	a0,d0
+00001F5C 0640 0005                  	addi.w	#$0005,d0
+00001F60 721A                       	moveq	#$1A,d1
+00001F62 9240                       	sub.w	d0,d1
+00001F64 0241 FFFE                  	andi.w	#$FFFE,d1
+00001F68 45F8 8D12                  	lea	(MenuTextOutputFrameBuffer_Short).w,a2
+00001F6C D4C1                       	adda.w	d1,a2
+00001F6E 323C 8020                  	move.w	#$8020,d1
+00001F72 3001                       	move.w	d1,d0
+00001F74 41FA 0000                  	lea	MenuTextLiteral_Found_001FF1(pc),a0
+00001F78 6100 0000                  	bsr.w	AppendMenuTextLiteralToBuffer_001F8E
+00001F7C 2049                       	movea.l	a1,a0
+00001F7E 6100 0000                  	bsr.w	AppendMenuTextLiteralToBuffer_001F8E
+00001F82 41FA 0000                  	lea	MenuTextLiteral_GoldSuffix_001FF8(pc),a0
+00001F86 6100 0000                  	bsr.w	AppendMenuTextLiteralToBuffer_001F8E
+00001F8A 4E5E                       	unlk	a6
+00001F8C 4E75                       	rts
+00001F8E                            
+00001F8E                            AppendMenuTextLiteralToBuffer_001F8E:
+00001F8E 3401                       	move.w	d1,d2
+00001F90                            
+00001F90                            AppendMenuTextLiteralToBuffer_NextByte_001F90:
+00001F90 1018                       	move.b	(a0)+,d0
+00001F92 6700                       	beq.s	AppendMenuTextLiteralToBuffer_Return_001FAA
+00001F94 0C00 00FE                  	cmpi.b	#$FE,d0
+00001F98 6500                       	bcs.s	AppendMenuTextLiteralToBuffer_WriteByte_001FA2
+00001F9A 1400                       	move.b	d0,d2
+00001F9C 0402 0040                  	subi.b	#$40,d2
+00001FA0 60EE                       	bra.s	AppendMenuTextLiteralToBuffer_NextByte_001F90
+00001FA2                            
+00001FA2                            AppendMenuTextLiteralToBuffer_WriteByte_001FA2:
+00001FA2 3540 0040                  	move.w	d0,$40(a2)
+00001FA6 34C2                       	move.w	d2,(a2)+
+00001FA8 60E4                       	bra.s	AppendMenuTextLiteralToBuffer_001F8E
+00001FAA                            
+00001FAA                            AppendMenuTextLiteralToBuffer_Return_001FAA:
+00001FAA 4E75                       	rts
+00001FAC                            
+00001FAC                            InitializeMenuTextOutputFrame_001FAC:
+00001FAC 41F8 8D12                  	lea	(MenuTextOutputFrameBuffer_Short).w,a0
+00001FB0 343C 8020                  	move.w	#$8020,d2
+00001FB4 363C 87A1                  	move.w	#$87A1,d3
+00001FB8 6100 0002                  	dc.b	$61,$00,$00,$02	; bsr.w InitializeMenuTextOutputFrame_Fill_001FBC
+00001FBC                            
+00001FBC                            InitializeMenuTextOutputFrame_Fill_001FBC:
+00001FBC 30C3                       	move.w	d3,(a0)+
+00001FBE 721D                       	moveq	#$1D,d1
+00001FC0                            
+00001FC0                            InitializeMenuTextOutputFrame_FillLoop_001FC0:
+00001FC0 30C2                       	move.w	d2,(a0)+
+00001FC2 51C9 FFFC                  	dbra	d1,InitializeMenuTextOutputFrame_FillLoop_001FC0
+00001FC6 30C3                       	move.w	d3,(a0)+
+00001FC8 4E75                       	rts
+00001FCA                            
+00001FCA                            ShowFoundGoldText_001FCA:
+00001FCA 6100 FF7A                  	bsr.w	FormatFoundGoldTextBuffer_001F46
+00001FCE 6000                       	bra.s	UploadFoundTextBuffer_001FD4
+00001FD0                            
+00001FD0                            ShowFoundItemText_001FD0:
+00001FD0 6100 FF1A                  	bsr.w	BuildFoundItemTextBuffer_001EEC
+00001FD4                            
+00001FD4                            UploadFoundTextBuffer_001FD4:
+00001FD4 41F8 8D12                  	lea	(MenuTextOutputFrameBuffer_Short).w,a0
+00001FD8 4EB9 0000 7EEE             	jsr	($7EEE).l
+00001FDE 31FC 003C 965C             	move.w	#$003C,(MenuTextDisplayTimeout_Short).w
+00001FE4 4E75                       	rts
+00001FE6                            
+00001FE6                            MenuTextLiteral_FoundThe_001FE6:
+00001FE6 466F 756E 6420 7468 6520+  	dc.b	"Found the ",$00
+00001FF1                            
+00001FF1                            MenuTextLiteral_Found_001FF1:
+00001FF1 466F 756E 6420 00          	dc.b	"Found ",$00
+00001FF8                            
+00001FF8                            MenuTextLiteral_GoldSuffix_001FF8:
+00001FF8 2047 4F4C 442E 00          	dc.b	" GOLD.",$00
+00001FFF                            
+00001FFF                            MenuTextLiteral_Period_001FFF:
+00001FFF 2E00                       	dc.b	".",$00
+00002001                            
+00002001 00                         	dc.b	$00
+00002002                            
+00002002                            LoadMenuTextMetricTuple_002002:
+00002002 4EB8 276C                  	jsr	($276C).w
+00002006 7000                       	moveq	#$00,d0
+00002008 1019                       	move.b	(a1)+,d0
+0000200A 5340                       	subq.w	#$1,d0
+0000200C 31C0 8D92                  	move.w	d0,(MenuTextMetricBaseX_Short).w
+00002010 31C0 8D9A                  	move.w	d0,(MenuTextMetricCursorX_Short).w
+00002014 7000                       	moveq	#$00,d0
+00002016 1019                       	move.b	(a1)+,d0
+00002018 D040                       	add.w	d0,d0
+0000201A 5340                       	subq.w	#$1,d0
+0000201C 31C0 8D94                  	move.w	d0,(MenuTextMetricBaseY_Short).w
+00002020 31C0 8D9C                  	move.w	d0,(MenuTextMetricCursorY_Short).w
+00002024 7000                       	moveq	#$00,d0
+00002026 1019                       	move.b	(a1)+,d0
+00002028 31C0 8C9E                  	move.w	d0,(MenuTextMetricWidth_Short).w
+0000202C 1019                       	move.b	(a1)+,d0
+0000202E 31C0 8CA0                  	move.w	d0,(MenuTextMetricHeight_Short).w
+00002032 11FC 0080 8CA4             	move.b	#$80,(MenuTextMetricFlags_Short).w
+00002038 4E75                       	rts
+0000203A                            
+0000203A                            NormalizeMenuTextMetricValue_00203A:
+0000203A 4A38 8A8B                  	tst.b	(MenuTextMetricNormalizeFlag_Short).w
+0000203E 6700                       	beq.s	NormalizeMenuTextMetricValue_Return_00204E
+00002040 7200                       	moveq	#$00,d1
+00002042 1200                       	move.b	d0,d1
+00002044 E549                       	lsl.w	#$2,d1
+00002046 D240                       	add.w	d0,d1
+00002048 C141                       	exg	d0,d1
+0000204A 7206                       	moveq	#$06,d1
+0000204C 80C1                       	divu	d1,d0
+0000204E                            
+0000204E                            NormalizeMenuTextMetricValue_Return_00204E:
+0000204E 4E75                       	rts
+00002050                            
+00002050                            UploadMenuTextBufferRect_002050:
+00002050 3207                       	move.w	d7,d1
+00002052 D278 8D9C                  	add.w	(MenuTextMetricCursorY_Short).w,d1
+00002056 0241 001F                  	andi.w	#$001F,d1
+0000205A ED49                       	lsl.w	#$6,d1
+0000205C 3406                       	move.w	d6,d2
+0000205E D478 8D9A                  	add.w	(MenuTextMetricCursorX_Short).w,d2
+00002062 0242 003F                  	andi.w	#$003F,d2
+00002066 D242                       	add.w	d2,d1
+00002068 D241                       	add.w	d1,d1
+0000206A 0041 4000                  	ori.w	#$4000,d1
+0000206E 4841                       	swap	d1
+00002070 323C 0003                  	move.w	#$0003,d1
+00002074 23C1 00C0 0004             	move.l	d1,($C00004).l
+0000207A 33C0 00C0 0000             	move.w	d0,($C00000).l
+00002080 4E75                       	rts
+00002082                            
+00002082                            CopyMenuTextBufferRect_002082:
+00002082 2F0A                       	move.l	a2,-(sp)
+00002084 41F9 00C0 0000             	lea	($C00000).l,a0
+0000208A 43E8 0004                  	lea	$0004(a0),a1
+0000208E 3838 8DA6                  	move.w	(MenuTextUploadTileStride_Short).w,d4
+00002092 EF4C                       	lsl.w	#$7,d4
+00002094 3E38 8DA0                  	move.w	(MenuTextUploadHeight_Short).w,d7
+00002098 3C38 8DA4                  	move.w	(MenuTextRectRowCount_Short).w,d6
+0000209C                            
+0000209C                            CopyMenuTextBufferRect_RowLoop_00209C:
+0000209C 3607                       	move.w	d7,d3
+0000209E D678 8D9C                  	add.w	(MenuTextMetricCursorY_Short).w,d3
+000020A2 0243 001F                  	andi.w	#$001F,d3
+000020A6 EF4B                       	lsl.w	#$7,d3
+000020A8 3438 8D9E                  	move.w	(MenuTextUploadWidth_Short).w,d2
+000020AC D478 8D9A                  	add.w	(MenuTextMetricCursorX_Short).w,d2
+000020B0 D442                       	add.w	d2,d2
+000020B2 0042 4000                  	ori.w	#$4000,d2
+000020B6 3A38 8DA2                  	move.w	(MenuTextRectColumnCount_Short).w,d5
+000020BA 3202                       	move.w	d2,d1
+000020BC 45F8 8DA8                  	lea	(MenuTextUploadScratchBuffer_Short).w,a2
+000020C0                            
+000020C0                            CopyMenuTextBufferRect_ReadLoop_0020C0:
+000020C0 0242 007E                  	andi.w	#$007E,d2
+000020C4                            
+000020C4                            CopyMenuTextBufferRect_WaitReady_0020C4:
+000020C4 3011                       	move.w	(a1),d0
+000020C6 0800 0009                  	btst	#$09,d0
+000020CA 67F8                       	beq.s	CopyMenuTextBufferRect_WaitReady_0020C4
+000020CC 3003                       	move.w	d3,d0
+000020CE D044                       	add.w	d4,d0
+000020D0 8042                       	or.w	d2,d0
+000020D2 0240 0FFE                  	andi.w	#$0FFE,d0
+000020D6 4840                       	swap	d0
+000020D8 303C 0003                  	move.w	#$0003,d0
+000020DC 2280                       	move.l	d0,(a1)
+000020DE 34D0                       	move.w	(a0),(a2)+
+000020E0 5442                       	addq.w	#$2,d2
+000020E2 5345                       	subq.w	#$1,d5
+000020E4 66DA                       	bne.s	CopyMenuTextBufferRect_ReadLoop_0020C0
+000020E6 3A38 8DA2                  	move.w	(MenuTextRectColumnCount_Short).w,d5
+000020EA 45F8 8DA8                  	lea	(MenuTextUploadScratchBuffer_Short).w,a2
+000020EE                            
+000020EE                            CopyMenuTextBufferRect_WriteLoop_0020EE:
+000020EE 0241 407E                  	andi.w	#$407E,d1
+000020F2 3003                       	move.w	d3,d0
+000020F4 8041                       	or.w	d1,d0
+000020F6 4840                       	swap	d0
+000020F8 303C 0003                  	move.w	#$0003,d0
+000020FC 2280                       	move.l	d0,(a1)
+000020FE 309A                       	move.w	(a2)+,(a0)
+00002100 5441                       	addq.w	#$2,d1
+00002102 5345                       	subq.w	#$1,d5
+00002104 66E8                       	bne.s	CopyMenuTextBufferRect_WriteLoop_0020EE
+00002106 5247                       	addq.w	#$1,d7
+00002108 5346                       	subq.w	#$1,d6
+0000210A 6690                       	bne.s	CopyMenuTextBufferRect_RowLoop_00209C
+0000210C 245F                       	movea.l	(sp)+,a2
+0000210E 4E75                       	rts
+0000210E 4E75                       	rts
+00002110                            
+00002110                            	incbin "data/rom/init_000200_004b57.bin",$001F10,$002A48
+00002110                            	incbin "data/rom/init_000200_004b57.bin",$001F10,$002A48
+00004B58                            	include "src/vblank_tasks.asm"
 00004B58                            ; ======================================================================
-00004B58                            ; src/vblank.asm
+00004B58                            ; src/vblank_tasks.asm
 00004B58                            ; ROM range: 0x004B58-0x004FFF - VBlank dispatch and task scheduling
 00004B58                            ; ======================================================================
 00004B58                            ; The front of this block is source-authored where interrupt/task-dispatch behavior is
-00004B58                            ; understood; the remainder stays in ROM order as an opaque blob.
+00004B58                            ; understood. The clean-state bootstrap playback stream and scratch seed at
+00004B58                            ; `0x004E64-0x004F53` are now also source-authored; only the still-unmapped gaps remain in
+00004B58                            ; ROM-order form elsewhere.
 00004B58                            
 00004B58 =00000364                  RunTaskHelper_0364                      equ $00000364
 00004B58 =00000366                  RunTaskHelper_0366                      equ $00000366
@@ -581,9 +953,7 @@
 00004B58 =0001AA3C                  TaskSetupJump_01AA3C                    equ $0001AA3C
 00004B58 =0001AD62                  TaskAdvanceWorker_01AD62                equ $0001AD62
 00004B58 =000004A2                  RetireMatchingRoundRobinTasksByUserData equ $000004A2
-00004B58 =00004F14                  TaskScriptSecondaryList_004F14          equ $00004F14
 00004B58 =00005608                  TaskDescriptor_005608                   equ $00005608
-00004B58 =00004E64                  TaskScriptStream_004E64                 equ $00004E64
 00004B58 =00004CC4                  InitImmDescPtr                          equ $00004CC4
 00004B58 =00004D14                  SecondImmDescPtr                        equ $00004D14
 00004B58 =00004D52                  ThirdImmDescPtr                         equ $00004D52
@@ -887,11 +1257,11 @@
 00004DE2 4EB8 0364                  	jsr	(RunTaskHelper_0364).w
 00004DE6 6100 0000                  	bsr.w	ClearTaskScriptScratch
 00004DEA 11FC 0080 8A50             	move.b	#$80,(TaskScriptMode_Short).w
-00004DF0 41F9 0000 4E64             	lea	TaskScriptStream_004E64.l,a0
+00004DF0 41F9 0000 0000             	lea	CleanStatePlaybackStream_004E64.l,a0
 00004DF6 6100 0000                  	bsr.w	AdvanceTaskScript
 00004DFA 700F                       	moveq	#$0F,d0
 00004DFC 41F9 00FF 3300             	lea	(TaskScriptScratchBuffer).l,a0
-00004E02 43F9 0000 4F14             	lea	TaskScriptSecondaryList_004F14.l,a1
+00004E02 43F9 0000 0000             	lea	CleanStateScratchSeed_004F14.l,a1
 00004E08                            
 00004E08                            CleanStateCb_CopyScriptData:
 00004E08 20D9                       	move.l	(a1)+,(a0)+
@@ -929,8 +1299,49 @@
 00004E5C 0000 8EB0                  	dc.l	$00008EB0
 00004E60 0000 0000                  	dc.l	$00000000
 00004E64                            
-00004E64                            VBlankRegion:
-00004E64                            	incbin "data/rom/vblank_004b58_004fff.bin",$030C,$00F0
+00004E64                            	include "src/vblank_clean_state_script.asm"
+00004E64                            ; ROM range: 0x004E64-0x004F53
+00004E64                            ; Clean-state bootstrap data used by `CleanStateCb`: a packed `(duration,value)` selected-
+00004E64                            ; input playback stream followed by a 16-longword scratch seed copied to
+00004E64                            ; `TaskScriptScratchBuffer`.
+00004E64                            
+00004E64                            CleanStatePlaybackStream_004E64:
+00004E64 1C00 1408 1100 0D01 2F00+  	dc.b	$1C,$00,$14,$08,$11,$00,$0D,$01,$2F,$00,$05,$20,$0D,$00,$14,$08
+00004E74 1028 7708 0B28 1A08 0B10+  	dc.b	$10,$28,$77,$08,$0B,$28,$1A,$08,$0B,$10,$0A,$00,$13,$08,$01,$00
+00004E84 0A10 1200 0F10 0E00 0B08+  	dc.b	$0A,$10,$12,$00,$0F,$10,$0E,$00,$0B,$08,$09,$10,$12,$00,$04,$08
+00004E94 0600 1108 0100 1010 0700+  	dc.b	$06,$00,$11,$08,$01,$00,$10,$10,$07,$00,$1E,$08,$19,$00,$20,$08
+00004EA4 0300 1E08 0B00 0D01 0105+  	dc.b	$03,$00,$1E,$08,$0B,$00,$0D,$01,$01,$05,$01,$01,$08,$00,$09,$04
+00004EB4 0C00 1001 1800 6A04 1200+  	dc.b	$0C,$00,$10,$01,$18,$00,$6A,$04,$12,$00,$0E,$01,$B8,$00,$06,$20
+00004EC4 7300 0720 5900 0620 A000+  	dc.b	$73,$00,$07,$20,$59,$00,$06,$20,$A0,$00,$06,$20,$69,$00,$06,$20
+00004ED4 1E00 0880 1400 0720 0900+  	dc.b	$1E,$00,$08,$80,$14,$00,$07,$20,$09,$00,$07,$02,$09,$00,$07,$20
+00004EE4 0A00 0610 0700 0710 0C00+  	dc.b	$0A,$00,$06,$10,$07,$00,$07,$10,$0C,$00,$50,$08,$14,$00,$0E,$02
+00004EF4 1E00 9308 0B28 3208 0818+  	dc.b	$1E,$00,$93,$08,$0B,$28,$32,$08,$08,$18,$15,$08,$08,$28,$10,$08
+00004F04                            
+00004F04                            CleanStatePlaybackStreamPadding_004F04:
+00004F04 1000                       	dc.w	$1000
+00004F06 0000 0000                  	dc.l	$00000000
+00004F0A 0000 0000                  	dc.l	$00000000
+00004F0E 0000 0000                  	dc.l	$00000000
+00004F12 0000                       	dc.w	$0000
+00004F14                            
+00004F14                            CleanStateScratchSeed_004F14:
+00004F14 0000 2020                  	dc.l	$00002020
+00004F18 2020 000F                  	dc.l	$2020000F
+00004F1C F000 5200                  	dc.l	$F0005200
+00004F20 0330 0000                  	dc.l	$03300000
+00004F24 0840 0060                  	dc.l	$08400060
+00004F28 FA33 0000                  	dc.l	$FA330000
+00004F2C 0000 0000                  	dc.l	$00000000
+00004F30 0000 0000                  	dc.l	$00000000
+00004F34 0000 4000                  	dc.l	$00004000
+00004F38 0000 0000                  	dc.l	$00000000
+00004F3C 0000 0000                  	dc.l	$00000000
+00004F40 0000 0000                  	dc.l	$00000000
+00004F44 0000 0000                  	dc.l	$00000000
+00004F48 0000 0000                  	dc.l	$00000000
+00004F4C 0000 0000                  	dc.l	$00000000
+00004F50 1644 0000                  	dc.l	$16440000
+00004F50 1644 0000                  	dc.l	$16440000
 00004F54                            
 00004F54                            TaskDescriptor_004F54:
 00004F54 4B65 646D                  	dc.l	$4B65646D
@@ -1001,14 +1412,14 @@
 00004FFE                            ClearTaskScriptProgressBuffer_Loop:
 00004FFE 20C0                       	move.l	d0,(a0)+
 00004FFE 20C0                       	move.l	d0,(a0)+
-00005000                            	include "src/core.asm"
+00005000                            	include "src/engine_menu_core.asm"
 00005000                            ; ======================================================================
-00005000                            ; src/core.asm
+00005000                            ; src/engine_menu_core.asm
 00005000                            ; ROM range: 0x005000-0x01FFFF - early engine and menu/core gameplay logic
 00005000                            ; ======================================================================
 00005000                            ; Early engine/core body kept mostly opaque until routine boundaries are mapped.
 00005000                            ; The front of this file continues the task/input helper chain that begins at `0x004FEE`
-00005000                            ; in `src/vblank.asm`. The `0x005016-0x00505C` helpers currently look like a compact
+00005000                            ; in `src/vblank_tasks.asm`. The `0x005016-0x00505C` helpers currently look like a compact
 00005000                            ; input-sequence stream built from (duration,value) byte pairs in `0xFF1400`, reusing
 00005000                            ; the selected-input mirror at `0x8A7A-0x8A7D` as playback state. The bootstrap
 00005000                            ; display-setup stub at `0x005170-0x0051C5` and the controller-read helpers at
@@ -1044,9 +1455,10 @@
 00005000                            ; magic/status id before clearing matching top-row assignments in `0x9F10/0x9F11`, then
 00005000                            ; consumes the pending packed gauge target at `0x9628`, chooses one of two scale/table
 00005000                            ; bundles, clamps against the current packed value at `0x9602/0x9604`, and dispatches into
-00005000                            ; the still-incbin-backed three-row tile-strip writer at `0x0088D6`. The later
-00005000                            ; `0x008A04-0x008C33` continuation still looks like follow-on spell-bar refill, gauge-tile
-00005000                            ; upload, and width synthesis rooted in `0x95AA`, `0x95B8-0x95C3`, and `0x95F4/0x95F6`.
+00005000                            ; the now source-authored three-row tile-strip writer at `0x0088D6`. The later
+00005000                            ; `0x008A04-0x008C33` continuation is now also source-authored as the same spell-bar refill,
+00005000                            ; gauge-tile upload, and layout-width synthesis rooted in `0x95AA`, `0x95B8-0x95C3`, and
+00005000                            ; `0x95F4/0x95F6`.
 00005000                            ; The newly source-authored tail at `0x008C34-0x008C7F` snapshots the local magic-menu
 00005000                            ; selection scratch, resets list/cursor/scroll state, and captures top-row selector bytes
 00005000                            ; from `0x9F10/0x9F11` when they still point at the lower magic/status row. The exact
@@ -1070,9 +1482,6 @@
 00005000 =0000693E                  ClearFixedVramRegionAndResetFlags_00693E   equ $0000693E
 00005000 =0000696C                  ResetTilemapWorkBuffers_00696C             equ $0000696C
 00005000 =00006EA8                  TaskDescriptor_006EA8                      equ $00006EA8
-00005000 =00008BB0                  PlayInventoryMenuMoveSound_008BB0          equ $00008BB0
-00005000 =00008BAA                  PlayInventoryMenuConfirmSound_008BAA       equ $00008BAA
-00005000 =00001E6A                  BuildInventoryMenuEntryTileRows_001E6A     equ $00001E6A
 00005000 =0000786A                  WriteNullTerminatedTileString_00786A       equ $0000786A
 00005000 =00007870                  WriteNormalTileString_007870               equ $00007870
 00005000 =000022A8                  UploadMenuPatternStrip_0022A8              equ $000022A8
@@ -1362,7 +1771,7 @@
 00007924 700C                       	moveq	#$0C,d0
 00007926 C038 95D9                  	and.b	(SelectedInputRepeatOutput_Short).w,d0
 0000792A 6700                       	beq.s	HandleMagicMenuSubmodeHorizontalInput_Return_00794C
-0000792C 6100 1282                  	bsr.w	PlayInventoryMenuMoveSound_008BB0
+0000792C 6100 0000                  	bsr.w	PlayInventoryMenuMoveSound_008BB0
 00007930 0A78 0001 9606             	eori.w	#$0001,(InventoryMenuSelectionIndex_Short).w
 00007936 6000                       	bra.s	RefreshMagicMenuSubmodeIndicator_Left_00794E
 00007938                            
@@ -1370,7 +1779,7 @@
 00007938 700C                       	moveq	#$0C,d0
 0000793A C038 95D9                  	and.b	(SelectedInputRepeatOutput_Short).w,d0
 0000793E 6700                       	beq.s	HandleMagicMenuSubmodeHorizontalInput_Return_00794C
-00007940 6100 126E                  	bsr.w	PlayInventoryMenuMoveSound_008BB0
+00007940 6100 0000                  	bsr.w	PlayInventoryMenuMoveSound_008BB0
 00007944 0A78 0001 9606             	eori.w	#$0001,(InventoryMenuSelectionIndex_Short).w
 0000794A 6000                       	bra.s	RefreshMagicMenuSubmodeIndicator_Right_007952
 0000794C                            
@@ -1438,7 +1847,7 @@
 000079E0 4238 C00C                  	clr.b	(MagicMenuSubmodeActionFlag_Short).w
 000079E4                            
 000079E4                            RunMagicMenuSubmodeLoop_Exit:
-000079E4 6100 11C4                  	bsr.w	PlayInventoryMenuConfirmSound_008BAA
+000079E4 6100 0000                  	bsr.w	PlayInventoryMenuConfirmSound_008BAA
 000079E8 2078 964C                  	movea.l	(MagicMenuSubmodeDispatchVector_Short).w,a0
 000079EC 4ED0                       	jmp	(a0)
 000079EE                            
@@ -1786,7 +2195,7 @@
 00007D10 4E75                       	rts
 00007D12                            
 00007D12                            HandleMagicMenuSixChoiceInput_ApplyDirection:
-00007D12 6100 0E9C                  	bsr.w	PlayInventoryMenuMoveSound_008BB0
+00007D12 6100 0000                  	bsr.w	PlayInventoryMenuMoveSound_008BB0
 00007D16 3038 9606                  	move.w	(InventoryMenuSelectionIndex_Short).w,d0
 00007D1A E548                       	lsl.w	#$2,d0
 00007D1C D440                       	add.w	d0,d2
@@ -1884,7 +2293,7 @@
 00007DF6 4238 9620                  	clr.b	(InventoryMenuScrollUpIndicatorState_Short).w
 00007DFA 6100 0000                  	bsr.w	UpdateInventoryMenuScrollDownIndicator_ClearVisible
 00007DFE 4238 9622                  	clr.b	(InventoryMenuScrollDownIndicatorState_Short).w
-00007E02 6100 0DA6                  	bsr.w	PlayInventoryMenuConfirmSound_008BAA
+00007E02 6100 0000                  	bsr.w	PlayInventoryMenuConfirmSound_008BAA
 00007E06 7CFF                       	moveq	#-1,d6
 00007E08 4E75                       	rts
 00007E0A                            
@@ -2321,7 +2730,7 @@
 00008262 5E43                       	addq.w	#$7,d3
 00008264 11C3 9625                  	move.b	d3,(InventoryMenuListCursorTileY_Short).w
 00008268 6100 FF6C                  	bsr.w	UpdateInventoryMenuListCursor_ShowVisible
-0000826C 6000 0942                  	bra.w	PlayInventoryMenuMoveSound_008BB0
+0000826C 6000 0000                  	bra.w	PlayInventoryMenuMoveSound_008BB0
 00008270                            
 00008270                            UpdateInventoryMenuVisibleSelection_Return:
 00008270 4E75                       	rts
@@ -3053,23 +3462,437 @@
 000088C0                            ClampMagicMenuStatusGaugeValue_Return_0088C0:
 000088C0 4E75                       	rts
 000088C2                            
-000088C2 =000088C2                  MagicMenuStatusGaugeLargeScaleBundle_0088C2 equ $000088C2
-000088C2 =000088CC                  MagicMenuStatusGaugeSmallScaleBundle_0088CC equ $000088CC
-000088C2 =000089B6                  AdvanceMagicMenuStatusGaugeAnimation_0089B6  equ $000089B6
-000088C2 =000088D6                  DrawMagicMenuStatusGaugeRows_0088D6              equ $000088D6
-000088C2 =0000893C                  SelectMagicMenuStatusGaugeLargeScale_00893C      equ $0000893C
-000088C2 =00008950                  SelectMagicMenuStatusGaugeSmallScale_008950      equ $00008950
-000088C2 =00008A04                  UpdateMagicMenuSpellBarFillAndCapacity_008A04    equ $00008A04
-000088C2 =00008A3A                  TryAdvanceMagicMenuSpellBarFill_008A3A           equ $00008A3A
-000088C2 =00008A88                  TryIncreaseMagicMenuSpellBarFill_008A88          equ $00008A88
-000088C2 =00008A9C                  MagicSpellBarGrowthStepTable_008A9C              equ $00008A9C
-000088C2 =00008AA2                  BuildMagicMenuStatusGaugeTileIdBuffer_008AA2     equ $00008AA2
-000088C2 =00008B2E                  UploadMagicMenuStatusGaugeTileRows_008B2E        equ $00008B2E
-000088C2 =00008BB6                  UpdateMagicMenuStatusLayoutWidths_008BB6         equ $00008BB6
-000088C2 =00008C1E                  MagicMenuStatusWidthLookupTable_008C1E           equ $00008C1E
+000088C2                            	include "src/magic_menu_status_gauge.asm"
+000088C2                            ; ROM range: 0x0088C2-0x008C33
+000088C2                            ; Magic-menu status gauge, spell-bar refill helpers, tile upload tables, and the follow-on
+000088C2                            ; layout-width synthesis used by the same panel owner in `engine_menu_core.asm`.
 000088C2                            
-000088C2                            CoreRegion_0088C2_008C33:
-000088C2                            	incbin "data/rom/core_005000_01ffff.bin",$38C2,$372
+000088C2                            MagicMenuStatusGaugeLargeScaleBundle_0088C2:
+000088C2 000F                       	dc.w	$000F
+000088C4 FFE0 FFF0                  	dc.l	$FFE0FFF0
+000088C8 0000 0000                  	dc.l	SelectMagicMenuStatusGaugeLargeScale_00893C
+000088CC                            
+000088CC                            MagicMenuStatusGaugeSmallScaleBundle_0088CC:
+000088CC 007F                       	dc.w	$007F
+000088CE 1F80 1F80                  	dc.l	$1F801F80
+000088D2 0000 0000                  	dc.l	SelectMagicMenuStatusGaugeSmallScale_008950
+000088D6                            
+000088D6                            DrawMagicMenuStatusGaugeRows_0088D6:
+000088D6 3E3C 0204                  	move.w	#$0204,d7
+000088DA 7A02                       	moveq	#MagicMenuStatusGaugeHeightRows-1,d5
+000088DC 41F9 00C0 0000             	lea	(VDP_DATA_PORT).l,a0
+000088E2                            
+000088E2                            DrawMagicMenuStatusGaugeRows_NextRow_0088E2:
+000088E2 6100 FACC                  	bsr.w	BuildInventoryMenuVramWriteCommand_0083B0
+000088E6 3C05                       	move.w	d5,d6
+000088E8 DC46                       	add.w	d6,d6
+000088EA 3038 95FE                  	move.w	(MagicMenuStatusGaugeFilledTileCount_Short).w,d0
+000088EE 3238 95FC                  	move.w	(MagicMenuStatusGaugeBodyTileCount_Short).w,d1
+000088F2                            
+000088F2                            DrawMagicMenuStatusGaugeRows_WriteFilledTiles_0088F2:
+000088F2 4A40                       	tst.w	d0
+000088F4 6700                       	beq.s	DrawMagicMenuStatusGaugeRows_CheckPartialTile_008900
+000088F6 30B1 6000                  	move.w	(a1,d6.w),(a0)
+000088FA 5340                       	subq.w	#$1,d0
+000088FC 5341                       	subq.w	#$1,d1
+000088FE 60F2                       	bra.s	DrawMagicMenuStatusGaugeRows_WriteFilledTiles_0088F2
+00008900                            
+00008900                            DrawMagicMenuStatusGaugeRows_CheckPartialTile_008900:
+00008900 4A42                       	tst.w	d2
+00008902 6700                       	beq.s	DrawMagicMenuStatusGaugeRows_WriteBodyTiles_00890A
+00008904 30B2 6000                  	move.w	(a2,d6.w),(a0)
+00008908 5341                       	subq.w	#$1,d1
+0000890A                            
+0000890A                            DrawMagicMenuStatusGaugeRows_WriteBodyTiles_00890A:
+0000890A 4A41                       	tst.w	d1
+0000890C 6700                       	beq.s	DrawMagicMenuStatusGaugeRows_CheckTailPadding_008916
+0000890E 5341                       	subq.w	#$1,d1
+00008910 30B3 6000                  	move.w	(a3,d6.w),(a0)
+00008914 60F4                       	bra.s	DrawMagicMenuStatusGaugeRows_WriteBodyTiles_00890A
+00008916                            
+00008916                            DrawMagicMenuStatusGaugeRows_CheckTailPadding_008916:
+00008916 3038 9600                  	move.w	(MagicMenuStatusGaugeTailPadTileCount_Short).w,d0
+0000891A                            
+0000891A                            DrawMagicMenuStatusGaugeRows_TestTailPadding_00891A:
+0000891A 4A40                       	tst.w	d0
+0000891C 6700 0000                  	beq.w	DrawMagicMenuStatusGaugeRows_AdvanceRow_008928
+00008920                            
+00008920                            DrawMagicMenuStatusGaugeRows_WriteTailPadding_008920:
+00008920 5340                       	subq.w	#$1,d0
+00008922 30BB 6000                  	move.w	MagicMenuStatusGaugeTailTileTable_008936(pc,d6.w),(a0)
+00008926 60F2                       	bra.s	DrawMagicMenuStatusGaugeRows_TestTailPadding_00891A
+00008928                            
+00008928                            DrawMagicMenuStatusGaugeRows_AdvanceRow_008928:
+00008928 5247                       	addq.w	#$1,d7
+0000892A 51CD FFB6                  	dbra	d5,DrawMagicMenuStatusGaugeRows_NextRow_0088E2
+0000892E 31FC 00C0 95F2             	move.w	#MagicMenuStatusGaugeAnimationTicks,(MagicMenuStatusGaugeAnimationCountdown_Short).w
+00008934 4E75                       	rts
+00008936                            
+00008936                            MagicMenuStatusGaugeTailTileTable_008936:
+00008936 97B6 8020 87B6             	dc.w	$97B6,$8020,$87B6
+0000893C                            
+0000893C                            SelectMagicMenuStatusGaugeLargeScale_00893C:
+0000893C 43FA 0000                  	lea	MagicMenuStatusGaugeLargeScaleFilledTileTable_00898E(pc),a1
+00008940 45FA 0000                  	lea	MagicMenuStatusGaugeLargeScalePartialTileTable_00899A(pc),a2
+00008944 47FA 0000                  	lea	MagicMenuStatusGaugeLargeScaleBodyTileTable_0089A6(pc),a3
+00008948 41FA 0000                  	lea	MagicMenuStatusGaugeLargeScaleRemainderStep_0089B2(pc),a0
+0000894C 7405                       	moveq	#MagicMenuStatusGaugeAlternatePageShift,d2
+0000894E 6000                       	bra.s	SelectMagicMenuStatusGauge_008962
+00008950                            
+00008950                            SelectMagicMenuStatusGaugeSmallScale_008950:
+00008950 43FA 0000                  	lea	MagicMenuStatusGaugeSmallScaleFilledTileTable_008994(pc),a1
+00008954 45FA 0000                  	lea	MagicMenuStatusGaugeSmallScalePartialTileTable_0089A0(pc),a2
+00008958 47FA 0000                  	lea	MagicMenuStatusGaugeSmallScaleBodyTileTable_0089AC(pc),a3
+0000895C 41FA 0000                  	lea	MagicMenuStatusGaugeSmallScaleRemainderStep_0089B4(pc),a0
+00008960 7408                       	moveq	#MagicMenuStatusGaugePageShift,d2
+00008962                            
+00008962                            SelectMagicMenuStatusGauge_008962:
+00008962 3038 9602                  	move.w	(MagicMenuStatusGaugePackedValue_Short).w,d0
+00008966 E468                       	lsr.w	d2,d0
+00008968 31C0 95FC                  	move.w	d0,(MagicMenuStatusGaugeBodyTileCount_Short).w
+0000896C 383C 0010                  	move.w	#MagicMenuStatusGaugeMaxWidth,d4
+00008970 9840                       	sub.w	d0,d4
+00008972 31C4 9600                  	move.w	d4,(MagicMenuStatusGaugeTailPadTileCount_Short).w
+00008976 3438 9604                  	move.w	(MagicMenuStatusGaugeRemainderValue_Short).w,d2
+0000897A 7200                       	moveq	#$00,d1
+0000897C                            
+0000897C                            SelectMagicMenuStatusGauge_CountFilledTiles_00897C:
+0000897C 9450                       	sub.w	(a0),d2
+0000897E 6500                       	bcs.s	SelectMagicMenuStatusGauge_StoreFillCounts_008984
+00008980 5241                       	addq.w	#$1,d1
+00008982 60F8                       	bra.s	SelectMagicMenuStatusGauge_CountFilledTiles_00897C
+00008984                            
+00008984                            SelectMagicMenuStatusGauge_StoreFillCounts_008984:
+00008984 31C1 95FE                  	move.w	d1,(MagicMenuStatusGaugeFilledTileCount_Short).w
+00008988 D450                       	add.w	(a0),d2
+0000898A 6000 FF4A                  	bra.w	DrawMagicMenuStatusGaugeRows_0088D6
+0000898E                            
+0000898E                            MagicMenuStatusGaugeLargeScaleFilledTileTable_00898E:
+0000898E 97B6 87B2 87B6             	dc.w	$97B6,$87B2,$87B6
+00008994                            
+00008994                            MagicMenuStatusGaugeSmallScaleFilledTileTable_008994:
+00008994 979D 879A 879D             	dc.w	$979D,$879A,$879D
+0000899A                            
+0000899A                            MagicMenuStatusGaugeLargeScalePartialTileTable_00899A:
+0000899A 97B6 87B3 87B6             	dc.w	$97B6,$87B3,$87B6
+000089A0                            
+000089A0                            MagicMenuStatusGaugeSmallScalePartialTileTable_0089A0:
+000089A0 979E 879B 879E             	dc.w	$979E,$879B,$879E
+000089A6                            
+000089A6                            MagicMenuStatusGaugeLargeScaleBodyTileTable_0089A6:
+000089A6 97B6 87B4 87B6             	dc.w	$97B6,$87B4,$87B6
+000089AC                            
+000089AC                            MagicMenuStatusGaugeSmallScaleBodyTileTable_0089AC:
+000089AC 979F 879C 879F             	dc.w	$979F,$879C,$879F
+000089B2                            
+000089B2                            MagicMenuStatusGaugeLargeScaleRemainderStep_0089B2:
+000089B2 0020                       	dc.w	$0020
+000089B4                            
+000089B4                            MagicMenuStatusGaugeSmallScaleRemainderStep_0089B4:
+000089B4 0100                       	dc.w	$0100
+000089B6                            
+000089B6                            AdvanceMagicMenuStatusGaugeAnimation_0089B6:
+000089B6 41F9 00C0 0000             	lea	(VDP_DATA_PORT).l,a0
+000089BC 43F9 0000 0000             	lea	MagicMenuStatusGaugeAnimationRowFillLongs_0089EC.l,a1
+000089C2 45F9 0000 0000             	lea	MagicMenuStatusGaugeAnimationRowEdgeTiles_0089F8.l,a2
+000089C8 3E3C 0104                  	move.w	#$0104,d7
+000089CC 7402                       	moveq	#MagicMenuStatusGaugeHeightRows-1,d2
+000089CE                            
+000089CE                            AdvanceMagicMenuStatusGaugeAnimation_NextRow_0089CE:
+000089CE 6100 F9E0                  	bsr.w	BuildInventoryMenuVramWriteCommand_0083B0
+000089D2 309A                       	move.w	(a2)+,(a0)
+000089D4 2819                       	move.l	(a1)+,d4
+000089D6 7607                       	moveq	#MagicMenuStatusGaugeTileRowWidth-1,d3
+000089D8                            
+000089D8                            AdvanceMagicMenuStatusGaugeAnimation_FillRow_0089D8:
+000089D8 2084                       	move.l	d4,(a0)
+000089DA 51CB FFFC                  	dbra	d3,AdvanceMagicMenuStatusGaugeAnimation_FillRow_0089D8
+000089DE 309A                       	move.w	(a2)+,(a0)
+000089E0 5247                       	addq.w	#$1,d7
+000089E2 51CA FFEA                  	dbra	d2,AdvanceMagicMenuStatusGaugeAnimation_NextRow_0089CE
+000089E6 42B8 9602                  	clr.l	(MagicMenuStatusGaugePackedValue_Short).w
+000089EA 4E75                       	rts
+000089EC                            
+000089EC                            MagicMenuStatusGaugeAnimationRowFillLongs_0089EC:
+000089EC 87B6 87B6                  	dc.l	$87B687B6
+000089F0 8020 8020                  	dc.l	$80208020
+000089F4 97B6 97B6                  	dc.l	$97B697B6
+000089F8                            
+000089F8                            MagicMenuStatusGaugeAnimationRowEdgeTiles_0089F8:
+000089F8 878F 8F8F 878E 8F8E 978F+  	dc.w	$878F,$8F8F,$878E,$8F8E,$978F,$9F8F
+00008A04                            
+00008A04                            UpdateMagicMenuSpellBarFillAndCapacity_008A04:
+00008A04 3040                       	movea.w	d0,a0
+00008A06 1228 95BE                  	move.b	-$6A42(a0),d1
+00008A0A 1401                       	move.b	d1,d2
+00008A0C D23B 8800                  	add.b	MagicSpellBarGrowthBaseTable_008A34(pc,a0.l),d1
+00008A10 0C40 0005                  	cmpi.w	#MagicSpellCount-1,d0
+00008A14 6500                       	bcs.s	UpdateMagicMenuSpellBarFillAndCapacity_ClampGrowth_008A1A
+00008A16 7201                       	moveq	#$01,d1
+00008A18 6000                       	bra.s	UpdateMagicMenuSpellBarFillAndCapacity_StoreDelta_008A22
+00008A1A                            
+00008A1A                            UpdateMagicMenuSpellBarFillAndCapacity_ClampGrowth_008A1A:
+00008A1A 0C01 000C                  	cmpi.b	#MagicMenuStatusGaugeMaxFillValue,d1
+00008A1E 6500                       	bcs.s	UpdateMagicMenuSpellBarFillAndCapacity_StoreDelta_008A22
+00008A20 720C                       	moveq	#MagicMenuStatusGaugeMaxFillValue,d1
+00008A22                            
+00008A22                            UpdateMagicMenuSpellBarFillAndCapacity_StoreDelta_008A22:
+00008A22 1601                       	move.b	d1,d3
+00008A24 9602                       	sub.b	d2,d3
+00008A26 11C3 95B2                  	move.b	d3,(MagicMenuSpellBarFillDeltaScratch_Short).w
+00008A2A 1141 95BE                  	move.b	d1,-$6A42(a0)
+00008A2E D728 95B8                  	add.b	d3,-$6A48(a0)
+00008A32 4E75                       	rts
+00008A34                            
+00008A34                            MagicSpellBarGrowthBaseTable_008A34:
+00008A34 0303 0302 0201             	dc.b	$03,$03,$03,$02,$02,$01
+00008A3A                            
+00008A3A                            TryAdvanceMagicMenuSpellBarFill_008A3A:
+00008A3A 1038 9F10                  	move.b	(MagicMenuStatusValue0_Short).w,d0
+00008A3E 6B00                       	bmi.s	TryAdvanceMagicMenuSpellBarFill_CheckSecondSlot_008A46
+00008A40 0C00 0008                  	cmpi.b	#MagicMenuStatusGaugePageSelectionCutoff,d0
+00008A44 6500                       	bcs.s	TryAdvanceMagicMenuSpellBarFill_UpdateSlot_008A52
+00008A46                            
+00008A46                            TryAdvanceMagicMenuSpellBarFill_CheckSecondSlot_008A46:
+00008A46 1038 9F11                  	move.b	(MagicMenuStatusValue1_Short).w,d0
+00008A4A 6B00                       	bmi.s	TryAdvanceMagicMenuSpellBarFill_CheckAllSpellBars_008A60
+00008A4C 0C00 0008                  	cmpi.b	#MagicMenuStatusGaugePageSelectionCutoff,d0
+00008A50 6400                       	bcc.s	TryAdvanceMagicMenuSpellBarFill_CheckAllSpellBars_008A60
+00008A52                            
+00008A52                            TryAdvanceMagicMenuSpellBarFill_UpdateSlot_008A52:
+00008A52 3040                       	movea.w	d0,a0
+00008A54 1228 95B8                  	move.b	-$6A48(a0),d1
+00008A58 1428 95BE                  	move.b	-$6A42(a0),d2
+00008A5C 6100                       	bsr.s	TryIncreaseMagicMenuSpellBarFill_008A88
+00008A5E 6B00                       	bmi.s	TryAdvanceMagicMenuSpellBarFill_Return_008A86
+00008A60                            
+00008A60                            TryAdvanceMagicMenuSpellBarFill_CheckAllSpellBars_008A60:
+00008A60 7000                       	moveq	#$00,d0
+00008A62                            
+00008A62                            TryAdvanceMagicMenuSpellBarFill_CheckSpellBar_008A62:
+00008A62 3040                       	movea.w	d0,a0
+00008A64 1228 95B8                  	move.b	-$6A48(a0),d1
+00008A68 1428 95BE                  	move.b	-$6A42(a0),d2
+00008A6C 6700                       	beq.s	TryAdvanceMagicMenuSpellBarFill_NextSpellBar_008A7E
+00008A6E B401                       	cmp.b	d1,d2
+00008A70 6700                       	beq.s	TryAdvanceMagicMenuSpellBarFill_NextSpellBar_008A7E
+00008A72 6000                       	bra.s	TryAdvanceMagicMenuSpellBarFill_RestoreBaseAndGrow_008A7C
+00008A74                            
+00008A74                            TryAdvanceMagicMenuSpellBarFill_ReloadGrowthBase_008A74:
+00008A74 143B 88BE                  	move.b	MagicSpellBarGrowthBaseTable_008A34(pc,a0.l),d2
+00008A78 1142 95BE                  	move.b	d2,-$6A42(a0)
+00008A7C                            
+00008A7C                            TryAdvanceMagicMenuSpellBarFill_RestoreBaseAndGrow_008A7C:
+00008A7C 6000                       	bra.s	TryIncreaseMagicMenuSpellBarFill_008A88
+00008A7E                            
+00008A7E                            TryAdvanceMagicMenuSpellBarFill_NextSpellBar_008A7E:
+00008A7E 5240                       	addq.w	#$1,d0
+00008A80 0C40 0006                  	cmpi.w	#MagicSpellCount,d0
+00008A84 65DC                       	bcs.s	TryAdvanceMagicMenuSpellBarFill_CheckSpellBar_008A62
+00008A86                            
+00008A86                            TryAdvanceMagicMenuSpellBarFill_Return_008A86:
+00008A86 4E75                       	rts
+00008A88                            
+00008A88                            TryIncreaseMagicMenuSpellBarFill_008A88:
+00008A88 D23B 8800                  	add.b	MagicSpellBarGrowthStepTable_008A9C(pc,a0.l),d1
+00008A8C B401                       	cmp.b	d1,d2
+00008A8E 6500                       	bcs.s	TryIncreaseMagicMenuSpellBarFill_Fail_008A98
+00008A90 1141 95B8                  	move.b	d1,-$6A48(a0)
+00008A94 76FF                       	moveq	#-1,d3
+00008A96 4E75                       	rts
+00008A98                            
+00008A98                            TryIncreaseMagicMenuSpellBarFill_Fail_008A98:
+00008A98 7600                       	moveq	#$00,d3
+00008A9A 4E75                       	rts
+00008A9C                            
+00008A9C                            MagicSpellBarGrowthStepTable_008A9C:
+00008A9C 0101 0101 0101             	dc.b	$01,$01,$01,$01,$01,$01
+00008AA2                            
+00008AA2                            BuildMagicMenuStatusGaugeTileIdBuffer_008AA2:
+00008AA2 3878 9EEE                  	movea.w	(MagicMenuStatusGaugeSourcePointer_Short).w,a4
+00008AA6 102C DA00                  	move.b	-$2600(a4),d0
+00008AAA 122C DA01                  	move.b	-$25FF(a4),d1
+00008AAE EC09                       	lsr.b	#$6,d1
+00008AB0 6700                       	beq.s	BuildMagicMenuStatusGaugeTileIdBuffer_InitCounters_008AB4
+00008AB2 5200                       	addq.b	#$1,d0
+00008AB4                            
+00008AB4                            BuildMagicMenuStatusGaugeTileIdBuffer_InitCounters_008AB4:
+00008AB4 7600                       	moveq	#$00,d3
+00008AB6 7800                       	moveq	#$00,d4
+00008AB8 1400                       	move.b	d0,d2
+00008ABA 0C00 0008                  	cmpi.b	#MagicMenuStatusGaugePageSelectionCutoff,d0
+00008ABE 6300                       	bls.s	BuildMagicMenuStatusGaugeTileIdBuffer_AccumulateFilledCount_008AD0
+00008AC0 5100                       	subq.b	#MagicMenuStatusGaugePageSelectionCutoff,d0
+00008AC2 1600                       	move.b	d0,d3
+00008AC4 1800                       	move.b	d0,d4
+00008AC6 5204                       	addq.b	#$1,d4
+00008AC8 D000                       	add.b	d0,d0
+00008ACA 5200                       	addq.b	#$1,d0
+00008ACC C142                       	exg	d0,d2
+00008ACE 9002                       	sub.b	d2,d0
+00008AD0                            
+00008AD0                            BuildMagicMenuStatusGaugeTileIdBuffer_AccumulateFilledCount_008AD0:
+00008AD0 D800                       	add.b	d0,d4
+00008AD2 4A01                       	tst.b	d1
+00008AD4 6700                       	beq.s	BuildMagicMenuStatusGaugeTileIdBuffer_FillLeadingTiles_008AD8
+00008AD6 5300                       	subq.b	#$1,d0
+00008AD8                            
+00008AD8                            BuildMagicMenuStatusGaugeTileIdBuffer_FillLeadingTiles_008AD8:
+00008AD8 41F8 95AA                  	lea	(MagicMenuStatusGaugeTileIdBuffer_Short).w,a0
+00008ADC 4A03                       	tst.b	d3
+00008ADE 6700                       	beq.s	BuildMagicMenuStatusGaugeTileIdBuffer_FillCenterTiles_008AF2
+00008AE0 10FC 0018                  	move.b	#$18,(a0)+
+00008AE4 6000                       	bra.s	BuildMagicMenuStatusGaugeTileIdBuffer_FillLeadingLoop_008AEA
+00008AE6                            
+00008AE6                            BuildMagicMenuStatusGaugeTileIdBuffer_FillLeadingTileAlt_008AE6:
+00008AE6 10FC 001C                  	move.b	#$1C,(a0)+
+00008AEA                            
+00008AEA                            BuildMagicMenuStatusGaugeTileIdBuffer_FillLeadingLoop_008AEA:
+00008AEA 5303                       	subq.b	#$1,d3
+00008AEC 66F8                       	bne.s	BuildMagicMenuStatusGaugeTileIdBuffer_FillLeadingTileAlt_008AE6
+00008AEE 10FC 0020                  	move.b	#$20,(a0)+
+00008AF2                            
+00008AF2                            BuildMagicMenuStatusGaugeTileIdBuffer_FillCenterTiles_008AF2:
+00008AF2 4A00                       	tst.b	d0
+00008AF4 6700                       	beq.s	BuildMagicMenuStatusGaugeTileIdBuffer_WriteRemainderTile_008AFE
+00008AF6                            
+00008AF6                            BuildMagicMenuStatusGaugeTileIdBuffer_FillCenterLoop_008AF6:
+00008AF6 10FC 0014                  	move.b	#$14,(a0)+
+00008AFA 5300                       	subq.b	#$1,d0
+00008AFC 66F8                       	bne.s	BuildMagicMenuStatusGaugeTileIdBuffer_FillCenterLoop_008AF6
+00008AFE                            
+00008AFE                            BuildMagicMenuStatusGaugeTileIdBuffer_WriteRemainderTile_008AFE:
+00008AFE 4A01                       	tst.b	d1
+00008B00 6700                       	beq.s	BuildMagicMenuStatusGaugeTileIdBuffer_FillPlayerLevelTiles_008B08
+00008B02 E509                       	lsl.b	#$2,d1
+00008B04 5801                       	addq.b	#$4,d1
+00008B06 10C1                       	move.b	d1,(a0)+
+00008B08                            
+00008B08                            BuildMagicMenuStatusGaugeTileIdBuffer_FillPlayerLevelTiles_008B08:
+00008B08 1038 9F00                  	move.b	(PlayerLevel_Short).w,d0
+00008B0C 0C00 0008                  	cmpi.b	#MagicMenuStatusGaugePageSelectionCutoff,d0
+00008B10 6300                       	bls.s	BuildMagicMenuStatusGaugeTileIdBuffer_SubtractUsedTiles_008B14
+00008B12 7008                       	moveq	#MagicMenuStatusGaugePageSelectionCutoff,d0
+00008B14                            
+00008B14                            BuildMagicMenuStatusGaugeTileIdBuffer_SubtractUsedTiles_008B14:
+00008B14 9004                       	sub.b	d4,d0
+00008B16 6300                       	bls.s	BuildMagicMenuStatusGaugeTileIdBuffer_PadBuffer_008B22
+00008B18 D800                       	add.b	d0,d4
+00008B1A                            
+00008B1A                            BuildMagicMenuStatusGaugeTileIdBuffer_FillPlayerLevelLoop_008B1A:
+00008B1A 10FC 0004                  	move.b	#$04,(a0)+
+00008B1E 5300                       	subq.b	#$1,d0
+00008B20 66F8                       	bne.s	BuildMagicMenuStatusGaugeTileIdBuffer_FillPlayerLevelLoop_008B1A
+00008B22                            
+00008B22                            BuildMagicMenuStatusGaugeTileIdBuffer_PadBuffer_008B22:
+00008B22 5104                       	subq.b	#MagicMenuStatusGaugeTileRowWidth,d4
+00008B24 6400                       	bcc.s	UploadMagicMenuStatusGaugeTileRows_008B2E
+00008B26 4404                       	neg.b	d4
+00008B28                            
+00008B28                            BuildMagicMenuStatusGaugeTileIdBuffer_PadLoop_008B28:
+00008B28 4218                       	clr.b	(a0)+
+00008B2A 5304                       	subq.b	#$1,d4
+00008B2C 66FA                       	bne.s	BuildMagicMenuStatusGaugeTileIdBuffer_PadLoop_008B28
+00008B2E                            
+00008B2E                            UploadMagicMenuStatusGaugeTileRows_008B2E:
+00008B2E 47F9 00C0 0000             	lea	(VDP_DATA_PORT).l,a3
+00008B34 277C 5844 0003 0004        	move.l	#$58440003,$0004(a3)
+00008B3C 43FA 0000                  	lea	MagicMenuStatusGaugeUpperTileLongLookup_008B62(pc),a1
+00008B40 6100                       	bsr.s	UploadMagicMenuStatusGaugeTileRow_008B4E
+00008B42 277C 5884 0003 0004        	move.l	#$58840003,$0004(a3)
+00008B4A 43FA 0000                  	lea	MagicMenuStatusGaugeLowerTileLongLookup_008B86(pc),a1
+00008B4E                            
+00008B4E                            UploadMagicMenuStatusGaugeTileRow_008B4E:
+00008B4E 45F8 95AA                  	lea	(MagicMenuStatusGaugeTileIdBuffer_Short).w,a2
+00008B52 7207                       	moveq	#MagicMenuStatusGaugeTileRowWidth-1,d1
+00008B54 7000                       	moveq	#$00,d0
+00008B56                            
+00008B56                            UploadMagicMenuStatusGaugeTileRow_Loop_008B56:
+00008B56 101A                       	move.b	(a2)+,d0
+00008B58 26B1 0000                  	move.l	(a1,d0.w),(a3)
+00008B5C 51C9 FFF8                  	dbra	d1,UploadMagicMenuStatusGaugeTileRow_Loop_008B56
+00008B60 4E75                       	rts
+00008B62                            
+00008B62                            MagicMenuStatusGaugeUpperTileLongLookup_008B62:
+00008B62 8020 8020                  	dc.l	$80208020
+00008B66 8780 8784                  	dc.l	$87808784
+00008B6A 8781 8784                  	dc.l	$87818784
+00008B6E 8782 8784                  	dc.l	$87828784
+00008B72 8782 8785                  	dc.l	$87828785
+00008B76 8782 8783                  	dc.l	$87828783
+00008B7A 8782 8782                  	dc.l	$87828782
+00008B7E 8782 8782                  	dc.l	$87828782
+00008B82 8782 8783                  	dc.l	$87828783
+00008B86                            
+00008B86                            MagicMenuStatusGaugeLowerTileLongLookup_008B86:
+00008B86 8020 8020                  	dc.l	$80208020
+00008B8A 8790 8F90                  	dc.l	$87908F90
+00008B8E 8791 8F90                  	dc.l	$87918F90
+00008B92 8792 8F90                  	dc.l	$87928F90
+00008B96 8792 8795                  	dc.l	$87928795
+00008B9A 8792 8F92                  	dc.l	$87928F92
+00008B9E 8792 8793                  	dc.l	$87928793
+00008BA2 8793 8793                  	dc.l	$87938793
+00008BA6 8793 8F92                  	dc.l	$87938F92
+00008BAA                            
+00008BAA                            PlayInventoryMenuConfirmSound_008BAA:
+00008BAA 7026                       	moveq	#$26,d0
+00008BAC 4EF8 0366                  	jmp	(RunTaskHelper_0366).w
+00008BB0                            
+00008BB0                            PlayInventoryMenuMoveSound_008BB0:
+00008BB0 7025                       	moveq	#$25,d0
+00008BB2 4EF8 0366                  	jmp	(RunTaskHelper_0366).w
+00008BB6                            
+00008BB6                            UpdateMagicMenuStatusLayoutWidths_008BB6:
+00008BB6 0238 00DF 9EF1             	andi.b	#$DF,(MagicMenuStatusLayoutFlags_Short).w
+00008BBC 31FC 0060 95F4             	move.w	#$0060,(MagicMenuStatusGaugeWidthSlot0_Short).w
+00008BC2 31FC 0080 95F6             	move.w	#$0080,(MagicMenuStatusGaugeWidthSlot1_Short).w
+00008BC8 0838 0004 9EF1             	btst	#MagicMenuStatusLayoutLockedBit,(MagicMenuStatusLayoutFlags_Short).w
+00008BCE 6600                       	bne.s	UpdateMagicMenuStatusLayoutWidths_Return_008C1C
+00008BD0 41F8 95CE                  	lea	(MagicMenuStatusSelectionScratchBuffer_Short).w,a0
+00008BD4 1A10                       	move.b	(a0),d5
+00008BD6 7400                       	moveq	#$00,d2
+00008BD8 31C2 95F6                  	move.w	d2,(MagicMenuStatusGaugeWidthSlot1_Short).w
+00008BDC                            
+00008BDC                            UpdateMagicMenuStatusLayoutWidths_NextSelection_008BDC:
+00008BDC 7000                       	moveq	#$00,d0
+00008BDE 1018                       	move.b	(a0)+,d0
+00008BE0 6B00                       	bmi.s	UpdateMagicMenuStatusLayoutWidths_AdvanceOffset_008C06
+00008BE2 D042                       	add.w	d2,d0
+00008BE4 7600                       	moveq	#$00,d3
+00008BE6 163B 0000                  	move.b	MagicMenuStatusWidthLookupTable_008C1E(pc,d0.w),d3
+00008BEA E94B                       	lsl.w	#$4,d3
+00008BEC 4A42                       	tst.w	d2
+00008BEE 6600                       	bne.s	UpdateMagicMenuStatusLayoutWidths_AccumulateSlot1_008BF6
+00008BF0 31C3 95F4                  	move.w	d3,(MagicMenuStatusGaugeWidthSlot0_Short).w
+00008BF4 6000                       	bra.s	UpdateMagicMenuStatusLayoutWidths_AdvanceOffset_008C06
+00008BF6                            
+00008BF6                            UpdateMagicMenuStatusLayoutWidths_AccumulateSlot1_008BF6:
+00008BF6 0C05 0004                  	cmpi.b	#MagicMenuSpellPageStateSelector-1,d5
+00008BFA 6500                       	bcs.s	UpdateMagicMenuStatusLayoutWidths_AddWidth_008C02
+00008BFC 0C42 000E                  	cmpi.w	#$000E,d2
+00008C00 6700                       	beq.s	UpdateMagicMenuStatusLayoutWidths_CheckPageFlag_008C0E
+00008C02                            
+00008C02                            UpdateMagicMenuStatusLayoutWidths_AddWidth_008C02:
+00008C02 D778 95F6                  	add.w	d3,(MagicMenuStatusGaugeWidthSlot1_Short).w
+00008C06                            
+00008C06                            UpdateMagicMenuStatusLayoutWidths_AdvanceOffset_008C06:
+00008C06 5E42                       	addq.w	#MagicMenuStatusGaugeSelectionValueOffset-3,d2
+00008C08 0C42 0015                  	cmpi.w	#$0015,d2
+00008C0C 66CE                       	bne.s	UpdateMagicMenuStatusLayoutWidths_NextSelection_008BDC
+00008C0E                            
+00008C0E                            UpdateMagicMenuStatusLayoutWidths_CheckPageFlag_008C0E:
+00008C0E 0C38 0005 95CE             	cmpi.b	#MagicMenuSpellPageStateSelector,(MagicMenuStatusSelectionScratchBuffer_Short).w
+00008C14 6600                       	bne.s	UpdateMagicMenuStatusLayoutWidths_Return_008C1C
+00008C16 0038 0020 9EF1             	ori.b	#$20,(MagicMenuStatusLayoutFlags_Short).w
+00008C1C                            
+00008C1C                            UpdateMagicMenuStatusLayoutWidths_Return_008C1C:
+00008C1C 4E75                       	rts
+00008C1E                            
+00008C1E                            MagicMenuStatusWidthLookupTable_008C1E:
+00008C1E 2010 0802 1808 040C 0A08+  	dc.b	$20,$10,$08,$02,$18,$08,$04,$0C,$0A,$08,$06
+00008C29 0402 0107 0605 0403 0201+  	dc.b	$04,$02,$01,$07,$06,$05,$04,$03,$02,$01,$00
+00008C29 0402 0107 0605 0403 0201+  	dc.b	$04,$02,$01,$07,$06,$05,$04,$03,$02,$01,$00
 00008C34                            
 00008C34                            InitializeMagicMenuSelectionState_008C34:
 00008C34 21F8 95CE 95D2             	move.l	(MagicMenuStatusSelectionScratchBuffer_Short).w,(MagicMenuStatusSelectionScratchSnapshot_Short).w
@@ -3098,12 +3921,40 @@
 00008C7E                            InitializeMagicMenuSelectionState_Return_008C7E:
 00008C7E 4E75                       	rts
 00008C80                            
-00008C80                            CoreRegion_008C80_01FFFF:
-00008C80                            	incbin "data/rom/core_005000_01ffff.bin",$3C80,$17380
-00008C80                            	incbin "data/rom/core_005000_01ffff.bin",$3C80,$17380
-00020000                            	include "src/bank020000.asm"
+00008C80                            CoreRegion_008C80_01CC0F:
+00008C80                            	incbin "data/rom/core_005000_01ffff.bin",$3C80,$13F90
+0001CC10                            
+0001CC10                            	include "src/menu_text_root_pointers.asm"
+0001CC10                            ; ROM range: 0x01CC10-0x01CC4F
+0001CC10                            ; Sixteen-entry absolute root-pointer table consumed by ResolveMenuTextControlStream_001ED0.
+0001CC10                            ; The first and fourth roots now point at already split bank020000 tables; the remaining
+0001CC10                            ; roots still land inside not-yet-authored bank020000 regions and stay absolute for now.
+0001CC10                            
+0001CC10                            MenuTextRootPointerTable_01CC10:
+0001CC10 0002 11CA                  	dc.l	$000211CA
+0001CC14 0001 DD94                  	dc.l	$0001DD94
+0001CC18 0001 DD74                  	dc.l	$0001DD74
+0001CC1C 0002 2460                  	dc.l	$00022460
+0001CC20 0002 3794                  	dc.l	$00023794
+0001CC24 0002 3AB6                  	dc.l	$00023AB6
+0001CC28 0002 6538                  	dc.l	$00026538
+0001CC2C 0002 7786                  	dc.l	$00027786
+0001CC30 0002 8154                  	dc.l	$00028154
+0001CC34 0002 9E5A                  	dc.l	$00029E5A
+0001CC38 0002 B108                  	dc.l	$0002B108
+0001CC3C 0002 C6B8                  	dc.l	$0002C6B8
+0001CC40 0002 4130                  	dc.l	$00024130
+0001CC44 0002 E4C6                  	dc.l	$0002E4C6
+0001CC48 0003 058A                  	dc.l	$0003058A
+0001CC4C 0003 2170                  	dc.l	$00032170
+0001CC4C 0003 2170                  	dc.l	$00032170
+0001CC50                            
+0001CC50                            CoreRegion_01CC50_01FFFF:
+0001CC50                            	incbin "data/rom/core_005000_01ffff.bin",$17C50,$33B0
+0001CC50                            	incbin "data/rom/core_005000_01ffff.bin",$17C50,$33B0
+00020000                            	include "src/text_bank.asm"
 00020000                            ; ======================================================================
-00020000                            ; src/bank020000.asm
+00020000                            ; src/text_bank.asm
 00020000                            ; ROM range: 0x020000-0x03FFFF - dialogue, text, tables, and compressed tail data
 00020000                            ; ======================================================================
 00020000                            ; Bank-local ownership skeleton for the first fully banked mid-ROM region.
@@ -3116,7 +3967,7 @@
 00020000                            ; sentinels, so the bank is no longer a single opaque slice.
 00020000                            
 00020000                            Bank020000_DialogueScriptContinuation_020000:
-00020000                            	include "src/bank020000/dialogue_front.asm"
+00020000                            	include "src/text_bank/dialogue_continuation.asm"
 00020000                            ; ROM range: 0x020000-0x0201CF
 00020000                            ; Dialogue/script text continuation from the core region. This region carries the tail
 00020000                            ; of NPC dialogue strings that begin in core_005000_01ffff (the last bytes of the core
@@ -3128,65 +3979,73 @@
 00020000                            ; 0xA8-0xFF reference a second word table not yet located.
 00020000                            
 00020000                            Bank020000_DialogueScriptFrontContinuation_020000:
-00020000                            	incbin "data/rom/bank_020000_03ffff.bin",$000000,$00000D
+00020000 6E20 6109 6465 6570 200C+  	dc.b	"n a",$09,"deep ",$0C,$C5,".",$05
 0002000D                            
 0002000D                            Bank020000_DialogueScriptFrontContinuation_02000D:
-0002000D                            	incbin "data/rom/bank_020000_03ffff.bin",$00000D,$000001
+0002000D 00                         	dc.b	$00
 0002000E                            
 0002000E                            Bank020000_DialogueScriptFrontContinuation_02000E:
-0002000E                            	incbin "data/rom/bank_020000_03ffff.bin",$00000E,$000005
+0002000E 0C06 0B11 10               	dc.b	$0C,$06,$0B,$11,$10
 00020013                            
 00020013                            Bank020000_DialogueScriptFrontContinuation_020013:
-00020013                            	incbin "data/rom/bank_020000_03ffff.bin",$000013,$000001
+00020013 00                         	dc.b	$00
 00020014                            
 00020014                            Bank020000_DialogueScriptFrontContinuation_020014:
-00020014                            	incbin "data/rom/bank_020000_03ffff.bin",$000014,$000029
+00020014 2B0B 1310 0C62 200C B720+  	dc.b	$2B,$0B,$13,$10,$0C,$62," ",$0C,$B7," ",$0C,$90,$09,$0C,$BC," ",$0C,$BE,".",$05,$09,$09
+0002002A 4927 6D20 736F 2072 656C+  	dc.b	"I'm so relieved.",$09,$09,$05
 0002003D                            
 0002003D                            Bank020000_DialogueScriptFrontContinuation_02003D:
-0002003D                            	incbin "data/rom/bank_020000_03ffff.bin",$00003D,$000001
+0002003D 00                         	dc.b	$00
 0002003E                            
 0002003E                            Bank020000_DialogueScriptFrontContinuation_02003E:
-0002003E                            	incbin "data/rom/bank_020000_03ffff.bin",$00003E,$000003
+0002003E 0B12 5B                    	dc.b	$0B,$12,$5B
 00020041                            
 00020041                            Bank020000_DialogueScriptFrontContinuation_020041:
-00020041                            	incbin "data/rom/bank_020000_03ffff.bin",$000041,$000001
+00020041 00                         	dc.b	$00
 00020042                            
 00020042                            Bank020000_DialogueScriptFrontContinuation_020042:
-00020042                            	incbin "data/rom/bank_020000_03ffff.bin",$000042,$00000E
+00020042 100C 6220 0CB7 2069 7309+  	dc.b	$10,$0C,$62," ",$0C,$B7," is",$09,$0C,$DF,".",$05
 00020050                            
 00020050                            Bank020000_DialogueScriptFrontContinuation_020050:
-00020050                            	incbin "data/rom/bank_020000_03ffff.bin",$000050,$000001
+00020050 00                         	dc.b	$00
 00020051                            
 00020051                            ; "Make yourself at home."
 00020051                            Bank020000_DialogueScript_MakeYourselfAtHome_020051:
-00020051                            	incbin "data/rom/bank_020000_03ffff.bin",$000051,$000017
+00020051 4D61 6B65 2079 6F75 7273+  	dc.b	"Make yourself at",$09,"home.",$05
 00020068                            
 00020068                            Bank020000_DialogueScriptFrontContinuation_020068:
-00020068                            	incbin "data/rom/bank_020000_03ffff.bin",$000068,$000001
+00020068 00                         	dc.b	$00
 00020069                            
 00020069                            Bank020000_DialogueScriptFrontContinuation_020069:
-00020069                            	incbin "data/rom/bank_020000_03ffff.bin",$000069,$000018
+00020069 0402 0C62 200C 8020 0C90+  	dc.b	$04,$02,$0C,$62," ",$0C,$80," ",$0C,$90," ",$0C,$72,$02,$04,$02,"sealed.",$05
 00020081                            
 00020081                            Bank020000_DialogueScriptFrontContinuation_020081:
-00020081                            	incbin "data/rom/bank_020000_03ffff.bin",$000081,$000001
+00020081 00                         	dc.b	$00
 00020082                            
 00020082                            ; Multi-string NPC dialogue block: "So [you]'ve arrived.", "I'm so relieved.",
 00020082                            ; "Tell [you] [what] I'm [store] do.", "I'm [store] ask [you] [...] questions -",
 00020082                            ; "When [you]'ve answered [nothing] correctly, I'm [store] send [you] into a new world.",
 00020082                            ; "Are [you] [?]?" and quiz-host final strings.
 00020082                            Bank020000_DialogueScriptNpcBlock_020082:
-00020082                            	incbin "data/rom/bank_020000_03ffff.bin",$000082,$000114
+00020082 0B23 0306 0753 6F20 0CE6+  	dc.b	$0B,$23,$03,$06,$07,"So ",$0C,$E6,"'ve",$02,"arrived.",$05,$0B,$20,"As ",$0C,$E6," ",$0C,$A5," ",$0C,$91
+000200A6 0267 7565 7373 6564 2C20+  	dc.b	$02,"guessed, I'm ",$0C,$D3,$02,$0C,$5F,".",$05,$0B,$20,"I've ",$0C,$8E," ",$0C,$D8,$02,"thing ",$0C,$86,$02
+000200D1 7175 697A 7A65 732C 0502+  	dc.b	"quizzes,",$05,$02,$0C,$77," ",$0C,$D6," ",$0C,$E6,"'ve",$02,$0C,$B8," ",$0C,$92,$02,$0C,$D2," by ",$0C,$AE
+000200F5 2E05 0B20 5465 6C6C 200C+  	dc.b	".",$05,$0B,$20,"Tell ",$0C,$E6," ",$0C,$E3," I'm",$02,$0C,$8C," do.",$05,$0B,$20,"I'm ",$0C,$8C," ask ",$0C,$E6
+0002011E 020C C620 7175 6573 7469+  	dc.b	$02,$0C,$C6," questions -",$02,"5, to be exact.",$05,$0B,$20,"When ",$0C,$E6,"'ve",$02,"answered ",$0C,$D5
+00020156 200C 6D02 636F 7272 6563+  	dc.b	" ",$0C,$6D,$02,"correctly, I'm",$02,$0C,$8C," send ",$0C,$E6,$02,"into a new world.",$05,$0B,$20,"Are ",$0C,$E6
+0002018E 200C BA3F 050B 2003        	dc.b	" ",$0C,$BA,"?",$05,$0B,$20,$03
 00020196                            
 00020196                            Bank020000_DialogueScriptFrontContinuation_020196:
-00020196                            	incbin "data/rom/bank_020000_03ffff.bin",$000196,$000001
+00020196 00                         	dc.b	$00
 00020197                            
 00020197                            ; "[has] [?] first [?]." / "[has] [?] second [?]." / "[has] [?] third [?]."
 00020197                            Bank020000_DialogueScriptOrdinalStrings_020197:
-00020197                            	incbin "data/rom/bank_020000_03ffff.bin",$000197,$000039
-00020197                            	incbin "data/rom/bank_020000_03ffff.bin",$000197,$000039
+00020197 0C50 2773 200C D320 6669+  	dc.b	$0C,$50,"'s ",$0C,$D3," first",$02,$0C,$B9,".",$0F,$06,$0C,$50,"'s ",$0C,$D3," second",$02,$0C,$B9,".",$0F,$06
+000201BE 0C50 2773 200C D320 7468+  	dc.b	$0C,$50,"'s ",$0C,$D3," third",$02,$0C,$B9,".",$0F
+000201BE 0C50 2773 200C D320 7468+  	dc.b	$0C,$50,"'s ",$0C,$D3," third",$02,$0C,$B9,".",$0F
 000201D0                            
 000201D0                            Bank020000_BankRelativeTextRecordFamilyA_0201D0:
-000201D0                            	include "src/bank020000/front_records_a.asm"
+000201D0                            	include "src/text_bank/text_record_group_a.asm"
 000201D0                            ; ROM range: 0x0201D0-0x020539
 000201D0                            ; ROM-order record slices proven directly by Bank020000_BankRelativeTextOffsetTableA_0211DA.
 000201D0                            ; These records still mix text fragments with undecoded control bytes, so keep the names
@@ -3349,7 +4208,7 @@
 00020539                            	incbin "data/rom/bank_020000_03ffff.bin",$000539,$000001
 00020539                            	incbin "data/rom/bank_020000_03ffff.bin",$000539,$000001
 0002053A                            
-0002053A                            	include "src/bank020000/dialogue_mid.asm"
+0002053A                            	include "src/text_bank/dialogue_followup.asm"
 0002053A                            ; ROM range: 0x02053A-0x020E4B
 0002053A                            ; Dialogue/script text block continuing the NPC conversation records from the preceding
 0002053A                            ; text-record family at 0x0201D0-0x020539. Each entry is a null-terminated (0x00) record
@@ -3512,565 +4371,591 @@
 000208D7                            ; "To [sell] [the] [?], [...] [sell] [the] room on [the] [?]
 000208D7                            ;  side of [?] [search], [princess] in order to [sell], [you] [sell] [thank]
 000208D7                            ;  [the] following [this]: [the] [just] Sword / [just] Armor / [just] Shield [one] [just] Boots."
+000208D7                            ; Likely upstream shop-inventory/control script. The control bytes are still only partly
+000208D7                            ; decoded, but the mixed text/control payload is now source-authored instead of hiding in the
+000208D7                            ; ROM blob. The explicit item-name strings recovered so far live either in
+000208D7                            ; Bank020000_InventoryNameOffsetTable_021720 or as quiz-only inline literals in
+000208D7                            ; Bank020000_QuizQuestion05Text_02154C and nearby answers.
 000208D7                            Bank020000_DialogueScript_ShopInventoryBlock_0208D7:
-000208D7                            	incbin "data/rom/bank_020000_03ffff.bin",$0008D7,$00009C
+000208D7 0C06 546F 200C 8220 0CD3+  	dc.b	$0C,$06,"To ",$0C,$82," ",$0C,$D3," ",$0C,$DE,",",$09
+000208E6 0CE6 200C AA20 0C82 200C+  	dc.b	$0C,$E6," ",$0C,$AA," ",$0C,$82," ",$0C,$D3,$09,"room on ",$0C,$D3," ",$0C,$B1,$05
+00020900 0973 6964 6520 6F66 200C+  	dc.b	$09,"side of ",$0C,$D8," ",$0C,$80,",",$09,$0C,$77," in order to",$09,$0C,$82,", ",$0C,$E6
+00020925 200C AA20 0C91 0509 0CD3+  	dc.b	" ",$0C,$AA," ",$0C,$91,$05,$09,$0C,$D3," following ",$0C,$98,":",$05,$09,$0C,$D3," ",$0C,$5B," Sw"
+00020947 6F72 642C 09               	dc.b	"ord,",$09
+0002094C 0C5B 2041 726D 6F72 2C05+  	dc.b	$0C,$5B," Armor,",$05,$09,$0C,$5B," Shield, ",$0C,$6F,$09,$0C,$5B," Boots.",$05,$09,$09,$0B,$27
 00020973                            
 00020973                            Bank020000_DialogueScriptMidBlock_020973:
-00020973                            	incbin "data/rom/bank_020000_03ffff.bin",$000973,$000001
+00020973 00                         	dc.b	$00
 00020974                            
 00020974                            Bank020000_DialogueScriptMidBlock_020974:
-00020974                            	incbin "data/rom/bank_020000_03ffff.bin",$000974,$000001
+00020974 A0                         	dc.b	$A0
 00020975                            
 00020975                            Bank020000_DialogueScriptMidBlock_020975:
-00020975                            	incbin "data/rom/bank_020000_03ffff.bin",$000975,$000001
+00020975 00                         	dc.b	$00
 00020976                            
 00020976                            Bank020000_DialogueScriptMidBlock_020976:
-00020976                            	incbin "data/rom/bank_020000_03ffff.bin",$000976,$000001
+00020976 76                         	dc.b	$76
 00020977                            
 00020977                            Bank020000_DialogueScriptMidBlock_020977:
-00020977                            	incbin "data/rom/bank_020000_03ffff.bin",$000977,$000001
+00020977 00                         	dc.b	$00
 00020978                            
 00020978                            Bank020000_DialogueScriptMidBlock_020978:
-00020978                            	incbin "data/rom/bank_020000_03ffff.bin",$000978,$000001
+00020978 57                         	dc.b	$57
 00020979                            
 00020979                            Bank020000_DialogueScriptMidBlock_020979:
-00020979                            	incbin "data/rom/bank_020000_03ffff.bin",$000979,$000001
+00020979 00                         	dc.b	$00
 0002097A                            
 0002097A                            Bank020000_DialogueScriptMidBlock_02097A:
-0002097A                            	incbin "data/rom/bank_020000_03ffff.bin",$00097A,$000001
+0002097A 30                         	dc.b	$30
 0002097B                            
 0002097B                            Bank020000_DialogueScriptMidBlock_02097B:
-0002097B                            	incbin "data/rom/bank_020000_03ffff.bin",$00097B,$000001
+0002097B 00                         	dc.b	$00
 0002097C                            
 0002097C                            ; "[more] [thank] satisfied [the] requirements." / "[more] [?] [sell]."
 0002097C                            Bank020000_DialogueScript_EquipmentRequirements_02097C:
-0002097C                            	incbin "data/rom/bank_020000_03ffff.bin",$00097C,$00002C
+0002097C 020C 6820 0C91 2073 6174+  	dc.b	$02,$0C,$68," ",$0C,$91," satisfied",$09,$0C,$D3," requirements.",$09,$0C,$68," ",$0C,$A5," ",$0C,$82,".",$05
 000209A8                            
 000209A8                            Bank020000_DialogueScriptMidBlock_0209A8:
-000209A8                            	incbin "data/rom/bank_020000_03ffff.bin",$0009A8,$000001
+000209A8 00                         	dc.b	$00
 000209A9                            
 000209A9                            ; "One of [the] [this] is missing." / "I [?] [?] [close]."
 000209A9                            Bank020000_DialogueScript_ItemMissing_0209A9:
-000209A9                            	incbin "data/rom/bank_020000_03ffff.bin",$0009A9,$000024
+000209A9 4F6E 6520 6F66 200C D320+  	dc.b	"One of ",$0C,$D3," ",$0C,$98," is",$09,"missing.",$05,$09,$0C,$49," ",$0C,$E7," ",$0C,$C0,".",$05
 000209CD                            
 000209CD                            Bank020000_DialogueScriptMidBlock_0209CD:
-000209CD                            	incbin "data/rom/bank_020000_03ffff.bin",$0009CD,$000001
+000209CD 00                         	dc.b	$00
 000209CE                            
 000209CE                            ; "[more] [?] two [?] [this]." / "I [?] [?] [close]."
 000209CE                            Bank020000_DialogueScript_TwoItems_0209CE:
-000209CE                            	incbin "data/rom/bank_020000_03ffff.bin",$0009CE,$00001C
+000209CE 0C68 200C AB20 7477 6F20+  	dc.b	$0C,$68," ",$0C,$AB," two ",$0C,$A8,$09,$0C,$98,".",$05,$09,$0C,$49," ",$0C,$E7," ",$0C,$C0,".",$05
 000209EA                            
 000209EA                            Bank020000_DialogueScriptMidBlock_0209EA:
-000209EA                            	incbin "data/rom/bank_020000_03ffff.bin",$0009EA,$000001
+000209EA 00                         	dc.b	$00
 000209EB                            
 000209EB                            ; "[more] [?] [?] [?] of [the] [?] [you] [?]." / "I [?] [?] [close]."
 000209EB                            Bank020000_DialogueScript_ThreeItems_0209EB:
-000209EB                            	incbin "data/rom/bank_020000_03ffff.bin",$0009EB,$000027
+000209EB 0C68 200C 9120 0CB0 200C+  	dc.b	$0C,$68," ",$0C,$91," ",$0C,$B0," ",$0C,$AF," of",$09,$0C,$D3," ",$0C,$88," ",$0C,$E6," ",$0C,$AB,".",$05
+00020A07 090C 4920 0CE7 200C C02E+  	dc.b	$09,$0C,$49," ",$0C,$E7," ",$0C,$C0,".",$05
 00020A12                            
 00020A12                            Bank020000_DialogueScriptMidBlock_020A12:
-00020A12                            	incbin "data/rom/bank_020000_03ffff.bin",$000A12,$000001
+00020A12 00                         	dc.b	$00
 00020A13                            
 00020A13                            Bank020000_DialogueScript_AllItems_020A13:
-00020A13                            	incbin "data/rom/bank_020000_03ffff.bin",$000A13,$000034
+00020A13 0C68 200C 9120 7965 7420+  	dc.b	$0C,$68," ",$0C,$91," yet to ",$0C,$85,$09,"even ",$0C,$AF," of ",$0C,$D3,$09,$0C,$98,".",$05
+00020A35 090C 6820 0CAA 200C 8520+  	dc.b	$09,$0C,$68," ",$0C,$AA," ",$0C,$85," ",$0C,$6D,$09,$0C,$88,".",$09,$05
 00020A47                            
 00020A47                            Bank020000_DialogueScriptMidBlock_020A47:
-00020A47                            	incbin "data/rom/bank_020000_03ffff.bin",$000A47,$000001
+00020A47 00                         	dc.b	$00
 00020A48                            
 00020A48                            ; "Gragg & Glagg!"
 00020A48                            Bank020000_DialogueScript_GraggGlagg_020A48:
-00020A48                            	incbin "data/rom/bank_020000_03ffff.bin",$000A48,$000015
+00020A48 0704 0247 7261 6767 2026+  	dc.b	$07,$04,$02,"Gragg & Glagg!",$0B,$18,$1E,$05
 00020A5D                            
 00020A5D                            Bank020000_DialogueScriptMidBlock_020A5D:
-00020A5D                            	incbin "data/rom/bank_020000_03ffff.bin",$000A5D,$000001
+00020A5D 00                         	dc.b	$00
 00020A5E                            
 00020A5E                            ; "[look] Ice Bomber!"
 00020A5E                            Bank020000_DialogueScript_IceBomber_020A5E:
-00020A5E                            	incbin "data/rom/bank_020000_03ffff.bin",$000A5E,$000015
+00020A5E 0704 010C 6220 4963 6520+  	dc.b	$07,$04,$01,$0C,$62," Ice Bomber!",$0B,$18,$1E,$05
 00020A73                            
 00020A73                            Bank020000_DialogueScriptMidBlock_020A73:
-00020A73                            	incbin "data/rom/bank_020000_03ffff.bin",$000A73,$000001
+00020A73 00                         	dc.b	$00
 00020A74                            
 00020A74                            ; "[look] Tyrant [going]!"
 00020A74                            Bank020000_DialogueScript_Tyrant_020A74:
-00020A74                            	incbin "data/rom/bank_020000_03ffff.bin",$000A74,$000014
+00020A74 0704 040C 6220 5479 7261+  	dc.b	$07,$04,$04,$0C,$62," Tyrant ",$0C,$4B,"!",$0B,$18,$1E,$05
 00020A88                            
 00020A88                            Bank020000_DialogueScriptMidBlock_020A88:
-00020A88                            	incbin "data/rom/bank_020000_03ffff.bin",$000A88,$000001
+00020A88 00                         	dc.b	$00
 00020A89                            
 00020A89                            ; "[look] Almighty Demon King!"
 00020A89                            Bank020000_DialogueScript_AlmightyDemonKing_020A89:
-00020A89                            	incbin "data/rom/bank_020000_03ffff.bin",$000A89,$00001E
+00020A89 0704 010C 6220 416C 6D69+  	dc.b	$07,$04,$01,$0C,$62," Almighty Demon King!",$0B,$18,$1E,$05
 00020AA7                            
 00020AA7                            Bank020000_DialogueScriptMidBlock_020AA7:
-00020AA7                            	incbin "data/rom/bank_020000_03ffff.bin",$000AA7,$000001
+00020AA7 00                         	dc.b	$00
 00020AA8                            
 00020AA8                            ; "I've [that] [?] [legendary] [just] in [the] Pyramid likes quizzes."
 00020AA8                            Bank020000_DialogueScript_PyramidQuizzes_020AA8:
-00020AA8                            	incbin "data/rom/bank_020000_03ffff.bin",$000AA8,$000030
+00020AA8 0C06 4927 7665 200C 9220+  	dc.b	$0C,$06,"I've ",$0C,$92," ",$0C,$D2," ",$0C,$D3,$09,$0C,$5F," in ",$0C,$D3," Pyramid",$09
+00020AC9 6C69 6B65 7320 7175 697A+  	dc.b	"likes quizzes.",$05
 00020AD8                            
 00020AD8                            Bank020000_DialogueScriptMidBlock_020AD8:
-00020AD8                            	incbin "data/rom/bank_020000_03ffff.bin",$000AD8,$000001
+00020AD8 00                         	dc.b	$00
 00020AD9                            
 00020AD9                            ; "If [you] [thank] a certain special [there], [you] [probably] swim [?]."
 00020AD9                            Bank020000_DialogueScript_SpecialItem_020AD9:
-00020AD9                            	incbin "data/rom/bank_020000_03ffff.bin",$000AD9,$000030
+00020AD9 0C06 4966 200C E620 0C91+  	dc.b	$0C,$06,"If ",$0C,$E6," ",$0C,$91," a certain",$09,"special ",$0C,$97,", ",$0C,$E6," ",$0C,$78,$09
+00020B00 7377 696D 200C DB2E 05     	dc.b	"swim ",$0C,$DB,".",$05
 00020B09                            
 00020B09                            Bank020000_DialogueScriptMidBlock_020B09:
-00020B09                            	incbin "data/rom/bank_020000_03ffff.bin",$000B09,$000001
+00020B09 00                         	dc.b	$00
 00020B0A                            
 00020B0A                            ; "[look] star crest on [the] Bell Tower is [the] same as [the] [?]..."
 00020B0A                            Bank020000_DialogueScript_BellTower_020B0A:
-00020B0A                            	incbin "data/rom/bank_020000_03ffff.bin",$000B0A,$000073
+00020B0A 0C06 0C62 2073 7461 7220+  	dc.b	$0C,$06,$0C,$62," star crest on",$09,$0C,$D8," Bell Tower is",$09,$0C,$D3," same as ",$0C,$D3,$05,$09
+00020B3D 696E 7369 676E 6961 206F+  	dc.b	"insignia on ",$0C,$D3,$09,$0C,$E1," of ",$0C,$D3,$09,$0C,$9F," ",$0C,$94,".",$05,$09,$09,$0C,$62
+00020B60 200C B720 746F 6C64 206D+  	dc.b	" ",$0C,$B7," told me",$09,$0C,$D8," a ",$0C,$A1," ",$0C,$DA," ago.",$09,$05
 00020B7D                            
 00020B7D                            Bank020000_DialogueScriptMidBlock_020B7D:
-00020B7D                            	incbin "data/rom/bank_020000_03ffff.bin",$000B7D,$000001
+00020B7D 00                         	dc.b	$00
 00020B7E                            
 00020B7E                            Bank020000_DialogueScriptMidBlock_020B7E:
-00020B7E                            	incbin "data/rom/bank_020000_03ffff.bin",$000B7E,$000005
+00020B7E 0C06 0B17 05               	dc.b	$0C,$06,$0B,$17,$05
 00020B83                            
 00020B83                            Bank020000_DialogueScriptMidBlock_020B83:
-00020B83                            	incbin "data/rom/bank_020000_03ffff.bin",$000B83,$000001
+00020B83 00                         	dc.b	$00
 00020B84                            
 00020B84                            ; "[Shion]'re [?] strong." / "I hope [?] day I'll be so strong."
 00020B84                            Bank020000_DialogueScript_Strong_020B84:
-00020B84                            	incbin "data/rom/bank_020000_03ffff.bin",$000B84,$000036
+00020B84 380C 6827 7265 200C DC20+  	dc.b	$38,$0C,$68,"'re ",$0C,$DC," strong.",$05,$09,$09,"I hope ",$0C,$AF," day I'll",$09,"be so strong.",$09,$05
 00020BBA                            
 00020BBA                            Bank020000_DialogueScriptMidBlock_020BBA:
-00020BBA                            	incbin "data/rom/bank_020000_03ffff.bin",$000BBA,$000001
+00020BBA 00                         	dc.b	$00
 00020BBB                            
 00020BBB                            ; "It is said [that] [?]'s a [?] at [the] [place] of [the] sea..."
 00020BBB                            Bank020000_DialogueScript_SeaShrineHint_020BBB:
-00020BBB                            	incbin "data/rom/bank_020000_03ffff.bin",$000BBB,$000055
+00020BBB 4974 2069 7320 7361 6964+  	dc.b	"It is said ",$0C,$D2,$09,$0C,$D7,"'s a ",$0C,$C4," at",$09,$0C,$D3," ",$0C,$75," of ",$0C,$D3,$05
+00020BE2 0909 7365 612C 200C 7720+  	dc.b	$09,$09,"sea, ",$0C,$77," no ",$0C,$AF,"'s",$09,$0C,$83," ",$0C,$72," ",$0C,$69," to",$09,$0C,$85," ",$0C,$D3
+00020C05 2065 6E74 7261 6E63 652E+  	dc.b	" entrance.",$05
 00020C10                            
 00020C10                            Bank020000_DialogueScriptMidBlock_020C10:
-00020C10                            	incbin "data/rom/bank_020000_03ffff.bin",$000C10,$000001
+00020C10 00                         	dc.b	$00
 00020C11                            
 00020C11                            ; "I am [the] Prince of DarkWorld, [one] [you] be [the]..." (boss pre-battle speech)
 00020C11                            Bank020000_DialogueScript_DarkWorldPrince_020C11:
-00020C11                            	incbin "data/rom/bank_020000_03ffff.bin",$000C11,$0000B3
+00020C11 0C06 0749 2061 6D20 0CD3+  	dc.b	$0C,$06,$07,"I am ",$0C,$D3," Prince of",$09,"DarkWorld, ",$0C,$6F," ",$0C,$E6,$09,$0C,$AA," be ",$0C,$D3,$05
+00020C40 090C 9F20 0C94 2E05 0909+  	dc.b	$09,$0C,$9F," ",$0C,$94,".",$05,$09,$09,"I ",$0C,$E0," under ",$0C,$D3,$09,"control of Biomeka,",$09
+00020C6C 6120 6465 6164 6C79 2063+  	dc.b	"a deadly creature",$05,$09,$0C,$89," outer space, ",$0C,$77,$09,"I'm alright ",$0C,$AE,".",$05
+00020CA2 0909 0C61 200C E620 0C86+  	dc.b	$09,$09,$0C,$61," ",$0C,$E6," ",$0C,$86," coming",$09,"to my aid....",$08,$09,$05
 00020CC4                            
 00020CC4                            Bank020000_DialogueScriptMidBlock_020CC4:
-00020CC4                            	incbin "data/rom/bank_020000_03ffff.bin",$000CC4,$000001
+00020CC4 00                         	dc.b	$00
 00020CC5                            
 00020CC5                            ; "Some [magic]." / "Is [that] [the] best [you] [probably] do?" / "Well, watch [?]!"
 00020CC5                            Bank020000_DialogueScript_SomeMagic_020CC5:
-00020CC5                            	incbin "data/rom/bank_020000_03ffff.bin",$000CC5,$000036
+00020CC5 0C06 0753 6F6D 6520 0C94+  	dc.b	$0C,$06,$07,"Some ",$0C,$94,".",$09,"Is ",$0C,$D2," ",$0C,$D3," best ",$0C,$E6,$09,$0C,$78," do?",$05
+00020CE9 0909 5765 6C6C 2C20 7761+  	dc.b	$09,$09,"Well, watch ",$0C,$D8,"!",$05
 00020CFB                            
 00020CFB                            Bank020000_DialogueScriptMidBlock_020CFB:
-00020CFB                            	incbin "data/rom/bank_020000_03ffff.bin",$000CFB,$000001
+00020CFB 00                         	dc.b	$00
 00020CFC                            
 00020CFC                            ; "Not too bad, eh?" / "[Shion], let's [close] if [you]'ve [sword] [?] it takes."
 00020CFC                            Bank020000_DialogueScript_NotTooBad_020CFC:
-00020CFC                            	incbin "data/rom/bank_020000_03ffff.bin",$000CFC,$00003D
+00020CFC 0C06 074E 6F74 2074 6F6F+  	dc.b	$0C,$06,$07,"Not too bad, eh?",$09,$0C,$55,", let's ",$0C,$C1," if",$09,$0C,$E6,"'ve ",$0C,$8E," ",$0C,$E3," it",$05
+00020D2F 0974 616B 6573 2E0B 2805   	dc.b	$09,"takes.",$0B,$28,$05
 00020D39                            
 00020D39                            Bank020000_DialogueScriptMidBlock_020D39:
-00020D39                            	incbin "data/rom/bank_020000_03ffff.bin",$000D39,$000001
+00020D39 00                         	dc.b	$00
 00020D3A                            
 00020D3A                            ; "[more]'re really [stock] to go, aren't [you]..." multi-string farewell block
 00020D3A                            Bank020000_DialogueScript_FarewellBlock_020D3A:
-00020D3A                            	incbin "data/rom/bank_020000_03ffff.bin",$000D3A,$000091
+00020D3A 0C06 0C68 2772 6520 7265+  	dc.b	$0C,$06,$0C,$68,"'re really ",$0C,$8B,$09,"to go,aren't ",$0C,$E6,"...",$05,$09,$09,"Can't ",$0C,$E6
+00020D69 2073 7461 7920 0CE5 096D+  	dc.b	" stay ",$0C,$E5,$09,"me?",$09,$05,$09,"No, ",$0C,$E6,"'re ",$0C,$D3,$09,$0C,$9F," ",$0C,$94,".",$09,$05
+00020D8D 090C 6820 0CAA 2067 6F2E+  	dc.b	$09,$0C,$68," ",$0C,$AA," go.",$09,$05,$09,"Be sure to ",$0C,$7D,$09,$0C,$71," ",$0C,$BE,".",$05,$09,$09
+00020DB1 4927 6C6C 2062 6520 0CDF+  	dc.b	"I'll be ",$0C,$DF," ",$0C,$BD,$09,"here ",$0C,$86," ",$0C,$E6,".",$05
 00020DCB                            
 00020DCB                            Bank020000_DialogueScriptMidBlock_020DCB:
-00020DCB                            	incbin "data/rom/bank_020000_03ffff.bin",$000DCB,$000001
+00020DCB 00                         	dc.b	$00
 00020DCC                            
 00020DCC                            Bank020000_DialogueScriptMidBlock_020DCC:
-00020DCC                            	incbin "data/rom/bank_020000_03ffff.bin",$000DCC,$000008
+00020DCC 0306 0401 070B 1736        	dc.b	$03,$06,$04,$01,$07,$0B,$17,$36
 00020DD4                            
 00020DD4                            Bank020000_DialogueScriptMidBlock_020DD4:
-00020DD4                            	incbin "data/rom/bank_020000_03ffff.bin",$000DD4,$000001
+00020DD4 00                         	dc.b	$00
 00020DD5                            
 00020DD5                            Bank020000_DialogueScriptMidBlock_020DD5:
-00020DD5                            	incbin "data/rom/bank_020000_03ffff.bin",$000DD5,$000004
+00020DD5 250B 1737                  	dc.b	$25,$0B,$17,$37
 00020DD9                            
 00020DD9                            Bank020000_DialogueScriptMidBlock_020DD9:
-00020DD9                            	incbin "data/rom/bank_020000_03ffff.bin",$000DD9,$000001
+00020DD9 00                         	dc.b	$00
 00020DDA                            
 00020DDA                            ; "[Charmstone].c's a convenient [?] slot...."
 00020DDA                            Bank020000_DialogueScript_ConvenientSlot_020DDA:
-00020DDA                            	incbin "data/rom/bank_020000_03ffff.bin",$000DDA,$00001E
+00020DDA 430C 6327 7320 6120 636F+  	dc.b	"C",$0C,$63,"'s a convenient",$02,$04,$01,"slot....",$05
 00020DF8                            
 00020DF8                            Bank020000_DialogueScriptMidBlock_020DF8:
-00020DF8                            	incbin "data/rom/bank_020000_03ffff.bin",$000DF8,$000001
+00020DF8 00                         	dc.b	$00
 00020DF9                            
 00020DF9                            ; "[?] [R] [Sphinx] inserts [the] [?] Gold Gem."
 00020DF9                            Bank020000_DialogueScript_InsertGoldGem_020DF9:
-00020DF9                            	incbin "data/rom/bank_020000_03ffff.bin",$000DF9,$000022
+00020DF9 0B14 520C 5E20 696E 7365+  	dc.b	$0B,$14,$52,$0C,$5E," inserts ",$0C,$D3,$02,$04,$01,"Gold Gem.",$0B,$0A,$36,$0B,$29,$05
 00020E1B                            
 00020E1B                            Bank020000_DialogueScriptMidBlock_020E1B:
-00020E1B                            	incbin "data/rom/bank_020000_03ffff.bin",$000E1B,$000001
+00020E1B 00                         	dc.b	$00
 00020E1C                            
 00020E1C                            ; "[look] Gem doesn't fit!"
 00020E1C                            Bank020000_DialogueScript_GemDoesntFit_020E1C:
-00020E1C                            	incbin "data/rom/bank_020000_03ffff.bin",$000E1C,$000014
+00020E1C 0C62 2047 656D 2064 6F65+  	dc.b	$0C,$62," Gem doesn't fit!",$05
 00020E30                            
 00020E30                            Bank020000_DialogueScriptMidBlock_020E30:
-00020E30                            	incbin "data/rom/bank_020000_03ffff.bin",$000E30,$000001
+00020E30 00                         	dc.b	$00
 00020E31                            
 00020E31                            Bank020000_DialogueScriptMidBlock_020E31:
-00020E31                            	incbin "data/rom/bank_020000_03ffff.bin",$000E31,$000008
+00020E31 0306 0401 070B 1737        	dc.b	$03,$06,$04,$01,$07,$0B,$17,$37
 00020E39                            
 00020E39                            Bank020000_DialogueScriptMidBlock_020E39:
-00020E39                            	incbin "data/rom/bank_020000_03ffff.bin",$000E39,$000001
+00020E39 00                         	dc.b	$00
 00020E3A                            
 00020E3A                            ; Tail fragment: "[?][R][Sphinx] ins[erts...]" (continues into front_records_b)
 00020E3A                            Bank020000_DialogueScriptMidBlock_020E3A:
-00020E3A                            	incbin "data/rom/bank_020000_03ffff.bin",$000E3A,$000012
-00020E3A                            	incbin "data/rom/bank_020000_03ffff.bin",$000E3A,$000012
+00020E3A 0A0B 1736 FFDE 06FF 9A0B+  	dc.b	$0A,$0B,$17,$36,$FF,$DE,$06,$FF,$9A,$0B,$14,$53,$0C,$5E," ins"
+00020E3A 0A0B 1736 FFDE 06FF 9A0B+  	dc.b	$0A,$0B,$17,$36,$FF,$DE,$06,$FF,$9A,$0B,$14,$53,$0C,$5E," ins"
 00020E4C                            
 00020E4C                            Bank020000_BankRelativeTextRecordFamilyB_020E4C:
-00020E4C                            	include "src/bank020000/front_records_b.asm"
+00020E4C                            	include "src/text_bank/text_record_group_b.asm"
 00020E4C                            ; ROM range: 0x020E4C-0x0211C9
 00020E4C                            ; ROM-order record slices proven directly by Bank020000_BankRelativeTextOffsetTableB_021258.
 00020E4C                            ; These records also mix text fragments with undecoded control bytes, so keep the names
 00020E4C                            ; structural until the consumer and record format are recovered.
 00020E4C                            
 00020E4C                            Bank020000_BankRelativeTextRecordB_020E4C:
-00020E4C                            	incbin "data/rom/bank_020000_03ffff.bin",$000E4C,$000007
+00020E4C 6572 7473 200C D3          	dc.b	"erts ",$0C,$D3
 00020E53                            
 00020E53                            Bank020000_BankRelativeTextRecordB_020E53:
-00020E53                            	incbin "data/rom/bank_020000_03ffff.bin",$000E53,$000007
+00020E53 0204 0142 6C75 65          	dc.b	$02,$04,$01,"Blue"
 00020E5A                            
 00020E5A                            Bank020000_BankRelativeTextRecordB_020E5A:
-00020E5A                            	incbin "data/rom/bank_020000_03ffff.bin",$000E5A,$000004
+00020E5A 2047 656D                  	dc.b	" Gem"
 00020E5E                            
 00020E5E                            Bank020000_BankRelativeTextRecordB_020E5E:
-00020E5E                            	incbin "data/rom/bank_020000_03ffff.bin",$000E5E,$00000B
+00020E5E 2E0B 0A37 0B29 0500 0C06+  	dc.b	".",$0B,$0A,$37,$0B,$29,$05,$00,$0C,$06,"A"
 00020E69                            
 00020E69                            Bank020000_BankRelativeTextRecordB_020E69:
-00020E69                            	incbin "data/rom/bank_020000_03ffff.bin",$000E69,$000009
+00020E69 2073 6563 7265 7420 6C     	dc.b	" secret l"
 00020E72                            
 00020E72                            Bank020000_BankRelativeTextRecordB_020E72:
-00020E72                            	incbin "data/rom/bank_020000_03ffff.bin",$000E72,$000007
+00020E72 6965 7320 696E 20          	dc.b	"ies in "
 00020E79                            
 00020E79                            Bank020000_BankRelativeTextRecordB_020E79:
-00020E79                            	incbin "data/rom/bank_020000_03ffff.bin",$000E79,$00000B
+00020E79 0CD3 0973 7572 6661 6365+  	dc.b	$0C,$D3,$09,"surface "
 00020E84                            
 00020E84                            Bank020000_BankRelativeTextRecordB_020E84:
-00020E84                            	incbin "data/rom/bank_020000_03ffff.bin",$000E84,$00000C
+00020E84 6F66 200C D320 7761 6C6C+  	dc.b	"of ",$0C,$D3," walls",$09
 00020E90                            
 00020E90                            Bank020000_BankRelativeTextRecordB_020E90:
-00020E90                            	incbin "data/rom/bank_020000_03ffff.bin",$000E90,$000005
+00020E90 6F66 2049 63               	dc.b	"of Ic"
 00020E95                            
 00020E95                            Bank020000_BankRelativeTextRecordB_020E95:
-00020E95                            	incbin "data/rom/bank_020000_03ffff.bin",$000E95,$000009
+00020E95 6520 0C45 2E05 000C 06     	dc.b	"e ",$0C,$45,".",$05,$00,$0C,$06
 00020E9E                            
 00020E9E                            Bank020000_BankRelativeTextRecordB_020E9E:
-00020E9E                            	incbin "data/rom/bank_020000_03ffff.bin",$000E9E,$000007
+00020E9E 0B12 4400 2244 6F          	dc.b	$0B,$12,$44,$00,$22,"Do"
 00020EA5                            
 00020EA5                            Bank020000_BankRelativeTextRecordB_020EA5:
-00020EA5                            	incbin "data/rom/bank_020000_03ffff.bin",$000EA5,$000007
+00020EA5 200C E620 0C9D 20          	dc.b	" ",$0C,$E6," ",$0C,$9D," "
 00020EAC                            
 00020EAC                            Bank020000_BankRelativeTextRecordB_020EAC:
-00020EAC                            	incbin "data/rom/bank_020000_03ffff.bin",$000EAC,$000006
+00020EAC 7768 6572 6520             	dc.b	"where "
 00020EB2                            
 00020EB2                            Bank020000_BankRelativeTextRecordB_020EB2:
-00020EB2                            	incbin "data/rom/bank_020000_03ffff.bin",$000EB2,$000009
+00020EB2 0CD3 0970 7269 6E63 65     	dc.b	$0C,$D3,$09,"prince"
 00020EBB                            
 00020EBB                            Bank020000_BankRelativeTextRecordB_020EBB:
-00020EBB                            	incbin "data/rom/bank_020000_03ffff.bin",$000EBB,$000005
+00020EBB 2077 656E 74               	dc.b	" went"
 00020EC0                            
 00020EC0                            Bank020000_BankRelativeTextRecordB_020EC0:
-00020EC0                            	incbin "data/rom/bank_020000_03ffff.bin",$000EC0,$000005
+00020EC0 3F05 000B 12               	dc.b	"?",$05,$00,$0B,$12
 00020EC5                            
 00020EC5                            Bank020000_BankRelativeTextRecordB_020EC5:
-00020EC5                            	incbin "data/rom/bank_020000_03ffff.bin",$000EC5,$000005
+00020EC5 4E00 2649 20               	dc.b	$4E,$00,$26,"I "
 00020ECA                            
 00020ECA                            Bank020000_BankRelativeTextRecordB_020ECA:
-00020ECA                            	incbin "data/rom/bank_020000_03ffff.bin",$000ECA,$000008
+00020ECA 7468 696E 6B20 6865        	dc.b	"think he"
 00020ED2                            
 00020ED2                            Bank020000_BankRelativeTextRecordB_020ED2:
-00020ED2                            	incbin "data/rom/bank_020000_03ffff.bin",$000ED2,$000006
+00020ED2 2773 2067 6F6E             	dc.b	"'s gon"
 00020ED8                            
 00020ED8                            Bank020000_BankRelativeTextRecordB_020ED8:
-00020ED8                            	incbin "data/rom/bank_020000_03ffff.bin",$000ED8,$000008
+00020ED8 6509 746F 204E 6967        	dc.b	"e",$09,"to Nig"
 00020EE0                            
 00020EE0                            Bank020000_BankRelativeTextRecordB_020EE0:
-00020EE0                            	incbin "data/rom/bank_020000_03ffff.bin",$000EE0,$000008
+00020EE0 6874 6D61 7265 200C        	dc.b	"htmare ",$0C
 00020EE8                            
 00020EE8                            Bank020000_BankRelativeTextRecordB_020EE8:
-00020EE8                            	incbin "data/rom/bank_020000_03ffff.bin",$000EE8,$000004
+00020EE8 452E 0500                  	dc.b	$45,".",$05,$00
 00020EEC                            
 00020EEC                            Bank020000_BankRelativeTextRecordB_020EEC:
-00020EEC                            	incbin "data/rom/bank_020000_03ffff.bin",$000EEC,$000008
+00020EEC 4865 2773 200C B809        	dc.b	"He's ",$0C,$B8,$09
 00020EF4                            
 00020EF4                            Bank020000_BankRelativeTextRecordB_020EF4:
-00020EF4                            	incbin "data/rom/bank_020000_03ffff.bin",$000EF4,$000007
+00020EF4 6174 7465 6D70 74          	dc.b	"attempt"
 00020EFB                            
 00020EFB                            Bank020000_BankRelativeTextRecordB_020EFB:
-00020EFB                            	incbin "data/rom/bank_020000_03ffff.bin",$000EFB,$000009
+00020EFB 696E 6720 746F 2063 6F     	dc.b	"ing to co"
 00020F04                            
 00020F04                            Bank020000_BankRelativeTextRecordB_020F04:
-00020F04                            	incbin "data/rom/bank_020000_03ffff.bin",$000F04,$00000A
+00020F04 6C6C 6563 7409 0CD3 200C   	dc.b	"llect",$09,$0C,$D3," ",$0C
 00020F0E                            
 00020F0E                            Bank020000_BankRelativeTextRecordB_020F0E:
-00020F0E                            	incbin "data/rom/bank_020000_03ffff.bin",$000F0E,$000009
+00020F0E 9F05 0977 6561 706F 6E     	dc.b	$9F,$05,$09,"weapon"
 00020F17                            
 00020F17                            Bank020000_BankRelativeTextRecordB_020F17:
-00020F17                            	incbin "data/rom/bank_020000_03ffff.bin",$000F17,$000006
+00020F17 732E 0509 0949             	dc.b	"s.",$05,$09,$09,"I"
 00020F1D                            
 00020F1D                            Bank020000_BankRelativeTextRecordB_020F1D:
-00020F1D                            	incbin "data/rom/bank_020000_03ffff.bin",$000F1D,$000006
+00020F1D 7420 0CA3 2061             	dc.b	"t ",$0C,$A3," a"
 00020F23                            
 00020F23                            Bank020000_BankRelativeTextRecordB_020F23:
-00020F23                            	incbin "data/rom/bank_020000_03ffff.bin",$000F23,$000009
+00020F23 7320 0CD9 0968 6527 73     	dc.b	"s ",$0C,$D9,$09,"he's"
 00020F2C                            
 00020F2C                            Bank020000_BankRelativeTextRecordB_020F2C:
-00020F2C                            	incbin "data/rom/bank_020000_03ffff.bin",$000F2C,$000006
+00020F2C 200C 8E20 0C6D             	dc.b	" ",$0C,$8E," ",$0C,$6D
 00020F32                            
 00020F32                            Bank020000_BankRelativeTextRecordB_020F32:
-00020F32                            	incbin "data/rom/bank_020000_03ffff.bin",$000F32,$000007
+00020F32 200C 7720 0CAF 09          	dc.b	" ",$0C,$77," ",$0C,$AF,$09
 00020F39                            
 00020F39                            Bank020000_BankRelativeTextRecordB_020F39:
-00020F39                            	incbin "data/rom/bank_020000_03ffff.bin",$000F39,$000005
+00020F39 6F66 200C D5               	dc.b	"of ",$0C,$D5
 00020F3E                            
 00020F3E                            Bank020000_BankRelativeTextRecordB_020F3E:
-00020F3E                            	incbin "data/rom/bank_020000_03ffff.bin",$000F3E,$000006
+00020F3E 2E2E 2E05 0007             	dc.b	"...",$05,$00,$07
 00020F44                            
 00020F44                            Bank020000_BankRelativeTextRecordB_020F44:
-00020F44                            	incbin "data/rom/bank_020000_03ffff.bin",$000F44,$000004
+00020F44 0402 0306                  	dc.b	$04,$02,$03,$06
 00020F48                            
 00020F48                            Bank020000_BankRelativeTextRecordB_020F48:
-00020F48                            	incbin "data/rom/bank_020000_03ffff.bin",$000F48,$000006
+00020F48 4974 2773 2073             	dc.b	"It's s"
 00020F4E                            
 00020F4E                            Bank020000_BankRelativeTextRecordB_020F4E:
-00020F4E                            	incbin "data/rom/bank_020000_03ffff.bin",$000F4E,$000005
+00020F4E 6561 6C65 64               	dc.b	"ealed"
 00020F53                            
 00020F53                            Bank020000_BankRelativeTextRecordB_020F53:
-00020F53                            	incbin "data/rom/bank_020000_03ffff.bin",$000F53,$000008
+00020F53 2E05 0007 0306 0C68        	dc.b	".",$05,$00,$07,$03,$06,$0C,$68
 00020F5B                            
 00020F5B                            Bank020000_BankRelativeTextRecordB_020F5B:
-00020F5B                            	incbin "data/rom/bank_020000_03ffff.bin",$000F5B,$000005
+00020F5B 200C 7820 72               	dc.b	" ",$0C,$78," r"
 00020F60                            
 00020F60                            Bank020000_BankRelativeTextRecordB_020F60:
-00020F60                            	incbin "data/rom/bank_020000_03ffff.bin",$000F60,$000006
+00020F60 6964 6520 6120             	dc.b	"ide a "
 00020F66                            
 00020F66                            Bank020000_BankRelativeTextRecordB_020F66:
-00020F66                            	incbin "data/rom/bank_020000_03ffff.bin",$000F66,$000004
+00020F66 0C99 2105                  	dc.b	$0C,$99,"!",$05
 00020F6A                            
 00020F6A                            Bank020000_BankRelativeTextRecordB_020F6A:
-00020F6A                            	incbin "data/rom/bank_020000_03ffff.bin",$000F6A,$000005
+00020F6A 000A 0203 06               	dc.b	$00,$0A,$02,$03,$06
 00020F6F                            
 00020F6F                            Bank020000_BankRelativeTextRecordB_020F6F:
-00020F6F                            	incbin "data/rom/bank_020000_03ffff.bin",$000F6F,$000006
+00020F6F 0402 0C62 200C             	dc.b	$04,$02,$0C,$62," ",$0C
 00020F75                            
 00020F75                            Bank020000_BankRelativeTextRecordB_020F75:
-00020F75                            	incbin "data/rom/bank_020000_03ffff.bin",$000F75,$000006
+00020F75 A720 0C91 090C             	dc.b	$A7," ",$0C,$91,$09,$0C
 00020F7B                            
 00020F7B                            Bank020000_BankRelativeTextRecordB_020F7B:
-00020F7B                            	incbin "data/rom/bank_020000_03ffff.bin",$000F7B,$000006
+00020F7B 7D20 0C6F 206D             	dc.b	$7D," ",$0C,$6F," m"
 00020F81                            
 00020F81                            Bank020000_BankRelativeTextRecordB_020F81:
-00020F81                            	incbin "data/rom/bank_020000_03ffff.bin",$000F81,$000004
+00020F81 6164 6520                  	dc.b	"ade "
 00020F85                            
 00020F85                            Bank020000_BankRelativeTextRecordB_020F85:
-00020F85                            	incbin "data/rom/bank_020000_03ffff.bin",$000F85,$000008
+00020F85 0CD8 090C D420 686F        	dc.b	$0C,$D8,$09,$0C,$D4," ho"
 00020F8D                            
 00020F8D                            Bank020000_BankRelativeTextRecordB_020F8D:
-00020F8D                            	incbin "data/rom/bank_020000_03ffff.bin",$000F8D,$000004
+00020F8D 6D65 2C20                  	dc.b	"me, "
 00020F91                            
 00020F91                            Bank020000_BankRelativeTextRecordB_020F91:
-00020F91                            	incbin "data/rom/bank_020000_03ffff.bin",$000F91,$000009
+00020F91 736F 206E 6F20 0CAF 05     	dc.b	"so no ",$0C,$AF,$05
 00020F9A                            
 00020F9A                            Bank020000_BankRelativeTextRecordB_020F9A:
-00020F9A                            	incbin "data/rom/bank_020000_03ffff.bin",$000F9A,$000005
+00020F9A 090C A520 0C               	dc.b	$09,$0C,$A5," ",$0C
 00020F9F                            
 00020F9F                            Bank020000_BankRelativeTextRecordB_020F9F:
-00020F9F                            	incbin "data/rom/bank_020000_03ffff.bin",$000F9F,$000005
+00020F9F 8221 0500 07               	dc.b	$82,"!",$05,$00,$07
 00020FA4                            
 00020FA4                            Bank020000_BankRelativeTextRecordB_020FA4:
-00020FA4                            	incbin "data/rom/bank_020000_03ffff.bin",$000FA4,$000007
+00020FA4 0A02 0308 0402 46          	dc.b	$0A,$02,$03,$08,$04,$02,"F"
 00020FAB                            
 00020FAB                            Bank020000_BankRelativeTextRecordB_020FAB:
-00020FAB                            	incbin "data/rom/bank_020000_03ffff.bin",$000FAB,$000007
+00020FAB 696E 616C 6C79 2C          	dc.b	"inally,"
 00020FB2                            
 00020FB2                            Bank020000_BankRelativeTextRecordB_020FB2:
-00020FB2                            	incbin "data/rom/bank_020000_03ffff.bin",$000FB2,$000007
+00020FB2 200C D320 0CA1 2C          	dc.b	" ",$0C,$D3," ",$0C,$A1,","
 00020FB9                            
 00020FB9                            Bank020000_BankRelativeTextRecordB_020FB9:
-00020FB9                            	incbin "data/rom/bank_020000_03ffff.bin",$000FB9,$000008
+00020FB9 0974 7265 6163 6865        	dc.b	$09,"treache"
 00020FC1                            
 00020FC1                            Bank020000_BankRelativeTextRecordB_020FC1:
-00020FC1                            	incbin "data/rom/bank_020000_03ffff.bin",$000FC1,$000004
+00020FC1 726F 7573                  	dc.b	"rous"
 00020FC5                            
 00020FC5                            Bank020000_BankRelativeTextRecordB_020FC5:
-00020FC5                            	incbin "data/rom/bank_020000_03ffff.bin",$000FC5,$000004
+00020FC5 200C 9A09                  	dc.b	" ",$0C,$9A,$09
 00020FC9                            
 00020FC9                            Bank020000_BankRelativeTextRecordB_020FC9:
-00020FC9                            	incbin "data/rom/bank_020000_03ffff.bin",$000FC9,$000007
+00020FC9 0C90 2072 6561 63          	dc.b	$0C,$90," reac"
 00020FD0                            
 00020FD0                            Bank020000_BankRelativeTextRecordB_020FD0:
-00020FD0                            	incbin "data/rom/bank_020000_03ffff.bin",$000FD0,$000005
+00020FD0 6865 6420 69               	dc.b	"hed i"
 00020FD5                            
 00020FD5                            Bank020000_BankRelativeTextRecordB_020FD5:
-00020FD5                            	incbin "data/rom/bank_020000_03ffff.bin",$000FD5,$000006
+00020FD5 7473 2065 6E64             	dc.b	"ts end"
 00020FDB                            
 00020FDB                            Bank020000_BankRelativeTextRecordB_020FDB:
-00020FDB                            	incbin "data/rom/bank_020000_03ffff.bin",$000FDB,$000007
+00020FDB 2E0B 1848 0007 0A          	dc.b	".",$0B,$18,"H",$00,$07,$0A
 00020FE2                            
 00020FE2                            Bank020000_BankRelativeTextRecordB_020FE2:
-00020FE2                            	incbin "data/rom/bank_020000_03ffff.bin",$000FE2,$000005
+00020FE2 0203 0804 02               	dc.b	$02,$03,$08,$04,$02
 00020FE7                            
 00020FE7                            Bank020000_BankRelativeTextRecordB_020FE7:
-00020FE7                            	incbin "data/rom/bank_020000_03ffff.bin",$000FE7,$000007
+00020FE7 4E6F 6E65 206F 66          	dc.b	"None of"
 00020FEE                            
 00020FEE                            Bank020000_BankRelativeTextRecordB_020FEE:
-00020FEE                            	incbin "data/rom/bank_020000_03ffff.bin",$000FEE,$000004
+00020FEE 200C D320                  	dc.b	" ",$0C,$D3," "
 00020FF2                            
 00020FF2                            Bank020000_BankRelativeTextRecordB_020FF2:
-00020FF2                            	incbin "data/rom/bank_020000_03ffff.bin",$000FF2,$000005
+00020FF2 0CB4 2069 6E               	dc.b	$0C,$B4," in"
 00020FF7                            
 00020FF7                            Bank020000_BankRelativeTextRecordB_020FF7:
-00020FF7                            	incbin "data/rom/bank_020000_03ffff.bin",$000FF7,$000006
+00020FF7 090C 5420 0C67             	dc.b	$09,$0C,$54," ",$0C,$67
 00020FFD                            
 00020FFD                            Bank020000_BankRelativeTextRecordB_020FFD:
-00020FFD                            	incbin "data/rom/bank_020000_03ffff.bin",$000FFD,$000006
+00020FFD 200C E409 0C83             	dc.b	" ",$0C,$E4,$09,$0C,$83
 00021003                            
 00021003                            Bank020000_BankRelativeTextRecordB_021003:
-00021003                            	incbin "data/rom/bank_020000_03ffff.bin",$001003,$000005
+00021003 200C 8720 0C               	dc.b	" ",$0C,$87," ",$0C
 00021008                            
 00021008                            Bank020000_BankRelativeTextRecordB_021008:
-00021008                            	incbin "data/rom/bank_020000_03ffff.bin",$001008,$00000B
+00021008 E309 7468 6579 2776 6520+  	dc.b	$E3,$09,"they've ",$0C
 00021013                            
 00021013                            Bank020000_BankRelativeTextRecordB_021013:
-00021013                            	incbin "data/rom/bank_020000_03ffff.bin",$001013,$000005
+00021013 7220 7468 72               	dc.b	"r thr"
 00021018                            
 00021018                            Bank020000_BankRelativeTextRecordB_021018:
-00021018                            	incbin "data/rom/bank_020000_03ffff.bin",$001018,$000004
+00021018 6F75 6768                  	dc.b	"ough"
 0002101C                            
 0002101C                            Bank020000_BankRelativeTextRecordB_02101C:
-0002101C                            	incbin "data/rom/bank_020000_03ffff.bin",$00101C,$000007
+0002101C 2C0B 1848 0007 0A          	dc.b	",",$0B,$18,"H",$00,$07,$0A
 00021023                            
 00021023                            Bank020000_BankRelativeTextRecordB_021023:
-00021023                            	incbin "data/rom/bank_020000_03ffff.bin",$001023,$000005
+00021023 0203 0804 02               	dc.b	$02,$03,$08,$04,$02
 00021028                            
 00021028                            Bank020000_BankRelativeTextRecordB_021028:
-00021028                            	incbin "data/rom/bank_020000_03ffff.bin",$001028,$000005
+00021028 6E6F 7220 0C               	dc.b	"nor ",$0C
 0002102D                            
 0002102D                            Bank020000_BankRelativeTextRecordB_02102D:
-0002102D                            	incbin "data/rom/bank_020000_03ffff.bin",$00102D,$00000B
+0002102D E420 7468 6579 200C 8709+  	dc.b	$E4," they ",$0C,$87,$09,$0C
 00021038                            
 00021038                            Bank020000_BankRelativeTextRecordB_021038:
-00021038                            	incbin "data/rom/bank_020000_03ffff.bin",$001038,$000006
+00021038 D320 0C94 2077             	dc.b	$D3," ",$0C,$94," w"
 0002103E                            
 0002103E                            Bank020000_BankRelativeTextRecordB_02103E:
-0002103E                            	incbin "data/rom/bank_020000_03ffff.bin",$00103E,$000006
+0002103E 686F 2067 6176             	dc.b	"ho gav"
 00021044                            
 00021044                            Bank020000_BankRelativeTextRecordB_021044:
-00021044                            	incbin "data/rom/bank_020000_03ffff.bin",$001044,$000005
+00021044 6509 0CD4 20               	dc.b	"e",$09,$0C,$D4," "
 00021049                            
 00021049                            Bank020000_BankRelativeTextRecordB_021049:
-00021049                            	incbin "data/rom/bank_020000_03ffff.bin",$001049,$000004
+00021049 6C69 7665                  	dc.b	"live"
 0002104D                            
 0002104D                            Bank020000_BankRelativeTextRecordB_02104D:
-0002104D                            	incbin "data/rom/bank_020000_03ffff.bin",$00104D,$000009
+0002104D 7320 0C71 2074 6F09 0C     	dc.b	"s ",$0C,$71," to",$09,$0C
 00021056                            
 00021056                            Bank020000_BankRelativeTextRecordB_021056:
-00021056                            	incbin "data/rom/bank_020000_03ffff.bin",$001056,$000004
+00021056 D52E 0B18                  	dc.b	$D5,".",$0B,$18
 0002105A                            
 0002105A                            Bank020000_BankRelativeTextRecordB_02105A:
-0002105A                            	incbin "data/rom/bank_020000_03ffff.bin",$00105A,$000005
+0002105A 4800 070A 02               	dc.b	"H",$00,$07,$0A,$02
 0002105F                            
 0002105F                            Bank020000_BankRelativeTextRecordB_02105F:
-0002105F                            	incbin "data/rom/bank_020000_03ffff.bin",$00105F,$000006
+0002105F 0308 0402 0C62             	dc.b	$03,$08,$04,$02,$0C,$62
 00021065                            
 00021065                            Bank020000_BankRelativeTextRecordB_021065:
-00021065                            	incbin "data/rom/bank_020000_03ffff.bin",$001065,$000005
+00021065 2073 746F 72               	dc.b	" stor"
 0002106A                            
 0002106A                            Bank020000_BankRelativeTextRecordB_02106A:
-0002106A                            	incbin "data/rom/bank_020000_03ffff.bin",$00106A,$000005
+0002106A 7920 6F66 20               	dc.b	"y of "
 0002106F                            
 0002106F                            Bank020000_BankRelativeTextRecordB_02106F:
-0002106F                            	incbin "data/rom/bank_020000_03ffff.bin",$00106F,$000007
+0002106F 0C5E 2773 0976 61          	dc.b	$0C,$5E,"'s",$09,"va"
 00021076                            
 00021076                            Bank020000_BankRelativeTextRecordB_021076:
-00021076                            	incbin "data/rom/bank_020000_03ffff.bin",$001076,$000009
+00021076 6C69 616E 7420 7374 72     	dc.b	"liant str"
 0002107F                            
 0002107F                            Bank020000_BankRelativeTextRecordB_02107F:
-0002107F                            	incbin "data/rom/bank_020000_03ffff.bin",$00107F,$000005
+0002107F 7567 676C 65               	dc.b	"uggle"
 00021084                            
 00021084                            Bank020000_BankRelativeTextRecordB_021084:
-00021084                            	incbin "data/rom/bank_020000_03ffff.bin",$001084,$000006
+00021084 090C E420 6E6F             	dc.b	$09,$0C,$E4," no"
 0002108A                            
 0002108A                            Bank020000_BankRelativeTextRecordB_02108A:
-0002108A                            	incbin "data/rom/bank_020000_03ffff.bin",$00108A,$00000A
+0002108A 2064 6F75 6274 2062 6509   	dc.b	" doubt be",$09
 00021094                            
 00021094                            Bank020000_BankRelativeTextRecordB_021094:
-00021094                            	incbin "data/rom/bank_020000_03ffff.bin",$001094,$000008
+00021094 7061 7373 6564 206F        	dc.b	"passed o"
 0002109C                            
 0002109C                            Bank020000_BankRelativeTextRecordB_02109C:
-0002109C                            	incbin "data/rom/bank_020000_03ffff.bin",$00109C,$000005
+0002109C 6E20 0C89 09               	dc.b	"n ",$0C,$89,$09
 000210A1                            
 000210A1                            Bank020000_BankRelativeTextRecordB_0210A1:
-000210A1                            	incbin "data/rom/bank_020000_03ffff.bin",$0010A1,$00000A
+000210A1 0C8A 2074 6F09 0C8A 2E0B   	dc.b	$0C,$8A," to",$09,$0C,$8A,".",$0B
 000210AB                            
 000210AB                            Bank020000_BankRelativeTextRecordB_0210AB:
-000210AB                            	incbin "data/rom/bank_020000_03ffff.bin",$0010AB,$000005
+000210AB 1848 0007 0A               	dc.b	$18,"H",$00,$07,$0A
 000210B0                            
 000210B0                            Bank020000_BankRelativeTextRecordB_0210B0:
-000210B0                            	incbin "data/rom/bank_020000_03ffff.bin",$0010B0,$000005
+000210B0 0203 0604 02               	dc.b	$02,$03,$06,$04,$02
 000210B5                            
 000210B5                            Bank020000_BankRelativeTextRecordB_0210B5:
-000210B5                            	incbin "data/rom/bank_020000_03ffff.bin",$0010B5,$00000A
+000210B5 416E 6420 736F 2065 6E64   	dc.b	"And so end"
 000210BF                            
 000210BF                            Bank020000_BankRelativeTextRecordB_0210BF:
-000210BF                            	incbin "data/rom/bank_020000_03ffff.bin",$0010BF,$000005
+000210BF 7320 616E 6F               	dc.b	"s ano"
 000210C4                            
 000210C4                            Bank020000_BankRelativeTextRecordB_0210C4:
-000210C4                            	incbin "data/rom/bank_020000_03ffff.bin",$0010C4,$000005
+000210C4 7468 6572 09               	dc.b	"ther",$09
 000210C9                            
 000210C9                            Bank020000_BankRelativeTextRecordB_0210C9:
-000210C9                            	incbin "data/rom/bank_020000_03ffff.bin",$0010C9,$000005
+000210C9 6570 6973 6F               	dc.b	"episo"
 000210CE                            
 000210CE                            Bank020000_BankRelativeTextRecordB_0210CE:
-000210CE                            	incbin "data/rom/bank_020000_03ffff.bin",$0010CE,$000006
+000210CE 6465 2069 6E20             	dc.b	"de in "
 000210D4                            
 000210D4                            Bank020000_BankRelativeTextRecordB_0210D4:
-000210D4                            	incbin "data/rom/bank_020000_03ffff.bin",$0010D4,$000006
+000210D4 0CD3 0961 6476             	dc.b	$0C,$D3,$09,"adv"
 000210DA                            
 000210DA                            Bank020000_BankRelativeTextRecordB_0210DA:
-000210DA                            	incbin "data/rom/bank_020000_03ffff.bin",$0010DA,$000004
-000210DE                            
-000210DE                            Bank020000_BankRelativeTextRecordB_0210DE:
-000210DE                            	incbin "data/rom/bank_020000_03ffff.bin",$0010DE,$000009
-000210E7                            
-000210E7                            Bank020000_BankRelativeTextRecordB_0210E7:
-000210E7                            	incbin "data/rom/bank_020000_03ffff.bin",$0010E7,$000009
-000210F0                            
-000210F0                            Bank020000_BankRelativeTextRecordB_0210F0:
-000210F0                            	incbin "data/rom/bank_020000_03ffff.bin",$0010F0,$000005
-000210F5                            
-000210F5                            Bank020000_BankRelativeTextRecordB_0210F5:
-000210F5                            	incbin "data/rom/bank_020000_03ffff.bin",$0010F5,$000005
-000210FA                            
-000210FA                            Bank020000_BankRelativeTextRecordB_0210FA:
-000210FA                            	incbin "data/rom/bank_020000_03ffff.bin",$0010FA,$000005
-000210FF                            
-000210FF                            Bank020000_BankRelativeTextRecordB_0210FF:
-000210FF                            	incbin "data/rom/bank_020000_03ffff.bin",$0010FF,$000005
-00021104                            
-00021104                            Bank020000_BankRelativeTextRecordB_021104:
-00021104                            	incbin "data/rom/bank_020000_03ffff.bin",$001104,$000004
+000210DA 656E 74                    	dc.b	"ent"
+000210DD                            
+000210DD                            Bank020000_BankRelativeTextRecordB_0210DE:
+000210DD 7572 6573 206F 6609 2257+  	dc.b	"ures ","of",$09,$22,"Wo"
+000210E8                            
+000210E8                            Bank020000_BankRelativeTextRecordB_0210E7:
+000210E8 6E64 6572 2042 6F79 22     	dc.b	"nder Boy",$22
+000210F1                            
+000210F1                            Bank020000_BankRelativeTextRecordB_0210F0:
+000210F1 2E0B 1848 00               	dc.b	".",$0B,$18,"H",$00
+000210F6                            
+000210F6                            Bank020000_BankRelativeTextRecordB_0210F5:
+000210F6 070C 060C 65               	dc.b	$07,$0C,$06,$0C,$65
+000210FB                            
+000210FB                            Bank020000_BankRelativeTextRecordB_0210FA:
+000210FB 2068 6F6D 65               	dc.b	" home"
+00021100                            
+00021100                            Bank020000_BankRelativeTextRecordB_0210FF:
+00021100 2C20 0C5E 2E               	dc.b	", ",$0C,$5E,"."
+00021105                            
+00021105                            Bank020000_BankRelativeTextRecordB_021104:
+00021105 0949 27                    	dc.b	$09,"I'"
 00021108                            
 00021108                            Bank020000_BankRelativeTextRecordB_021108:
-00021108                            	incbin "data/rom/bank_020000_03ffff.bin",$001108,$000008
+00021108 6D20 736F 2068 6170        	dc.b	"m so hap"
 00021110                            
 00021110                            Bank020000_BankRelativeTextRecordB_021110:
-00021110                            	incbin "data/rom/bank_020000_03ffff.bin",$001110,$000004
+00021110 7079 200C                  	dc.b	"py ",$0C
 00021114                            
 00021114                            Bank020000_BankRelativeTextRecordB_021114:
-00021114                            	incbin "data/rom/bank_020000_03ffff.bin",$001114,$000004
+00021114 E620 6D61                  	dc.b	$E6," ma"
 00021118                            
 00021118                            Bank020000_BankRelativeTextRecordB_021118:
-00021118                            	incbin "data/rom/bank_020000_03ffff.bin",$001118,$000005
+00021118 6465 0969 74               	dc.b	"de",$09,"it"
 0002111D                            
 0002111D                            Bank020000_BankRelativeTextRecordB_02111D:
-0002111D                            	incbin "data/rom/bank_020000_03ffff.bin",$00111D,$000006
+0002111D 200C 7120 0CBE             	dc.b	" ",$0C,$71," ",$0C,$BE
 00021123                            
 00021123                            Bank020000_BankRelativeTextRecordB_021123:
-00021123                            	incbin "data/rom/bank_020000_03ffff.bin",$001123,$000004
+00021123 2E09 4920                  	dc.b	".",$09,"I "
 00021127                            
 00021127                            Bank020000_BankRelativeTextRecordB_021127:
-00021127                            	incbin "data/rom/bank_020000_03ffff.bin",$001127,$000009
+00021127 0C7F 2774 2074 6869 6E     	dc.b	$0C,$7F,"'t thin"
 00021130                            
 00021130                            Bank020000_BankRelativeTextRecordB_021130:
 00021130                            	incbin "data/rom/bank_020000_03ffff.bin",$001130,$000007
@@ -4119,11 +5004,14 @@
 00021195                            	incbin "data/rom/bank_020000_03ffff.bin",$001195,$000035
 000211CA                            
 000211CA                            Bank020000_BankRelativeTextIndexData_0211CA:
-000211CA                            	include "src/bank020000/offsets.asm"
+000211CA                            	include "src/text_bank/text_pointer_tables.asm"
 000211CA                            ; ROM range: 0x0211CA-0x02135F
 000211CA                            ; This front-of-bank island is structured index data rather than more opaque prose. Four
 000211CA                            ; absolute longwords point at bank-local table families, followed by two bank-relative
 000211CA                            ; offset tables that target earlier text-bearing records in the same bank.
+000211CA                            ; The init-region text builder at 0x001ED0 also reuses entry 0 here as a word-offset root for
+000211CA                            ; control-family $0C expansion: for example, the shop offer's $0C,$03 resolves through this
+000211CA                            ; base to 0x0228EA, and the inn prompt's $0C,$05 resolves to 0x022BD0.
 000211CA                            
 000211CA                            Bank020000_LocalTextTablePointerList_0211CA:
 000211CA 0000 0000                  	dc.l	Bank020000_BankRelativeTextOffsetTableA_0211DA
@@ -4167,7 +5055,7 @@
 00021358 1184 118A 1191 1195        	dc.w	$1184,$118A,$1191,$1195
 00021360                            
 00021360                            Bank020000_QuizText_021360:
-00021360                            	include "src/bank020000/quiz.asm"
+00021360                            	include "src/text_bank/quiz_text.asm"
 00021360                            ; ROM range: 0x021360-0x02171F
 00021360                            ; Adjacent quiz/trivia resource block. The leading words are the tail of a larger offset
 00021360                            ; table whose earlier entries still live in the preceding opaque slice, and the control
@@ -4235,6 +5123,9 @@
 00021544                            Bank020000_QuizQuestion04Answer_Trident_021544:
 00021544 5472 6964 656E 7400        	dc.b	"Trident",$00
 0002154C                            
+0002154C                            ; Quiz-only inline shop-item literals. These answer strings mention the Wanderer weapon
+0002154C                            ; shop inventory directly, but they are not yet proven to reference
+0002154C                            ; Bank020000_InventoryNameOffsetTable_021720 at runtime.
 0002154C                            Bank020000_QuizQuestion05Text_02154C:
 0002154C 5768 6963 6820 6F66 2074+  	dc.b	"Which of these",$02,"items is not sold",$02,"at the Wanderer",$02,"weapon shop?",$00
 0002158A                            Bank020000_QuizQuestion05Answer_Trident_02158A:
@@ -4262,6 +5153,8 @@
 00021625                            Bank020000_QuizQuestion07Answer_MoonKey_021625:
 00021625 4D6F 6F6E 204B 6579 00     	dc.b	"Moon Key",$00
 0002162E                            
+0002162E                            ; Quiz-only inline GOLD-formatted price literals. This is the only recovered explicit
+0002162E                            ; Charmstone pricing in source so far; no dedicated shop price table is yet proven.
 0002162E                            Bank020000_QuizQuestion08Text_02162E:
 0002162E 486F 7720 6D75 6368 2064+  	dc.b	"How much does a",$02,"Charmstone cost?",$00
 0002164F                            Bank020000_QuizQuestion08Answer_50000Gold_02164F:
@@ -4297,11 +5190,15 @@
 00021718 5945 5320 204E 4F00        	dc.b	"YES  NO",$00
 00021720                            
 00021720                            Bank020000_ItemAndKeywordNames_021720:
-00021720                            	include "src/bank020000/names.asm"
+00021720                            	include "src/text_bank/inventory_and_world_names.asm"
 00021720                            ; ROM range: 0x021720-0x021B7F
 00021720                            ; Inventory/equipment/magic/item name tables followed by a bank-local keyword/name table.
 00021720                            ; The wrapped 0x01A0/0x0180 control bytes in the second string block are still only partly
 00021720                            ; understood, so keep them explicit in source while using proven Wonder Boy names.
+00021720                            ; Bank020000_LocalTextTablePointerList_0211CA points here directly, so this remains a proven
+00021720                            ; bank-local inventory/equipment/item-name resource. However, the shop offer placeholder at
+00021720                            ; 0x021B80 does not jump here directly: the traced $0C indirection first lands in the mixed
+00021720                            ; 0x0211CA-derived control stream around 0x0211CC before continuing onward.
 00021720                            
 00021720                            Bank020000_InventoryNameOffsetTable_021720:
 00021720 0000                       	dc.w	InventoryName_Weapon_LegendSword_0217A2-Bank020000_InventoryNameOffsetTable_021720
@@ -4580,11 +5477,16 @@
 00021B74 01A0 5368 6162 6F01 8000+  	dc.b	$01,$A0,"Shabo",$01,$80,$00,$0C,$06
 00021B80                            
 00021B80                            Bank020000_ShopInnOcarinaAndDictionaryText_021B80:
-00021B80                            	include "src/bank020000/text.asm"
+00021B80                            	include "src/text_bank/shop_inn_dictionary_text.asm"
 00021B80                            ; ROM range: 0x021B80-0x02245F
 00021B80                            ; Mixed text-bearing region with shop/inn prompts, Ocarina door guidance, and a null-
 00021B80                            ; terminated dialogue dictionary. Control bytes are still only partly decoded, so keep
 00021B80                            ; them byte-explicit while naming the proven higher-level text owners.
+00021B80                            ; The equipment-shop offer at 0x021B80 is a template rather than an inline item list.
+00021B80                            ; Tracing the init-region text builder at 0x001E6A shows that $0C enters an indirect stream
+00021B80                            ; lookup rooted at 0x001CC10 entry 0 (= 0x0211CA): here $0C,$02 lands at 0x0211CC and
+00021B80                            ; $0C,$03 lands at 0x0228EA. The parallel inn prompt's $0C,$05 lands at 0x022BD0.
+00021B80                            ; Decimal price rendering itself is handled by the nearby formatter at 0x001F46.
 00021B80                            
 00021B80                            Bank020000_EquipmentShopOfferText_021B80:
 00021B80 596F 7520 6861 7665 2061+  	dc.b	"You have a",$09,"discriminating eye.",$09,$05,$09,"That's",$09
@@ -5052,7 +5954,7 @@
 0002245B 796F 7572 00               	dc.b	"your",$00
 00022460                            
 00022460                            Bank020000_StructuredDescriptorAndIndexData_022460:
-00022460                            	include "src/bank020000/tables.asm"
+00022460                            	include "src/text_bank/descriptor_and_index_data.asm"
 00022460                            ; ROM range: 0x022460-0x022DB7
 00022460                            ; The first post-dictionary bank020000 island is structurally dense rather than plain text.
 00022460                            ; The front 0x60 bytes are six 0x10-byte same-bank reference descriptors, followed by a
@@ -5632,7 +6534,7 @@
 00022DB6 FF00                       	dc.w	$FF00
 00022DB8                            
 00022DB8                            Bank020000_BridgeBetweenStructuredIslands_022DB8:
-00022DB8                            	include "src/bank020000/gap.asm"
+00022DB8                            	include "src/text_bank/interstitial_structured_data.asm"
 00022DB8                            ; ROM range: 0x022DB8-0x023AB5
 00022DB8                            ; Bridge slice between the earlier 0x022D6C-0x022DB7 FF00-terminated compact records and the
 00022DB8                            ; later 0x023AB6-0x024537 FFFF-delimited word-record band. Most of this span still lacks a
@@ -5664,7 +6566,7 @@
 000237E4                            	incbin "data/rom/bank_020000_03ffff.bin",$0037E4,$0002D2
 00023AB6                            
 00023AB6                            Bank020000_SentinelDelimitedWordRecordBand_023AB6:
-00023AB6                            	include "src/bank020000/records.asm"
+00023AB6                            	include "src/text_bank/sentinel_word_records.asm"
 00023AB6                            ; ROM range: 0x023AB6-0x024537
 00023AB6                            ; This later bank020000 island is structurally denser than a single opaque blob. The bytes
 00023AB6                            ; form a long band of big-endian word records separated by repeated $FFFF sentinels. Many
@@ -5981,7 +6883,7 @@
 0002452E 0000 0000 1160 1080 FFFF   	dc.w	$0000,$0000,$1160,$1080,$FFFF
 00024538                            
 00024538                            Bank020000_SentinelDelimitedWordRecordBandContinuation_024538:
-00024538                            	include "src/bank020000/tail_records.asm"
+00024538                            	include "src/text_bank/sentinel_word_records_tail.asm"
 00024538                            ; ROM range: 0x024538-0x02482B
 00024538                            ; Immediate continuation of the earlier 0x023AB6-0x024537 sentinel-delimited word-record
 00024538                            ; family. The front of the formerly opaque tail still fits the same big-endian word-record
@@ -6057,7 +6959,7 @@
 0002481C 190C 0196 000E 0000 0102+  	dc.w	$190C,$0196,$000E,$0000,$0102,$0204,$0306,$FFFF
 0002481C 190C 0196 000E 0000 0102+  	dc.w	$190C,$0196,$000E,$0000,$0102,$0204,$0306,$FFFF
 0002482C                            
-0002482C                            	include "src/bank020000/tail_blocks.asm"
+0002482C                            	include "src/text_bank/compressed_data_blocks.asm"
 0002482C                            ; ROM range: 0x02482C-0x03FFFF
 0002482C                            ; Tail region of bank 020000.
 0002482C                            ;
@@ -6153,7 +7055,7 @@
 0003C6E0                            ; 0x0B60-style header-like prefixes already seen in earlier tail blocks. Keep the names
 0003C6E0                            ; structural until a loader or decompressor proves whether these are true block headers,
 0003C6E0                            ; format variants, or nested substreams.
-0003C6E0                            	include "src/bank020000/tail_remainder.asm"
+0003C6E0                            	include "src/text_bank/compressed_data_remainder.asm"
 0003C6E0                            ; ROM range: 0x03C6E0-0x03FFFF
 0003C6E0                            ; Header-like sub-block split inside the final bank020000 compressed/data tail.
 0003C6E0                            ;
@@ -6191,9 +7093,9 @@
 0003FE24                            	incbin "data/rom/bank_020000_03ffff.bin",$01FE24,$0001DC
 0003FE24                            	incbin "data/rom/bank_020000_03ffff.bin",$01FE24,$0001DC
 0003FE24                            	incbin "data/rom/bank_020000_03ffff.bin",$01FE24,$0001DC
-00040000                            	include "src/bank040000.asm"
+00040000                            	include "src/reference_gfx_bank.asm"
 00040000                            ; ======================================================================
-00040000                            ; src/bank040000.asm
+00040000                            ; src/reference_gfx_bank.asm
 00040000                            ; ROM range: 0x040000-0x07FFFF - late-ROM tables, payloads, and graphics slices
 00040000                            ; ======================================================================
 00040000                            ; Late-ROM bank split into bank-local slices. The first confirmed structure here was a
@@ -6203,7 +7105,7 @@
 00040000                            ; 0x041C00-0x07FF66, leaving only a tiny trailing bank remainder.
 00040000                            
 00040000                            Bank040000_FrontHeaderLikeData_040000:
-00040000                            	include "src/bank040000/front_blocks.asm"
+00040000                            	include "src/reference_gfx_bank/front_data_blocks.asm"
 00040000                            ; ROM range: 0x040000-0x0409F9
 00040000                            ; Front data island before the explicit 0x0409FA-0x040FFF fill run.
 00040000                            ;
@@ -6260,7 +7162,7 @@
 000409FA                            	incbin "data/rom/bank_040000_07ffff.bin",$0009FA,$000606
 00041000                            
 00041000                            Bank040000_FlaggedRomReferenceTables_041000:
-00041000                            	include "src/bank040000/tables.asm"
+00041000                            	include "src/reference_gfx_bank/flagged_rom_reference_tables.asm"
 00041000                            ; ROM range: 0x041000-0x041BFF
 00041000                            ; Conservative front-of-bank split for a strongly regular 4-byte record island. The bytes fit
 00041000                            ; a repeated [tag][24-bit ROM address] shape: the long local run at 0x041000-0x0418AB points
@@ -7203,7 +8105,7 @@
 00041BC0                            	incbin "data/rom/bank_040000_07ffff.bin",$001BC0,$000040
 00041C00                            
 00041C00                            Bank040000_LocalTableTargetedPayloadFront_041C00:
-00041C00                            	include "src/bank040000/payload_front.asm"
+00041C00                            	include "src/reference_gfx_bank/targeted_record_blocks_front.asm"
 00041C00                            ; ROM range: 0x041C00-0x04A70E
 00041C00                            ; Front chunk of the local-target payload family reached from the flagged ROM-reference
 00041C00                            ; table at 0x041000-0x0418AB. Those table entries point monotonically into the larger
@@ -7319,7 +8221,7 @@
 000456A4                            Bank040000_LocalTableTargetedPayloadRecord_0456A4:
 000456A4                            	incbin "data/rom/bank_040000_07ffff.bin",$0056A4,$00019E
 00045842                            
-00045842                            	include "src/bank040000/gfx_tiles_045842.asm"
+00045842                            	include "src/reference_gfx_bank/planar_tile_block_045842.asm"
 00045842                            ; ROM range: 0x045842-0x045D01
 00045842                            ; Early isolated 0x4C0-byte planar tile block inside the bank040000 local-target payload family.
 00045842                            ;
@@ -7469,7 +8371,7 @@
 0004A4B0                            	incbin "data/rom/bank_040000_07ffff.bin",$00A4B0,$00025F
 0004A70F                            
 0004A70F                            Bank040000_LocalTableTargetedPayloadMid_04A70F:
-0004A70F                            	include "src/bank040000/payload_mid.asm"
+0004A70F                            	include "src/reference_gfx_bank/targeted_record_blocks_mid.asm"
 0004A70F                            ; ROM range: 0x04A70F-0x04E5A9
 0004A70F                            ; Continued local-target payload window reached from the same flagged ROM-reference
 0004A70F                            ; table at 0x041000-0x0418AB. This span now separates the irregular front records from
@@ -7525,7 +8427,7 @@
 0004BEA1                            Bank040000_LocalTableTargetedPayloadRecord_04BEA1:
 0004BEA1                            	incbin "data/rom/bank_040000_07ffff.bin",$00BEA1,$000109
 0004BFAA                            
-0004BFAA                            	include "src/bank040000/gfx_tiles_04bfaa.asm"
+0004BFAA                            	include "src/reference_gfx_bank/planar_tile_family_04bfaa.asm"
 0004BFAA                            ; ROM range: 0x04BFAA-0x04E5A9
 0004BFAA                            ; Eight consecutive 0x4C0-byte planar tile blocks inside the bank040000 local-target payload
 0004BFAA                            ; family.
@@ -7563,7 +8465,7 @@
 0004E0EA                            	incbin "data/rom/bank_040000_07ffff.bin",$00E0EA,$0004C0
 0004E5AA                            
 0004E5AA                            Bank040000_LocalTableTargetedPayloadLate_04E5AA:
-0004E5AA                            	include "src/bank040000/payload_late.asm"
+0004E5AA                            	include "src/reference_gfx_bank/targeted_record_blocks_late.asm"
 0004E5AA                            ; ROM range: 0x04E5AA-0x05FC2F
 0004E5AA                            ; Continued local-target payload window reached from the same flagged ROM-reference
 0004E5AA                            ; table at 0x041000-0x0418AB. This span now calls out both the isolated 0x05C5DA 0x4C0-byte
@@ -8000,7 +8902,7 @@
 0005C34A                            Bank040000_LocalTableTargetedPayloadRecord_05C34A:
 0005C34A                            	incbin "data/rom/bank_040000_07ffff.bin",$01C34A,$000290
 0005C5DA                            
-0005C5DA                            	include "src/bank040000/gfx_tiles_05c5da.asm"
+0005C5DA                            	include "src/reference_gfx_bank/planar_tile_block_05c5da.asm"
 0005C5DA                            ; ROM range: 0x05C5DA-0x05CA99
 0005C5DA                            ; Isolated 0x4C0-byte planar tile block inside the bank040000 local-target payload family.
 0005C5DA                            ;
@@ -8040,7 +8942,7 @@
 0005D47B                            Bank040000_LocalTableTargetedPayloadRecord_05D47B:
 0005D47B                            	incbin "data/rom/bank_040000_07ffff.bin",$01D47B,$0001B5
 0005D630                            
-0005D630                            	include "src/bank040000/gfx_tiles_05d630.asm"
+0005D630                            	include "src/reference_gfx_bank/planar_tile_family_05d630.asm"
 0005D630                            ; ROM range: 0x05D630-0x05FC2F
 0005D630                            ; Eight consecutive 0x4C0-byte planar tile blocks inside the later bank040000 local-target
 0005D630                            ; payload run.
@@ -8077,7 +8979,7 @@
 0005F770                            	incbin "data/rom/bank_040000_07ffff.bin",$01F770,$0004C0
 0005FC30                            
 0005FC30                            Bank040000_LocalTableTargetedPayloadTail_05FC30:
-0005FC30                            	include "src/bank040000/payload_tail.asm"
+0005FC30                            	include "src/reference_gfx_bank/targeted_record_blocks_tail.asm"
 0005FC30                            ; ROM range: 0x05FC30-0x07FF66
 0005FC30                            ; Continued local-target payload window reached from the same flagged ROM-reference
 0005FC30                            ; table at 0x041000-0x0418AB. This final same-bank run makes the table-driven
@@ -8397,7 +9299,7 @@
 0006AFB7                            Bank040000_LocalTableTargetedPayloadRecord_06AFB7:
 0006AFB7                            	incbin "data/rom/bank_040000_07ffff.bin",$02AFB7,$0001DB
 0006B192                            
-0006B192                            	include "src/bank040000/gfx_tiles_06b192.asm"
+0006B192                            	include "src/reference_gfx_bank/planar_tile_pair_06b192.asm"
 0006B192                            ; ROM range: 0x06B192-0x06BB11
 0006B192                            ; Final short planar tile pair inside the bank040000 local-target payload family.
 0006B192                            ;
@@ -8953,9 +9855,9 @@
 0007FF67                            Bank040000_TinyTrailingBankRemainder_07FF67:
 0007FF67                            	incbin "data/rom/bank_040000_07ffff.bin",$03FF67,$000099
 0007FF67                            	incbin "data/rom/bank_040000_07ffff.bin",$03FF67,$000099
-00080000                            	include "src/bank080000.asm"
+00080000                            	include "src/z80_offset_bank.asm"
 00080000                            ; ======================================================================
-00080000                            ; src/bank080000.asm
+00080000                            ; src/z80_offset_bank.asm
 00080000                            ; ROM range: 0x080000-0x0BFFFF - tail-bank payloads, Z80 resources, and offset-tree data
 00080000                            ; ======================================================================
 00080000                            ; Tail-bank owner split around the largest confirmed 0xFF fill runs. The front non-fill
@@ -8968,7 +9870,7 @@
 00080000                            	incbin "data/rom/bank_080000_0bffff.bin",$000000,$0001CD
 000801CD                            
 000801CD                            Bank080000_CrossBankTableTargetedPayloadFront_0801CD:
-000801CD                            	include "src/bank080000/cross_payload_front.asm"
+000801CD                            	include "src/z80_offset_bank/cross_bank_records_front.asm"
 000801CD                            ; ROM range: 0x0801CD-0x093FD0
 000801CD                            ; The cross-bank flagged ROM-reference tables at 0x0418AC-0x041BBF point monotonically
 000801CD                            ; into this bank080000 payload span. That evidence now exposes 162 stable record starts in
@@ -9465,7 +10367,7 @@
 00093FD1                            	incbin "data/rom/bank_080000_0bffff.bin",$013FD1,$000179
 0009414A                            
 0009414A                            Bank080000_CrossBankTableTargetedPayloadTail_09414A:
-0009414A                            	include "src/bank080000/cross_payload_tail.asm"
+0009414A                            	include "src/z80_offset_bank/cross_bank_records_tail.asm"
 0009414A                            ; ROM range: 0x09414A-0x0961D7
 0009414A                            ; Tail continuation of the same cross-bank-targeted payload family reached from the late
 0009414A                            ; bank040000 flagged ROM-reference table cluster. The final target begins one byte before
@@ -9527,7 +10429,7 @@
 0009622B                            	incbin "data/rom/bank_080000_0bffff.bin",$01622B,$001DD5
 00098000                            
 00098000                            Bank080000_Z80Resources_098000_09F776:
-00098000                            	include "src/bank080000/z80_resources.asm"
+00098000                            	include "src/z80_offset_bank/z80_resources.asm"
 00098000                            ; ROM range: 0x098000-0x09F776
 00098000                            ; Conservative split of the first non-fill tail-bank island. The front 0x098000-0x0991FF
 00098000                            ; span still begins with a strongly Z80/opcode-dense code body rather than plain 68k or
@@ -9543,7 +10445,7 @@
 00098000                            ; command-record cadence is explicit even before the subsystem owner is clearer.
 00098000                            
 00098000                            Bank080000_Z80Program_098000:
-00098000                            	include "src/bank080000/z80_program.asm"
+00098000                            	include "src/z80_offset_bank/z80_program.asm"
 00098000                            ; ROM range: 0x098000-0x0991FF
 00098000                            ; Front slice inside the 0x098000-0x09F776 non-fill tail-bank island.
 00098000                            ;
@@ -10456,7 +11358,7 @@
 000991FF 00                         	dc.b	$00
 00099200                            
 00099200                            Bank080000_PreDescriptorStructuredData_099200:
-00099200                            	include "src/bank080000/z80_pre_descriptor_data.asm"
+00099200                            	include "src/z80_offset_bank/z80_pre_descriptor_records.asm"
 00099200                            ; ROM range: 0x099200-0x09991F
 00099200                            ; Pre-descriptor structural tail inside the 0x098000-0x09F776 non-fill island.
 00099200                            ;
@@ -10896,7 +11798,7 @@
 0009991E F904                       	dc.w	$F904
 00099920                            
 00099920                            Bank080000_StructuredDescriptorAndLayoutRecords_099920:
-00099920                            	include "src/bank080000/z80_descriptor_tables.asm"
+00099920                            	include "src/z80_offset_bank/z80_descriptor_tables.asm"
 00099920                            ; ROM range: 0x099920-0x099A84
 00099920                            ; Front structured band inside the 0x098000-0x09F776 non-fill island.
 00099920                            ;
@@ -11108,7 +12010,7 @@
 00099A75 FF11 019B 8112 4B16 2818+  	dc.b	$FF,$11,$01,$9B,$81,$12,$4B,$16,$28,$18,$8F,$18,$01,$19,$D8,$19
 00099A85                            
 00099A85                            Bank080000_Z80CommandFront_099A85:
-00099A85                            	include "src/bank080000/z80_command_front.asm"
+00099A85                            	include "src/z80_offset_bank/z80_command_setup.asm"
 00099A85                            ; ROM range: 0x099A85-0x09A347
 00099A85                            ; Front command-owner slice inside the 0x098000-0x09F776 non-fill island.
 00099A85                            ;
@@ -11811,7 +12713,7 @@
 0009A342 5457 F50E FEFF             	dc.b	$54,$57,$F5,$0E,$FE,$FF
 0009A348                            
 0009A348                            Bank080000_FFTerminatedCommandRecordWindowFront_09A348:
-0009A348                            	include "src/bank080000/z80_command_records_a.asm"
+0009A348                            	include "src/z80_offset_bank/z80_command_records_front.asm"
 0009A348                            ; ROM range: 0x09A348-0x09C007
 0009A348                            ; FF-terminated command-record window split into ROM-order slices at every proven
 0009A348                            ; local terminator. Labels stay structural until the tail-bank command decoder and
@@ -12844,7 +13746,7 @@
 0009BFFF E2A8 38C2 3336 CA37 FF     	dc.b	$E2,$A8,$38,$C2,$33,$36,$CA,$37,$FF
 0009C008                            
 0009C008                            Bank080000_FFTerminatedCommandRecordWindowMid_09C008:
-0009C008                            	include "src/bank080000/z80_command_records_b.asm"
+0009C008                            	include "src/z80_offset_bank/z80_command_records_mid.asm"
 0009C008                            ; ROM range: 0x09C008-0x09E027
 0009C008                            ; FF-terminated command-record window split into ROM-order slices at every proven
 0009C008                            ; local terminator. Labels stay structural until the tail-bank command decoder and
@@ -14041,7 +14943,7 @@
 0009E01E 48A0 479E 459C 439B 41FF   	dc.b	$48,$A0,$47,$9E,$45,$9C,$43,$9B,$41,$FF
 0009E028                            
 0009E028                            Bank080000_FFTerminatedCommandRecordWindowTail_09E028:
-0009E028                            	include "src/bank080000/z80_command_records_c.asm"
+0009E028                            	include "src/z80_offset_bank/z80_command_records_tail.asm"
 0009E028                            ; ROM range: 0x09E028-0x09F776
 0009E028                            ; Tail FF-terminated command-record window split into ROM-order slices at every proven
 0009E028                            ; local terminator. The final bytes remain a short non-terminated lead-out because the
@@ -15012,7 +15914,7 @@
 0009F777                            	incbin "data/rom/bank_080000_0bffff.bin",$01F777,$000889
 000A0000                            
 000A0000                            Bank080000_OffsetTreePayload_0A0000_0A4C76:
-000A0000                            	include "src/bank080000/offset_tree_payload.asm"
+000A0000                            	include "src/z80_offset_bank/offset_tree_data.asm"
 000A0000                            ; ROM range: 0x0A0000-0x0A4C76
 000A0000                            ; Conservative split of the second non-fill tail-bank island. The front 0x07C6 bytes are
 000A0000                            ; dominated by big-endian words that mostly point back into this same 0x0A0000-0x0A4C76
@@ -15159,7 +16061,7 @@
 000A07BC 4C20 4C31 4C42 4C53 4C64   	dc.w	$4C20,$4C31,$4C42,$4C53,$4C64
 000A07C6                            
 000A07C6                            Bank080000_FourTupleRecordBand_0A07C6:
-000A07C6                            	include "src/bank080000/four_tuple_record_band.asm"
+000A07C6                            	include "src/z80_offset_bank/four_tuple_records_front.asm"
 000A07C6                            ; ROM range: 0x0A07C6-0x0A08E5
 000A07C6                            ; The first payload band after the 0x0A0000 offset-table tree has a regular 0x18-byte
 000A07C6                            ; cadence. Each entry is four 6-byte tuples, but the tuple semantics and consuming loader
@@ -15239,7 +16141,7 @@
 000A08E0 F6F0 FF05 005C             	dc.b	$F6,$F0,$FF,$05,$00,$5C
 000A08E6                            
 000A08E6                            Bank080000_FourTupleRecordBandTail_0A08E6:
-000A08E6                            	include "src/bank080000/four_tuple_record_band_tail.asm"
+000A08E6                            	include "src/z80_offset_bank/four_tuple_records_tail.asm"
 000A08E6                            ; ROM range: 0x0A08E6-0x0A0B25
 000A08E6                            ; Conservative continuation of the prior four-tuple band at 0x0A07C6-0x0A08E5.
 000A08E6                            ; The same 0x18-byte cadence continues for 24 more records here, so keep the labels
@@ -15391,7 +16293,7 @@
 000A0B20 FF05 09DC FEE9             	dc.b	$FF,$05,$09,$DC,$FE,$E9
 000A0B26                            
 000A0B26                            Bank080000_MixedLeadInRecordFamily_0A0B26:
-000A0B26                            	include "src/bank080000/mixed_lead_in_record_family.asm"
+000A0B26                            	include "src/z80_offset_bank/offset_tree_leadin_records.asm"
 000A0B26                            ; ROM range: 0x0A0B26-0x0A0C82
 000A0B26                            ; Front mixed lead-in between the earlier four-tuple band and the later fixed-width
 000A0B26                            ; FF-terminated 6-byte record families.
@@ -15490,7 +16392,7 @@
 000A0C79 0501 E0F8 F605 09F5 00FB   	dc.b	$05,$01,$E0,$F8,$F6,$05,$09,$F5,$00,$FB
 000A0C83                            
 000A0C83                            Bank080000_FFTerminatedSixByteRecordFamilies_0A0C83:
-000A0C83                            	include "src/bank080000/ff_terminated_six_byte_record_families.asm"
+000A0C83                            	include "src/z80_offset_bank/ff_terminated_six_byte_records.asm"
 000A0C83                            ; ROM range: 0x0A0C83-0x0A10AA
 000A0C83                            ; Narrower structural split inside the still-mixed 0x0A0B26-0x0A34FF lead-in. Several
 000A0C83                            ; subranges here resolve into regular 6-byte records whose final byte is always $FF, with
@@ -15708,7 +16610,7 @@
 000A10A5 0507 B8F8 F0FF             	dc.b	$05,$07,$B8,$F8,$F0,$FF
 000A10AB                            
 000A10AB                            Bank080000_FFTerminatedFiveByteTupleFamily_0A10AB:
-000A10AB                            	include "src/bank080000/ff_terminated_five_byte_tuples.asm"
+000A10AB                            	include "src/z80_offset_bank/ff_terminated_five_byte_tuples.asm"
 000A10AB                            ; ROM range: 0x0A10AB-0x0A34FF
 000A10AB                            ; FF-terminated five-byte tuple family inside the second non-fill tail-bank island.
 000A10AB                            ;
@@ -16077,7 +16979,7 @@
 000A1411                            ; and let their filenames stay address-stamped until stronger ownership than local subdivision is
 000A1411                            ; proven.
 000A1411                            Bank080000_FFTerminatedFiveByteTupleSegment_0A1411:
-000A1411                            	include "src/bank080000/ff_five_byte_tuple_segment_0a1411.asm"
+000A1411                            	include "src/z80_offset_bank/ff_five_byte_tuple_segment_a.asm"
 000A1411                            ; ROM range: 0x0A1411-0x0A1D3E
 000A1411                            ; This long regular run is no longer hidden behind one coarse incbin. Every record in
 000A1411                            ; this window ends with $FF, and every pre-terminator payload length remains a multiple
@@ -17161,7 +18063,7 @@
 000A1D3F 0002 52FF FFFF 0002 53FF+  	dc.b	$00,$02,$52,$FF,$FF,$FF,$00,$02,$53,$FF,$FF,$FF,$00,$02,$54,$FF
 000A1D4F                            
 000A1D4F                            Bank080000_FFTerminatedFiveByteTupleSegment_0A1D4F:
-000A1D4F                            	include "src/bank080000/ff_five_byte_tuple_segment_0a1d4f.asm"
+000A1D4F                            	include "src/z80_offset_bank/ff_five_byte_tuple_segment_b.asm"
 000A1D4F                            ; ROM range: 0x0A1D4F-0x0A23F5
 000A1D4F                            ; This run continues the same FF-terminated five-byte tuple family. Every record ends at
 000A1D4F                            ; a proven local $FF terminator, and every pre-terminator payload length remains a
@@ -17549,7 +18451,7 @@
 000A23F6 0448 2603 FF04 4026 EDFF   	dc.b	$04,$48,$26,$03,$FF,$04,$40,$26,$ED,$FF
 000A2400                            
 000A2400                            Bank080000_FFTerminatedFiveByteTupleSegment_0A2400:
-000A2400                            	include "src/bank080000/ff_five_byte_tuple_segment_0a2400.asm"
+000A2400                            	include "src/z80_offset_bank/ff_five_byte_tuple_segment_c.asm"
 000A2400                            ; ROM range: 0x0A2400-0x0A2585
 000A2400                            ; This run continues the same FF-terminated five-byte tuple family. Every record ends at
 000A2400                            ; a proven local $FF terminator, and every pre-terminator payload length remains a
@@ -17714,7 +18616,7 @@
 000A2586 0043 9CF0 FF               	dc.b	$00,$43,$9C,$F0,$FF
 000A258B                            
 000A258B                            Bank080000_FFTerminatedFiveByteTupleSegment_0A258B:
-000A258B                            	include "src/bank080000/ff_five_byte_tuple_segment_0a258b.asm"
+000A258B                            	include "src/z80_offset_bank/ff_five_byte_tuple_segment_d.asm"
 000A258B                            ; ROM range: 0x0A258B-0x0A2605
 000A258B                            ; This run continues the same FF-terminated five-byte tuple family. Every record ends at
 000A258B                            ; a proven local $FF terminator, and every pre-terminator payload length remains a
@@ -17761,7 +18663,7 @@
 000A2606 0043 9D06 0700 439E F5FF   	dc.b	$00,$43,$9D,$06,$07,$00,$43,$9E,$F5,$FF
 000A2610                            
 000A2610                            Bank080000_FFTerminatedFiveByteTupleSegment_0A2610:
-000A2610                            	include "src/bank080000/ff_five_byte_tuple_segment_0a2610.asm"
+000A2610                            	include "src/z80_offset_bank/ff_five_byte_tuple_segment_e.asm"
 000A2610                            ; ROM range: 0x0A2610-0x0A2764
 000A2610                            ; This run continues the same FF-terminated five-byte tuple family. Every record ends at
 000A2610                            ; a proven local $FF terminator, and every pre-terminator payload length remains a
@@ -17924,7 +18826,7 @@
 000A27BE E8F0 0C60 F8E8 000C 60F8+  	dc.b	$E8,$F0,$0C,$60,$F8,$E8,$00,$0C,$60,$F8,$E8,$F8,$FF
 000A27CB                            
 000A27CB                            Bank080000_FFTerminatedFiveByteTupleSegment_0A27CB:
-000A27CB                            	include "src/bank080000/ff_five_byte_tuple_segment_0a27cb.asm"
+000A27CB                            	include "src/z80_offset_bank/ff_five_byte_tuple_segment_f.asm"
 000A27CB                            ; ROM range: 0x0A27CB-0x0A2D85
 000A27CB                            ; This run continues the same FF-terminated five-byte tuple family. Every record ends at
 000A27CB                            ; a proven local $FF terminator, and every pre-terminator payload length remains a
@@ -18410,7 +19312,7 @@
 000A2D96 60E7 ECE8 FF               	dc.b	$60,$E7,$EC,$E8,$FF
 000A2D9B                            
 000A2D9B                            Bank080000_FFTerminatedFiveByteTupleSegment_0A2D9B:
-000A2D9B                            	include "src/bank080000/ff_five_byte_tuple_segment_0a2d9b.asm"
+000A2D9B                            	include "src/z80_offset_bank/ff_five_byte_tuple_segment_g.asm"
 000A2D9B                            ; ROM range: 0x0A2D9B-0x0A303F
 000A2D9B                            ; This run continues the same FF-terminated five-byte tuple family. Every record ends at
 000A2D9B                            ; a proven local $FF terminator, and every pre-terminator payload length remains a
@@ -18773,7 +19675,7 @@
 000A3040 0E03 FFF0 F809 03E1 F8E8+  	dc.b	$0E,$03,$FF,$F0,$F8,$09,$03,$E1,$F8,$E8,$FF
 000A304B                            
 000A304B                            Bank080000_FFTerminatedFiveByteTupleSegment_0A304B:
-000A304B                            	include "src/bank080000/ff_five_byte_tuple_segment_0a304b.asm"
+000A304B                            	include "src/z80_offset_bank/ff_five_byte_tuple_segment_h.asm"
 000A304B                            ; ROM range: 0x0A304B-0x0A34FF
 000A304B                            ; This run continues the same FF-terminated five-byte tuple family. Every record ends at
 000A304B                            ; a proven local $FF terminator, and every pre-terminator payload length remains a
@@ -19346,14 +20248,14 @@
 000A34FF FF                         	dc.b	$FF
 000A3500                            
 000A3500                            Bank080000_TableTargetedPayload_0A3500:
-000A3500                            	include "src/bank080000/table_targeted_payload.asm"
+000A3500                            	include "src/z80_offset_bank/offset_tree_targeted_records.asm"
 000A3500                            ; ROM range: 0x0A3500-0x0A4C76
 000A3500                            ; Table-targeted payload record starts reached from the nested 0x0A0000-0x0A07C5 offset tree.
 000A3500                            ; The table evidence proves stable ROM-order boundaries across the back half of this island,
 000A3500                            ; so keep those targets explicit even though the higher-level loader and record semantics are
 000A3500                            ; still unresolved.
 000A3500                            
-000A3500                            	include "src/bank080000/table_targeted_payload_front.asm"
+000A3500                            	include "src/z80_offset_bank/offset_tree_targeted_records_front.asm"
 000A3500                            ; ROM range: 0x0A3500-0x0A37AF
 000A3500                            ; Front source-authored slice of the 0x0A3500+ table-targeted back half.
 000A3500                            ;
@@ -19971,7 +20873,7 @@
 000A3C17                            ; starts are still table-proven from the front offset tree, but the bytes read more
 000A3C17                            ; cleanly when grouped into three ROM-order source modules instead of hundreds of tiny
 000A3C17                            ; inline incbins.
-000A3C17                            	include "src/bank080000/table_targeted_payload_mid.asm"
+000A3C17                            	include "src/z80_offset_bank/offset_tree_targeted_records_core.asm"
 000A3C17                            ; ROM range: 0x0A3C17-0x0A43D4
 000A3C17                            ; Continuation of the compact local-offset/control pocket inside the 0x0A3500+
 000A3C17                            ; table-targeted payload family. These records stay structural: most use the same
@@ -20662,7 +21564,7 @@
 000A43D2                            Bank080000_TableTargetedPayloadRecord_0A43D2:
 000A43D2 0020 F2                    	dc.b	$00,$20,$F2
 000A43D2 0020 F2                    	dc.b	$00,$20,$F2
-000A43D5                            	include "src/bank080000/table_targeted_payload_late.asm"
+000A43D5                            	include "src/z80_offset_bank/offset_tree_targeted_records_late.asm"
 000A43D5                            ; ROM range: 0x0A43D5-0x0A47D8
 000A43D5                            ; Middle continuation of the compact local-offset/control pocket. Record starts remain
 000A43D5                            ; table-proven from the 0x0A0000 offset tree, while the bytes still read as short local
@@ -21043,7 +21945,7 @@
 000A47D0                            Bank080000_TableTargetedPayloadRecord_0A47D0:
 000A47D0 FB18 14FC 2020 002D 0E     	dc.b	$FB,$18,$14,$FC,$20,$20,$00,$2D,$0E
 000A47D0 FB18 14FC 2020 002D 0E     	dc.b	$FB,$18,$14,$FC,$20,$20,$00,$2D,$0E
-000A47D9                            	include "src/bank080000/table_targeted_payload_late_tail.asm"
+000A47D9                            	include "src/z80_offset_bank/offset_tree_targeted_records_final.asm"
 000A47D9                            ; ROM range: 0x0A47D9-0x0A4AA2
 000A47D9                            ; Tail continuation of the same compact local-offset/control pocket before the explicit
 000A47D9                            ; self-referencing 3-word band at 0x0A4AA3. The bytes are still structural but now
@@ -21311,7 +22213,7 @@
 000A4AEC                            ; then repeats the same FC/FB/FE-prefixed control shape plus short FF/FD-terminated local
 000A4AEC                            ; offset lists that reach back into earlier 0x0A0E85+, 0x0A157B+, 0x0A319E+, 0x0A323F+,
 000A4AEC                            ; and 0x0A3476+ families.
-000A4AEC                            	include "src/bank080000/table_targeted_payload_tail.asm"
+000A4AEC                            	include "src/z80_offset_bank/offset_tree_targeted_records_epilogue.asm"
 000A4AEC                            ; ROM range: 0x0A4AEC-0x0A4C76
 000A4AEC                            ; Compact local-offset/control tail pocket within the 0x0A3500+ table-targeted family.
 000A4AEC                            ; The bytes stay structural for now, but the repeated FC/FB/FE prefix controls and the

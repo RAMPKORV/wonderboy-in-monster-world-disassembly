@@ -27,10 +27,14 @@ node tools/run_checks.js
 
 ## Layout
 
-- `wonderboy.asm` - top-level include order for the rebuild, mirroring the ROM module layout
+- `wonderboy.asm` - top-level include order for the rebuild, using human-readable source modules
 - `header.asm` - vector table and Mega Drive header in source form
-- `src/` - engine-facing source modules plus bank owners
-- `src/bank020000/`, `src/bank040000/`, `src/bank080000/` - bank-local leaf modules grouped by owner
+- `src/engine_menu_core.asm` - early engine logic plus recovered inventory/magic menu code
+- `src/vblank_tasks.asm` - VBlank dispatch and task scheduling
+- `src/text_bank.asm` - dialogue/text/data bank owner
+- `src/reference_gfx_bank.asm` - flagged reference tables, targeted records, and planar graphics bank owner
+- `src/z80_offset_bank.asm` - Z80 program/resources plus offset-tree-driven data bank owner
+- `src/text_bank/`, `src/reference_gfx_bank/`, `src/z80_offset_bank/` - human-readable leaf modules grouped by owner
 - `data/rom/` - extracted raw ROM segments that still need decoding
 - `original/` - immutable baseline ROM copy
 - `docs/` - baseline notes, process docs, and milestone planning
