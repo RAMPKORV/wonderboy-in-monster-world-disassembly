@@ -65,6 +65,9 @@ Bank020000_QuizQuestion04Answer_Amulet_02153D:
 Bank020000_QuizQuestion04Answer_Trident_021544:
 	dc.b	"Trident",$00
 
+; Quiz-only inline shop-item literals. These answer strings mention the Wanderer weapon
+; shop inventory directly, but they are not yet proven to reference
+; Bank020000_InventoryNameOffsetTable_021720 at runtime.
 Bank020000_QuizQuestion05Text_02154C:
 	dc.b	"Which of these",$02,"items is not sold",$02,"at the Wanderer",$02,"weapon shop?",$00
 Bank020000_QuizQuestion05Answer_Trident_02158A:
@@ -92,6 +95,8 @@ Bank020000_QuizQuestion07Answer_SunKey_02161D:
 Bank020000_QuizQuestion07Answer_MoonKey_021625:
 	dc.b	"Moon Key",$00
 
+; Quiz-only inline GOLD-formatted price literals. This is the only recovered explicit
+; Charmstone pricing in source so far; no dedicated shop price table is yet proven.
 Bank020000_QuizQuestion08Text_02162E:
 	dc.b	"How much does a",$02,"Charmstone cost?",$00
 Bank020000_QuizQuestion08Answer_50000Gold_02164F:

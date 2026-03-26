@@ -1,5 +1,5 @@
 ; ======================================================================
-; src/bank020000.asm
+; src/text_bank.asm
 ; ROM range: 0x020000-0x03FFFF - dialogue, text, tables, and compressed tail data
 ; ======================================================================
 ; Bank-local ownership skeleton for the first fully banked mid-ROM region.
@@ -12,38 +12,38 @@
 ; sentinels, so the bank is no longer a single opaque slice.
 
 Bank020000_DialogueScriptContinuation_020000:
-	include "src/bank020000/dialogue_front.asm"
+	include "src/text_bank/dialogue_continuation.asm"
 
 Bank020000_BankRelativeTextRecordFamilyA_0201D0:
-	include "src/bank020000/front_records_a.asm"
+	include "src/text_bank/text_record_group_a.asm"
 
-	include "src/bank020000/dialogue_mid.asm"
+	include "src/text_bank/dialogue_followup.asm"
 
 Bank020000_BankRelativeTextRecordFamilyB_020E4C:
-	include "src/bank020000/front_records_b.asm"
+	include "src/text_bank/text_record_group_b.asm"
 
 Bank020000_BankRelativeTextIndexData_0211CA:
-	include "src/bank020000/offsets.asm"
+	include "src/text_bank/text_pointer_tables.asm"
 
 Bank020000_QuizText_021360:
-	include "src/bank020000/quiz.asm"
+	include "src/text_bank/quiz_text.asm"
 
 Bank020000_ItemAndKeywordNames_021720:
-	include "src/bank020000/names.asm"
+	include "src/text_bank/inventory_and_world_names.asm"
 
 Bank020000_ShopInnOcarinaAndDictionaryText_021B80:
-	include "src/bank020000/text.asm"
+	include "src/text_bank/shop_inn_dictionary_text.asm"
 
 Bank020000_StructuredDescriptorAndIndexData_022460:
-	include "src/bank020000/tables.asm"
+	include "src/text_bank/descriptor_and_index_data.asm"
 
 Bank020000_BridgeBetweenStructuredIslands_022DB8:
-	include "src/bank020000/gap.asm"
+	include "src/text_bank/interstitial_structured_data.asm"
 
 Bank020000_SentinelDelimitedWordRecordBand_023AB6:
-	include "src/bank020000/records.asm"
+	include "src/text_bank/sentinel_word_records.asm"
 
 Bank020000_SentinelDelimitedWordRecordBandContinuation_024538:
-	include "src/bank020000/tail_records.asm"
+	include "src/text_bank/sentinel_word_records_tail.asm"
 
-	include "src/bank020000/tail_blocks.asm"
+	include "src/text_bank/compressed_data_blocks.asm"

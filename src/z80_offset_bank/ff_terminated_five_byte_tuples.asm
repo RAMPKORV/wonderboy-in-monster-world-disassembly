@@ -366,31 +366,31 @@ Bank080000_FFTerminatedFiveByteTupleRecord_0A1406:
 ; and let their filenames stay address-stamped until stronger ownership than local subdivision is
 ; proven.
 Bank080000_FFTerminatedFiveByteTupleSegment_0A1411:
-	include "src/bank080000/ff_five_byte_tuple_segment_0a1411.asm"
+	include "src/z80_offset_bank/ff_five_byte_tuple_segment_a.asm"
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A1D3F:
 	dc.b	$00,$02,$52,$FF,$FF,$FF,$00,$02,$53,$FF,$FF,$FF,$00,$02,$54,$FF
 
 Bank080000_FFTerminatedFiveByteTupleSegment_0A1D4F:
-	include "src/bank080000/ff_five_byte_tuple_segment_0a1d4f.asm"
+	include "src/z80_offset_bank/ff_five_byte_tuple_segment_b.asm"
 
 Bank080000_FFTerminatedMixedBridgeRecord_0A23F6:
 	dc.b	$04,$48,$26,$03,$FF,$04,$40,$26,$ED,$FF
 
 Bank080000_FFTerminatedFiveByteTupleSegment_0A2400:
-	include "src/bank080000/ff_five_byte_tuple_segment_0a2400.asm"
+	include "src/z80_offset_bank/ff_five_byte_tuple_segment_c.asm"
 
 Bank080000_FFTerminatedMixedBridgeRecord_0A2586:
 	dc.b	$00,$43,$9C,$F0,$FF
 
 Bank080000_FFTerminatedFiveByteTupleSegment_0A258B:
-	include "src/bank080000/ff_five_byte_tuple_segment_0a258b.asm"
+	include "src/z80_offset_bank/ff_five_byte_tuple_segment_d.asm"
 
 Bank080000_FFTerminatedMixedBridgeRecord_0A2606:
 	dc.b	$00,$43,$9D,$06,$07,$00,$43,$9E,$F5,$FF
 
 Bank080000_FFTerminatedFiveByteTupleSegment_0A2610:
-	include "src/bank080000/ff_five_byte_tuple_segment_0a2610.asm"
+	include "src/z80_offset_bank/ff_five_byte_tuple_segment_e.asm"
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A2765:
 	dc.b	$08,$61,$08,$08,$08,$08,$61,$05,$08,$00,$08,$61,$02,$08,$F8,$08
@@ -404,17 +404,17 @@ Bank080000_FFTerminatedFiveByteTupleRecord_0A278E:
 	dc.b	$E8,$F0,$0C,$60,$F8,$E8,$00,$0C,$60,$F8,$E8,$F8,$FF
 
 Bank080000_FFTerminatedFiveByteTupleSegment_0A27CB:
-	include "src/bank080000/ff_five_byte_tuple_segment_0a27cb.asm"
+	include "src/z80_offset_bank/ff_five_byte_tuple_segment_f.asm"
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A2D86:
 	dc.b	$00,$60,$FF,$0C,$08,$0C,$60,$FB,$EC,$08,$03,$60,$F7,$0C,$E8,$0F
 	dc.b	$60,$E7,$EC,$E8,$FF
 
 Bank080000_FFTerminatedFiveByteTupleSegment_0A2D9B:
-	include "src/bank080000/ff_five_byte_tuple_segment_0a2d9b.asm"
+	include "src/z80_offset_bank/ff_five_byte_tuple_segment_g.asm"
 
 Bank080000_FFTerminatedFiveByteTupleRecord_0A3040:
 	dc.b	$0E,$03,$FF,$F0,$F8,$09,$03,$E1,$F8,$E8,$FF
 
 Bank080000_FFTerminatedFiveByteTupleSegment_0A304B:
-	include "src/bank080000/ff_five_byte_tuple_segment_0a304b.asm"
+	include "src/z80_offset_bank/ff_five_byte_tuple_segment_h.asm"

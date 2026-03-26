@@ -2,6 +2,9 @@
 ; This front-of-bank island is structured index data rather than more opaque prose. Four
 ; absolute longwords point at bank-local table families, followed by two bank-relative
 ; offset tables that target earlier text-bearing records in the same bank.
+; The init-region text builder at 0x001ED0 also reuses entry 0 here as a word-offset root for
+; control-family $0C expansion: for example, the shop offer's $0C,$03 resolves through this
+; base to 0x0228EA, and the inn prompt's $0C,$05 resolves to 0x022BD0.
 
 Bank020000_LocalTextTablePointerList_0211CA:
 	dc.l	Bank020000_BankRelativeTextOffsetTableA_0211DA

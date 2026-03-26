@@ -2,6 +2,10 @@
 ; Inventory/equipment/magic/item name tables followed by a bank-local keyword/name table.
 ; The wrapped 0x01A0/0x0180 control bytes in the second string block are still only partly
 ; understood, so keep them explicit in source while using proven Wonder Boy names.
+; Bank020000_LocalTextTablePointerList_0211CA points here directly, so this remains a proven
+; bank-local inventory/equipment/item-name resource. However, the shop offer placeholder at
+; 0x021B80 does not jump here directly: the traced $0C indirection first lands in the mixed
+; 0x0211CA-derived control stream around 0x0211CC before continuing onward.
 
 Bank020000_InventoryNameOffsetTable_021720:
 	dc.w	InventoryName_Weapon_LegendSword_0217A2-Bank020000_InventoryNameOffsetTable_021720

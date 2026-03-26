@@ -10,9 +10,9 @@
 ; Top-level build order for the rebuildable ROM image
 ; ======================================================================
 
-	include "src/init.asm"
-	include "src/vblank.asm"
-	include "src/core.asm"
-	include "src/bank020000.asm"
-	include "src/bank040000.asm"
-	include "src/bank080000.asm"
+	include "src/bootstrap_init.asm"
+	include "src/vblank_tasks.asm"
+	include "src/engine_menu_core.asm"
+	include "src/text_bank.asm"
+	include "src/reference_gfx_bank.asm"
+	include "src/z80_offset_bank.asm"

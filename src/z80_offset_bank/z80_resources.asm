@@ -13,22 +13,22 @@
 ; command-record cadence is explicit even before the subsystem owner is clearer.
 
 Bank080000_Z80Program_098000:
-	include "src/bank080000/z80_program.asm"
+	include "src/z80_offset_bank/z80_program.asm"
 
 Bank080000_PreDescriptorStructuredData_099200:
-	include "src/bank080000/z80_pre_descriptor_data.asm"
+	include "src/z80_offset_bank/z80_pre_descriptor_records.asm"
 
 Bank080000_StructuredDescriptorAndLayoutRecords_099920:
-	include "src/bank080000/z80_descriptor_tables.asm"
+	include "src/z80_offset_bank/z80_descriptor_tables.asm"
 
 Bank080000_Z80CommandFront_099A85:
-	include "src/bank080000/z80_command_front.asm"
+	include "src/z80_offset_bank/z80_command_setup.asm"
 
 Bank080000_FFTerminatedCommandRecordWindowFront_09A348:
-	include "src/bank080000/z80_command_records_a.asm"
+	include "src/z80_offset_bank/z80_command_records_front.asm"
 
 Bank080000_FFTerminatedCommandRecordWindowMid_09C008:
-	include "src/bank080000/z80_command_records_b.asm"
+	include "src/z80_offset_bank/z80_command_records_mid.asm"
 
 Bank080000_FFTerminatedCommandRecordWindowTail_09E028:
-	include "src/bank080000/z80_command_records_c.asm"
+	include "src/z80_offset_bank/z80_command_records_tail.asm"

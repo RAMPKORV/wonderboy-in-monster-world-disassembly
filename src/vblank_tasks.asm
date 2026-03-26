@@ -1,9 +1,11 @@
 ; ======================================================================
-; src/vblank.asm
+; src/vblank_tasks.asm
 ; ROM range: 0x004B58-0x004FFF - VBlank dispatch and task scheduling
 ; ======================================================================
 ; The front of this block is source-authored where interrupt/task-dispatch behavior is
-; understood; the remainder stays in ROM order as an opaque blob.
+; understood. The clean-state bootstrap playback stream and scratch seed at
+; `0x004E64-0x004F53` are now also source-authored; only the still-unmapped gaps remain in
+; ROM-order form elsewhere.
 
 RunTaskHelper_0364                      equ $00000364
 RunTaskHelper_0366                      equ $00000366
@@ -12,9 +14,7 @@ PrimeTaskAdvanceReady_005842            equ $00005842
 TaskSetupJump_01AA3C                    equ $0001AA3C
 TaskAdvanceWorker_01AD62                equ $0001AD62
 RetireMatchingRoundRobinTasksByUserData equ $000004A2
-TaskScriptSecondaryList_004F14          equ $00004F14
 TaskDescriptor_005608                   equ $00005608
-TaskScriptStream_004E64                 equ $00004E64
 InitImmDescPtr                          equ $00004CC4
 SecondImmDescPtr                        equ $00004D14
 ThirdImmDescPtr                         equ $00004D52
@@ -318,11 +318,11 @@ CleanStateCb:
 	jsr	(RunTaskHelper_0364).w
 	bsr.w	ClearTaskScriptScratch
 	move.b	#$80,(TaskScriptMode_Short).w
-	lea	TaskScriptStream_004E64.l,a0
+	lea	CleanStatePlaybackStream_004E64.l,a0
 	bsr.w	AdvanceTaskScript
 	moveq	#$0F,d0
 	lea	(TaskScriptScratchBuffer).l,a0
-	lea	TaskScriptSecondaryList_004F14.l,a1
+	lea	CleanStateScratchSeed_004F14.l,a1
 
 CleanStateCb_CopyScriptData:
 	move.l	(a1)+,(a0)+
@@ -360,8 +360,7 @@ TaskScriptCbList:
 	dc.l	$00008EB0
 	dc.l	$00000000
 
-VBlankRegion:
-	incbin "data/rom/vblank_004b58_004fff.bin",$030C,$00F0
+	include "src/vblank_clean_state_script.asm"
 
 TaskDescriptor_004F54:
 	dc.l	$4B65646D

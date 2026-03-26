@@ -4,7 +4,7 @@
 ; so keep those targets explicit even though the higher-level loader and record semantics are
 ; still unresolved.
 
-	include "src/bank080000/table_targeted_payload_front.asm"
+	include "src/z80_offset_bank/offset_tree_targeted_records_front.asm"
 
 ; 0x0A37B0-0x0A37FF tightens into a small structured cluster: twelve fixed 3-word
 ; records followed by two standalone local offsets before the next mixed record family.
@@ -449,9 +449,9 @@ Bank080000_TableTargetedPayloadRecord_0A3C0D:
 ; starts are still table-proven from the front offset tree, but the bytes read more
 ; cleanly when grouped into three ROM-order source modules instead of hundreds of tiny
 ; inline incbins.
-	include "src/bank080000/table_targeted_payload_mid.asm"
-	include "src/bank080000/table_targeted_payload_late.asm"
-	include "src/bank080000/table_targeted_payload_late_tail.asm"
+	include "src/z80_offset_bank/offset_tree_targeted_records_core.asm"
+	include "src/z80_offset_bank/offset_tree_targeted_records_late.asm"
+	include "src/z80_offset_bank/offset_tree_targeted_records_final.asm"
 
 
 ; 0x0A4AA3-0x0A4AEB exposes a compact self-referencing group: eight 3-word records are
@@ -491,4 +491,4 @@ Bank080000_TableTargetedPayloadRecord_0A4AD3:
 ; then repeats the same FC/FB/FE-prefixed control shape plus short FF/FD-terminated local
 ; offset lists that reach back into earlier 0x0A0E85+, 0x0A157B+, 0x0A319E+, 0x0A323F+,
 ; and 0x0A3476+ families.
-	include "src/bank080000/table_targeted_payload_tail.asm"
+	include "src/z80_offset_bank/offset_tree_targeted_records_epilogue.asm"

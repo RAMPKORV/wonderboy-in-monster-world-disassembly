@@ -434,7 +434,7 @@ Bank040000_LocalTableTargetedPayloadRecord_05C164:
 Bank040000_LocalTableTargetedPayloadRecord_05C34A:
 	incbin "data/rom/bank_040000_07ffff.bin",$01C34A,$000290
 
-	include "src/bank040000/gfx_tiles_05c5da.asm"
+	include "src/reference_gfx_bank/planar_tile_block_05c5da.asm"
 
 Bank040000_LocalTableTargetedPayloadRecord_05CA9A:
 	incbin "data/rom/bank_040000_07ffff.bin",$01CA9A,$000170
@@ -463,4 +463,4 @@ Bank040000_LocalTableTargetedPayloadRecord_05D3BD:
 Bank040000_LocalTableTargetedPayloadRecord_05D47B:
 	incbin "data/rom/bank_040000_07ffff.bin",$01D47B,$0001B5
 
-	include "src/bank040000/gfx_tiles_05d630.asm"
+	include "src/reference_gfx_bank/planar_tile_family_05d630.asm"

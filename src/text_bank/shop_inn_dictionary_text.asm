@@ -2,6 +2,11 @@
 ; Mixed text-bearing region with shop/inn prompts, Ocarina door guidance, and a null-
 ; terminated dialogue dictionary. Control bytes are still only partly decoded, so keep
 ; them byte-explicit while naming the proven higher-level text owners.
+; The equipment-shop offer at 0x021B80 is a template rather than an inline item list.
+; Tracing the init-region text builder at 0x001E6A shows that $0C enters an indirect stream
+; lookup rooted at 0x001CC10 entry 0 (= 0x0211CA): here $0C,$02 lands at 0x0211CC and
+; $0C,$03 lands at 0x0228EA. The parallel inn prompt's $0C,$05 lands at 0x022BD0.
+; Decimal price rendering itself is handled by the nearby formatter at 0x001F46.
 
 Bank020000_EquipmentShopOfferText_021B80:
 	dc.b	"You have a",$09,"discriminating eye.",$09,$05,$09,"That's",$09

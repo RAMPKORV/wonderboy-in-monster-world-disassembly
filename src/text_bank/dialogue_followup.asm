@@ -160,6 +160,9 @@ Bank020000_DialogueScriptMidBlock_0208D6:
 ; "To [sell] [the] [?], [...] [sell] [the] room on [the] [?]
 ;  side of [?] [search], [princess] in order to [sell], [you] [sell] [thank]
 ;  [the] following [this]: [the] [just] Sword / [just] Armor / [just] Shield [one] [just] Boots."
+; Likely upstream shop-inventory/control script, but still undecoded. The explicit item-name
+; strings recovered so far live either in Bank020000_InventoryNameOffsetTable_021720 or as
+; quiz-only inline literals in Bank020000_QuizQuestion05Text_02154C and nearby answers.
 Bank020000_DialogueScript_ShopInventoryBlock_0208D7:
 	incbin "data/rom/bank_020000_03ffff.bin",$0008D7,$00009C
 

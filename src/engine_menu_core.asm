@@ -1,10 +1,10 @@
 ; ======================================================================
-; src/core.asm
+; src/engine_menu_core.asm
 ; ROM range: 0x005000-0x01FFFF - early engine and menu/core gameplay logic
 ; ======================================================================
 ; Early engine/core body kept mostly opaque until routine boundaries are mapped.
 ; The front of this file continues the task/input helper chain that begins at `0x004FEE`
-; in `src/vblank.asm`. The `0x005016-0x00505C` helpers currently look like a compact
+; in `src/vblank_tasks.asm`. The `0x005016-0x00505C` helpers currently look like a compact
 ; input-sequence stream built from (duration,value) byte pairs in `0xFF1400`, reusing
 ; the selected-input mirror at `0x8A7A-0x8A7D` as playback state. The bootstrap
 ; display-setup stub at `0x005170-0x0051C5` and the controller-read helpers at
@@ -40,9 +40,10 @@
 ; magic/status id before clearing matching top-row assignments in `0x9F10/0x9F11`, then
 ; consumes the pending packed gauge target at `0x9628`, chooses one of two scale/table
 ; bundles, clamps against the current packed value at `0x9602/0x9604`, and dispatches into
-; the still-incbin-backed three-row tile-strip writer at `0x0088D6`. The later
-; `0x008A04-0x008C33` continuation still looks like follow-on spell-bar refill, gauge-tile
-; upload, and width synthesis rooted in `0x95AA`, `0x95B8-0x95C3`, and `0x95F4/0x95F6`.
+; the now source-authored three-row tile-strip writer at `0x0088D6`. The later
+; `0x008A04-0x008C33` continuation is now also source-authored as the same spell-bar refill,
+; gauge-tile upload, and layout-width synthesis rooted in `0x95AA`, `0x95B8-0x95C3`, and
+; `0x95F4/0x95F6`.
 ; The newly source-authored tail at `0x008C34-0x008C7F` snapshots the local magic-menu
 ; selection scratch, resets list/cursor/scroll state, and captures top-row selector bytes
 ; from `0x9F10/0x9F11` when they still point at the lower magic/status row. The exact
@@ -66,9 +67,6 @@ ClearTilemapRegionB_006916                 equ $00006916
 ClearFixedVramRegionAndResetFlags_00693E   equ $0000693E
 ResetTilemapWorkBuffers_00696C             equ $0000696C
 TaskDescriptor_006EA8                      equ $00006EA8
-PlayInventoryMenuMoveSound_008BB0          equ $00008BB0
-PlayInventoryMenuConfirmSound_008BAA       equ $00008BAA
-BuildInventoryMenuEntryTileRows_001E6A     equ $00001E6A
 WriteNullTerminatedTileString_00786A       equ $0000786A
 WriteNormalTileString_007870               equ $00007870
 UploadMenuPatternStrip_0022A8              equ $000022A8
@@ -2049,23 +2047,7 @@ ClampMagicMenuStatusGaugeValue_0088B4:
 ClampMagicMenuStatusGaugeValue_Return_0088C0:
 	rts
 
-MagicMenuStatusGaugeLargeScaleBundle_0088C2 equ $000088C2
-MagicMenuStatusGaugeSmallScaleBundle_0088CC equ $000088CC
-AdvanceMagicMenuStatusGaugeAnimation_0089B6  equ $000089B6
-DrawMagicMenuStatusGaugeRows_0088D6              equ $000088D6
-SelectMagicMenuStatusGaugeLargeScale_00893C      equ $0000893C
-SelectMagicMenuStatusGaugeSmallScale_008950      equ $00008950
-UpdateMagicMenuSpellBarFillAndCapacity_008A04    equ $00008A04
-TryAdvanceMagicMenuSpellBarFill_008A3A           equ $00008A3A
-TryIncreaseMagicMenuSpellBarFill_008A88          equ $00008A88
-MagicSpellBarGrowthStepTable_008A9C              equ $00008A9C
-BuildMagicMenuStatusGaugeTileIdBuffer_008AA2     equ $00008AA2
-UploadMagicMenuStatusGaugeTileRows_008B2E        equ $00008B2E
-UpdateMagicMenuStatusLayoutWidths_008BB6         equ $00008BB6
-MagicMenuStatusWidthLookupTable_008C1E           equ $00008C1E
-
-CoreRegion_0088C2_008C33:
-	incbin "data/rom/core_005000_01ffff.bin",$38C2,$372
+	include "src/magic_menu_status_gauge.asm"
 
 InitializeMagicMenuSelectionState_008C34:
 	move.l	(MagicMenuStatusSelectionScratchBuffer_Short).w,(MagicMenuStatusSelectionScratchSnapshot_Short).w
@@ -2094,5 +2076,10 @@ InitializeMagicMenuSelectionState_ResetSlot1_008C6C:
 InitializeMagicMenuSelectionState_Return_008C7E:
 	rts
 
-CoreRegion_008C80_01FFFF:
-	incbin "data/rom/core_005000_01ffff.bin",$3C80,$17380
+CoreRegion_008C80_01CC0F:
+	incbin "data/rom/core_005000_01ffff.bin",$3C80,$13F90
+
+	include "src/menu_text_root_pointers.asm"
+
+CoreRegion_01CC50_01FFFF:
+	incbin "data/rom/core_005000_01ffff.bin",$17C50,$33B0

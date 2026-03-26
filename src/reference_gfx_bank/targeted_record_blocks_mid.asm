@@ -53,4 +53,4 @@ Bank040000_LocalTableTargetedPayloadRecord_04BD11:
 Bank040000_LocalTableTargetedPayloadRecord_04BEA1:
 	incbin "data/rom/bank_040000_07ffff.bin",$00BEA1,$000109
 
-	include "src/bank040000/gfx_tiles_04bfaa.asm"
+	include "src/reference_gfx_bank/planar_tile_family_04bfaa.asm"
