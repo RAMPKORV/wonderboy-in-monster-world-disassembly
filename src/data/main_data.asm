@@ -212,7 +212,7 @@
 	move.w (RAM_word_FFFF9752).w, (-$4,A6)	; $A210
 	move.w (RAM_word_FFFF974C).w, D6	; $A216
 	move.w (RAM_word_FFFF9750).w, (-$2,A6)	; $A21A
-	jsr $260A.w	; $A220
+	jsr TilemapAddr2.w	; $A220
 	move.w (A0), (A1)+	; $A224
 	addq.w #$1, D6	; $A226
 	dc.b	$53,$6E,$FF,$FE	; $A228
@@ -228,7 +228,7 @@
 	move.w (RAM_word_FFFF9752).w, (-$4,A6)	; $A248
 	move.w (RAM_word_FFFF974C).w, D6	; $A24E
 	move.w (RAM_word_FFFF9750).w, (-$2,A6)	; $A252
-	jsr $260A.w	; $A258
+	jsr TilemapAddr2.w	; $A258
 	ori.w #-$8000, (A0)	; $A25C
 	addq.w #$1, D6	; $A260
 	dc.b	$53,$6E,$FF,$FE	; $A262
@@ -245,7 +245,7 @@
 	move.w (RAM_word_FFFF9752).w, (-$4,A6)	; $A288
 	move.w (RAM_word_FFFF974C).w, D6	; $A28E
 	move.w (RAM_word_FFFF9750).w, (-$2,A6)	; $A292
-	jsr $260A.w	; $A298
+	jsr TilemapAddr2.w	; $A298
 	move.w (A1)+, (A0)	; $A29C
 	addq.w #$1, D6	; $A29E
 	dc.b	$53,$6E,$FF,$FE	; $A2A0
@@ -261,8 +261,8 @@
 	move.w (RAM_word_FFFF9752).w, (-$4,A6)	; $A2C0
 	move.w (RAM_word_FFFF974C).w, D6	; $A2C6
 	move.w (RAM_word_FFFF9750).w, (-$2,A6)	; $A2CA
-	jsr $2542.w	; $A2D0
-	jsr $2672.w	; $A2D4
+	jsr ComputeTilemapIndex.w	; $A2D0
+	jsr DrawTile_Bounded.w	; $A2D4
 	addq.w #$1, D6	; $A2D8
 	dc.b	$53,$6E,$FF,$FE	; $A2DA
 	bne.b *-$E	; $A2DE
@@ -289,7 +289,7 @@
 	move.w (-$8,A6), D6	; $A328
 	move.w D6, D2	; $A32C
 	move.w D7, D3	; $A32E
-	jsr $2570.w	; $A330
+	jsr TilemapAddr_Block.w	; $A330
 	move.w D0, D2	; $A334
 	moveq #$0, D1	; $A336
 	move.b D0, D1	; $A338
@@ -2539,7 +2539,7 @@
 	add.w (ENT_Y,A4), D5	; $C034
 	move.w D5, (RAM_word_FFFF9C22).w	; $C038
 	move.w #$200, D2	; $C03C
-	jsr $127A.w	; $C040
+	jsr ComputeDistance2.w	; $C040
 	move.w D4, (ENT_VelX,A4)	; $C044
 	move.w D5, (ENT_VelY,A4)	; $C048
 	lsr.w #$1, D2	; $C04C
@@ -2655,9 +2655,9 @@
 	clr.w (RAM_word_FFFF9962).w	; $C1F6
 	jsr $A66.w	; $C1FA
 	move.w (RAM_word_FFFF9C16).w, D0	; $C1FE
-	jsr $279C.w	; $C202
+	jsr EnterScene.w	; $C202
 	jsr $400.w	; $C206
-	jsr $13BC.w	; $C20A
+	jsr CheckPlayerState.w	; $C20A
 	move.l (RAM_word_FFFF9C18).w, D0	; $C20E
 	bmi.b *+$6	; $C212
 	movea.l D0, A0	; $C214
@@ -2668,7 +2668,7 @@
 	bmi.b *-$1E	; $C224
 	st (RAM_word_FFFF9C18).w	; $C226
 	andi.b #-$9, (RAM_word_FFFF9659).w	; $C22A
-	jsr $225C.w	; $C230
+	jsr RenderScreen.w	; $C230
 	jsr $A8E.w	; $C234
 	bra.w *-$323C	; $C238
 	st (RAM_word_FFFF9C18).w	; $C23C
@@ -2709,7 +2709,7 @@
 	jsr (A0)	; $C2C0
 	movea.w (RAM_word_FFFF9968).w, A0	; $C2C2
 	move.w (-$2300,A0), D0	; $C2C6
-	jsr $1FD0.w	; $C2CA
+	jsr DrawDialogueText.w	; $C2CA
 	jsr $A8E.w	; $C2CE
 	dc.b	$60,$00,$cd,$28,$00,$08	; $C2D2
 	dc.b	$00,$10,$00,$12	; $C2D8
@@ -4811,16 +4811,16 @@
 	move.w D0, (ENT_VelX,A4)	; $E096
 	rts	; $E09A
 	move.w (ENT_Damage,A4), D0	; $E09C
-	jsr $4964.w	; $E0A0
+	jsr ScaleByStatThreshold.w	; $E0A0
 	sub.w D0, (ENT_Gold,A4)	; $E0A4
 	cmpi.w #$40, (ENT_Gold,A4)	; $E0A8
 	bge.b *+$44	; $E0AE
 	clr.w (ENT_Gold,A4)	; $E0B0
 	moveq #$2A, D0	; $E0B4
-	jsr $23E4.w	; $E0B6
+	jsr CheckItemFlag2.w	; $E0B6
 	beq.b *+$26	; $E0BA
 	moveq #$2A, D0	; $E0BC
-	jsr $24DC.w	; $E0BE
+	jsr CheckItemType3.w	; $E0BE
 	bsr.w *-$5620	; $E0C2
 	move.w (RAM_word_FFFF9F00).w, D0	; $E0C6
 	addi.w #$100, D0	; $E0CA
@@ -9391,15 +9391,15 @@
 	bpl.b *+$4	; $12092
 	neg.w D0	; $12094
 	move.w D0, (ENT_VelX,A4)	; $12096
-	jsr $2F8E.w	; $1209A
+	jsr MonsterMoveE_Setup.w	; $1209A
 	btst.b #$0, (ENT_State,A4)	; $1209E
 	beq.b *+$6	; $120A4
 	neg.w (ENT_VelX,A4)	; $120A6
-	jsr $4362.w	; $120AA
+	jsr CheckEntityState.w	; $120AA
 	beq.b *+$8	; $120AE
 	jsr $B44.w	; $120B0
 	bra.b *+$50	; $120B4
-	jsr $3F54.w	; $120B6
+	jsr ReadTileAtEntityPos.w	; $120B6
 	andi.w #-$1000, D2	; $120BA
 	cmpi.w #-$7000, D2	; $120BE
 	bne.b *+$26	; $120C2
@@ -9480,7 +9480,7 @@
 	bne.b *+$74	; $121A4
 	ori.b #$1, (-$3200,A4)	; $121A6
 	move.b (-$31FE,A4), D0	; $121AC
-	jsr $2758.w	; $121B0
+	jsr GetMonsterFlagAddr2.w	; $121B0
 	bset.b D0, ($0,A0,D1.w)	; $121B4
 	moveq #$2A, D0	; $121B8
 	jsr $366.w	; $121BA
@@ -9515,7 +9515,7 @@
 	move.b (ENT_Anim,A4), D0	; $12222
 	bne.b *+$2C	; $12226
 	move.b (-$31FE,A4), D0	; $12228
-	jsr $2758.w	; $1222C
+	jsr GetMonsterFlagAddr2.w	; $1222C
 	btst.b D0, ($0,A0,D1.w)	; $12230
 	beq.b *+$58	; $12234
 	moveq #$32, D0	; $12236
@@ -16506,9 +16506,9 @@
 	cmpi.b #$F, (RAM_word_FFFF9668).w	; $181DC
 	bne.b *+$C	; $181E2
 	moveq #$44, D0	; $181E4
-	jsr $2752.w	; $181E6
+	jsr SetMonsterFlag.w	; $181E6
 	lea ($18242,PC), A0	; $181EA
-	jmp $2856.w	; $181EE
+	jmp DrawTileRect3.w	; $181EE
 	movea.w (RAM_word_FFFF9EEE).w, A0	; $181F2
 	move.w (RAM_word_FFFF99F2).w, D0	; $181F6
 	sub.w (-$3800,A0), D0	; $181FA
@@ -18795,7 +18795,7 @@
 	move.l ($1A198,PC,D1.w), (ENT_VelX,A4)	; $1A15A
 	jmp $7E8.w	; $1A160
 	movea.w (RAM_word_FFFF9EEE).w, A2	; $1A164
-	jsr $108C.w	; $1A168
+	jsr CalcAngleToTarget.w	; $1A168
 	lsr.w #$8, D3	; $1A16C
 	move.b D3, D0	; $1A16E
 	sub.b (-$27FE,A4), D0	; $1A170

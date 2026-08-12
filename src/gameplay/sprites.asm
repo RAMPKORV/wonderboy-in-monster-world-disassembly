@@ -110,7 +110,7 @@ SetAnimId_Done:
 	rts	; $42A8
 	jsr $4356.w	; $42AA
 	bne.b *+$12	; $42AE
-	jsr $44D6.w	; $42B0
+	jsr FacePlayer.w	; $42B0
 	tst.b (-$27FF,A4)	; $42B4
 	beq.b *+$A	; $42B8
 	subq.b #$1, (-$27FF,A4)	; $42BA
@@ -341,7 +341,7 @@ SetJumpVelocity:
 	move.w #$200, D0	; $4538
 ChasePlayer:
 	move.w D0, D1	; $453C
-	jsr $4362.w	; $453E
+	jsr CheckEntityState.w	; $453E
 	beq.b *+$6	; $4542
 	move.w #$100, D1	; $4544
 ChasePlayer_Store:
@@ -398,7 +398,7 @@ CheckWallAhead_X:
 	move.b (ENT_ColH2,A4), D7	; $45C4
 	add.w (ENT_Y,A4), D7	; $45C8
 	subi.w #$30, D7	; $45CC
-	jsr $30CE.w	; $45D0
+	jsr ReadTileSetup.w	; $45D0
 	andi.w #$103, D2	; $45D4
 	subq.w #$3, D2	; $45D8
 	rts	; $45DA
@@ -495,7 +495,7 @@ CheckCollisionAhead_Scan:
 	andi.w #-$10, D7	; $46AA
 	asl.w #$2, D7	; $46AE
 	lea (-$68AC).w, A3	; $46B0
-	jsr $30DA.w	; $46B4
+	jsr ReadTileData.w	; $46B4
 	btst.l #$3, D2	; $46B8
 	rts	; $46BC
 	moveq #$0, D0	; $46BE
@@ -508,13 +508,13 @@ ApplyTurnVelocity:
 	move.w D0, (ENT_AccelX,A4)	; $46D0
 	rts	; $46D4
 	jsr $B44.w	; $46D6
-	jsr $3FAC.w	; $46DA
-	jsr $3F58.w	; $46DE
+	jsr ReadTileAtEntityPos3.w	; $46DA
+	jsr ReadTileAtEntityPos2.w	; $46DE
 	btst.b #$0, (ENT_Flags,A4)	; $46E2
 	beq.b *+$8	; $46E8
 	jsr $DD7C.l	; $46EA
 HelperUpdate_Jump:
-	jmp $2FD0.w	; $46F0
+	jmp MonsterMoveE.w	; $46F0
 	movea.w (RAM_word_FFFF9EEE).w, A2	; $46F4
 	btst.b #$6, (RAM_word_FFFF9F03).w	; $46F8
 	beq.b *+$6	; $46FE
@@ -638,11 +638,11 @@ IdleAnim_Done:
 	tst.b (-$5CC2,A3)	; $484C
 	bmi.b *+$12	; $4850
 	bne.b *+$C	; $4852
-	jsr $2758.w	; $4854
+	jsr GetMonsterFlagAddr2.w	; $4854
 	bset.b D0, ($0,A0,D1.w)	; $4858
 	bra.b *+$6	; $485C
 KillEntity_ClearFlag:
-	jsr $2752.w	; $485E
+	jsr SetMonsterFlag.w	; $485E
 KillEntity_Reward:
 	moveq #$0, D0	; $4862
 	move.w (-$5CC4,A3), D0	; $4864

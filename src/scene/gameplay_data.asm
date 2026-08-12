@@ -89,13 +89,13 @@
 	beq.b *-$A	; $9152
 	bsr.w *-$3FCC	; $9154
 	dc.b	$41,$FA,$00,$64	; $9158
-	jsr $234C.w	; $915C
-	jsr $22F0.w	; $9160
+	jsr DecodeStream.w	; $915C
+	jsr LoadSceneTilesEntry.w	; $9160
 	dc.b	$45,$FA,$00,$5C	; $9164
 	move.b #$2, (RAM_word_FFFF8C76).w	; $9168
 	bsr.w *-$27C0	; $916E
 	dc.b	$41,$FA,$00,$46	; $9172
-	jsr $135C.w	; $9176
+	jsr LoadPalettes.w	; $9176
 	bsr.w *-$3960	; $917A
 	jsr $400.w	; $917E
 	btst.b #$4, (RAM_word_FFFF8C56).w	; $9182

@@ -685,13 +685,13 @@ CalcAngleToTarget_Done:
 	dc.w	$bf15,$c18a,$c405,$c686,$c90d,$cb9a,$ce2e,$d0c8	; $11D2
 	dc.w	$d369,$d611,$d8bf,$db75,$de33,$e0f8,$e3c4,$e699	; $11E2
 	dc.w	$e975,$ec5a,$ef47,$f23d,$f53b,$f843,$fb54,$fe6f	; $11F2
-	jsr $108C.w	; $1202
+	jsr CalcAngleToTarget.w	; $1202
 	move.w D3, D6	; $1206
 	jsr $FA8.w	; $1208
 	move.w D0, (ENT_VelX,A4)	; $120C
 	move.w D5, (ENT_VelY,A4)	; $1210
 	rts	; $1214
-	jsr $108C.w	; $1216
+	jsr CalcAngleToTarget.w	; $1216
 	move.w D3, D6	; $121A
 	jmp $FA8.w	; $121C
 	jsr $1032.w	; $1220
@@ -700,7 +700,7 @@ CalcAngleToTarget_Done:
 	move.w D0, (ENT_VelX,A4)	; $122A
 	move.w D5, (ENT_VelY,A4)	; $122E
 	rts	; $1232
-	jsr $108C.w	; $1234
+	jsr CalcAngleToTarget.w	; $1234
 	move.w D3, D6	; $1238
 	jsr $FC0.w	; $123A
 	move.w D0, (ENT_VelX,A4)	; $123E
@@ -728,6 +728,7 @@ ComputeDistance_Approx:
 	lsr.w #$2, D1	; $1274
 	sub.w D1, D0	; $1276
 	rts	; $1278
+ComputeDistance2:
 	move.w D0, D4	; $127A
 	bpl.b *+$4	; $127C
 	neg.w D4	; $127E
@@ -854,8 +855,8 @@ ComputeArcTrajectory_Scale:
 ComputeArcTrajectory_ZeroD5:
 	moveq #$0, D5	; $1358
 	rts	; $135A
-	lea (-$74A8).w, A1	; $135C
 LoadPalettes:				; loc_000135C (read 4 palette index bytes from A0, decode to RAM_PaletteSource)
+	lea (-$74A8).w, A1	; $135C
 	moveq #$3, D5	; $1360
 	moveq #$0, D0	; $1362
 	move.b (A0)+, D0	; $1364
@@ -897,6 +898,7 @@ DecodePalette_Store:
 	subq.w #$1, D6	; $13B6
 	subq.w #$1, D7	; $13B8
 	rts	; $13BA
+CheckPlayerState:
 	tst.b (RAM_PlayerState).w	; $13BC
 	bmi.b *+$4	; $13C0
 	rts	; $13C2

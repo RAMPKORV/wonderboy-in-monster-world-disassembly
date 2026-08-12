@@ -30,7 +30,7 @@ ComputeTilemapCoord:
 	swap D6	; $2236
 	move.w D0, D6	; $2238
 	move.w D1, -(SP)	; $223A
-	jsr $2542.w	; $223C
+	jsr ComputeTilemapIndex.w	; $223C
 	moveq #$0, D1	; $2240
 	move.b D0, D1	; $2242
 	andi.w #$300, D0	; $2244
@@ -42,6 +42,7 @@ ComputeTilemapCoord:
 	swap D6	; $2256
 	swap D7	; $2258
 	rts	; $225A
+RenderScreen:
 	moveq #$0, D7	; $225C
 RenderTilemapGridRow:
 	moveq #$0, D6	; $225E
@@ -101,6 +102,7 @@ LoadTileBlock_WaitReady:
 	move.l (A0)+, (A1)	; $22E8
 	dbf D2, $22E8	; $22EA
 	rts	; $22EE
+LoadSceneTilesEntry:
 	link A6, #-$2	; $22F0
 	lea (-$71F8).w, A0	; $22F4
 	move.w #$0, (-$2,A6)	; $22F8
@@ -119,7 +121,7 @@ LoadSceneTiles:
 	move.w D0, ($7E,A0)	; $2308
 	move.w A0, -(SP)	; $230C
 	lea RAM_TileStagingBuffer, A1	; $230E
-	jsr $6BC4.l	; $2314
+	jsr LoadFlaggedData.l	; $2314
 	movea.w (SP)+, A0	; $231A
 	move.w (-$2,A6), D0	; $231C
 	ror.w #$6, D0	; $2320
@@ -195,12 +197,13 @@ InstallObjectTask:
 	move.l A0, ($8,A1)	; $23DA
 	move.l A0, ($C,A1)	; $23DE
 	rts	; $23E2
+CheckItemFlag2:
 	andi.w #$FF, D0	; $23E4
 			dc.w	$43fa,$00ee	; dc.w
 	cmp.b (A1)+, D0	; $23EC
 	bcs.b *+$A	; $23EE
 	ori.b #-$8, D0	; $23F0
-	jmp $274C.w	; $23F4
+	jmp CheckMonsterFlag.w	; $23F4
 CheckItemId:
 	cmpi.b #$29, D0	; $23F8
 	bne.b *+$C	; $23FC
@@ -247,13 +250,14 @@ CheckItemFlag_Set:
 CheckItemFlag_Clear:
 	moveq #$0, D0	; $2456
 	rts	; $2458
+CheckItemSprite:
 	andi.w #$FF, D0	; $245A
 			dc.w	$43fa,$0078	; dc.w
 	cmp.b (A1)+, D0	; $2462
 	bcs.b *+$18	; $2464
 	move.b D0, D2	; $2466
 	ori.b #-$8, D0	; $2468
-	jsr $2752.w	; $246C
+	jsr SetMonsterFlag.w	; $246C
 	move.b D2, D0	; $2470
 	andi.w #$F, D0	; $2472
 	jmp $8A04.l	; $2476
@@ -297,6 +301,7 @@ SetItemFlag:
 	rts	; $24D6
 	bra.b *+$2A	; $24D8
 	move.l -(A0), D3	; $24DA
+CheckItemType3:
 	andi.w #$FF, D0	; $24DC
 	cmpi.b #$20, D0	; $24E0
 	bcs.b *+$26	; $24E4
@@ -343,6 +348,7 @@ ItemFlagAddr:
 	lsr.w #$3, D1	; $253C
 	adda.w D1, A0	; $253E
 	rts	; $2540
+ComputeTilemapIndex:
 	moveq #$0, D0	; $2542
 	move.w D6, D2	; $2544
 	subi.w #$100, D2	; $2546
@@ -454,9 +460,11 @@ TilemapAddr_Write:
 	bsr.b TilemapAddr2	; $2666
 	move.w D0, (A0)	; $2668
 	rts	; $266A
+DrawTile_Setup:
 	lea (-$68AC).w, A3	; $266C
 DrawTile:
 	bsr.b TilemapAddr_Write	; $2670
+DrawTile_Bounded:
 	move.w D6, D1	; $2672
 	sub.w ($8,A3), D1	; $2674
 	bcs.b *+$18	; $2678
@@ -506,7 +514,8 @@ DrawTile_Attr:
 	or.l (A0), D3	; $26EA
 	move.l D3, (A1)	; $26EC
 	rts	; $26EE
-	jsr $2542.w	; $26F0
+ReadTileDataByte:
+	jsr ComputeTilemapIndex.w	; $26F0
 	move.w D0, D1	; $26F4
 	andi.w #$300, D1	; $26F6
 	lsr.w #$6, D1	; $26FA
@@ -542,12 +551,15 @@ GetMonsterFlagAddr:
 	move.b D0, D1	; $2744
 	andi.w #$7, D1	; $2746
 	rts	; $274A
+CheckMonsterFlag:
 	bsr.b GetMonsterFlagAddr	; $274C
 	btst.b D1, (A0)	; $274E
 	rts	; $2750
+SetMonsterFlag:
 	bsr.b GetMonsterFlagAddr	; $2752
 	bset.b D1, (A0)	; $2754
 	rts	; $2756
+GetMonsterFlagAddr2:
 	moveq #$0, D1	; $2758
 	move.b D0, D1	; $275A
 	andi.w #$7, D0	; $275C
@@ -577,6 +589,7 @@ ResolveScene:
 	movea.l ($1CC18).l, A1	; $2792
 	adda.w D1, A1	; $2798
 	rts	; $279A
+EnterScene:
 	bsr.b ResolveScene	; $279C
 	moveq #$4F, D0	; $279E
 	jsr $366.w	; $27A0
@@ -607,7 +620,8 @@ InitSceneData_Read:
 	add.w D0, D0	; $27DA
 	addq.w #$3, D0	; $27DC
 	move.w D0, (RAM_ScreenTilesY).w	; $27DE
-	jmp $2110.w	; $27E2
+	jmp UpdateScrollRegs.w	; $27E2
+FindFreeEntitySlot:
 	movea.w #$E0, A4	; $27E6
 	moveq #$7, D0	; $27EA
 	bra.b *+$4	; $27EC
@@ -625,7 +639,7 @@ EventListTile:
 	move.w (A0)+, D6	; $2804
 	move.w (A0)+, D7	; $2806
 	move.l A0, -(SP)	; $2808
-	jsr $2670.w	; $280A
+	jsr DrawTile.w	; $280A
 	movea.l (SP)+, A0	; $280E
 	bra.b EventListLoop	; $2810
 	link A6, #-$A	; $2812
@@ -639,7 +653,7 @@ DrawTileRect:
 	move.w (-$2,A6), (-$6,A6)	; $282E
 DrawTileRect_Col:
 	move.w (-$A,A6), D0	; $2834
-	jsr $2670.w	; $2838
+	jsr DrawTile.w	; $2838
 	addq.w #$1, D6	; $283C
 	subq.w #$1, (-$6,A6)	; $283E
 	bne.b DrawTileRect_Col	; $2842
@@ -650,6 +664,7 @@ DrawTileRect_Col:
 	rts	; $2850
 	move.w (A0)+, D6	; $2852
 	move.w (A0)+, D7	; $2854
+DrawTileRect3:
 	link A6, #-$8	; $2856
 	lea (-$68AC).w, A3	; $285A
 	moveq #$0, D0	; $285E
@@ -664,7 +679,7 @@ DrawTileRect2:
 DrawTileRect2_Col:
 	move.w (A0)+, D0	; $287A
 	move.l A0, -(SP)	; $287C
-	jsr $2670.w	; $287E
+	jsr DrawTile.w	; $287E
 	movea.l (SP)+, A0	; $2882
 	addq.w #$1, D6	; $2884
 	subq.w #$1, (-$6,A6)	; $2886
@@ -818,11 +833,11 @@ EventAreaCheck:
 	move.b (-$61FB,A3), D0	; $2A26
 	btst.b #$0, (-$61FC,A3)	; $2A2A
 	bne.b *+$C	; $2A30
-	jsr $2758.w	; $2A32
+	jsr GetMonsterFlagAddr2.w	; $2A32
 	bset.b D0, ($0,A0,D1.w)	; $2A36
 	bra.b *+$6	; $2A3A
 EventAreaTrigger:
-	jsr $2752.w	; $2A3C
+	jsr SetMonsterFlag.w	; $2A3C
 EventAreaAdvance:
 	andi.b #-$3, (-$61FC,A3)	; $2A40
 	movea.l (-$6160,A3), A0	; $2A46
@@ -860,6 +875,7 @@ EventAreaInit:
 	move.l A0, (-$6160,A1)	; $2AA6
 	moveq #$0, D0	; $2AAA
 	rts	; $2AAC
+DialogueDispatch:
 	movea.w (RAM_word_FFFF9C14).w, A0	; $2AAE
 	move.l (SP)+, (A0)+	; $2AB2
 	move.w A0, (RAM_word_FFFF9C14).w	; $2AB4
@@ -942,20 +958,20 @@ PlayNoteAnim:
 	lsl.w #$3, D0	; $2C20
 	lea ($2C46,PC,D0.w), A4	; $2C22
 	move.w (A4)+, D0	; $2C26
-	jsr $266C.w	; $2C28
+	jsr DrawTile_Setup.w	; $2C28
 PlayNoteAnim_Note:
 	move.w (A4)+, D0	; $2C2C
 	addq.w #$1, D6	; $2C2E
-	jsr $2670.w	; $2C30
+	jsr DrawTile.w	; $2C30
 	move.w (A4)+, D0	; $2C34
 	addi.w #$40, D7	; $2C36
-	jsr $2670.w	; $2C3A
+	jsr DrawTile.w	; $2C3A
 	subq.w #$1, D6	; $2C3E
 	move.w (A4), D0	; $2C40
-	jmp $2670.w	; $2C42
+	jmp DrawTile.w	; $2C42
 	dc.b	$02,$74,$02,$75,$02,$77,$02,$76			; $2C46  (attack bytes)
 	move.b	(RAM_word_FFFF9A8A).w, D0		; $2C4E
-	jsr $2752.w	; $2C52
+	jsr SetMonsterFlag.w	; $2C52
 SpawnNote:
 	moveq #$57, D0	; $2C56
 	jsr $366.w	; $2C58
@@ -964,7 +980,7 @@ SpawnNote:
 	move.w (RAM_word_FFFF9A8C).w, D6	; $2C66
 	move.w (RAM_word_FFFF9A8E).w, D7	; $2C6A
 	subi.w #$10, D7	; $2C6E
-	jsr $27E6.w	; $2C72
+	jsr FindFreeEntitySlot.w	; $2C72
 	bmi.b *+$48	; $2C76
 	move.w #$120A, (ENT_TreeIdx0,A4)	; $2C78
 	bsr.b *+$42	; $2C7E
@@ -972,7 +988,7 @@ SpawnNote:
 	move.b #$12, (-$3CFD,A4)	; $2C86
 			dc.w	$41fa,$0052	; dc.w
 	moveq #$3, D5	; $2C90
-	jsr $27E6.w	; $2C92
+	jsr FindFreeEntitySlot.w	; $2C92
 	bmi.b *+$28	; $2C96
 	move.w #$160A, (ENT_TreeIdx0,A4)	; $2C98
 	bsr.b *+$22	; $2C9E
@@ -995,7 +1011,7 @@ SpawnMusicNote:
 	rts	; $2CDE
 ProjectileVelDeltaTable:					; loc_0002CE0
 	dc.w	$0400,$0400,$FC00,$0400,$FC00,$FC00,$0400,$FC00	; $2CE0
-	jsr	$27E6.w				; $2CF4
+	jsr FindFreeEntitySlot.w				; $2CF4
 	jsr	$A36.w				; $2CF8
 	move.w D6, (ENT_X,A4)	; $2CF8
 	move.w D7, (ENT_Y,A4)	; $2CFC
@@ -1103,111 +1119,113 @@ MonsterRage_Init:
 	dc.b	$0C,$0C,$12,$0C,$FF,$00				; $2E32
 	lea (-$68AC).w, A3	; $2E38
 	jsr $AB8.w	; $2E3C
-	jsr $3F08.w	; $2E40
+	jsr TileBehaviorCheck.w	; $2E40
 	move.b (ENT_State,A4), (-$2EFF,A4)	; $2E44
 	move.w (-$30FE,A4), (-$2EFE,A4)	; $2E4A
 	moveq #$0, D0	; $2E50
 	move.b D0, (ENT_State,A4)	; $2E52
 	move.w D0, (-$30FE,A4)	; $2E56
-	jsr $3AFC.w	; $2E5A
-	jsr $3142.w	; $2E5E
-	jsr $303A.w	; $2E62
+	jsr SlideCheck_Init2.w	; $2E5A
+	jsr CheckCollision.w	; $2E5E
+	jsr MoveHorizontal.w	; $2E62
 	btst.b #$6, (ENT_State,A4)	; $2E66
 	beq.b *+$1E	; $2E6C
 	move.w (ENT_X,A4), D6	; $2E6E
 	moveq #$0, D7	; $2E72
 	move.b (ENT_ColH2,A4), D7	; $2E74
 	add.w (ENT_Y,A4), D7	; $2E78
-	jsr $30D2.w	; $2E7C
+	jsr ReadTile.w	; $2E7C
 	move.w D2, (-$30FE,A4)	; $2E80
 	move.b D1, (-$30FF,A4)	; $2E84
 	rts	; $2E88
 MonsterMove_A:
 	jsr $AD6.w	; $2E8A
-	jsr $3C22.w	; $2E8E
-	jsr $3A54.w	; $2E92
-	jsr $3584.w	; $2E96
-	jmp $3098.w	; $2E9A
+	jsr SlideCheck_Init3.w	; $2E8E
+	jsr SlideUp.w	; $2E92
+	jsr CollideAndSlide_Init.w	; $2E96
+	jmp MoveVertical_Apply.w	; $2E9A
 	lea (-$68AC).w, A3	; $2E9E
 	jsr $AB8.w	; $2EA2
-	jsr $3F08.w	; $2EA6
+	jsr TileBehaviorCheck.w	; $2EA6
 	move.b (ENT_State,A4), (-$2EFF,A4)	; $2EAA
 	move.w (-$30FE,A4), (-$2EFE,A4)	; $2EB0
 	moveq #$0, D0	; $2EB6
 	move.b D0, (ENT_State,A4)	; $2EB8
 	move.w D0, (-$30FE,A4)	; $2EBC
-	jsr $3310.w	; $2EC0
-	jsr $303A.w	; $2EC4
+	jsr CheckCollisionCol_Entry2.w	; $2EC0
+	jsr MoveHorizontal.w	; $2EC4
 	jsr $AD6.w	; $2EC8
-	jsr $39FA.w	; $2ECC
-	jmp $3098.w	; $2ED0
+	jsr SlideCheck_Entry2.w	; $2ECC
+	jmp MoveVertical_Apply.w	; $2ED0
 	lea (-$68AC).w, A3	; $2ED4
 	jsr $AB8.w	; $2ED8
 	bra.b *+$E	; $2EDC
 	lea (-$68AC).w, A3	; $2EDE
 	jsr $AB8.w	; $2EE2
-	jsr $3F08.w	; $2EE6
+	jsr TileBehaviorCheck.w	; $2EE6
 MonsterMove_B:
 	move.b (ENT_State,A4), (-$2EFF,A4)	; $2EEA
 	move.w (-$30FE,A4), (-$2EFE,A4)	; $2EF0
 	moveq #$0, D0	; $2EF6
 	move.b D0, (ENT_State,A4)	; $2EF8
 	move.w D0, (-$30FE,A4)	; $2EFC
-	jsr $32FE.w	; $2F00
-	jsr $303A.w	; $2F04
+	jsr CheckCollisionCol_Entry.w	; $2F00
+	jsr MoveHorizontal.w	; $2F04
 	btst.b #$6, (ENT_State,A4)	; $2F08
 	beq.b *+$1A	; $2F0E
 	move.w (ENT_X,A4), D6	; $2F10
 	moveq #$0, D7	; $2F14
 	move.b (ENT_ColH2,A4), D7	; $2F16
 	add.w (ENT_Y,A4), D7	; $2F1A
-	jsr $30D2.w	; $2F1E
+	jsr ReadTile.w	; $2F1E
 	move.w D2, (-$30FE,A4)	; $2F22
 	rts	; $2F26
 MonsterMove_C:
 	jsr $AD6.w	; $2F28
-	jsr $356E.w	; $2F2C
-	jmp $3098.w	; $2F30
+	jsr SlideCheck_Collision.w	; $2F2C
+	jmp MoveVertical_Apply.w	; $2F30
 	lea (-$68AC).w, A3	; $2F34
 	jsr $AB8.w	; $2F38
-	jsr $3F08.w	; $2F3C
+	jsr TileBehaviorCheck.w	; $2F3C
 	move.b (ENT_State,A4), (-$2EFF,A4)	; $2F40
 	move.w (-$30FE,A4), (-$2EFE,A4)	; $2F46
 	moveq #$0, D0	; $2F4C
 	move.b D0, (ENT_State,A4)	; $2F4E
 	move.w D0, (-$30FE,A4)	; $2F52
-	jsr $32FE.w	; $2F56
-	jsr $303A.w	; $2F5A
+	jsr CheckCollisionCol_Entry.w	; $2F56
+	jsr MoveHorizontal.w	; $2F5A
 	btst.b #$6, (ENT_State,A4)	; $2F5E
 	beq.b *+$1A	; $2F64
 	move.w (ENT_X,A4), D6	; $2F66
 	moveq #$0, D7	; $2F6A
 	move.b (ENT_ColH2,A4), D7	; $2F6C
 	add.w (ENT_Y,A4), D7	; $2F70
-	jsr $30D2.w	; $2F74
+	jsr ReadTile.w	; $2F74
 	move.w D2, (-$30FE,A4)	; $2F78
 	rts	; $2F7C
 MonsterMove_D:
 	jsr $AD6.w	; $2F7E
-	jsr $3AB0.w	; $2F82
-	jsr $356E.w	; $2F86
-	jmp $3098.w	; $2F8A
+	jsr SlideUp2_Entry.w	; $2F82
+	jsr SlideCheck_Collision.w	; $2F86
+	jmp MoveVertical_Apply.w	; $2F8A
+MonsterMoveE_Setup:
 	lea (-$68AC).w, A3	; $2F8E
 	jsr $AB8.w	; $2F92
-	jsr $3F08.w	; $2F96
+	jsr TileBehaviorCheck.w	; $2F96
 	move.b (ENT_State,A4), (-$2EFF,A4)	; $2F9A
 	move.w (-$30FE,A4), (-$2EFE,A4)	; $2FA0
 	moveq #$0, D0	; $2FA6
 	move.b D0, (ENT_State,A4)	; $2FA8
 	move.w D0, (-$30FE,A4)	; $2FAC
-	jsr $3AFC.w	; $2FB0
-	jsr $322E.w	; $2FB4
-	jsr $303A.w	; $2FB8
+	jsr SlideCheck_Init2.w	; $2FB0
+	jsr CheckHorizontalVelocity.w	; $2FB4
+	jsr MoveHorizontal.w	; $2FB8
 	jsr $AD6.w	; $2FBC
-	jsr $3C22.w	; $2FC0
-	jsr $3A4C.w	; $2FC4
-	jsr $3948.w	; $2FC8
-	jmp $3098.w	; $2FCC
+	jsr SlideCheck_Init3.w	; $2FC0
+	jsr SlideUp_Entry.w	; $2FC4
+	jsr SlideCheck_Status.w	; $2FC8
+	jmp MoveVertical_Apply.w	; $2FCC
+MonsterMoveE:
 	lea (-$68AC).w, A3	; $2FD0
 	jsr $AB8.w	; $2FD4
 	move.b (ENT_State,A4), (-$2EFF,A4)	; $2FD8
@@ -1215,7 +1233,7 @@ MonsterMove_D:
 	moveq #$0, D0	; $2FE4
 	move.b D0, (ENT_State,A4)	; $2FE6
 	move.w D0, (-$30FE,A4)	; $2FEA
-	jsr $3AFC.w	; $2FEE
-	jsr $322E.w	; $2FF2
-	jsr $303A.w	; $2FF6
+	jsr SlideCheck_Init2.w	; $2FEE
+	jsr CheckHorizontalVelocity.w	; $2FF2
+	jsr MoveHorizontal.w	; $2FF6
 	btst.b #$6, (ENT_State,A4)	; $2FFA

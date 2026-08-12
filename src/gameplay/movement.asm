@@ -9,21 +9,22 @@
 	moveq #$0, D7	; $3006
 	move.b (ENT_ColH2,A4), D7	; $3008
 	add.w (ENT_Y,A4), D7	; $300C
-	jsr $30D2.w	; $3010
+	jsr ReadTile.w	; $3010
 	move.w D2, (-$30FE,A4)	; $3014
 	rts	; $3018
 MoveVertical:
 	jsr $AD6.w	; $301A
-	jsr $3C22.w	; $301E
+	jsr SlideCheck_Init3.w	; $301E
 	move.w (ENT_Y,A4), D0	; $3022
 	sub.w (ENT_PrevY,A4), D0	; $3026
 	bpl.b *+$8	; $302A
-	jsr $3A54.w	; $302C
+	jsr SlideUp.w	; $302C
 	bra.b *+$6	; $3030
 MoveVertical_Alt:
-	jsr $3584.w	; $3032
+	jsr CollideAndSlide_Init.w	; $3032
 MoveVertical_End:
 	bra.w MoveVertical_Apply	; $3036
+MoveHorizontal:
 	btst.b #$0, (ENT_State,A4)	; $303A
 	beq.b *+$56	; $3040
 	tst.b (ENT_State,A4)	; $3042
@@ -86,7 +87,7 @@ ReadTile:
 	andi.w #-$10, D7	; $30D4
 	asl.w #$2, D7	; $30D8
 ReadTileData:
-	jsr $2542.w	; $30DA
+	jsr ComputeTilemapIndex.w	; $30DA
 	move.w D0, D1	; $30DE
 	andi.w #$300, D1	; $30E0
 	lsr.w #$6, D1	; $30E4
@@ -126,7 +127,7 @@ GetTileBehavior_Done:
 CheckCollision:
 	btst.b #$1, (RAM_word_FFFF966B).w	; $3142
 	beq.b *+$6	; $3148
-	jsr $341C.w	; $314A
+	jsr GetXDelta.w	; $314A
 CheckCollisionRect:
 	link A6, #-$A	; $314E
 	moveq #$0, D0	; $3152
@@ -157,7 +158,7 @@ CheckCollisionRect:
 	andi.w #-$10, D7	; $3198
 	asl.w #$2, D7	; $319C
 CheckCollisionRect_Row:
-	jsr $30DA.w	; $319E
+	jsr ReadTileData.w	; $319E
 	move.w D2, D0	; $31A2
 	andi.w #$102, D0	; $31A4
 	subq.w #$2, D0	; $31A8
@@ -180,7 +181,7 @@ CheckCollisionRect_Col:
 	andi.w #-$10, D7	; $31DC
 	asl.w #$2, D7	; $31E0
 CheckCollisionRect_ColLoop:
-	jsr $30DA.w	; $31E2
+	jsr ReadTileData.w	; $31E2
 	move.w D2, D0	; $31E6
 	andi.w #$101, D0	; $31E8
 	subq.w #$1, D0	; $31EC
@@ -214,7 +215,7 @@ CheckHorizontalVelocity:
 CheckCollisionRow_Scan:
 	btst.b #$1, (RAM_word_FFFF966B).w	; $3236
 	beq.b *+$6	; $323C
-	jsr $341C.w	; $323E
+	jsr GetXDelta.w	; $323E
 CheckCollisionRow_Setup:
 	link A6, #-$4	; $3242
 	moveq #$0, D7	; $3246
@@ -241,7 +242,7 @@ CheckCollisionRow_Setup:
 	andi.w #-$10, D7	; $3280
 	asl.w #$2, D7	; $3284
 CheckCollisionRow_ScanLoop:
-	jsr $30DA.w	; $3286
+	jsr ReadTileData.w	; $3286
 	andi.w #$102, D2	; $328A
 	subq.w #$2, D2	; $328E
 	beq.b *+$E	; $3290
@@ -263,7 +264,7 @@ CheckCollisionRow_Scan2:
 	andi.w #-$10, D7	; $32BE
 	asl.w #$2, D7	; $32C2
 CheckCollisionRow_Scan2Loop:
-	jsr $30DA.w	; $32C4
+	jsr ReadTileData.w	; $32C4
 	andi.w #$101, D2	; $32C8
 	subq.w #$1, D2	; $32CC
 	beq.b *+$E	; $32CE
@@ -287,7 +288,7 @@ CheckCollisionRow_Done:
 CheckCollisionCol_Entry:
 	btst.b #$1, (RAM_word_FFFF966B).w	; $32FE
 	beq.b *+$6	; $3304
-	jsr $341C.w	; $3306
+	jsr GetXDelta.w	; $3306
 CheckCollisionCol_Start:
 	move.w #$100, D0	; $330A
 	bra.b *+$4	; $330E
@@ -323,8 +324,8 @@ CheckCollisionCol_Scan:
 	andi.w #-$10, D7	; $335A
 	asl.w #$2, D7	; $335E
 CheckCollisionCol_ScanLoop:
-	jsr $26F0.w	; $3360
-	jsr $30F4.w	; $3364
+	jsr ReadTileDataByte.w	; $3360
+	jsr GetTileBehavior.w	; $3364
 	move.w D2, D0	; $3368
 	move.w (-$6,A6), D1	; $336A
 	and.w D1, D0	; $336E
@@ -371,7 +372,7 @@ CheckCollisionFoot_Scan:
 	move.b (ENT_ColH2,A4), D7	; $33DA
 	subq.b #$1, D7	; $33DE
 	add.w (ENT_Y,A4), D7	; $33E0
-	jsr $30D2.w	; $33E4
+	jsr ReadTile.w	; $33E4
 	move.b (-$2,A6), D1	; $33E8
 	btst.l D1, D2	; $33EC
 	beq.b *+$2A	; $33EE
@@ -423,14 +424,14 @@ SlideCollision_Setup:
 	tst.w D1	; $346E
 	beq.b *+$56	; $3470
 	move.w (ENT_PrevX,A4), D6	; $3472
-	jsr $30D2.w	; $3476
+	jsr ReadTile.w	; $3476
 	move.w D2, D0	; $347A
 	move.w #$108, D3	; $347C
 	or.w (-$4,A6), D3	; $3480
 	and.w D3, D0	; $3484
 	eor.w D3, D0	; $3486
 	bne.b *+$3E	; $3488
-	jsr $3860.w	; $348A
+	jsr TileBehaviorDispatch.w	; $348A
 	bmi.w SlideCollision_XScan	; $348E
 	move.w (ENT_PrevX,A4), D0	; $3492
 	move.w (-$8,A6), D1	; $3496
@@ -455,14 +456,14 @@ SlideCollision_XNeg:
 SlideCollision_XScan:
 	move.w (-$8,A6), D7	; $34C6
 	move.w (ENT_X,A4), D6	; $34CA
-	jsr $30D2.w	; $34CE
+	jsr ReadTile.w	; $34CE
 	move.w D2, D0	; $34D2
 	move.w #$108, D3	; $34D4
 	or.w (-$4,A6), D3	; $34D8
 	and.w D3, D0	; $34DC
 	eor.w D3, D0	; $34DE
 	bne.b *+$54	; $34E0
-	jsr $3860.w	; $34E2
+	jsr TileBehaviorDispatch.w	; $34E2
 	bmi.w SlideCollision_Done	; $34E6
 	move.w (ENT_X,A4), D0	; $34EA
 	move.w (-$8,A6), D1	; $34EE
@@ -519,7 +520,7 @@ ReadCollisionOffset_Done:
 SlideCheck_Collision:
 	btst.b #$1, (RAM_word_FFFF966B).w	; $356E
 	bne.b *+$6	; $3574
-	jmp $39FA.w	; $3576
+	jmp SlideCheck_Entry2.w	; $3576
 SlideCheck_Entry:
 	move.l #-$1, (RAM_word_FFFF9EE8).w	; $357A
 	bra.b *+$A	; $3582
@@ -612,7 +613,7 @@ CollideAndSlide_Alt3:
 CollideAndSlide_Up:
 	move.w (-$12,A6), D7	; $3694
 	addi.w #$40, D7	; $3698
-	jsr $30DA.w	; $369C
+	jsr ReadTileData.w	; $369C
 	btst.l #$3, D2	; $36A0
 	beq.w CollideAndSlide_Done	; $36A4
 	move.w D2, D0	; $36A8
@@ -631,7 +632,7 @@ CollideAndSlide_UpHit:
 	bra.w CollideAndSlide_Apply	; $36D0
 CollideAndSlide_Down:
 	move.w (-$12,A6), D7	; $36D4
-	jsr $30DA.w	; $36D8
+	jsr ReadTileData.w	; $36D8
 	btst.l #$3, D2	; $36DC
 	beq.b *+$6E	; $36E0
 	move.w D2, D0	; $36E2
@@ -652,7 +653,7 @@ CollideAndSlide_DownHit:
 CollideAndSlide_Left:
 	move.w (-$12,A6), D7	; $370A
 	subi.w #$40, D7	; $370E
-	jsr $30DA.w	; $3712
+	jsr ReadTileData.w	; $3712
 	move.w D2, D0	; $3716
 	andi.w #$108, D0	; $3718
 	eori.w #$108, D0	; $371C
@@ -699,7 +700,7 @@ CollideAndSlide_RightScan:
 	move.w (ENT_X,A4), D6	; $378C
 	move.w (-$4,A6), D7	; $3790
 	move.w D7, (-$6,A6)	; $3794
-	jsr $30D2.w	; $3798
+	jsr ReadTile.w	; $3798
 	btst.l #$3, D2	; $379C
 	beq.w CollideAndSlide_Jump	; $37A0
 	btst.l #$8, D2	; $37A4
@@ -726,7 +727,7 @@ CollideAndSlide_Right3:
 	move.w (ENT_X,A4), D6	; $37D8
 	move.w (-$2,A6), D7	; $37DC
 	move.w D7, (-$6,A6)	; $37E0
-	jsr $30D2.w	; $37E4
+	jsr ReadTile.w	; $37E4
 	btst.l #$3, D2	; $37E8
 	beq.w CollideAndSlide_RightScan	; $37EC
 	btst.l #$8, D2	; $37F0
@@ -815,14 +816,14 @@ CollideAndSlide_Jump:
 CollideAndSlide_End:
 	unlk A6	; $38E0
 	rts	; $38E2
-	jsr $39DA.w	; $38E4
+	jsr GetXSpan.w	; $38E4
 	move.w D0, (-$8,A6)	; $38E8
 	move.w (-$4,A6), D7	; $38EC
 	lsr.w #$4, D6	; $38F0
 	andi.w #-$10, D7	; $38F2
 	asl.w #$2, D7	; $38F6
 SlideScan:
-	jsr $30DA.w	; $38F8
+	jsr ReadTileData.w	; $38F8
 	move.w D2, D0	; $38FC
 	andi.w #$108, D0	; $38FE
 	subq.w #$8, D0	; $3902
@@ -860,7 +861,7 @@ SlideCheck_Status:
 	bmi.w SlideUp	; $395A
 SlideDown:
 	link A6, #-$6	; $395E
-	jsr $39DA.w	; $3962
+	jsr GetXSpan.w	; $3962
 	move.w D0, (-$6,A6)	; $3966
 	move.w (ENT_Y,A4), D7	; $396A
 	move.w D7, D0	; $396E
@@ -875,7 +876,7 @@ SlideDown:
 	andi.w #-$10, D7	; $3988
 	asl.w #$2, D7	; $398C
 SlideDown_Scan:
-	jsr $30DA.w	; $398E
+	jsr ReadTileData.w	; $398E
 	btst.l #$3, D2	; $3992
 	beq.b *+$1E	; $3996
 	moveq #$F, D0	; $3998
@@ -923,7 +924,7 @@ SlideCheck_Entry2:
 	moveq #$0, D7	; $3A04
 	move.b (ENT_ColH2,A4), D7	; $3A06
 	add.w (ENT_Y,A4), D7	; $3A0A
-	jsr $30D2.w	; $3A0E
+	jsr ReadTile.w	; $3A0E
 	btst.l #$3, D2	; $3A12
 	beq.b *+$34	; $3A16
 	moveq #$0, D0	; $3A18
@@ -953,13 +954,13 @@ SlideUp:
 	neg.w D7	; $3A5E
 	add.w (ENT_Y,A4), D7	; $3A60
 	move.w D7, (-$2,A6)	; $3A64
-	jsr $39DA.w	; $3A68
+	jsr GetXSpan.w	; $3A68
 	move.w D0, (-$4,A6)	; $3A6C
 	lsr.w #$4, D6	; $3A70
 	andi.w #-$10, D7	; $3A72
 	asl.w #$2, D7	; $3A76
 SlideUp_Scan:
-	jsr $30DA.w	; $3A78
+	jsr ReadTileData.w	; $3A78
 	move.w D2, D0	; $3A7C
 	andi.w #$104, D0	; $3A7E
 	subq.w #$4, D0	; $3A82
@@ -992,7 +993,7 @@ SlideUp2:
 	add.w (ENT_Y,A4), D7	; $3AC4
 	move.w D7, (-$2,A6)	; $3AC8
 	move.w (ENT_X,A4), D6	; $3ACC
-	jsr $30CE.w	; $3AD0
+	jsr ReadTileSetup.w	; $3AD0
 	move.w D2, D0	; $3AD4
 	andi.w #$4, D0	; $3AD6
 	subq.w #$4, D0	; $3ADA
@@ -1147,7 +1148,7 @@ SlideCheck_ApplyB:
 	move.w (-$5FC8,A2), D0	; $3C7E
 	add.w D0, (ENT_Y,A4)	; $3C82
 	move.b (-$6071,A2), D1	; $3C86
-	jsr $30F4.w	; $3C8A
+	jsr GetTileBehavior.w	; $3C8A
 	move.w D2, (-$30FE,A4)	; $3C8E
 	clr.w (ENT_VelY,A4)	; $3C92
 	clr.w (ENT_YSub,A4)	; $3C96
@@ -1383,12 +1384,14 @@ SlideAdjust_Apply:
 	add.w D0, (ENT_X,A4)	; $3F4E
 SlideAdjust_Done:
 	rts	; $3F52
+ReadTileAtEntityPos:
 	lea (-$68AC).w, A3	; $3F54
+ReadTileAtEntityPos2:
 	move.w (ENT_X,A4), D6	; $3F58
 	moveq #$0, D7	; $3F5C
 	move.b (ENT_ColH2,A4), D7	; $3F5E
 	add.w (ENT_Y,A4), D7	; $3F62
-	jsr $30D2.w	; $3F66
+	jsr ReadTile.w	; $3F66
 	move.w D2, (RAM_word_FFFF9EDE).w	; $3F6A
 	rts	; $3F6E
 	lea (-$68AC).w, A3	; $3F70
@@ -1397,7 +1400,7 @@ SlideAdjust_Done:
 	move.b (ENT_ColH2,A4), D0	; $3F7A
 	move.w (ENT_Y,A4), D7	; $3F7E
 	sub.w D0, D7	; $3F82
-	jsr $30D2.w	; $3F84
+	jsr ReadTile.w	; $3F84
 	move.w D2, (RAM_word_FFFF9EDC).w	; $3F88
 	rts	; $3F8C
 	lea (-$68AC).w, A3	; $3F8E
@@ -1406,13 +1409,14 @@ SlideAdjust_Done:
 	move.b (ENT_ColH2,A4), D7	; $3F98
 	add.w (ENT_Y,A4), D7	; $3F9C
 	subq.w #$1, D7	; $3FA0
-	jsr $30D2.w	; $3FA2
+	jsr ReadTile.w	; $3FA2
 	move.w D2, (RAM_word_FFFF9EE0).w	; $3FA6
 	rts	; $3FAA
+ReadTileAtEntityPos3:
 	lea (-$68AC).w, A3	; $3FAC
 	move.w (ENT_X,A4), D6	; $3FB0
 	move.w (ENT_Y,A4), D7	; $3FB4
-	jsr $30D2.w	; $3FB8
+	jsr ReadTile.w	; $3FB8
 	move.w D2, (RAM_word_FFFF9EE2).w	; $3FBC
 	rts	; $3FC0
 AttackSpeedTable:			; loc_0003FC2

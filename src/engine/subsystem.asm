@@ -23,7 +23,7 @@ SubsystemTrap:
 	nop	; $4CB4
 	bra.b $4CB4	; $4CB6
 	movea.l	#$4CC4, A1			; $4CB8
-	jmp	$50E2.l				; $4CBE
+	jmp InstallTaskList.l				; $4CBE
 TaskListData:					; loc_0004CC4
 	dc.w	$4B73,$6D74	; $4CC4
 	jsr	$364.w				; $4CC8
@@ -260,7 +260,7 @@ TaskHandler_Done:
 	rts	; $50CA
 	dc.w	$0000,$8EB0,$0000,$0000	; $50CC
 	move.l	A1, -(SP)			; $50D4
-	jsr	$559E.l				; $50D6
+	jsr ClearScrollBuffers.l				; $50D6
 	jsr	$62A.w				; $50DC
 	movea.l	(SP)+, A1			; $50E0
 InstallTaskList:
@@ -338,7 +338,7 @@ InitSubsystems:
 	lea	($5608).l, A0			; $51AE
 	jsr	$4A2.w				; $51B4
 			dc.w	$41fa,$0006	; dc.w
-	jmp	$234C.w				; $51BC
+	jmp DecodeStream.w				; $51BC
 ControllerPatchData:				; loc_00051C0
 	dc.b	$B0,$FB,$FB,$FB,$FF,$00,$33,$FC,$01,$00,$00,$A1,$11,$00	; $51C0
 ReadControllers_WaitZ80:
@@ -747,7 +747,7 @@ SceneUpdate_Done:
 	lea ($10,A2), A2	; $5662
 	dbf D1, $565E	; $5666
 	moveq #$3, D0	; $566A
-	jmp $4CB4.l	; $566C
+	jmp SubsystemTrap.l	; $566C
 SpawnObjectById:
 	lea ($643C).l, A0	; $5672
 SpawnObjectById_Store:

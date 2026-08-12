@@ -105,7 +105,7 @@ BootInitTable:
 ; ======================================================================
 PostBoot:
 	tst.w	($C00004).l			; $2FA
-	jmp	$4A06.l				; $300  ; -> MainInit
+	jmp MainInit.l				; $300  ; -> MainInit
 
 ; ======================================================================
 ; WriteZ80Driver (loc_000306)
@@ -254,7 +254,7 @@ FindFreeObjectSlot:
 	lea	($80,A0), A0			; $44E
 	dbf	D0, FindFreeObjectSlot		; $452
 	moveq	#$0, D0				; $456
-	jmp	$4CB4.l				; $458
+	jmp SubsystemTrap.l				; $458
 InitObjectSlot:
 	move.b	#$80, (A0)			; $45E
 	move.l	(A1)+, ($4,A0)			; $462
@@ -362,7 +362,7 @@ FindFreeQueueEntry:
 	addq.w	#2, A1				; $522
 	dbf	D1, FindFreeQueueEntry		; $524
 	moveq	#$1, D0				; $528
-	jmp	$4CB4.l				; $52A
+	jmp SubsystemTrap.l				; $52A
 QueueObject:
 	neg.w	D1				; $530
 	addi.w	#$1F, D1			; $532
@@ -389,7 +389,7 @@ LinkToTaskSlots:
 	cmpi.b	#$4, D1				; $56E
 	bls.b	*+$A				; $572
 	moveq	#$1, D0				; $574
-	jmp	$4CB4.l				; $576
+	jmp SubsystemTrap.l				; $576
 QueueEntryDone:
 	move.b	D1, ($1,A2)			; $57C
 	rts					; $580

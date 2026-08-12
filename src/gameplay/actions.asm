@@ -236,7 +236,7 @@ AdvanceSceneCellRow:
 	move.w #$1, (RAM_RenderMode).w	; $16F0
 	move.w #$1, (RAM_RenderRows).w	; $16F6
 	move.w #$2, (RAM_RenderColSkip).w	; $16FC
-	jsr $2082.w	; $1702
+	jsr RenderTilemapPlane.w	; $1702
 RenderFullScene_Cols:
 	move.w (RAM_SceneHeight).w, D7	; $1706
 	subq.w #$1, D7	; $170A
@@ -391,7 +391,7 @@ SceneCmd_RunScript:
 	move.b (RAM_word_FFFF8CAE).w, D0	; $189C
 SceneCmd_Sprite:
 	move.l A2, -(SP)	; $18A0
-	jsr $245A.w	; $18A2
+	jsr CheckItemSprite.w	; $18A2
 	movea.l (SP)+, A2	; $18A6
 	ori.w #$4000, (RAM_word_FFFF9994).w	; $18A8
 	bra.w RunSceneEventScript	; $18AE
@@ -436,22 +436,22 @@ SceneCmd_ValueTable:
 	clr.l (RAM_word_FFFF962C).w	; $1946
 	bra.w SceneCmd_RunScript	; $194A
 	move.b (A2)+, D0	; $194E
-	jsr $2758.w	; $1950
+	jsr GetMonsterFlagAddr2.w	; $1950
 	btst.b D0, ($0,A0,D1.w)	; $1954
 	bne.w SceneEventSkip	; $1958
 	addq.l #$2, A2	; $195C
 	bra.w RunSceneEventScript	; $195E
 	move.b (A2)+, D0	; $1962
-	jsr $274C.w	; $1964
+	jsr CheckMonsterFlag.w	; $1964
 	bne.w SceneEventSkip	; $1968
 	addq.l #$2, A2	; $196C
 	bra.w RunSceneEventScript	; $196E
 	move.b (A2)+, D0	; $1972
-	jsr $2758.w	; $1974
+	jsr GetMonsterFlagAddr2.w	; $1974
 	bset.b D0, ($0,A0,D1.w)	; $1978
 	bra.w RunSceneEventScript	; $197C
 	move.b (A2)+, D0	; $1980
-	jsr $2752.w	; $1982
+	jsr SetMonsterFlag.w	; $1982
 	bra.w RunSceneEventScript	; $1986
 	move.l A2, -(SP)	; $198A
 	jsr	$1C330.l			; $198C
@@ -464,7 +464,7 @@ SceneCmd_ValueTable:
 	bne.b *+$6	; $19A6
 	move.b (RAM_word_FFFF8CAE).w, D0	; $19A8
 SceneCmd_CheckFlag:
-	jsr $23E4.w	; $19AC
+	jsr CheckItemFlag2.w	; $19AC
 	bne.w SceneEventSkip	; $19B0
 	addq.l #$2, A2	; $19B4
 	bra.w RunSceneEventScript	; $19B6
@@ -482,7 +482,7 @@ SceneCmd_CheckFlag:
 SceneCmd_Subroutine:
 	movea.w (RAM_SceneScriptPtr).w, A0	; $19DE
 	move.l A2, (-$7386,A0)	; $19E2
-	jsr $2AAE.w	; $19E6
+	jsr DialogueDispatch.w	; $19E6
 	move.l (RAM_word_FFFF8CD6).w, -(SP)	; $19EA
 	movea.w (RAM_SceneScriptPtr).w, A0	; $19EE
 	movea.l (-$7386,A0), A2	; $19F2
@@ -522,7 +522,7 @@ RenderSceneRow:
 	moveq #$1, D6	; $1A5E
 	move.w (RAM_SceneWidth).w, D4	; $1A60
 RenderSceneRow_Tile:
-	jsr $2050.w	; $1A64
+	jsr WriteTilemapEntry.w	; $1A64
 	addq.w #$1, D6	; $1A68
 	subq.w #$1, D4	; $1A6A
 	bne.b RenderSceneRow_Tile	; $1A6C
@@ -546,7 +546,7 @@ RenderSceneRow_Tile:
 	move.b (A1), (A2)+	; $1AA8
 	jsr $5D8.w	; $1AAA
 	moveq #$6, D1	; $1AAE
-	jsr $1B50.w	; $1AB0
+	jsr Div16.w	; $1AB0
 	move.b ($1AFE,PC,D2.w), D0	; $1AB4
 	moveq #$2, D1	; $1AB8
 	lea (-$7331).w, A0	; $1ABA
@@ -587,7 +587,7 @@ RenderSceneRow_Tile:
 SceneCmd_Random:
 	jsr $5D8.w	; $1B1A
 	move.w D7, D1	; $1B1E
-	jsr $1B50.w	; $1B20
+	jsr Div16.w	; $1B20
 	lea (-$A,A6), A0	; $1B24
 	moveq #$0, D1	; $1B28
 SceneCmd_Random_Count:
@@ -606,6 +606,7 @@ SceneCmd_Random_Count:
 	clr.b (RAM_word_FFFF8CD2).w	; $1B46
 	unlk A6	; $1B4A
 	bra.w RunSceneEventScript	; $1B4C
+Div16:
 	moveq #$0, D2	; $1B50
 	moveq #$F, D3	; $1B52
 	add.w D0, D0	; $1B54
@@ -643,7 +644,7 @@ Div16_Loop:
 	moveq #$7, D0	; $1BA8
 SceneCmd_ItemCheck:
 	move.w D0, -(SP)	; $1BAA
-	jsr $23E4.w	; $1BAC
+	jsr CheckItemFlag2.w	; $1BAC
 	beq.b *+$6	; $1BB0
 	addq.w #$1, (RAM_word_FFFF8CB4).w	; $1BB2
 SceneCmd_ItemCheck_Next:
@@ -675,7 +676,7 @@ SceneCmd_AddGold:
 	moveq #$0, D0	; $1C10
 	move.b (RAM_word_FFFF8CAE).w, D0	; $1C12
 	move.l A2, -(SP)	; $1C16
-	jsr $24DC.w	; $1C18
+	jsr CheckItemType3.w	; $1C18
 	movea.l (SP)+, A2	; $1C1C
 	bra.w RunSceneEventScript	; $1C1E
 	move.b (A2)+, D0	; $1C22
@@ -783,7 +784,7 @@ RenderSceneRow2:
 	moveq #$1, D6	; $1D50
 	move.w (RAM_SceneWidth).w, D4	; $1D52
 RenderSceneRow2_Tile:
-	jsr $2050.w	; $1D56
+	jsr WriteTilemapEntry.w	; $1D56
 	addq.w #$1, D6	; $1D5A
 	subq.w #$1, D4	; $1D5C
 	bne.b RenderSceneRow2_Tile	; $1D5E
@@ -992,6 +993,7 @@ FillLine_Loop:
 	rts	; $1FC8
 	bsr.w FormatNumberLine	; $1FCA
 	bra.b *+$6	; $1FCE
+DrawDialogueText:
 	bsr.w BuildTextLine	; $1FD0
 InitDialogue:
 	lea (-$72EE).w, A0	; $1FD4
@@ -1008,7 +1010,7 @@ FoundGoldStrings:				; loc_0001FE6
 ; RAM_SceneHeight. Sets RAM_PlayerState = $80 (scene active).
 ; ----------------------------------------------------------------------
 SetupScene:
-	jsr	$276C.w				; $2002
+	jsr ResolveScene.w				; $2002
 	moveq	#$0, D0				; $2006
 	move.b	(A1)+, D0			; $2008
 	subq.w	#$1, D0				; $200A
