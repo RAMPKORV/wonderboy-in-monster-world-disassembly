@@ -1,0 +1,44 @@
+; ======================================================================
+; src/data/tile_blocks_0.asm
+; 1 x 38-tile block(s) (tag $01 flagged-table records), 4bpp planar.
+; Source: assets/tiles.png. Bit-exact when unmodified.
+; ======================================================================
+TileBlock_0_0:		; $45842
+	dc.b	$aa,$be,$ee,$eb,$ab,$ee,$ee,$ee,$be,$ee,$ee,$ee,$be,$ee,$ee,$ee,$be,$ee,$ee,$ee,$be,$ee,$ee,$ee,$ab,$ee,$ee,$ee,$aa,$be,$ee,$eb	; tile 0 @ $45842
+	dc.b	$aa,$cd,$dd,$dc,$bb,$cd,$dd,$dc,$eb,$bc,$dd,$cb,$eb,$bb,$cc,$bb,$eb,$bb,$bb,$be,$eb,$bb,$bb,$be,$cb,$bb,$bb,$be,$bb,$bb,$bb,$be	; tile 1 @ $45862
+	dc.b	$aa,$aa,$aa,$ab,$aa,$bb,$bb,$cc,$be,$ee,$ed,$dd,$ee,$ee,$ee,$dd,$ee,$ee,$ee,$ed,$ee,$ee,$ee,$ed,$ee,$ee,$ee,$ed,$ee,$ee,$ee,$ed	; tile 2 @ $45882
+	dc.b	$bb,$bb,$bb,$bb,$cc,$bb,$bb,$ba,$dd,$cb,$bb,$ba,$dd,$dc,$ba,$aa,$dd,$dc,$ba,$aa,$dd,$dc,$aa,$aa,$dd,$dc,$aa,$aa,$dd,$cb,$ba,$aa	; tile 3 @ $458A2
+	dc.b	$aa,$bc,$dd,$cb,$ab,$cd,$dd,$dc,$ac,$dd,$dd,$dd,$ac,$dd,$dd,$dd,$ac,$dd,$dd,$de,$ac,$dd,$dd,$de,$ab,$cd,$dd,$de,$aa,$bc,$cc,$ce	; tile 4 @ $458C2
+	dc.b	$bb,$cc,$cc,$cc,$bb,$cc,$cc,$cb,$de,$ee,$ec,$ba,$ee,$ee,$ee,$bb,$ee,$ee,$ee,$ec,$ee,$ee,$ee,$ed,$ee,$ee,$ee,$ed,$ee,$ee,$ee,$ec	; tile 5 @ $458E2
+	dc.b	$aa,$aa,$aa,$ab,$aa,$aa,$aa,$bc,$bc,$cc,$cc,$cc,$cd,$dd,$dd,$cc,$dd,$dd,$dd,$cc,$dd,$dd,$dd,$dc,$dd,$dd,$dd,$dc,$dd,$dd,$dd,$cc	; tile 6 @ $45902
+	dc.b	$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ce,$ee,$ee,$eb,$cc,$ee,$ee,$ba,$cc,$cc,$ba,$aa,$cc,$cb,$aa,$aa,$cc,$cb,$aa,$aa,$cc,$ba,$aa,$aa	; tile 7 @ $45922
+	dc.b	$ba,$ac,$cc,$cb,$aa,$bc,$cc,$cb,$ab,$cc,$cc,$cc,$ab,$cc,$cc,$cc,$ab,$cc,$cc,$cc,$ab,$cc,$cc,$cd,$aa,$bc,$cc,$cd,$aa,$ab,$bb,$cc	; tile 8 @ $45942
+	dc.b	$ab,$bb,$bb,$bb,$aa,$bb,$bb,$ba,$cc,$cc,$cb,$ba,$dd,$dd,$dc,$ba,$dd,$dd,$dd,$cc,$dd,$dd,$dd,$dc,$dd,$dd,$dd,$dc,$dd,$dd,$dd,$cc	; tile 9 @ $45962
+	dc.b	$aa,$aa,$bb,$bb,$aa,$aa,$aa,$ab,$ab,$bb,$bb,$bb,$bc,$cc,$cc,$bb,$cc,$cc,$cc,$bb,$cc,$cc,$cc,$cb,$cc,$ce,$ee,$ec,$cc,$ee,$ee,$ee	; tile 10 @ $45982
+	dc.b	$cd,$dd,$dd,$dc,$cd,$dd,$dd,$dc,$bc,$dd,$dd,$cb,$bb,$cc,$cc,$ba,$bb,$bb,$ba,$aa,$bb,$bb,$aa,$aa,$bb,$ba,$aa,$aa,$cb,$ba,$aa,$aa	; tile 11 @ $459A2
+	dc.b	$aa,$ab,$bb,$ba,$aa,$bb,$bb,$bb,$aa,$bb,$bb,$bb,$ab,$bb,$bb,$bb,$ab,$bb,$bb,$bb,$aa,$bb,$bb,$bc,$aa,$bb,$bb,$bc,$aa,$aa,$bb,$bb	; tile 12 @ $459C2
+	dc.b	$ab,$ee,$ee,$ee,$ab,$ee,$ee,$ee,$bb,$ce,$ee,$eb,$cc,$cc,$ee,$ba,$cc,$cc,$cc,$bb,$cc,$cc,$cc,$cb,$cc,$cc,$cc,$cb,$cc,$cc,$cc,$bb	; tile 13 @ $459E2
+	dc.b	$ba,$aa,$ab,$bb,$aa,$aa,$ab,$ee,$aa,$bb,$be,$ee,$bb,$bb,$ee,$ee,$bb,$bb,$ee,$ee,$bb,$bc,$ee,$ee,$bb,$bc,$ee,$ee,$bb,$cd,$de,$ee	; tile 14 @ $45A02
+	dc.b	$cc,$cc,$cc,$cc,$ee,$cc,$cc,$cc,$ee,$ec,$cc,$ba,$ee,$ee,$cb,$aa,$ee,$ee,$ba,$aa,$ee,$ee,$ba,$aa,$ee,$ee,$aa,$aa,$ee,$eb,$aa,$aa	; tile 15 @ $45A22
+	dc.b	$aa,$ab,$bb,$aa,$aa,$ab,$ba,$aa,$aa,$bc,$cb,$aa,$ab,$cc,$cc,$ba,$ab,$cc,$cc,$ba,$aa,$bc,$cb,$aa,$aa,$ab,$ba,$aa,$aa,$aa,$aa,$aa	; tile 16 @ $45A42
+	dc.b	$bb,$bb,$bb,$bb,$aa,$bb,$be,$ed,$aa,$ab,$ee,$ee,$aa,$ae,$ee,$ee,$aa,$be,$ee,$ee,$ab,$bc,$ee,$ee,$ab,$bb,$ce,$ed,$bb,$bb,$bb,$bb	; tile 17 @ $45A62
+	dc.b	$ee,$ee,$ee,$dd,$de,$ee,$ec,$cc,$dd,$cc,$cc,$cc,$ed,$cc,$cc,$cc,$ed,$cc,$cc,$cc,$dc,$cc,$cc,$cc,$cb,$bc,$cc,$cb,$aa,$ac,$cc,$ca	; tile 18 @ $45A82
+	dc.b	$dc,$bb,$ee,$ba,$cc,$be,$ee,$eb,$cc,$ee,$ee,$ee,$cc,$ee,$ee,$ee,$cb,$be,$ee,$eb,$ba,$ab,$ee,$ba,$aa,$ab,$cc,$ba,$aa,$bc,$dd,$cb	; tile 19 @ $45AA2
+	dc.b	$aa,$aa,$ba,$ab,$aa,$aa,$aa,$aa,$aa,$bb,$bb,$aa,$ba,$bb,$bb,$aa,$aa,$bb,$bb,$aa,$aa,$bb,$bb,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$ab	; tile 20 @ $45AC2
+	dc.b	$ee,$ee,$ee,$bb,$be,$ee,$ed,$cc,$aa,$bb,$dd,$dd,$aa,$bc,$dd,$dd,$ab,$ee,$ee,$dd,$be,$ee,$ee,$ed,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ee	; tile 21 @ $45AE2
+	dc.b	$cd,$dd,$dc,$cc,$cc,$cc,$cb,$bb,$cc,$bb,$bb,$bb,$cc,$bb,$bb,$bb,$cc,$bb,$bb,$bb,$cb,$bb,$bb,$bb,$ca,$bb,$bb,$bb,$ba,$ab,$bb,$ba	; tile 22 @ $45B02
+	dc.b	$cb,$ab,$cc,$ba,$bb,$bc,$dd,$cb,$bb,$cd,$dd,$dc,$bb,$cd,$dd,$dc,$bb,$bc,$dd,$cb,$ba,$ab,$cc,$ba,$aa,$aa,$cc,$aa,$aa,$ab,$cc,$ba	; tile 23 @ $45B22
+	dc.b	$aa,$ab,$ba,$ab,$aa,$be,$eb,$aa,$ab,$ee,$ee,$ba,$be,$ee,$ee,$ea,$be,$ee,$ee,$ea,$ab,$ee,$ee,$ba,$aa,$be,$eb,$aa,$aa,$aa,$aa,$aa	; tile 24 @ $45B42
+	dc.b	$cd,$dd,$dc,$bb,$bc,$cc,$cc,$bb,$aa,$ab,$cc,$cc,$aa,$ab,$cc,$cc,$ab,$cc,$dc,$cc,$bc,$dd,$dd,$dc,$cd,$dd,$dd,$dc,$cd,$dd,$dd,$dc	; tile 25 @ $45B62
+	dc.b	$ce,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ee,$ce,$ee,$ee,$ee,$bb,$ee,$ee,$ee,$aa,$be,$ee,$eb	; tile 26 @ $45B82
+	dc.b	$eb,$aa,$bb,$aa,$ee,$bb,$cc,$ba,$ee,$cc,$cc,$cb,$ee,$cc,$cc,$cb,$ee,$bb,$cc,$ba,$eb,$aa,$bb,$aa,$ba,$aa,$bb,$aa,$aa,$ab,$bb,$ba	; tile 27 @ $45BA2
+	dc.b	$aa,$aa,$aa,$aa,$aa,$bc,$cb,$aa,$ab,$cd,$dc,$ba,$bc,$dd,$dd,$ca,$ac,$dd,$dd,$ca,$ab,$cd,$dc,$ba,$aa,$bc,$cb,$aa,$aa,$aa,$aa,$aa	; tile 28 @ $45BC2
+	dc.b	$bc,$cc,$cb,$bb,$ab,$bb,$bb,$be,$aa,$aa,$bc,$ee,$aa,$ab,$be,$ee,$aa,$bc,$ce,$ee,$ab,$cc,$cc,$ee,$bc,$cc,$cc,$ce,$bc,$cc,$cc,$cc	; tile 29 @ $45BE2
+	dc.b	$bc,$dd,$dd,$ee,$ed,$dd,$dd,$dd,$ee,$dd,$dd,$dd,$ee,$ed,$dd,$dd,$ee,$ed,$dd,$dd,$ee,$dd,$dd,$dd,$eb,$cd,$dd,$dc,$ba,$bc,$cc,$cb	; tile 30 @ $45C02
+	dc.b	$ee,$ba,$aa,$aa,$dc,$bb,$bb,$ba,$dc,$bb,$bb,$bb,$dc,$bb,$bb,$bb,$dc,$ab,$bb,$ba,$cb,$aa,$bb,$aa,$ba,$ab,$ee,$ba,$aa,$be,$ee,$eb	; tile 31 @ $45C22
+	dc.b	$80,$00,$00,$00,$0f,$00,$56,$c2,$00,$00,$01,$00,$00,$1c,$04,$00,$11,$00,$6e,$6f,$61,$72,$63,$00,$00,$78,$00,$73,$00,$00,$00,$00	; tile 32 @ $45C42
+	dc.b	$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00	; tile 33 @ $45C62
+	dc.b	$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00	; tile 34 @ $45C82
+	dc.b	$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00	; tile 35 @ $45CA2
+	dc.b	$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00	; tile 36 @ $45CC2
+	dc.b	$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00	; tile 37 @ $45CE2

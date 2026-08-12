@@ -1,228 +1,144 @@
 [
   {
-    "file": "src/core.asm",
+    "file": "src/engine/core.asm",
     "start": "200",
     "end": "5fe",
     "label": "Boot + init, Z80, object system, RNG"
   },
   {
-    "file": "src/scroll_vdp.asm",
+    "file": "src/engine/scroll_vdp.asm",
     "start": "5fe",
     "end": "7e8",
     "label": "VDP/scroll register helpers"
   },
   {
-    "file": "src/script_engine.asm",
+    "file": "src/engine/script_engine.asm",
     "start": "7e8",
     "end": "a1a",
     "label": "Offset-tree script interpreter"
   },
   {
-    "file": "src/entity.asm",
+    "file": "src/gameplay/entity.asm",
     "start": "a1a",
     "end": "1400",
     "label": "Entity subsystem"
   },
   {
-    "file": "src/actions.asm",
+    "file": "src/gameplay/actions.asm",
     "start": "1400",
     "end": "220a",
     "label": "Gameplay code: input/actions, quiz, sprite DMA"
   },
   {
-    "file": "src/scene_loader.asm",
+    "file": "src/gameplay/scene_loader.asm",
     "start": "220a",
     "end": "3000",
     "label": "Gameplay code: more actions/entities, dialogue text"
   },
   {
-    "file": "src/movement.asm",
+    "file": "src/gameplay/movement.asm",
     "start": "3000",
     "end": "4092",
     "label": "Gameplay code: movement, angle tables"
   },
   {
-    "file": "src/sprites.asm",
+    "file": "src/gameplay/sprites.asm",
     "start": "4092",
     "end": "4900",
     "label": "Sprite anim tables + entity code"
   },
   {
-    "file": "src/mainloop.asm",
+    "file": "src/engine/mainloop.asm",
     "start": "4900",
     "end": "4c82",
     "label": "Engine core: handlers, init, VBlank, dispatcher"
   },
   {
-    "file": "src/subsystem.asm",
+    "file": "src/engine/subsystem.asm",
     "start": "4c82",
     "end": "5700",
     "label": "Task lists, subsystem inits, controllers"
   },
   {
-    "file": "src/palette_pre.asm",
+    "file": "src/scene/palette.asm",
     "start": "5700",
-    "end": "579a",
-    "label": "Raw before palette driver"
-  },
-  {
-    "file": "src/palette_driver.asm",
-    "start": "579a",
-    "end": "5986",
-    "label": "Palette animation driver + AdjustPaletteWord ($579A-$5985)"
-  },
-  {
-    "file": "src/palette_post.asm",
-    "start": "5986",
     "end": "599c",
-    "label": "Raw after palette adjust"
+    "label": "Palette system: driver + source + adjust"
   },
   {
-    "file": "src/palette_table.asm",
+    "file": "src/scene/palette_table.asm",
     "start": "599c",
     "end": "6a58",
     "label": "Packed palette table (252 palettes, 17 bytes each)"
   },
   {
-    "file": "src/flagged_loader_pre.asm",
+    "file": "src/scene/scene_load.asm",
     "start": "6a58",
-    "end": "6bc4",
-    "label": "Raw before flagged loader"
-  },
-  {
-    "file": "src/scene_decompressors.asm",
-    "start": "6bc4",
-    "end": "6ea6",
-    "label": "LoadFlaggedData + tile/map decompressors ($6BC4-$6EA5)"
-  },
-  {
-    "file": "src/flagged_loader_data.asm",
-    "start": "6ea6",
     "end": "7000",
-    "label": "Raw after map decoder"
+    "label": "Scene load: flagged loader + decompressors + data"
   },
   {
-    "file": "src/anim_data.asm",
+    "file": "src/scene/sprite_data.asm",
     "start": "7000",
     "end": "8000",
     "label": "Gameplay/menu data (converted)"
   },
   {
-    "file": "src/menu_system.asm",
+    "file": "src/scene/menu_system.asm",
     "start": "8000",
     "end": "9000",
     "label": "Inventory/magic menu code + data"
   },
   {
-    "file": "src/gameplay_data.asm",
+    "file": "src/scene/gameplay_data.asm",
     "start": "9000",
     "end": "a000",
     "label": "Gameplay code $9000-$9FFF"
   },
   {
-    "file": "src/gamebank0.asm",
+    "file": "src/data/main_data.asm",
     "start": "a000",
-    "end": "c000",
-    "label": "chunk 0"
-  },
-  {
-    "file": "src/gamebank1.asm",
-    "start": "c000",
-    "end": "e000",
-    "label": "chunk 1"
-  },
-  {
-    "file": "src/gamebank2.asm",
-    "start": "e000",
-    "end": "10000",
-    "label": "chunk 2"
-  },
-  {
-    "file": "src/gamebank3.asm",
-    "start": "10000",
-    "end": "12000",
-    "label": "chunk 3"
-  },
-  {
-    "file": "src/gamebank4.asm",
-    "start": "12000",
-    "end": "14000",
-    "label": "chunk 4"
-  },
-  {
-    "file": "src/gamebank5.asm",
-    "start": "14000",
-    "end": "16000",
-    "label": "chunk 5"
-  },
-  {
-    "file": "src/gamebank6.asm",
-    "start": "16000",
-    "end": "18000",
-    "label": "chunk 6"
-  },
-  {
-    "file": "src/gamebank7.asm",
-    "start": "18000",
-    "end": "1a000",
-    "label": "chunk 7"
-  },
-  {
-    "file": "src/gamebank8.asm",
-    "start": "1a000",
-    "end": "1c000",
-    "label": "chunk 8"
-  },
-  {
-    "file": "src/gamebank9.asm",
-    "start": "1c000",
-    "end": "1e000",
-    "label": "chunk 9"
-  },
-  {
-    "file": "src/gamebank10.asm",
-    "start": "1e000",
     "end": "20000",
-    "label": "Game code/data bank chunk 10"
+    "label": "Main gameplay/data bank"
   },
   {
-    "file": "src/tile_blocks_0.asm",
+    "file": "src/data/tile_blocks_0.asm",
     "start": "45842",
     "end": "45d02",
     "label": "Tile block (38 tiles), from assets/tiles.png"
   },
   {
-    "file": "src/tile_blocks_1.asm",
+    "file": "src/data/tile_blocks_1.asm",
     "start": "4bfaa",
     "end": "4e5aa",
     "label": "8 tile blocks (304 tiles), from assets/tiles.png"
   },
   {
-    "file": "src/tile_blocks_2.asm",
+    "file": "src/data/tile_blocks_2.asm",
     "start": "5c5da",
     "end": "5ca9a",
     "label": "Tile block (38 tiles), from assets/tiles.png"
   },
   {
-    "file": "src/tile_blocks_3.asm",
+    "file": "src/data/tile_blocks_3.asm",
     "start": "5d630",
     "end": "5fc30",
     "label": "8 tile blocks (304 tiles), from assets/tiles.png"
   },
   {
-    "file": "src/tile_blocks_4.asm",
+    "file": "src/data/tile_blocks_4.asm",
     "start": "6b192",
     "end": "6bb12",
     "label": "2 tile blocks (76 tiles), from assets/tiles.png"
   },
   {
-    "file": "src/z80_driver.asm",
+    "file": "src/z80/z80_driver.asm",
     "start": "98000",
     "end": "99a77",
     "label": "Z80 sound driver (uploaded to Z80 RAM)"
   },
   {
-    "file": "src/data_banks.asm",
+    "file": "src/data/data_banks.asm",
     "start": "a0000",
     "end": "a4c77",
     "label": "Offset trees + script/monster data"

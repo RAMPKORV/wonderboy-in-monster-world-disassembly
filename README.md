@@ -1,4 +1,4 @@
-# Wonder Boy in Monster World (Genesis) — Disassembly
+# Wonder Boy in Monster World (Genesis) â Disassembly
 
 A **bit-perfect** 68000 disassembly of *Wonder Boy in Monster World* (also
 known as *Wonder Boy V: Monster World III*), Sega Genesis / Mega Drive,
@@ -9,18 +9,18 @@ serial **GM G-4060-00** (US/EU release).
 
 ## What's here
 
-- **Full code disassembly** — every code region from `$000200` to `$020000`
+- **Full code disassembly** â every code region from `$000200` to `$020000`
   is converted to annotated assembler source in `src/`, verified bit-exact
-  against the ROM. The main gameplay/data bank (`gamebank0-10.asm`) is
+  against the ROM. The main gameplay/data bank (`src/data/main_data.asm`) is
   included, along with the palette driver, scene decompressors, menu code,
   and the Z80 sound driver.
-- **Asset pipeline** — tiles and palettes are extracted losslessly from the
+- **Asset pipeline** â tiles and palettes are extracted losslessly from the
   ROM (`tools/extract_assets.js`), wired into the build, and flow back
   bit-perfect. Editing an asset's pixels rebuilds the ROM.
-- **682 decoded maps** — every tag-`$02` 32x32 tilemap decoded to
+- **682 decoded maps** â every tag-`$02` 32x32 tilemap decoded to
   `maps/map_*.bin` and rendered to `maps/png/` (`tools/extract_maps.js`,
   `tools/render_maps.js`).
-- **Engine documentation** — `docs/engine.md` documents the Westone
+- **Engine documentation** â `docs/engine.md` documents the Westone
   task-scheduler engine, the scene/plane system, and how doors and scene
   transitions work, aimed at re-implementation.
 
@@ -36,13 +36,13 @@ checks against it and the committed `game.rom.sha256`.
 
 ## Project layout
 
-- `wonderboy.asm` → `header.asm` (macros, hardware/RAM/sound/game constants,
+- `wonderboy.asm` â `header.asm` (macros, hardware/RAM/sound/game constants,
   vectors) + `data_rest.asm` (auto-generated region orchestrator).
-- `src/*.asm` — subject-named modules: engine core (`core`, `mainloop`,
+- `src/*.asm` â subject-named modules: engine core (`core`, `mainloop`,
   `entity`, `subsystem`), gameplay (`actions`, `scene_loader`, `movement`,
-  `sprites`, `menu_system`, ...), data banks (`gamebank0-10`, `data_banks`),
+  `sprites`, `menu_system`, ...), data banks (`data/main_data.asm`, `data/data_banks.asm`),
   and the Z80 sound driver.
-- `ram_addresses.asm` — named RAM symbols; `sound_constants.asm` — Z80
+- `ram_addresses.asm` â named RAM symbols; `sound_constants.asm` â Z80
   mailbox constants.
 
 ## Documentation
