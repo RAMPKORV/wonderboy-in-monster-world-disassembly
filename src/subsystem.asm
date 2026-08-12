@@ -13,13 +13,13 @@
 	bcs.b *+$A	; $4C9C
 	clr.b (RAM_word_FFFF8A4A).w	; $4C9E
 	lea (-$7DB8).w, A5	; $4CA2
-loc_4CA6:
+RunTaskList_Done:
 	rts	; $4CA6
 	movea.w (RAM_CurrentTaskSlot).w, A5	; $4CA8
 	clr.w (A5)	; $4CAC
 	move.w D0, (RAM_word_FFFF8068).w	; $4CAE
 	rts	; $4CB2
-loc_4CB4:
+SubsystemTrap:
 	nop	; $4CB4
 	bra.b $4CB4	; $4CB6
 	movea.l	#$4CC4, A1			; $4CB8
@@ -35,16 +35,16 @@ TaskListData:					; loc_0004CC4
 	bsr.w $5132	; $4CDE
 	movea.l #$4D64, A1	; $4CE2
 	bra.w $50D4	; $4CE8
-loc_4CEC:
+TaskListDispatch:
 	tst.b (RAM_word_FFFF80C8).w	; $4CEC
 	bmi.b *+$1A	; $4CF0
 	movea.l #$4F54, A1	; $4CF2
 	tst.w (RAM_word_FFFF8068).w	; $4CF8
 	bne.b *+$8	; $4CFC
 	movea.l #$4D14, A1	; $4CFE
-loc_4D04:
+TaskListDispatch_Jump:
 	jmp $50D4.l	; $4D04
-loc_4D0A:
+TaskListDispatch_Done:
 	rts	; $4D0A
 TaskListData2:				; loc_0004D0C
 	dc.w	$0000,$6F86,$0000,$0000,$4B74,$6D74	; $4D0C
@@ -56,19 +56,19 @@ TaskListData2:				; loc_0004D0C
 	bne.b *+$8	; $4D2C
 	tst.b (RAM_word_FFFF80C8).w	; $4D2E
 	bmi.b *+$16	; $4D32
-loc_4D34:
+SpawnKcolObject:
 	movea.l #$5608, A0	; $4D34
 	jsr $4A2.w	; $4D3A
 	movea.l #$4D52, A1	; $4D3E
 	bra.w $50E2	; $4D44
-loc_4D48:
+TaskListData2_Done:
 	rts	; $4D48
 	dc.w	$0000,$703E,$0000,$0000,$4B74,$6D33	; $4D4A
 			dc.w	$43fa,$0004	; dc.w
 	bra.b	*+$12				; $4D5A
 	dc.w	$0000,$7136,$0000,$0000,$4B74,$6D32	; $4D5C
 			dc.w	$43fa,$0032	; dc.w
-loc_4D6C:
+TaskHandler_4D6C:
 	bsr.w $5106	; $4D6C
 	jsr $400.w	; $4D70
 	bsr.w $513C	; $4D74
@@ -77,12 +77,12 @@ loc_4D6C:
 	jsr $366.w	; $4D7C
 	movea.l #$4DA4, A1	; $4D80
 	bra.w $50E2	; $4D86
-loc_4D8A:
+TaskHandler_4D8A:
 	tst.b (RAM_word_FFFF80C8).w	; $4D8A
 	bmi.b *+$C	; $4D8E
 	movea.l #$4DDE, A1	; $4D90
 	bra.w $50D4	; $4D96
-loc_4D9A:
+TaskHandler_4D8A_Done:
 	rts	; $4D9A
 	dc.w	$0000,$7158,$0000,$0000,$4B6D,$6E75	; $4D9C
 			dc.w	$43fa,$002c	; dc.w
@@ -94,10 +94,10 @@ loc_4D9A:
 	bpl.b *+$C	; $4DBE
 	movea.l #$4DDE, A1	; $4DC0
 	bra.w $50D4	; $4DC6
-loc_4DCA:
+TaskHandler_4DCA:
 	movea.l #$507C, A1	; $4DCA
 	bra.w $50D4	; $4DD0
-loc_4DD4:
+TaskHandler_4DCA_Done:
 	rts	; $4DD4
 	dc.w	$0000,$71C2,$0000,$0000,$4B64,$796D	; $4DD6
 	jsr $364.w	; $4DE2
@@ -120,19 +120,19 @@ loc_4DD4:
 	clr.b (RAM_word_FFFF8A50).w	; $4E2A
 	movea.l #$4D64, A1	; $4E2E
 	bra.b *+$1C	; $4E34
-loc_4E36:
+TaskHandler_4E36:
 	bsr.w $505C	; $4E36
 	tst.b (RAM_word_FFFF8A4E).w	; $4E3A
 	beq.b *+$8	; $4E3E
 	tst.b (RAM_word_FFFF80C8).w	; $4E40
 	bmi.b *+$16	; $4E44
-loc_4E46:
+TaskHandler_4E36_Next:
 	clr.b (RAM_word_FFFF8A50).w	; $4E46
 	movea.l #$4CC4, A1	; $4E4A
-loc_4E50:
+LoadTaskList_Reset:
 	andi.b #-$2, (RAM_word_FFFF8A51).w	; $4E50
 	bra.w $50D4	; $4E56
-loc_4E5A:
+TaskHandler_4E36_Done:
 	rts	; $4E5A
 EquipmentInitData:			; loc_0004E5C
 	dc.b	$00,$00,$8e,$b0,$00,$00,$00,$00,$1c,$00,$14,$08,$11,$00,$0d,$01	; $4E5C
@@ -162,29 +162,29 @@ EquipmentInitData:			; loc_0004E5C
 	bsr.w $513C	; $4F7C
 	bne.b *+$4	; $4F80
 	rts	; $4F82
-loc_4F84:
+TaskHandler_4F84:
 	bsr.w $5842	; $4F84
 	jsr $400.w	; $4F88
 	jsr $1AD62.l	; $4F8C
 	btst.b #$4, (RAM_word_FFFF8C56).w	; $4F92
 	bne.b *+$4	; $4F98
 	rts	; $4F9A
-loc_4F9C:
+TaskHandler_4F84_Next:
 	movea.l #$4CC4, A1	; $4F9C
 	bra.w $50D4	; $4FA2
 	bsr.w $5842	; $4FA6
-loc_4FAA:
+WaitForFlag_4FAA:
 	jsr	$400.w				; $4FAA
 	btst.b #$4, (RAM_word_FFFF8C56).w	; $4FAE
-	beq.b	loc_4FAA			; $4FB4
+	beq.b	WaitForFlag_4FAA			; $4FB4
 	movea.l #$4CC4, A1	; $4FB6
 	bra.w $50D4	; $4FBC
 	dc.w	$0000,$4FC8,$0000,$0000,$4B65,$6473	; $4FC0
 	clr.b (RAM_word_FFFFA3A4).w	; $4FCC
-loc_4FD0:
+WaitForInput_4FD0:
 	jsr	$400.w				; $4FD0
 	tst.b (RAM_word_FFFFA3A4).w	; $4FD4
-	beq.b	loc_4FD0			; $4FD8
+	beq.b	WaitForInput_4FD0			; $4FD8
 	btst.b #$7, (RAM_InputSelectedNew).w	; $4FDA
 	beq.b $4FD0	; $4FE0
 	move.l #$4FA6, (RAM_word_FFFF8054).w	; $4FE2
@@ -202,7 +202,7 @@ loc_4FD0:
 	move.l D0, (RAM_RNGState).w	; $5010
 	rts	; $5014
 	lea RAM_ScriptScratch, A0	; $5016
-loc_501C:
+InitTaskSequence:
 	move.w (A0)+, (RAM_word_FFFF8A4E).w	; $501C
 	move.l A0, ($44,A5)	; $5020
 	clr.l (RAM_RNGState).w	; $5024
@@ -218,15 +218,15 @@ loc_501C:
 	bne.b *+$8	; $5046
 	cmpi.b #-$1, (A0)	; $5048
 	bne.b *+$C	; $504C
-loc_504E:
+InputSequence_Next:
 	addq.w #$2, A0	; $504E
 	move.l A0, ($44,A5)	; $5050
-loc_5054:
+InputSequence_Store:
 	move.b D0, ($1,A0)	; $5054
-loc_5058:
+InputSequence_Inc:
 	addq.b #$1, (A0)	; $5058
 	rts	; $505A
-loc_505C:
+RunInputSequence:
 	move.b (RAM_InputSelected).w, (RAM_InputSelectedPrev).w	; $505C
 	move.b (RAM_word_FFFF8A4F).w, (RAM_InputSelected).w	; $5062
 	subq.b #$1, (RAM_word_FFFF8A4E).w	; $5068
@@ -234,7 +234,7 @@ loc_505C:
 	movea.l ($44,A5), A0	; $506E
 	move.w (A0)+, (RAM_word_FFFF8A4E).w	; $5072
 	move.l A0, ($44,A5)	; $5076
-loc_507A:
+RunInputSequence_Done:
 	rts	; $507A
 	dc.w	$4B67,$6D74			; $507C  (task entry marker)
 	jsr $364.w	; $5080
@@ -253,30 +253,30 @@ loc_507A:
 	tst.w (RAM_word_FFFF8068).w	; $50B4
 	bne.b *+$8	; $50B8
 	movea.l #$4CC4, A1	; $50BA
-loc_50C0:
+LoadTaskList_Clear:
 	andi.b #-$2, (RAM_word_FFFF8A51).w	; $50C0
 	bra.w $50D4	; $50C6
-loc_50CA:
+TaskHandler_Done:
 	rts	; $50CA
 	dc.w	$0000,$8EB0,$0000,$0000	; $50CC
 	move.l	A1, -(SP)			; $50D4
 	jsr	$559E.l				; $50D6
 	jsr	$62A.w				; $50DC
 	movea.l	(SP)+, A1			; $50E0
-loc_50E2:
+InstallTaskList:
 	move.l A1, -(SP)	; $50E2
 	jsr VBlankTick.l	; $50E4
 	movea.l (SP)+, A1	; $50EA
 	lea (-$7FB8).w, A0	; $50EC
 	move.l (A1)+, ($4,A0)	; $50F0
-loc_50F4:
+InstallTaskList_Slot:
 	move.l A1, ($C,A0)	; $50F4
 	move.w D0, ($40,A0)	; $50F8
 	move.w #-$8000, (A0)	; $50FC
 	jmp ResetStack.l	; $5100
-loc_5106:
+InstallTaskDescriptors:
 	lea (-$7F38).w, A0	; $5106
-loc_510A:
+InstallTaskDescriptors_Loop:
 	move.l (A1)+, D0	; $510A
 	beq.b *+$16	; $510C
 	move.w #-$8000, (A0)	; $510E
@@ -285,40 +285,40 @@ loc_510A:
 	move.l A2, ($C,A0)	; $5118
 	lea ($80,A0), A0	; $511C
 	bra.b $510A	; $5120
-loc_5122:
+InstallTaskDescriptors_Done:
 	rts	; $5122
-loc_5124:
+ClearTaskBuffer:
 	moveq #$6, D0	; $5124
 	lea (-$666A).w, A0	; $5126
 	clr.l (A0)+	; $512A
 	dbf D0, $512A	; $512C
 	rts	; $5130
-loc_5132:
+PlaySound25:
 	jsr $364.w	; $5132
 	moveq #$25, D0	; $5136
 	jmp $366.w	; $5138
-loc_513C:
+CheckStartPressed:
 	move.b (RAM_InputSelected2).w, D0	; $513C
 	bpl.b *+$16	; $5140
 	lea (-$757F).w, A0	; $5142
 	andi.b #$7F, D0	; $5146
 	beq.b *+$6	; $514A
 	lea (-$757C).w, A0	; $514C
-loc_5150:
+CheckStartPressed_Test:
 	btst.b #$7, (A0)	; $5150
 	rts	; $5154
-loc_5156:
+SetStartFlag:
 	moveq #-$80, D0	; $5156
 	btst.b #$7, (RAM_word_FFFF8A81).w	; $5158
 	bne.b *+$C	; $515E
 	btst.b #$7, (RAM_word_FFFF8A84).w	; $5160
 	beq.b *+$8	; $5166
 	moveq #-$7F, D0	; $5168
-loc_516A:
+SetStartFlag_Store:
 	move.b D0, (RAM_InputSelected2).w	; $516A
-loc_516E:
+SetStartFlag_Done:
 	rts	; $516E
-loc_5170:
+InitSubsystems:
 	jsr $6F6.w	; $5170
 	bsr.w $6910	; $5174
 	bsr.w $6916	; $5178
@@ -341,9 +341,9 @@ loc_5170:
 	jmp	$234C.w				; $51BC
 ControllerPatchData:				; loc_00051C0
 	dc.b	$B0,$FB,$FB,$FB,$FF,$00,$33,$FC,$01,$00,$00,$A1,$11,$00	; $51C0
-loc_51CE:
+ReadControllers_WaitZ80:
 	btst.b	#$0, ($A11100).l		; $51CE
-	bne.b	loc_51CE			; $51D6
+	bne.b	ReadControllers_WaitZ80			; $51D6
 	lea ($A10003).l, A0	; $51D8
 	lea (-$7581).w, A1	; $51DE
 	bsr.b *+$34	; $51E2
@@ -354,14 +354,14 @@ loc_51CE:
 	btst.b #$0, (RAM_InputSelected2).w	; $51F8
 	bne.b *+$6	; $51FE
 	lea (-$7581).w, A1	; $5200
-loc_5204:
+UpdateInputLatch:
 	tst.b (RAM_word_FFFF8A50).w	; $5204
 	bmi.b *+$C	; $5208
 	move.b (RAM_InputSelected).w, (RAM_InputSelectedPrev).w	; $520A
 	move.b (A1), (RAM_InputSelected).w	; $5210
-loc_5214:
+UpdateInputLatch_Done:
 	rts	; $5214
-loc_5216:
+ReadControllerPort:
 	move.b (A1), ($1,A1)	; $5216
 	move.b #$0, (A0)	; $521A
 	nop	; $521E
@@ -384,7 +384,7 @@ loc_5216:
 	and.b D1, D0	; $5248
 	move.b D0, ($2,A1)	; $524A
 	rts	; $524E
-loc_5250:
+ComputeNewPresses:
 	move.b (RAM_InputSelected).w, D1	; $5250
 	move.b (RAM_InputSelectedPrev).w, D0	; $5254
 	eor.b D1, D0	; $5258
@@ -400,20 +400,20 @@ loc_5250:
 	beq.b *+$A	; $5278
 	move.w #$3E7, D0	; $527A
 	dbf D0, $527E	; $527E
-loc_5282:
+VBlankScrollWrite:
 	bsr.w $5370	; $5282
 	bclr.b #$1, (RAM_VBlankFlag).w	; $5286
 	beq.b *+$10	; $528C
 	move.w (RAM_word_FFFF8A5C).w, D0	; $528E
 	move.w D0, ($C00004).l	; $5292
 	move.b D0, (RAM_word_FFFF8A7E).w	; $5298
-loc_529C:
+VBlankScrollWrite_Done:
 	rts	; $529C
-loc_529E:
+VBlankPlaneWrite:
 	bclr.b #$3, (RAM_VBlankFlag).w	; $529E
 	bne.b *+$4	; $52A4
 	rts	; $52A6
-loc_52A8:
+VBlankPaletteWrite:
 	bsr.w $52DA	; $52A8
 	move.l #$40000010, ($C00004).l	; $52AC
 	moveq #$0, D0	; $52B6
@@ -428,7 +428,7 @@ loc_52A8:
 	move.w (RAM_word_FFFF8ADE).w, D1	; $52D2
 	moveq #$13, D2	; $52D6
 	bra.b *+$38	; $52D8
-loc_52DA:
+WriteScrollRegisters:
 	move.w (RAM_BgColor_Addr).w, D0	; $52DA
 	jsr $5A0.w	; $52DE
 	moveq #$0, D0	; $52E2
@@ -445,10 +445,10 @@ loc_52DA:
 	move.w (RAM_word_FFFF8AE2).w, D1	; $5308
 	and.w D2, D0	; $530C
 	and.w D2, D1	; $530E
-loc_5310:
+WriteScrollRegisters_AddX:
 	add.w D0, D0	; $5310
 	add.w D1, D1	; $5312
-loc_5314:
+WriteScrollRegisters_Loop:
 	lea ($C00000).l, A2	; $5314
 	move.w ($0,A0,D0.w), (A2)	; $531A
 	move.w ($0,A1,D1.w), (A2)	; $531E
@@ -456,15 +456,15 @@ loc_5314:
 	cmp.w D3, D0	; $5324
 	bcs.b *+$4	; $5326
 	moveq #$0, D0	; $5328
-loc_532A:
+WriteScrollRegisters_AddY:
 	addq.w #$2, D1	; $532A
 	cmp.w D3, D0	; $532C
 	bcs.b *+$4	; $532E
 	moveq #$0, D1	; $5330
-loc_5332:
+WriteScrollRegisters_Done:
 	dbf D2, $531A	; $5332
 	rts	; $5336
-loc_5338:
+VBlankWindowWrite:
 	bclr.b #$2, (RAM_VBlankFlag).w	; $5338
 	beq.b *+$30	; $533E
 	move.w (RAM_word_FFFF8A74).w, ($C00004).l	; $5340
@@ -479,11 +479,11 @@ loc_5338:
 	tst.b D0	; $5362
 	bpl.b *+$6	; $5364
 	addi.w #$20, D1	; $5366
-loc_536A:
+VBlankWindowWrite_Store:
 	move.w D1, (RAM_word_FFFF8AE4).w	; $536A
-loc_536E:
+VBlankWindowWrite_Done:
 	rts	; $536E
-loc_5370:
+UploadPaletteCRAM:
 	bclr.b #$7, (RAM_word_FFFF8C56).w	; $5370
 	beq.b *+$20	; $5376
 	move.l #-$40000000, ($C00004).l	; $5378
@@ -492,9 +492,9 @@ loc_5370:
 	move.w #$1F, D0	; $538C
 	move.l (A0)+, (A1)	; $5390
 	dbf D0, $5390	; $5392
-loc_5396:
+UploadPaletteCRAM_Done:
 	rts	; $5396
-loc_5398:
+ClearEntitySlots:
 	moveq #$0, D0	; $5398
 	movea.w D0, A4	; $539A
 	moveq #$3F, D1	; $539C
@@ -508,7 +508,7 @@ loc_5398:
 	move.l D0, (A0)+	; $53B2
 	dbf D1, $53B2	; $53B4
 	movea.w #$0, A4	; $53B8
-loc_53BC:
+EntitySlotMaintain:
 	andi.b #-$2, (-$4000,A4)	; $53BC
 	move.b (-$4000,A4), D0	; $53C2
 	andi.b #-$40, D0	; $53C6
@@ -518,7 +518,7 @@ loc_53BC:
 	bne.b *+$C	; $53D6
 	jsr $80E.w	; $53D8
 	andi.b #$7F, (-$3FFD,A4)	; $53DC
-loc_53E2:
+EntitySlotMaintain_Check:
 	btst.b #$2, (-$3FFD,A4)	; $53E2
 	bne.b *+$28	; $53E8
 	move.w #-$1, (-$38FE,A4)	; $53EA
@@ -529,12 +529,12 @@ loc_53E2:
 	bpl.b *+$8	; $53FE
 	move.w A4, ($20,A0,D0.w)	; $5400
 	bra.b *+$8	; $5404
-loc_5406:
+EntitySlotMaintain_Link:
 	movea.w D1, A1	; $5406
 	move.w A4, (-$38FE,A1)	; $5408
-loc_540C:
+EntitySlotMaintain_Store:
 	move.w A4, ($0,A0,D0.w)	; $540C
-loc_5410:
+EntitySlotMaintain_Next:
 	addq.w #$4, A4	; $5410
 	cmpa.w #$100, A4	; $5412
 	bcs.b $53BC	; $5416
@@ -547,16 +547,16 @@ loc_5410:
 	lea (-$74F8).w, A2	; $543C
 	move.b #$2, (RAM_word_FFFF8B32).w	; $5440
 	move.b #$10, (RAM_word_FFFF8B33).w	; $5446
-loc_544C:
+BuildSpriteAttrs:
 	move.w (A2)+, D0	; $544C
 	bmi.b *+$E	; $544E
-loc_5450:
+BuildSpriteAttrs_Entity:
 	movea.w D0, A4	; $5450
 	bsr.b *+$72	; $5452
 	beq.b *+$66	; $5454
 	move.w (-$38FE,A4), D0	; $5456
-	bpl.b	loc_5450			; $545A
-loc_545C:
+	bpl.b	BuildSpriteAttrs_Entity			; $545A
+BuildSpriteAttrs_Count:
 	subq.b #$1, (RAM_word_FFFF8B32).w	; $545C
 	bne.b *+$48	; $5460
 	cmpi.b #$3, (RAM_word_FFFF8B31).w	; $5462
@@ -582,23 +582,23 @@ loc_545C:
 	addi.w #$20, D2	; $549A
 	move.w D2, (RAM_word_FFFF8B28).w	; $549E
 	bra.b *+$6	; $54A2
-loc_54A4:
+BuildSpriteAttrs_StoreY:
 	move.w D2, (RAM_word_FFFF8B2A).w	; $54A4
-loc_54A8:
+BuildSpriteAttrs_Countdown:
 	subq.b #$1, (RAM_word_FFFF8B33).w	; $54A8
 	bne.b $544C	; $54AC
-loc_54AE:
+BuildSpriteAttrs_End:
 	tst.b (RAM_word_FFFF8B30).w	; $54AE
 	bne.b *+$8	; $54B2
 	moveq #$0, D0	; $54B4
 	move.l D0, (A3)	; $54B6
 	bra.b *+$6	; $54B8
-loc_54BA:
+BuildSpriteAttrs_Clear:
 	clr.b (-$5,A3)	; $54BA
-loc_54BE:
+BuildSpriteAttrs_Done:
 	move.l A3, (RAM_word_FFFF8B52).w	; $54BE
 	rts	; $54C2
-loc_54C4:
+BuildSpriteEntry:
 	lea (-$74CC).w, A0	; $54C4
 	adda.w (-$3E00,A4), A0	; $54C8
 	move.w (-$3800,A4), D2	; $54CC
@@ -611,10 +611,10 @@ loc_54C4:
 	btst.b #$3, (-$3FFD,A4)	; $54E2
 	bne.b *+$6	; $54E8
 	move.w (-$3DFE,A4), D0	; $54EA
-loc_54EE:
+BuildSpriteEntry_Store:
 	move.w D0, (RAM_word_FFFF8B50).w	; $54EE
 	movea.l (-$3F00,A4), A0	; $54F2
-loc_54F6:
+BuildSpriteEntry_Loop:
 	move.b (A0)+, D6	; $54F6
 	bmi.w $557C	; $54F8
 	ext.w D6	; $54FC
@@ -635,7 +635,7 @@ loc_54F6:
 	beq.b *+$6	; $5520
 	neg.w D5	; $5522
 	sub.w D0, D5	; $5524
-loc_5526:
+BuildSpriteEntry_X:
 	add.w D2, D5	; $5526
 	cmp.w (RAM_word_FFFF8B2E).w, D5	; $5528
 	bcc.b $54F6	; $552C
@@ -651,7 +651,7 @@ loc_5526:
 	beq.b *+$6	; $5546
 	neg.w D4	; $5548
 	sub.w D0, D4	; $554A
-loc_554C:
+BuildSpriteEntry_Y:
 	add.w D3, D4	; $554C
 	cmp.w (RAM_word_FFFF8B2A).w, D4	; $554E
 	bcc.b $54F6	; $5552
@@ -668,9 +668,9 @@ loc_554C:
 	ori.b #$1, (-$4000,A4)	; $556E
 	subq.b #$1, (RAM_word_FFFF8B31).w	; $5574
 	bne.w $54F6	; $5578
-loc_557C:
+BuildSpriteEntry_Done:
 	rts	; $557C
-loc_557E:
+UploadSpriteTable:
 	lea ($C00000).l, A1	; $557E
 	move.l #$50000003, ($4,A1)	; $5584
 	lea RAM_word_00FF2800, A0	; $558C
@@ -678,7 +678,7 @@ loc_557E:
 	move.l (A0)+, (A1)	; $5596
 	dbf D0, $5596	; $5598
 	rts	; $559C
-loc_559E:
+ClearScrollBuffers:
 	moveq #$0, D1	; $559E
 	lea (-$74AA).w, A0	; $55A0
 	lea (-$742A).w, A1	; $55A4
@@ -688,7 +688,7 @@ loc_559E:
 	dbf D0, $55AA	; $55AE
 	ori.b #-$80, (RAM_word_FFFF8C56).w	; $55B2
 	rts	; $55B8
-loc_55BA:
+CopyScrollBuffers:
 	lea (-$74AA).w, A0	; $55BA
 	lea (-$742A).w, A1	; $55BE
 	move.w #$1F, D0	; $55C2
@@ -721,24 +721,24 @@ loc_55BA:
 	beq.b *+$8	; $5626
 	bsr.w $58D6	; $5628
 	bra.b *+$6	; $562C
-loc_562E:
+SceneUpdate:
 	bsr.w $5892	; $562E
-loc_5632:
+SceneUpdate_Check:
 	bclr.b #$1, (RAM_word_FFFF8C56).w	; $5632
 	bne.b *+$6	; $5638
 	bsr.w $5916	; $563A
-loc_563E:
+SceneUpdate_Count:
 	tst.b (RAM_word_FFFF8C57).w	; $563E
 	bne.b *+$C	; $5642
 	moveq #$41, D0	; $5644
 	and.b (RAM_word_FFFF8C56).w, D0	; $5646
 	subq.b #$1, D0	; $564A
 	beq.b *+$6	; $564C
-loc_564E:
+SceneUpdate_Copy:
 	bsr.w $55BA	; $564E
-loc_5652:
+SceneUpdate_Next:
 	bra.w $579A	; $5652
-loc_5656:
+SceneUpdate_Done:
 	rts	; $5656
 	lea (-$73A8).w, A2	; $5658
 	moveq #$0, D1	; $565C
@@ -748,9 +748,9 @@ loc_5656:
 	dbf D1, $565E	; $5666
 	moveq #$3, D0	; $566A
 	jmp $4CB4.l	; $566C
-loc_5672:
+SpawnObjectById:
 	lea ($643C).l, A0	; $5672
-loc_5678:
+SpawnObjectById_Store:
 	move.l ($0,A0,D0.w), ($2,A2)	; $5678
 	lea ($5608).l, A1	; $567E
 	jsr $47A.w	; $5684
@@ -769,25 +769,25 @@ loc_5678:
 	addq.w #$6, A0	; $56B6
 	dbf D0, $56B4	; $56B8
 	rts	; $56BC
-loc_56BE:
+ScanObjectSlots:
 	moveq #$0, D0	; $56BE
 	lea (-$73A8).w, A0	; $56C0
 	tst.b (A0)	; $56C4
 	bmi.b *+$C	; $56C6
-loc_56C8:
+ScanObjectSlots_Next:
 	lea	($10,A0), A0			; $56C8
 	dbf D0, $56C4	; $56CC
 	rts	; $56D0
-loc_56D2:
+ScanObjectSlots_Tick:
 	subq.b #$1, ($1,A0)	; $56D2
-	bne.b	loc_56C8			; $56D6
+	bne.b	ScanObjectSlots_Next			; $56D6
 	movea.l ($2,A0), A1	; $56D8
 	move.w ($6,A0), D1	; $56DC
 	move.b ($0,A1,D1.w), D2	; $56E0
 	bpl.b *+$6	; $56E4
 	clr.w (A0)	; $56E6
-	bra.b $56C8	; $56E8
-loc_56EA:
+	bra.b ScanObjectSlots_Next	; $56E8
+ScanObjectSlots_Next2:
 	bne.b $5704	; $56EA
 	moveq #$0, D2	; $56EC
 	move.b ($1,A1,D1.w), D2	; $56EE
