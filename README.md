@@ -1,48 +1,51 @@
-# Sega Genesis ROM Disassembly Base
+# Wonder Boy in Monster World (Genesis) — Disassembly
 
-A copy-paste base project for disassembling **any** Sega Genesis / Mega
-Drive ROM into bit-perfect 68000 assembly source.
+A **bit-perfect** 68000 disassembly of *Wonder Boy in Monster World* (also
+known as *Wonder Boy V: Monster World III*), Sega Genesis / Mega Drive,
+serial **GM G-4060-00** (US/EU release).
+
+`./build.sh` + `./verify.sh` reproduce the original ROM byte-for-byte
+(SHA-256 `6b2ac36f624f914ad26e32baa87d1253aea9dcfc13d2a5842ecdd2bd4a7a43b9`).
+
+## What's here
+
+- **Full code disassembly** — every code region from `$000200` to `$020000`
+  is converted to annotated assembler source in `src/`, verified bit-exact
+  against the ROM. The main gameplay/data bank (`gamebank0-10.asm`) is
+  included, along with the palette driver, scene decompressors, menu code,
+  and the Z80 sound driver.
+- **Asset pipeline** — tiles and palettes are extracted losslessly from the
+  ROM (`tools/extract_assets.js`), wired into the build, and flow back
+  bit-perfect. Editing an asset's pixels rebuilds the ROM.
+- **682 decoded maps** — every tag-`$02` 32x32 tilemap decoded to
+  `maps/map_*.bin` and rendered to `maps/png/` (`tools/extract_maps.js`,
+  `tools/render_maps.js`).
+- **Engine documentation** — `docs/engine.md` documents the Westone
+  task-scheduler engine, the scene/plane system, and how doors and scene
+  transitions work, aimed at re-implementation.
 
 ## Quick Start
 
 ```bash
-# 1. Copy this folder, put your ROM in it
-cp -r disassembly my-new-game
-cd my-new-game
-
-# 2. Initialize from the ROM
-node tools/setup.js "/path/to/Game (USA).bin"
-#    -> prints the ROM header, writes game.rom / game.config.json /
-#       src/header_vectors.asm / wonderboy.asm, and verifies a raw baseline.
-
-# 3. Start disassembling (as an agent, read AGENTS.md; as a human,
-#    read docs/workflow.md)
+./build.sh   # assemble wonderboy.asm -> out.bin
+./verify.sh  # hash-check out.bin vs the ROM
 ```
 
-Then, as an agent, say **"Continue working"** or **"Work according to
-plan"** and follow `AGENTS.md` + `docs/workflow.md`.
-
-## What you get
-
-- A verified **bit-perfect** baseline build of the raw ROM bytes.
-- A region-by-region conversion pipeline (Ghidra → asm68k → autofix →
-  verify) that never leaves the build broken.
-- `asm68k.exe` (SN System 68k v2.53) and all pipeline tools.
-- Full documentation: Genesis hardware/ROM format, the pipeline, and the
-  assembler quirks that break naive conversions.
+The ROM (`game.rom`, a copy of `wonderboy.bin`) is gitignored; `verify.sh`
+checks against it and the committed `game.rom.sha256`.
 
 ## Documentation
 
 | File | What it is |
 |------|------------|
+| `docs/engine.md` | Engine deep-dive: boot, task scheduler, scene/plane system, doors, data formats |
+| `docs/game-notes.md` | Game identity, external research, region plan, ROM layout |
+| `docs/progress.md` | Format crack status + conversion tracking |
 | `AGENTS.md` | Master instructions for AI agents |
 | `docs/segagenesis.md` | Genesis/Mega Drive ROM + hardware reference |
 | `docs/pipeline.md` | The region-conversion pipeline |
 | `docs/asm68k.md` | asm68k.exe quirks (the hard-won lessons) |
 | `docs/workflow.md` | Day-to-day agent workflow |
-| `docs/game-notes.md` | Per-game research & region plan (create per game) |
-| `docs/progress.md` | Region conversion tracking (create per game) |
-| `docs/engine.md` | Engine architecture notes (create per game) |
 
 ## Requirements
 
