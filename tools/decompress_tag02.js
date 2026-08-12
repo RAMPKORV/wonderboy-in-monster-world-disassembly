@@ -143,4 +143,8 @@ function main() {
   console.log('wrote /tmp/wb_tag02_' + addr.toString(16) + '.bin');
 }
 
-main();
+module.exports = { decompress, BitReader, readToken };
+
+if (require.main === module) {
+  main();
+}
