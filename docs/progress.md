@@ -103,6 +103,8 @@ module BEFORE running spanforce.
 - **21 ROM table EQU constants** added to game_constants.asm (stat/damage/
   angle/scene/dispatch tables). Fixed two misleading names (DamageStatTable,
   StatDeltaTable).
+- **Dialogue fully extracted + moddable**: text/dialogue.md (all scenes),
+  text/scenes.json (editable), regen_dialogue.js wired into build.sh.
 - **Map editing round-trip**: `compress_tag02.js` + `inject_maps.js`
   (verified on all 682 maps). **Scene manifest**: `extract_scenes.js` ->
   scenes/scenes.json + docs/scenes.md.

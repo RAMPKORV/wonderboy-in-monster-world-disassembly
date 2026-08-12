@@ -98,8 +98,14 @@
   {
     "file": "src/data/main_data.asm",
     "start": "a000",
-    "end": "20000",
+    "end": "1dd74",
     "label": "Main gameplay/data bank"
+  },
+  {
+    "file": "src/data/scene_data.asm",
+    "start": "1dd74",
+    "end": "20d50",
+    "label": "Scene type table + scene table + dialogue scripts"
   },
   {
     "file": "src/data/tile_blocks_0.asm",

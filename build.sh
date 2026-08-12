@@ -9,7 +9,11 @@ cd "$SCRIPT_DIR"
 echo "Building $(basename "$PWD") ROM..."
 if [ -d assets ]; then
   node tools/regen_assets.js
-  node tools/regen_rest.js game.rom
 fi
+if [ -f text/scenes.json ]; then
+  echo "Regenerating dialogue data from text/scenes.json..."
+  node tools/regen_dialogue.js
+fi
+node tools/regen_rest.js game.rom
 wine asm68k.exe /k /p /o ae- wonderboy.asm,out.bin,,game.lst
 echo "Build complete: out.bin ($(stat -c%s out.bin 2>/dev/null || stat -f%z out.bin) bytes)"

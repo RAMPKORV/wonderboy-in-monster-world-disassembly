@@ -213,9 +213,26 @@ Dialogue is ASCII with control bytes, driven by a dictionary of common words:
   when the payload fits, otherwise relocates to free space and updates the
   flagged-table record. Size-changing edits beyond the slot need relayout.
 
-## Scenes
+## Dialogue / text
 
-- `tools/extract_scenes.js` walks the scene table ($1DD94) and dumps every
-  scene's type entry, geometry (from $1DD74) and a readable text preview to
-  `scenes/scenes.json` + `docs/scenes.md`. Scene data is bytecode + dialogue.
-- Scene -> tileset/palette mapping remains open (traced from the $A000-$20000 bank).
+- **Scene scripts** ($1DF1D-$20D50) hold all dialogue. Text encoding:
+  - 0x20-0x7E literal ASCII
+  - 0x0C <byte> dictionary word: index = byte<0x40 ? byte : byte-0x40.
+    The 168-word dictionary (NUL-terminated ASCII) is at $22027
+    (Alsedo... your). Word refs are greedy-compressed (e.g. "Monster World" =
+    0C 54 20 0C 67).
+  - 0x09 line break, 0x02 ellipsis, 0x05/0x00 end of box, 0x01 font/name
+    toggle, 0x0B <x> speaker/face, 0x10 <x> control.
+- **Extraction**: `tools/extract_dialogue.js` -> `text/dialogue.md`
+  (human-readable, per scene). `tools/parse_scenes.js` -> `text/scenes.json`
+  (structured, editable: each scene's dialogue is in per-segment "text" fields;
+  "origText" is the unmodified text; "raw" is the original bytes).
+- **Name table** ($21A4D+): proper nouns rendered in large font
+  (Shion, Alsedo, Maugham Desert, Ice Capital, Castle of Illusion, ...).
+- **Modding pipeline** (works with `./build.sh`):
+  1. Edit "text" fields in `text/scenes.json` (keep \n line breaks).
+  2. `./build.sh` runs `tools/regen_dialogue.js`, which re-encodes changed
+     scenes, relayouts the scene table + data, regenerates
+     `src/data/scene_data.asm`, and assembles. Unedited scenes keep the
+     original bytes (bit-perfect); edited text flows into out.bin.
+  3. Reset the baseline with `node tools/parse_scenes.js`.
