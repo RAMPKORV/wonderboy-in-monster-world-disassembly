@@ -1,6 +1,6 @@
 ; ======================================================================
-; src/gameplay2.asm
-; <What this region does>.
+; src/scene_loader.asm
+; Scene tile loader, ResolveScene, text decoder, item actions
 ; Covers ROM $220A-$3000.
 ; Verified bit-exact against the original ROM.
 ; ======================================================================

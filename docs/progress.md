@@ -36,35 +36,35 @@
 
 ## Disassembly regions (registered, bit-perfect)
 
-- Code $200-$5700: core, scroll_vdp, script_engine, entity, gameplay1-4,
+- Code $200-$5700: core, scroll_vdp, script_engine, entity, actions, scene_loader, movement, sprites,
   mainloop, subsystem.
 - $599C-$6A58: **palette_table.asm** (labeled, 252 palettes, asset-wired).
 - $579A-$5985: **palette_driver.asm** (PaletteAnimationDriver, PaletteSourceToWorking,
-  AdjustPaletteWord) — hand-converted, bit-exact.
+  AdjustPaletteWord) Ã¢ÂÂ hand-converted, bit-exact.
 - $6BC4-$6EA6: **scene_decompressors.asm** (LoadFlaggedData, DecompressTiles,
-  DecodeMap) — hand-converted, bit-exact.
-- $6EA6-$6F85: **gameplay5c.asm** code (hand-verified per-instruction vs ROM) +
-  $6F86-$6FFF data — bit-exact.
-- **$7000-$8000: gameplay6.asm CONVERTED** — 23 code instructions (code islands)
+  DecodeMap) Ã¢ÂÂ hand-converted, bit-exact.
+- $6EA6-$6F85: **flagged_loader_data.asm** code (hand-verified per-instruction vs ROM) +
+  $6F86-$6FFF data Ã¢ÂÂ bit-exact.
+- **$7000-$8000: anim_data.asm CONVERTED** Ã¢ÂÂ 23 code instructions (code islands)
   + sprite/animation data tables as dc.b; bit-exact. Method: Ghidra convert ->
   fix errors -> fix PC-relative operands -> one-pass convert mismatched runs to
   exact dc.b -> manual boundary fixes (Ghidra skips, mis-rendered operands,
   over-long rows).
-- **$8000-$9000: menus.asm CONVERTED** — 156 instructions + data, bit-exact.
-- **$9000-$A000: gameplay7.asm CONVERTED** — 105 instructions + data, bit-exact.
-- **$A000-$20000: gamebank0-10.asm CONVERTED** (11 chunks of 8KB) — 1603
+- **$8000-$9000: menu_system.asm CONVERTED** Ã¢ÂÂ 156 instructions + data, bit-exact.
+- **$9000-$A000: gameplay_data.asm CONVERTED** Ã¢ÂÂ 105 instructions + data, bit-exact.
+- **$A000-$20000: gamebank0-10.asm CONVERTED** (11 chunks of 8KB) Ã¢ÂÂ 1603
   instructions + data tables, bit-exact. This is the main gameplay/data bank
   (state dispatch tables, monster/level data).
 
 ### The converged conversion pipeline (used for $8000-$1FFFC)
 
-1. `tmp_conv.js` — Ghidra dump ($5700-$9FFE = g17, $A000-$1FFFC = g18) -> asm,
+1. `tmp_conv.js` Ã¢ÂÂ Ghidra dump ($5700-$9FFE = g17, $A000-$1FFFC = g18) -> asm,
    leading-gap dc.b padding, branch/immediate normalization.
-2. `tmp_fixerr.js` — replace every asm68k-rejected line with exact-ROM dc.b
+2. `tmp_fixerr.js` Ã¢ÂÂ replace every asm68k-rejected line with exact-ROM dc.b
    (span = next line's address - this line's address). Loop to 0 errors.
-3. `tmp_pcfix.js` — resolve `(d,PC,xn)` to absolute `(addr,PC,xn)`.
-4. `tmp_fixerr.js` — clear errors reintroduced by pcfix.
-5. `tmp_spanforce.js` — build, compare each line's lst address/length/bytes vs
+3. `tmp_pcfix.js` Ã¢ÂÂ resolve `(d,PC,xn)` to absolute `(addr,PC,xn)`.
+4. `tmp_fixerr.js` Ã¢ÂÂ clear errors reintroduced by pcfix.
+5. `tmp_spanforce.js` Ã¢ÂÂ build, compare each line's lst address/length/bytes vs
    ROM at its comment address; rewrite mismatches to span-exact dc.b (16 bytes
    per line). Converges in 1-2 passes.
 
@@ -73,18 +73,18 @@
 error. ALWAYS split dc.b to <=16 values per line. Symptom: `pass N BUILD ERROR,
 errs=0` and a hung build; verify no giant dc.b lines.
 **lst gotcha:** asm68k's lst byte column truncates at 10 bytes per row with a
-`+`; never parse byte counts from the byte column — derive length from the next
+`+`; never parse byte counts from the byte column Ã¢ÂÂ derive length from the next
 lst row's address, bytes from out.bin. The lst also echoes the last dc.b line of
 an include twice (benign; dedupe by address).
-**regions.json gotcha:** a module that isn't registered is silently ignored —
+**regions.json gotcha:** a module that isn't registered is silently ignored Ã¢ÂÂ
 spanforce will oscillate forever against data_rest's raw rows. Register the
 module BEFORE running spanforce.
 - Tile blocks $45842..$6BB12: **tile_blocks_0..4.asm** (labeled, from assets).
-- $5700-$579A: **gameplay5a.asm CONVERTED** — 43 instructions + data, bit-exact.
-- $5986-$599C: **gameplay5a_tail.asm CONVERTED** — 6 instructions + data, bit-exact.
-- $6A58-$6BC4: **gameplay5b.asm CONVERTED** — 127 instructions + data, bit-exact.
-- $6EA6-$6FFF: **gameplay5c.asm CONVERTED** — data (flagged-loader tables), bit-exact.
-- $20000-$45842: raw dc.b (data tables: text, maps, level data — deferred).
+- $5700-$579A: **palette_pre.asm CONVERTED** Ã¢ÂÂ 43 instructions + data, bit-exact.
+- $5986-$599C: **palette_post.asm CONVERTED** Ã¢ÂÂ 6 instructions + data, bit-exact.
+- $6A58-$6BC4: **flagged_loader_pre.asm CONVERTED** Ã¢ÂÂ 127 instructions + data, bit-exact.
+- $6EA6-$6FFF: **flagged_loader_data.asm CONVERTED** Ã¢ÂÂ data (flagged-loader tables), bit-exact.
+- $20000-$45842: raw dc.b (data tables: text, maps, level data Ã¢ÂÂ deferred).
 - $98000-$99A76: **z80_driver.asm** (full Z80 disassembly annotated + 20 labels).
 - $A0000-$A4C76: data_banks.asm.
 
@@ -99,7 +99,7 @@ were hand-converted and verified bit-exact, the rest stays raw dc.b.
 
 - RetroArch + Genesis Plus GX core. Config at `tools/retroarch-wb.cfg`.
 - Screenshots: `retroarch --max-frames N --max-frames-ss` (needs X; the x11
-  driver name is not available — falls back to vulkan/gl).
+  driver name is not available Ã¢ÂÂ falls back to vulkan/gl).
 - Save states (`~/.config/retroarch/states/Genesis Plus GX/`) are zlib chunks
   after an 8-byte header; RASTATE wrapper + core state. Work RAM starts at
   decompressed offset 0x20, so RAM $FFxxxx sits at state offset $20+$xxxx

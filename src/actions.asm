@@ -1,6 +1,6 @@
 ; ======================================================================
-; src/gameplay1.asm
-; <What this region does>.
+; src/actions.asm
+; Player input/action dispatch, scene render + scroll, quiz strings
 ; Covers ROM $1400-$2200.
 ; Verified bit-exact against the original ROM.
 ; ======================================================================

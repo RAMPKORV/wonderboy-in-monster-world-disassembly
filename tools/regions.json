@@ -24,25 +24,25 @@
     "label": "Entity subsystem"
   },
   {
-    "file": "src/gameplay1.asm",
+    "file": "src/actions.asm",
     "start": "1400",
     "end": "220a",
     "label": "Gameplay code: input/actions, quiz, sprite DMA"
   },
   {
-    "file": "src/gameplay2.asm",
+    "file": "src/scene_loader.asm",
     "start": "220a",
     "end": "3000",
     "label": "Gameplay code: more actions/entities, dialogue text"
   },
   {
-    "file": "src/gameplay3.asm",
+    "file": "src/movement.asm",
     "start": "3000",
     "end": "4092",
     "label": "Gameplay code: movement, angle tables"
   },
   {
-    "file": "src/gameplay4.asm",
+    "file": "src/sprites.asm",
     "start": "4092",
     "end": "4900",
     "label": "Sprite anim tables + entity code"
@@ -60,7 +60,7 @@
     "label": "Task lists, subsystem inits, controllers"
   },
   {
-    "file": "src/gameplay5a.asm",
+    "file": "src/palette_pre.asm",
     "start": "5700",
     "end": "579a",
     "label": "Raw before palette driver"
@@ -72,7 +72,7 @@
     "label": "Palette animation driver + AdjustPaletteWord ($579A-$5985)"
   },
   {
-    "file": "src/gameplay5a_tail.asm",
+    "file": "src/palette_post.asm",
     "start": "5986",
     "end": "599c",
     "label": "Raw after palette adjust"
@@ -84,7 +84,7 @@
     "label": "Packed palette table (252 palettes, 17 bytes each)"
   },
   {
-    "file": "src/gameplay5b.asm",
+    "file": "src/flagged_loader_pre.asm",
     "start": "6a58",
     "end": "6bc4",
     "label": "Raw before flagged loader"
@@ -96,25 +96,25 @@
     "label": "LoadFlaggedData + tile/map decompressors ($6BC4-$6EA5)"
   },
   {
-    "file": "src/gameplay5c.asm",
+    "file": "src/flagged_loader_data.asm",
     "start": "6ea6",
     "end": "7000",
     "label": "Raw after map decoder"
   },
   {
-    "file": "src/gameplay6.asm",
+    "file": "src/anim_data.asm",
     "start": "7000",
     "end": "8000",
     "label": "Gameplay/menu data (converted)"
   },
   {
-    "file": "src/menus.asm",
+    "file": "src/menu_system.asm",
     "start": "8000",
     "end": "9000",
     "label": "Inventory/magic menu code + data"
   },
   {
-    "file": "src/gameplay7.asm",
+    "file": "src/gameplay_data.asm",
     "start": "9000",
     "end": "a000",
     "label": "Gameplay code $9000-$9FFF"

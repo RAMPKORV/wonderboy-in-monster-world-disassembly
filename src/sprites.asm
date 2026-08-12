@@ -1,6 +1,6 @@
 ; ======================================================================
-; src/gameplay4.asm
-; <What this region does>.
+; src/sprites.asm
+; Sprite animation tables + entity sprite code
 ; Covers ROM $4092-$4900.
 ; Verified bit-exact against the original ROM.
 ; ======================================================================

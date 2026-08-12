@@ -1,4 +1,4 @@
-# Game Notes — Wonder Boy V: Monster World III (Wonder Boy in Monster World)
+# Game Notes â Wonder Boy V: Monster World III (Wonder Boy in Monster World)
 
 ## Identity
 - Title / revision: Wonder Boy V: Monster World III (domestic) / "WONDER BOY in Monster world" (overseas)
@@ -8,13 +8,13 @@
 - ROM size: 786432 bytes (768 KB, 0xC0000)
 - SHA-256: `6b2ac36f624f914ad26e32baa87d1253aea9dcfc13d2a5842ecdd2bd4a7a43b9`
 - MD5: `edba0bdb192d47712edbe0097f885f40`
-- Header checksum field: $9D79 (preserved verbatim; standard Sega algorithm recomputes to $6287 — do NOT regenerate)
+- Header checksum field: $9D79 (preserved verbatim; standard Sega algorithm recomputes to $6287 â do NOT regenerate)
 - Reset vector: $00000200; initial SP: $00FF0C00
-- Header RAM fields: "RA" + $E8 $40 (Backup RAM declared at $200001 — collapsed to a single odd address; treat as header-level observation)
+- Header RAM fields: "RA" + $E8 $40 (Backup RAM declared at $200001 â collapsed to a single odd address; treat as header-level observation)
 - TMSS "SEGA": present
 
 ## External Research
-- **Reference repo (same ROM!):** `github.com/RAMPKORV/wonderboy-in-monster-world-disassembly` — a Phase-0/1 parallel RE of the identical `wonderboy.bin`. Contains a RAM map (`docs/memory_map.md`), ROM layout (`docs/rom_layout.md`), VBlank dispatch worklog, and a recovered `engine_menu_core.asm`. Its RAM-map labels cross-validate my boot-flow decode. **Reuse as reference material (with user's blessing).**
+- **Reference repo (same ROM!):** `github.com/RAMPKORV/wonderboy-in-monster-world-disassembly` â a Phase-0/1 parallel RE of the identical `wonderboy.bin`. Contains a RAM map (`docs/memory_map.md`), ROM layout (`docs/rom_layout.md`), VBlank dispatch worklog, and a recovered `engine_menu_core.asm`. Its RAM-map labels cross-validate my boot-flow decode. **Reuse as reference material (with user's blessing).**
 - No public hash match for this exact dump (non-standard header lineage).
 - Game: side-scrolling action-RPG by Westone, pub. Sega (1991 JP / 1992 US-EU). Protagonist Shion; towns, dungeons, shops, magic menu, equipment, SRAM save at inns (US version has Game Over screen instead of JP return-to-inn).
 - Master System port exists (password save); TurboDuo remake = The Dynastic Hero. Not relevant to Genesis disasm.
@@ -36,29 +36,29 @@
 ## Region Plan (conversion status)
 
 Converted (all bit-perfect):
-1. `src/core.asm` — $000200-$0005FE — boot/init, Z80, object slots, RNG
-2. `src/scroll_vdp.asm` — $0005FE-$0007E8 — VDP/scroll helpers
-3. `src/script_engine.asm` — $0007E8-$000A1A — offset-tree script interpreter
-4. `src/entity.asm` — $000A1A-$001400 — entity subsystem + atan2
-5. `src/gameplay1.asm` — $001400-$00220A — actions, dispatch tables, quiz strings, sprite DMA
-6. `src/gameplay2.asm` — $00220A-$003000 — more gameplay, dialogue text, stat tables
-7. `src/gameplay3.asm` — $003000-$004092 — movement/angle code, stat tables
-8. `src/gameplay4.asm` — $004092-$004900 — sprite anim tables + entity code
-9. `src/mainloop.asm` — $004900-$004C82 — engine core (MainInit, VBlank, dispatcher)
-10. `src/subsystem.asm` — $004C82-$005700 — task lists, subsystem inits, controllers
-11. `src/gameplay5a.asm` — $005700-$00579A — pre-palette-driver code (43 instr)
-12. `src/palette_driver.asm` — $00579A-$005985 — palette animation driver
-13. `src/gameplay5a_tail.asm` — $005986-$00599C — post-palette-adjust code
-14. `src/palette_table.asm` — $00599C-$006A58 — 252 packed palettes
-15. `src/gameplay5b.asm` — $006A58-$006BC4 — pre-flagged-loader code (127 instr)
-16. `src/scene_decompressors.asm` — $006BC4-$006EA6 — LoadFlaggedData + decompressors
-17. `src/gameplay5c.asm` — $006EA6-$007000 — flagged-loader data tables
-18. `src/gameplay6.asm` — $007000-$008000 — sprite/anim data + code islands
-19. `src/menus.asm` — $008000-$009000 — inventory/magic menu code + data
-20. `src/gameplay7.asm` — $009000-$00A000 — gameplay code/data
-21. `src/gamebank0-10.asm` — $00A000-$020000 — main gameplay/data bank (11 chunks, 1603 instr)
-22. `src/z80_driver.asm` — $0098000-$0099A76 — Z80 sound driver (full Z80 disasm)
-23. `src/data_banks.asm` — $00A0000-$00A4C76 — offset trees + script/monster data
+1. `src/core.asm` â $000200-$0005FE â boot/init, Z80, object slots, RNG
+2. `src/scroll_vdp.asm` â $0005FE-$0007E8 â VDP/scroll helpers
+3. `src/script_engine.asm` â $0007E8-$000A1A â offset-tree script interpreter
+4. `src/entity.asm` â $000A1A-$001400 â entity subsystem + atan2
+5. `src/actions.asm` â $001400-$00220A â actions, dispatch tables, quiz strings, sprite DMA
+6. `src/scene_loader.asm` â $00220A-$003000 â more gameplay, dialogue text, stat tables
+7. `src/movement.asm` â $003000-$004092 â movement/angle code, stat tables
+8. `src/sprites.asm` â $004092-$004900 â sprite anim tables + entity code
+9. `src/mainloop.asm` â $004900-$004C82 â engine core (MainInit, VBlank, dispatcher)
+10. `src/subsystem.asm` â $004C82-$005700 â task lists, subsystem inits, controllers
+11. `src/palette_pre.asm` â $005700-$00579A â pre-palette-driver code (43 instr)
+12. `src/palette_driver.asm` â $00579A-$005985 â palette animation driver
+13. `src/palette_post.asm` â $005986-$00599C â post-palette-adjust code
+14. `src/palette_table.asm` â $00599C-$006A58 â 252 packed palettes
+15. `src/flagged_loader_pre.asm` â $006A58-$006BC4 â pre-flagged-loader code (127 instr)
+16. `src/scene_decompressors.asm` â $006BC4-$006EA6 â LoadFlaggedData + decompressors
+17. `src/flagged_loader_data.asm` â $006EA6-$007000 â flagged-loader data tables
+18. `src/anim_data.asm` â $007000-$008000 â sprite/anim data + code islands
+19. `src/menu_system.asm` â $008000-$009000 â inventory/magic menu code + data
+20. `src/gameplay_data.asm` â $009000-$00A000 â gameplay code/data
+21. `src/gamebank0-10.asm` â $00A000-$020000 â main gameplay/data bank (11 chunks, 1603 instr)
+22. `src/z80_driver.asm` â $0098000-$0099A76 â Z80 sound driver (full Z80 disasm)
+23. `src/data_banks.asm` â $00A0000-$00A4C76 â offset trees + script/monster data
 
 All code regions are now converted. Pure-data regions remain raw dc.b:
 - $020000-$045842 (text, maps, level data)
@@ -80,5 +80,5 @@ $A4C77-$BFFFF  $FF padding (empty)
 
 ## Notes / Findings
 - A4 = $FFC000 is the entity-slot base for most code; the script interpreter ($7E4-$846) uses it too (offsets land in $FF8000-$FF9400).
-- Exception vectors pointing to $00000006 are intentional dead traps — preserve exactly.
+- Exception vectors pointing to $00000006 are intentional dead traps â preserve exactly.
 - The 68000 code is a Westone task-scheduler engine (see docs/engine.md).

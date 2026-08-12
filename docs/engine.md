@@ -1,4 +1,4 @@
-# Wonder Boy in Monster World — Engine Deep Dive
+# Wonder Boy in Monster World â Engine Deep Dive
 
 Reverse-engineered from the bit-perfect disassembly in `src/`. Addresses are
 ROM (68000) unless noted as RAM ($FFxxxx) or VRAM. This document describes the
@@ -35,7 +35,7 @@ bits). Scroll registers: HScroll via reg $8014/$9014, VScroll via $8016/$9016.
 
 ### Work RAM ($FF0000-$FFFFFF)
 
-Key ranges (see also §11 RAM map):
+Key ranges (see also Â§11 RAM map):
 
 | Address      | Purpose |
 |--------------|---------|
@@ -78,7 +78,7 @@ Reset vector ($000200)            ; SP=$FF0C00
   -> PostBoot ($2FA) -> jmp MainInit ($4A06)
 MainInit:
   wait VDP idle; SR=$2700
-  SetupVDP ($4A7A)                ; VDP regs + plane table (see §1)
+  SetupVDP ($4A7A)                ; VDP regs + plane table (see Â§1)
   clear VRAM
   WriteZ80Driver ($306)           ; copy Z80 driver $98000 -> Z80 RAM $A0000
   InitIO ($4B02)                  ; joypad ports, zero input RAM
@@ -101,7 +101,7 @@ for the common ones live in `src/scroll_vdp.asm` ($716/$72C/$74E/$764/$786/$79C)
 2. Walk the array: for each slot whose byte 0 has bit 7 set, read the callback
    pointer at `slot+$0C` and `jsr (A0)`. Slot stride is $80.
 3. Run `$53AA` (object table maintenance / round-robin cleanup).
-4. `WaitForVBlankScanline ($4C00)` + `FrameWait ($3B8)` — sync to the raster.
+4. `WaitForVBlankScanline ($4C00)` + `FrameWait ($3B8)` â sync to the raster.
 
 **VBlank (IRQ6, $4B5C):** increments `$FF8A49`, sets bit 0 of `$FF8006`.
 The main loop polls that bit to know a frame has started.
@@ -155,7 +155,7 @@ A1 = type table ($1DD74) + type*4
 ```
 
 The scene's *data* (the script + dialogue, `$FF8C7A`) is consumed by the script
-interpreter (§7). The *type entry* (geometry) is what the plane set-up uses.
+interpreter (Â§7). The *type entry* (geometry) is what the plane set-up uses.
 
 ### 4.2 Scene geometry set-up (loc_2002 / loc_27B0)
 
@@ -177,13 +177,13 @@ re-render). So the 32x32 tilemap is sliced into **screen-sized cells** and the
 player walks cell to cell; the camera origin tells each cell where it sits in
 world space.
 
-### 4.3 "Exposing the plane" — the full load pipeline
+### 4.3 "Exposing the plane" â the full load pipeline
 
 When a scene change is triggered (door, start of game, shop entry), the engine
 runs these in order:
 
-**Step 1 — tile upload (scene tile loader, $22F0 + loc_22FE).**
-A scene's tiles come from the **flagged table** (see §4.4). The loader walks a
+**Step 1 â tile upload (scene tile loader, $22F0 + loc_22FE).**
+A scene's tiles come from the **flagged table** (see Â§4.4). The loader walks a
 list of flag indices and streams each record into a VRAM tile-block:
 ```
 A0 = scene flag-index list        ; list ends with a negative word
@@ -201,25 +201,25 @@ loop:
 The cache field at `+$7E` of the list means a scene change that reuses the same
 tile blocks does not re-upload them (this is why town interiors feel instant).
 
-**Step 2 — tilemap decode (DecodeMap $6D9C).**
+**Step 2 â tilemap decode (DecodeMap $6D9C).**
 The tag-$02 map record is a tree+LZSS-compressed 32x32 tilemap. DecodeMap writes
 the 1024 tile indices into the map buffer (caller-supplied, in RAM). Map values
 are tile *block* indices into the tileset loaded in Step 1.
 
-**Step 3 — palette load.** `LoadPalettes/DecodePalette` ($135C/$1370) decode the
-packed palettes (17 bytes each, see §8) into `$FF8B56` (source) / `$FF8BD6`
+**Step 3 â palette load.** `LoadPalettes/DecodePalette` ($135C/$1370) decode the
+packed palettes (17 bytes each, see Â§8) into `$FF8B56` (source) / `$FF8BD6`
 (working) and upload to CRAM.
 
-**Step 4 — render the tilemap to Plane A.** Two writers:
+**Step 4 â render the tilemap to Plane A.** Two writers:
 - `loc_2050`: writes ONE tilemap entry. Computes the Plane A VRAM address from
   `(scrollY + row) << 6 + (scrollX + col)`, ORs $4000 (Plane A base), writes the
   control word to $C00004 then the tile+attr word to $C00000.
-- `loc_2082`: bulk renderer — iterates the visible rows/cols of the map buffer
+- `loc_2082`: bulk renderer â iterates the visible rows/cols of the map buffer
   and streams them to Plane A, honouring a dirty/skip mask (`$FF8DA0-$FF8DA6`).
-- `loc_1758`: full-scene render — used on scene entry to draw the whole map
+- `loc_1758`: full-scene render â used on scene entry to draw the whole map
   (it computes the scene centre and calls the bulk renderer).
 
-**Step 5 — home the camera.** `UpdateScrollRegs ($2110)`:
+**Step 5 â home the camera.** `UpdateScrollRegs ($2110)`:
 ```
 $FF8D9A = (playerX >> 3) + sceneX origin, & $3F
 $FF8D9C = (playerY >> 3) + sceneY origin, & $1F
@@ -229,7 +229,7 @@ The two masks are the plane width/height in tiles (64/32), so the camera wraps
 correctly inside the plane. Every frame the main gameplay code re-runs this from
 the player position, which is what makes the plane scroll as you walk.
 
-### 4.4 The flagged table ($41000-$41B40) — scene building blocks
+### 4.4 The flagged table ($41000-$41B40) â scene building blocks
 
 `LoadFlaggedData ($6BC4)` resolves a flag index to a record in this table and
 decodes it. Records are **4 bytes**: `[tag byte][24-bit address]`. Flag index `n`
@@ -255,7 +255,7 @@ tag-$02 records are the 682 maps (see `tools/extract_maps.js`).
 ### 4.5 Tile / map encoding details
 
 **Tiles** are 4bpp planar (four bit-planes, 32 bytes/tile). The planar
-nibble->byte expansion is done with `TileBitSpreadTables` ($6D1C) — four 16-word
+nibble->byte expansion is done with `TileBitSpreadTables` ($6D1C) â four 16-word
 lookups that spread a 4-bit index into the four planes.
 
 **DecompressTiles ($6BFC)** (tag-$00 stream): per 32-byte row, a header byte;
@@ -283,9 +283,9 @@ a doorway tile and pressing Up, or touching a door entity), the game:
    `$FF8CA5`, script pointer `$FF8CA8`, cell `$FF8C9A`, clears event flags
    `$FF8CA2/$FF8CC2`, sets `$FF8CC3 = 1`, resets `$FF8CA6 = $8000`. If a
    per-scene "enter handler" pointer is set (bit 2 of $FF8CA4) it is dispatched.
-4. **Re-exposes the plane** with the new scene: tile upload (§4.3 step 1, using
-   the tile-block cache so shared blocks skip), map decode (§4.3 step 2),
-   palette, full-scene render (§4.3 step 4 via loc_1758), camera home (§4.3
+4. **Re-exposes the plane** with the new scene: tile upload (Â§4.3 step 1, using
+   the tile-block cache so shared blocks skip), map decode (Â§4.3 step 2),
+   palette, full-scene render (Â§4.3 step 4 via loc_1758), camera home (Â§4.3
    step 5).
 5. **Repositions the player** at the door's spawn point (the door data carries
    an X/Y; the renderer/scroll re-homes the camera on the player).
@@ -294,14 +294,14 @@ The **scene-event bytecode interpreter (loc_14F4)** is what plays the transition
 itself. It reads a byte stream pointed to by `$FF8CA8` (script pointer) and
 dispatches commands through two offset tables:
 
-- `DispatchTable1` ($15A0) — codes < $0C map to the in-scene commands.
-- `DispatchTable2` ($15C8) — codes >= $0C via a second jump table.
+- `DispatchTable1` ($15A0) â codes < $0C map to the in-scene commands.
+- `DispatchTable2` ($15C8) â codes >= $0C via a second jump table.
 
 Commands include: advance to next screen row (loc_16C6), add to the current map
 cell (`$FF8C9A`), set `$FF8CA6` to a 16-bit value, set `$FF8CA2` (loop counter),
 set/clear player-state bits ($FF8CA4 bits 0/4/5), jump to an offset within the
 stream (loc_168C), and "set flag / spawn" ops. The script pointer is stored back
-into `$FF8CA8` so the interpreter resumes where it left off each frame — this is
+into `$FF8CA8` so the interpreter resumes where it left off each frame â this is
 how a door-entry cutscene (walk up, screen fade, tile load, walk into the new
 area) is scripted: the same bytecode runs across many frames.
 
@@ -326,7 +326,7 @@ Each frame while a scene is active:
 4. Update the player X/Y (`$FF9758/$FF975A`) from input + collision.
 5. Bound-check the player against the scene (`$FF8C9E/$FF8CA0`); if it crossed a
    cell boundary, scroll to the next cell (loc_16C6) and re-render.
-6. `UpdateScrollRegs` — write H/V scroll from player + scene origin.
+6. `UpdateScrollRegs` â write H/V scroll from player + scene origin.
 7. Object/entity tasks (round-robin array) + sprite DMA (update sprite table).
 8. HUD (HP/gold mirrors at $FF9628/$FF962A) and palette animation driver
    ($594A) as scheduled.
@@ -355,7 +355,7 @@ The offset-tree bytecode interpreter that drives cutscenes, NPCs, dialogue and
 doors. Scripts live at ROM $A0000 (offset tree of word offsets), state in
 $FF8100-$FF9600. A4 = $FFC000 is the entity-slot base. Command bytes >= $F0
 dispatch through a 16-entry jump table; data bytes load signed 16-bit values.
-This is the same family of engine as the in-scene bytecode (loc_14F4) — a
+This is the same family of engine as the in-scene bytecode (loc_14F4) â a
 stack-less stream interpreter with a fixed working area.
 
 ---
@@ -388,7 +388,7 @@ stack-less stream interpreter with a fixed working area.
 - Ports read each frame at $51C6.
 - Per-pad triplets: P1 `$FF8A7F-81`, P2 `$FF8A82-84` = (current, previous,
   new-press). Selected-input mirror `$FF8A7A-7C`.
-- Auto-repeat gating at $805A; the action handler (gameplay1.asm $1400-$1474)
+- Auto-repeat gating at $805A; the action handler (actions.asm $1400-$1474)
   maps buttons to actions (A = confirm/attack, B = cancel, C = jump, Up = enter
   door/use, Start = menu).
 
@@ -468,9 +468,9 @@ stack-less stream interpreter with a fixed working area.
    tile + Up" into "run scene change with target index". Lives in the raw
    data-dense blocks; the scene-change pipeline it calls is documented above.
 2. **Scene script opcode table**: the full DispatchTable1/2 command set
-   (partially mapped in §4.6).
-3. **Item/magic menu data** (menus.asm) and shop tables (gamebank bank).
+   (partially mapped in Â§4.6).
+3. **Item/magic menu data** (menu_system.asm) and shop tables (gamebank bank).
 4. **Exact per-map palette selection** (scene -> tileset/palette mapping) for
    colour-correct renders.
 5. **$02482C 0xFF7A/0xFF7B blocks**: word-offset header + marker blocks
-   (palette/animation data) — encoding still open.
+   (palette/animation data) â encoding still open.

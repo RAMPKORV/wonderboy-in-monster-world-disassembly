@@ -1,6 +1,6 @@
 ; ======================================================================
-; src/gameplay3.asm
-; <What this region does>.
+; src/movement.asm
+; Player movement/collision/angle code, stat tables
 ; Covers ROM $3000-$4092.
 ; Verified bit-exact against the original ROM.
 ; ======================================================================
