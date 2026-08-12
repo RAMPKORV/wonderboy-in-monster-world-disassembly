@@ -34,6 +34,17 @@ serial **GM G-4060-00** (US/EU release).
 The ROM (`game.rom`, a copy of `wonderboy.bin`) is gitignored; `verify.sh`
 checks against it and the committed `game.rom.sha256`.
 
+## Project layout
+
+- `wonderboy.asm` → `header.asm` (macros, hardware/RAM/sound/game constants,
+  vectors) + `data_rest.asm` (auto-generated region orchestrator).
+- `src/*.asm` — subject-named modules: engine core (`core`, `mainloop`,
+  `entity`, `subsystem`), gameplay (`actions`, `scene_loader`, `movement`,
+  `sprites`, `menu_system`, ...), data banks (`gamebank0-10`, `data_banks`),
+  and the Z80 sound driver.
+- `ram_addresses.asm` — named RAM symbols; `sound_constants.asm` — Z80
+  mailbox constants.
+
 ## Documentation
 
 | File | What it is |
