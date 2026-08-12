@@ -43,17 +43,17 @@ ComputeTilemapCoord:
 	swap D7	; $2258
 	rts	; $225A
 	moveq #$0, D7	; $225C
-loc_225E:
+RenderTilemapGridRow:
 	moveq #$0, D6	; $225E
-loc_2260:
+RenderTilemapGridCol:
 	bsr.w ComputeTilemapCoord	; $2260
 	bsr.w WriteTilemapEntry	; $2264
 	addq.w #$1, D6	; $2268
 	cmp.w (RAM_ScreenTilesX).w, D6	; $226A
-	bcs.b loc_2260	; $226E
+	bcs.b RenderTilemapGridCol	; $226E
 	addq.w #$1, D7	; $2270
 	cmp.w (RAM_ScreenTilesY).w, D7	; $2272
-	bcs.b loc_225E	; $2276
+	bcs.b RenderTilemapGridRow	; $2276
 	movea.w #$0, A4	; $2278
 	moveq #$40, D0	; $227C
 	tst.b (-$4000,A4)	; $227E
@@ -61,13 +61,13 @@ loc_2260:
 	bclr.b #$2, (-$4000,A4)	; $2284
 	beq.b *+$8	; $228A
 	ori.b #-$80, (-$3FFE,A4)	; $228C
-loc_2292:
+RenderTilemapGrid_NextSlot:
 	addq.l #$4, A4	; $2292
 	dbf D0, $227E	; $2294
 	btst.b #$0, (RAM_word_FFFF8A51).w	; $2298
 	beq.b *+$8	; $229E
 	jmp $DE6A.l	; $22A0
-loc_22A6:
+RenderTilemapGrid_Done:
 	rts	; $22A6
 	jsr $5A0.w	; $22A8
 	lea ($C00000).l, A1	; $22AC
@@ -88,11 +88,11 @@ LoadTileBlock:
 	movea.w D1, A0	; $22C6
 	adda.l #$41000, A0	; $22C8
 	move.l (A0), D1	; $22CE
-loc_22D0:
-	bmi.w loc_22D0	; $22D0
+LoadTileBlock_WaitFree:
+	bmi.w LoadTileBlock_WaitFree	; $22D0
 	bclr.l #$18, D1	; $22D4
-loc_22D8:
-	beq.w loc_22D8	; $22D8
+LoadTileBlock_WaitReady:
+	beq.w LoadTileBlock_WaitReady	; $22D8
 	movea.l D1, A0	; $22DC
 	andi.w #$1F, D0	; $22DE
 	lsl.w #$5, D0	; $22E2
@@ -129,31 +129,31 @@ LoadSceneTiles:
 	move.w #$FF, D0	; $2332
 	move.l (A1)+, (A2)	; $2336
 	dbf D0, $2336	; $2338
-loc_233C:
+LoadSceneTiles_Next:
 	addq.w #$1, (-$2,A6)	; $233C
 	cmpi.w #$40, (-$2,A6)	; $2340
 	bcs.b LoadSceneTiles	; $2346
 	unlk A6	; $2348
 	rts	; $234A
-loc_234C:
+DecodeStream:
 	move.b (A0)+, D0	; $234C
 	bmi.b *+$8	; $234E
 	move.b D0, (A1)+	; $2350
 	move.b (A0)+, (A1)+	; $2352
-	bra.b loc_234C	; $2354
-loc_2356:
+	bra.b DecodeStream	; $2354
+DecodeStream_Control:
 	cmpi.b #-$40, D0	; $2356
 	bcc.b *+$10	; $235A
 	andi.w #$3F, D0	; $235C
 	add.w D0, D0	; $2360
 	movea.w D0, A1	; $2362
 	lea (-$71F8,A1), A1	; $2364
-	bra.b loc_234C	; $2368
-loc_236A:
+	bra.b DecodeStream	; $2368
+DecodeStream_Repeat:
 	bne.b *+$6	; $236A
 	addq.l #$2, A1	; $236C
-	bra.b loc_234C	; $236E
-loc_2370:
+	bra.b DecodeStream	; $236E
+DecodeStream_Run:
 	cmpi.b #-$1, D0	; $2370
 	beq.b *+$30	; $2374
 	cmpi.b #-$8, D0	; $2376
@@ -166,15 +166,15 @@ loc_2370:
 	move.w D1, (A1)+	; $2388
 	addq.w #$1, D1	; $238A
 	dbf D0, $2388	; $238C
-	bra.b loc_234C	; $2390
-loc_2392:
+	bra.b DecodeStream	; $2390
+DecodeStream_Fill:
 	andi.w #$7, D0	; $2392
 	moveq #-$1, D1	; $2396
 	move.w D1, ($80,A1)	; $2398
 	move.w D1, (A1)+	; $239C
 	dbf D0, $2398	; $239E
-	bra.b loc_234C	; $23A2
-loc_23A4:
+	bra.b DecodeStream	; $23A2
+DecodeStream_Done:
 	rts	; $23A4
 	move.l A0, -(SP)	; $23A6
 	lea ($6EA8).l, A1	; $23A8
@@ -186,9 +186,9 @@ loc_23A4:
 	bpl.b *+$10	; $23BC
 	lea ($10,A1), A1	; $23BE
 	dbf D0, $23BA	; $23C2
-loc_23C6:
-	jmp	loc_23C6.l			; $23C6
-loc_23CC:
+TrapSpin_23C6:
+	jmp	TrapSpin_23C6.l			; $23C6
+InstallObjectTask:
 	clr.b (RAM_word_FFFF950A).w	; $23CC
 	move.l #-$80000000, (A1)	; $23D0
 	move.w (A0)+, ($4,A1)	; $23D6
@@ -201,17 +201,17 @@ loc_23CC:
 	bcs.b *+$A	; $23EE
 	ori.b #-$8, D0	; $23F0
 	jmp $274C.w	; $23F4
-loc_23F8:
+CheckItemId:
 	cmpi.b #$29, D0	; $23F8
 	bne.b *+$C	; $23FC
 	cmpi.b #$63, (RAM_word_FFFF959C).w	; $23FE
 	bcs.b *+$52	; $2404
 	bra.b *+$4C	; $2406
-loc_2408:
+CheckItemCount:
 	cmp.b (A1)+, D0	; $2408
 	bcs.b *+$20	; $240A
 	move.w D0, D1	; $240C
-	bsr.w loc_2510	; $240E
+	bsr.w MapItemId	; $240E
 	cmpi.b #$12, D0	; $2412
 	bcs.b *+$10	; $2416
 	subi.b #$2B, D1	; $2418
@@ -220,10 +220,10 @@ loc_2408:
 	cmp.b (A0), D1	; $2420
 	bhi.b *+$34	; $2422
 	bra.b *+$2E	; $2424
-loc_2426:
+CheckItemCount_Done:
 	tst.b (A0)	; $2426
 	rts	; $2428
-loc_242A:
+CheckItemType:
 	addq.w #$1, A1	; $242A
 	cmp.b (A1)+, D0	; $242C
 	bcs.b *+$1C	; $242E
@@ -232,19 +232,19 @@ loc_242A:
 	cmpi.b #$5, D0	; $2436
 	bcs.b *+$4	; $243A
 	moveq #$0, D1	; $243C
-loc_243E:
+CheckItemType_Table:
 	lea (-$6A42).w, A0	; $243E
 	cmp.b ($0,A0,D0.w), D1	; $2442
 	bcc.b *+$10	; $2446
 	bra.b *+$A	; $2448
-loc_244A:
-	bsr.w loc_2536	; $244A
+CheckItemFlag:
+	bsr.w ItemFlagAddr	; $244A
 	btst.b D0, (A0)	; $244E
 	rts	; $2450
-loc_2452:
+CheckItemFlag_Set:
 	moveq #-$1, D0	; $2452
 	rts	; $2454
-loc_2456:
+CheckItemFlag_Clear:
 	moveq #$0, D0	; $2456
 	rts	; $2458
 	andi.w #$FF, D0	; $245A
@@ -257,16 +257,16 @@ loc_2456:
 	move.b D2, D0	; $2470
 	andi.w #$F, D0	; $2472
 	jmp $8A04.l	; $2476
-loc_247C:
+AddItem:
 	cmp.b (A1)+, D0	; $247C
 	bcs.b *+$3C	; $247E
 	move.w D0, D1	; $2480
-	bsr.w loc_2510	; $2482
+	bsr.w MapItemId	; $2482
 	cmpi.b #$12, D0	; $2486
 	beq.b *+$6	; $248A
 	addq.b #$1, (A0)	; $248C
 	rts	; $248E
-loc_2490:
+AddItem_Store:
 	subi.b #$2B, D1	; $2490
 	move.b D1, (A0)	; $2494
 	addq.b #$8, D1	; $2496
@@ -278,20 +278,20 @@ loc_2490:
 	bcc.b *+$A	; $24A8
 	move.b D1, (A0)	; $24AA
 	jmp $76C4.l	; $24AC
-loc_24B2:
+AddItem_Next:
 	addq.w #$1, A0	; $24B2
 	dbf D0, $249E	; $24B4
 	rts	; $24B8
-loc_24BA:
+CheckItemMulti:
 	cmp.b (A1)+, D0	; $24BA
 	bcs.b *+$8	; $24BC
 	jmp $8A3A.l	; $24BE
-loc_24C4:
+CheckItemType2:
 	cmp.b (A1)+, D0	; $24C4
 	bcs.b *+$C	; $24C6
 	andi.w #$F, D0	; $24C8
 	jmp $8A04.l	; $24CC
-loc_24D2:
+SetItemFlag:
 	bsr.b *+$64	; $24D2
 	bset.b D0, (A0)	; $24D4
 	rts	; $24D6
@@ -309,35 +309,35 @@ loc_24D2:
 	beq.b *+$6	; $24F8
 	subq.b #$1, (A0)	; $24FA
 	rts	; $24FC
-loc_24FE:
+RemoveItem:
 	tst.b (A0)	; $24FE
 	bmi.b *+$E	; $2500
-loc_2502:
+RemoveItem_Sub:
 	subi.b #$2A, D1	; $2502
 	sub.b D1, (A0)	; $2506
 	rts	; $2508
-loc_250A:
+ClearItemFlag:
 	bsr.b *+$2C	; $250A
 	bclr.b D0, (A0)	; $250C
-loc_250E:
+ClearItemFlag_Done:
 	rts	; $250E
-loc_2510:
+MapItemId:
 	lea (-$6A74).w, A0	; $2510
 	cmpi.b #$29, D0	; $2514
 	bcc.b *+$8	; $2518
 	subi.b #$1C, D0	; $251A
 	bra.b *+$14	; $251E
-loc_2520:
+MapItemId2:
 	subi.b #$30, D0	; $2520
 	bcc.b *+$E	; $2524
 	addi.b #$17, D0	; $2526
 	cmpi.b #$12, D0	; $252A
 	bcs.b *+$4	; $252E
 	moveq #$12, D0	; $2530
-loc_2532:
+MapItemId_Add:
 	adda.w D0, A0	; $2532
 	rts	; $2534
-loc_2536:
+ItemFlagAddr:
 	lea (-$6A36).w, A0	; $2536
 	move.w D0, D1	; $253A
 	lsr.w #$3, D1	; $253C
@@ -349,44 +349,44 @@ loc_2536:
 	bcc.b *+$6	; $254A
 	moveq #$0, D2	; $254C
 	bra.b *+$C	; $254E
-loc_2550:
+TilemapAddr_ClampX:
 	cmp.w ($44,A3), D2	; $2550
 	bls.b *+$6	; $2554
 	move.w ($44,A3), D2	; $2556
-loc_255A:
+TilemapAddr_ClampY:
 	move.w D7, D3	; $255A
 	subi.w #$4000, D3	; $255C
 	bcc.b *+$6	; $2560
 	moveq #$0, D3	; $2562
 	bra.b *+$C	; $2564
-loc_2566:
+TilemapAddr_ClampY2:
 	cmp.w ($46,A3), D3	; $2566
 	bls.b *+$6	; $256A
 	move.w ($46,A3), D3	; $256C
-loc_2570:
+TilemapAddr_Block:
 	moveq #$0, D5	; $2570
 	move.w #$C00, D4	; $2572
 	cmp.w D4, D3	; $2576
 	bcs.b *+$6	; $2578
 	sub.w D4, D3	; $257A
 	moveq #$20, D5	; $257C
-loc_257E:
+TilemapAddr_Block2:
 	lsr.w #$1, D4	; $257E
 	cmp.w D4, D3	; $2580
 	bcs.b *+$8	; $2582
 	sub.w D4, D3	; $2584
 	addi.w #$10, D5	; $2586
-loc_258A:
+TilemapAddr_Block3:
 	lsr.w #$1, D4	; $258A
 	cmp.w D4, D3	; $258C
 	bcs.b *+$6	; $258E
 	sub.w D4, D3	; $2590
 	addq.b #$8, D5	; $2592
-loc_2594:
+TilemapAddr_Check:
 	btst.b #$1, ($0,A3)	; $2594
 	beq.b *+$4	; $259A
 	clr.w D5	; $259C
-loc_259E:
+TilemapAddr_Lookup:
 	move.w D2, D4	; $259E
 	lsr.w #$4, D4	; $25A0
 	or.w D5, D4	; $25A2
@@ -402,14 +402,14 @@ loc_259E:
 	add.w ($25CA,PC,D4.w), D1	; $25BA
 	lea RAM_word_00FF5000, A0	; $25BE
 	move.w ($0,A0,D1.w), D0	; $25C4
-loc_25C8:
+TilemapAddr_Done:
 	rts	; $25C8
 DamageStatTable:				; loc_00025CA
 	dc.w	$0000,$0180,$0300,$0480,$0600,$0780,$0900,$0A80	; $25CA
 	dc.w	$0C00,$0D80,$0F00,$1080,$1200,$1380,$1500,$1680	; $25DA
 	dc.w	$1800,$1980,$1B00,$1C80,$1E00,$1F80,$2100,$2280	; $25EA
 	dc.w	$2400,$2580,$2700,$2880,$2A00,$2B80,$2D00,$2E80	; $25FA
-loc_260A:
+TilemapAddr2:
 	move.w D6, D2	; $260A
 	subi.w #$100, D2	; $260C
 	move.w D7, D3	; $2610
@@ -420,19 +420,19 @@ loc_260A:
 	bcs.b *+$6	; $261E
 	sub.w D4, D3	; $2620
 	moveq #$20, D5	; $2622
-loc_2624:
+TilemapAddr2_Block:
 	lsr.w #$1, D4	; $2624
 	cmp.w D4, D3	; $2626
 	bcs.b *+$8	; $2628
 	sub.w D4, D3	; $262A
 	addi.w #$10, D5	; $262C
-loc_2630:
+TilemapAddr2_Block2:
 	lsr.w #$1, D4	; $2630
 	cmp.w D4, D3	; $2632
 	bcs.b *+$6	; $2634
 	sub.w D4, D3	; $2636
 	addq.b #$8, D5	; $2638
-loc_263A:
+TilemapAddr2_Lookup:
 	move.w D2, D4	; $263A
 	lsr.w #$4, D4	; $263C
 	or.w D5, D4	; $263E
@@ -450,13 +450,13 @@ loc_263A:
 	lea RAM_word_00FF5000, A0	; $265C
 	adda.w D4, A0	; $2662
 	rts	; $2664
-loc_2666:
-	bsr.b loc_260A	; $2666
+TilemapAddr_Write:
+	bsr.b TilemapAddr2	; $2666
 	move.w D0, (A0)	; $2668
 	rts	; $266A
 	lea (-$68AC).w, A3	; $266C
-loc_2670:
-	bsr.b loc_2666	; $2670
+DrawTile:
+	bsr.b TilemapAddr_Write	; $2670
 	move.w D6, D1	; $2672
 	sub.w ($8,A3), D1	; $2674
 	bcs.b *+$18	; $2678
@@ -466,11 +466,11 @@ loc_2670:
 	sub.w ($C,A3), D1	; $2682
 	bcs.b *+$A	; $2686
 	cmp.w ($E,A3), D1	; $2688
-	bcs.w loc_2694	; $268C
-loc_2690:
+	bcs.w DrawTile_ToVDP	; $268C
+DrawTile_Done:
 	rts	; $2690
-	bsr.b loc_2666	; $2692
-loc_2694:
+	bsr.b TilemapAddr_Write	; $2692
+DrawTile_ToVDP:
 	move.w D0, D2	; $2694
 	moveq #$0, D1	; $2696
 	move.b D0, D1	; $2698
@@ -497,7 +497,7 @@ loc_2694:
 	move.l D1, ($4,A1)	; $26D2
 	move.l (A0), (A1)	; $26D6
 	rts	; $26D8
-loc_26DA:
+DrawTile_Attr:
 	move.l #-$7FFF8000, D3	; $26DA
 	move.l (A0)+, D0	; $26E0
 	or.l D3, D0	; $26E2
@@ -515,7 +515,7 @@ loc_26DA:
 	move.b D0, D1	; $2704
 	move.b ($0,A0,D1.w), D1	; $2706
 	rts	; $270A
-loc_270C:
+GetFlagBitAddr:
 	moveq #$0, D2	; $270C
 	move.b D0, D2	; $270E
 	lsr.w #$3, D2	; $2710
@@ -525,15 +525,15 @@ loc_270C:
 	cmpi.b #$20, D0	; $271C
 	bcs.b *+$6	; $2720
 	lea (-$6642).w, A0	; $2722
-loc_2726:
+GetFlagBitAddr_Done:
 	rts	; $2726
-	bsr.b loc_270C	; $2728
+	bsr.b GetFlagBitAddr	; $2728
 	btst.b D1, ($0,A0,D2.w)	; $272A
 	rts	; $272E
-	bsr.b loc_270C	; $2730
+	bsr.b GetFlagBitAddr	; $2730
 	bset.b D1, ($0,A0,D2.w)	; $2732
 	rts	; $2736
-loc_2738:
+GetMonsterFlagAddr:
 	moveq #$0, D1	; $2738
 	move.b D0, D1	; $273A
 	lsr.w #$3, D1	; $273C
@@ -542,10 +542,10 @@ loc_2738:
 	move.b D0, D1	; $2744
 	andi.w #$7, D1	; $2746
 	rts	; $274A
-	bsr.b loc_2738	; $274C
+	bsr.b GetMonsterFlagAddr	; $274C
 	btst.b D1, (A0)	; $274E
 	rts	; $2750
-	bsr.b loc_2738	; $2752
+	bsr.b GetMonsterFlagAddr	; $2752
 	bset.b D1, (A0)	; $2754
 	rts	; $2756
 	moveq #$0, D1	; $2758
@@ -612,40 +612,40 @@ loc_27BA:
 	moveq #$7, D0	; $27EA
 	bra.b *+$4	; $27EC
 	addq.w #$4, A4	; $27EE
-loc_27F0:
+FindEntitySlot:
 	tst.b (-$4000,A4)	; $27F0
 	dbpl D0, $27EE	; $27F4
 	rts	; $27F8
 	lea (-$68AC).w, A3	; $27FA
-loc_27FE:
+EventListLoop:
 	move.w (A0)+, D0	; $27FE
 	bpl.b *+$4	; $2800
 	rts	; $2802
-loc_2804:
+EventListTile:
 	move.w (A0)+, D6	; $2804
 	move.w (A0)+, D7	; $2806
 	move.l A0, -(SP)	; $2808
 	jsr $2670.w	; $280A
 	movea.l (SP)+, A0	; $280E
-	bra.b loc_27FE	; $2810
+	bra.b EventListLoop	; $2810
 	link A6, #-$A	; $2812
 	lea (-$68AC).w, A3	; $2816
 	move.w D0, (-$2,A6)	; $281A
 	move.w D1, (-$8,A6)	; $281E
 	move.w D2, (-$A,A6)	; $2822
 	move.w D6, (-$4,A6)	; $2826
-loc_282A:
+DrawTileRect:
 	move.w (-$4,A6), D6	; $282A
 	move.w (-$2,A6), (-$6,A6)	; $282E
-loc_2834:
+DrawTileRect_Col:
 	move.w (-$A,A6), D0	; $2834
 	jsr $2670.w	; $2838
 	addq.w #$1, D6	; $283C
 	subq.w #$1, (-$6,A6)	; $283E
-	bne.b loc_2834	; $2842
+	bne.b DrawTileRect_Col	; $2842
 	addi.w #$40, D7	; $2844
 	subq.w #$1, (-$8,A6)	; $2848
-	bne.b loc_282A	; $284C
+	bne.b DrawTileRect	; $284C
 	unlk A6	; $284E
 	rts	; $2850
 	move.w (A0)+, D6	; $2852
@@ -658,20 +658,20 @@ loc_2834:
 	move.b (A0)+, D0	; $2866
 	move.w D0, (-$8,A6)	; $2868
 	move.w D6, (-$4,A6)	; $286C
-loc_2870:
+DrawTileRect2:
 	move.w (-$4,A6), D6	; $2870
 	move.w (-$2,A6), (-$6,A6)	; $2874
-loc_287A:
+DrawTileRect2_Col:
 	move.w (A0)+, D0	; $287A
 	move.l A0, -(SP)	; $287C
 	jsr $2670.w	; $287E
 	movea.l (SP)+, A0	; $2882
 	addq.w #$1, D6	; $2884
 	subq.w #$1, (-$6,A6)	; $2886
-	bne.b loc_287A	; $288A
+	bne.b DrawTileRect2_Col	; $288A
 	addi.w #$40, D7	; $288C
 	subq.w #$1, (-$8,A6)	; $2890
-	bne.b loc_2870	; $2894
+	bne.b DrawTileRect2	; $2894
 	unlk A6	; $2896
 	rts	; $2898
 	moveq #$0, D0	; $289A
@@ -682,58 +682,58 @@ loc_287A:
 	dbf D1, $28A2	; $28A6
 	rts	; $28AA
 	movea.w #$0, A4	; $28AC
-loc_28B0:
+EventAnimLoop:
 	tst.b (-$63CC,A4)	; $28B0
-	bpl.w loc_2968	; $28B4
+	bpl.w EventAnimNext	; $28B4
 	tst.b (-$63CB,A4)	; $28B8
-	beq.w loc_2968	; $28BC
+	beq.w EventAnimNext	; $28BC
 	subq.b #$1, (-$63CB,A4)	; $28C0
-	bne.w loc_2968	; $28C4
+	bne.w EventAnimNext	; $28C4
 	movea.l (-$62E4,A4), A0	; $28C8
-loc_28CC:
+EventAnimCmd:
 	move.b (A0)+, D0	; $28CC
 	bne.b *+$A	; $28CE
 	move.b D0, (-$63CC,A4)	; $28D0
-	bra.w loc_2968	; $28D4
-loc_28D8:
+	bra.w EventAnimNext	; $28D4
+EventAnimCtrl:
 	cmpi.b #-$3, D0	; $28D8
 	bcs.b *+$1E	; $28DC
 	cmpi.b #-$2, D0	; $28DE
 	beq.b *+$C	; $28E2
 	bcc.b *+$80	; $28E4
 	ori.b #$1, (-$63CC,A4)	; $28E6
-	bra.b loc_28CC	; $28EC
-loc_28EE:
+	bra.b EventAnimCmd	; $28EC
+EventAnimJump:
 	move.b (A0)+, D0	; $28EE
 	lsl.w #$8, D0	; $28F0
 	move.b (A0), D0	; $28F2
 	subq.w #$1, D0	; $28F4
 	adda.w D0, A0	; $28F6
-	bra.b loc_28CC	; $28F8
-loc_28FA:
+	bra.b EventAnimCmd	; $28F8
+EventAnimCtrl2:
 	cmpi.b #-$6, D0	; $28FA
 	bcs.b *+$28	; $28FE
 	bne.b *+$C	; $2900
 	move.b (A0)+, (-$63CA,A4)	; $2902
 	move.l A0, (-$6270,A4)	; $2906
-	bra.b loc_28CC	; $290A
-loc_290C:
+	bra.b EventAnimCmd	; $290A
+EventAnimCtrl3:
 	cmpi.b #-$4, D0	; $290C
 	beq.b *+$E	; $2910
 	subq.b #$1, (-$63CA,A4)	; $2912
-	beq.b loc_28CC	; $2916
+	beq.b EventAnimCmd	; $2916
 	movea.l (-$6270,A4), A0	; $2918
-	bra.b loc_28CC	; $291C
-loc_291E:
+	bra.b EventAnimCmd	; $291C
+EventAnimToggle:
 	bchg.b #$1, (-$63CC,A4)	; $291E
-	bra.b loc_28CC	; $2924
-loc_2926:
+	bra.b EventAnimCmd	; $2924
+EventAnimSet:
 	move.b D0, (-$63CB,A4)	; $2926
 	lea (-$68AC).w, A3	; $292A
 	btst.b #$1, (-$63CC,A4)	; $292E
 	beq.b *+$6	; $2934
 	lea (-$682C).w, A3	; $2936
-loc_293A:
+EventAnimDraw:
 	move.b (A0)+, D0	; $293A
 	lsl.w #$8, D0	; $293C
 	move.b (A0)+, D0	; $293E
@@ -749,15 +749,15 @@ loc_293A:
 	lsl.w #$6, D1	; $2956
 	add.w D1, D7	; $2958
 	move.l A0, -(SP)	; $295A
-	bsr.w loc_2670	; $295C
+	bsr.w DrawTile	; $295C
 	movea.l (SP)+, A0	; $2960
-	bra.b loc_293A	; $2962
-loc_2964:
+	bra.b EventAnimDraw	; $2962
+EventAnimStore:
 	move.l A0, (-$62E4,A4)	; $2964
-loc_2968:
+EventAnimNext:
 	addq.w #$4, A4	; $2968
 	cmpa.w #$20, A4	; $296A
-	bcs.w loc_28B0	; $296E
+	bcs.w EventAnimLoop	; $296E
 	rts	; $2972
 	movea.w #$0, A1	; $2974
 	moveq #$7, D0	; $2978
@@ -766,7 +766,7 @@ loc_2968:
 	addq.w #$4, A1	; $2980
 	dbf D0, $297A	; $2982
 	rts	; $2986
-loc_2988:
+EventAnimInit:
 	move.b #-$80, (-$63CC,A1)	; $2988
 	move.b #$1, (-$63CB,A1)	; $298E
 	move.w D6, (-$6358,A1)	; $2994
@@ -782,9 +782,9 @@ loc_2988:
 	rts	; $29B2
 	movea.w #$0, A3	; $29B4
 	movea.w (RAM_word_FFFF9EEE).w, A4	; $29B8
-loc_29BC:
+EventAreaLoop:
 	tst.b (-$61FC,A3)	; $29BC
-	bpl.w loc_2A60	; $29C0
+	bpl.w EventAreaNext2	; $29C0
 	move.w (-$3800,A4), D0	; $29C4
 	sub.w (-$61C8,A3), D0	; $29C8
 	bcs.b *+$28	; $29CC
@@ -799,9 +799,9 @@ loc_29BC:
 	bne.b *+$10	; $29EA
 	ori.b #$2, (-$61FC,A3)	; $29EC
 	bra.b *+$8	; $29F2
-loc_29F4:
+EventAreaClear:
 	andi.b #-$5, (-$61FC,A3)	; $29F4
-loc_29FA:
+EventAreaCheck:
 	btst.b #$1, (-$61FC,A3)	; $29FA
 	beq.b *+$60	; $2A00
 	moveq #$0, D0	; $2A02
@@ -821,9 +821,9 @@ loc_29FA:
 	jsr $2758.w	; $2A32
 	bset.b D0, ($0,A0,D1.w)	; $2A36
 	bra.b *+$6	; $2A3A
-loc_2A3C:
+EventAreaTrigger:
 	jsr $2752.w	; $2A3C
-loc_2A40:
+EventAreaAdvance:
 	andi.b #-$3, (-$61FC,A3)	; $2A40
 	movea.l (-$6160,A3), A0	; $2A46
 	move.b (A0)+, D0	; $2A4A
@@ -831,13 +831,13 @@ loc_2A40:
 	bne.b *+$8	; $2A50
 	clr.b (-$61FC,A3)	; $2A52
 	bra.b *+$A	; $2A56
-loc_2A58:
+EventAreaNext:
 	move.b D0, (-$61FA,A3)	; $2A58
 	move.l A0, (-$6160,A3)	; $2A5C
-loc_2A60:
+EventAreaNext2:
 	addq.w #$4, A3	; $2A60
 	cmpa.w #$10, A3	; $2A62
-	bcs.w loc_29BC	; $2A66
+	bcs.w EventAreaLoop	; $2A66
 	rts	; $2A6A
 	movea.w #$0, A1	; $2A6C
 	moveq #$3, D0	; $2A70
@@ -846,7 +846,7 @@ loc_2A60:
 	addq.l #$4, A1	; $2A78
 	dbf D0, $2A72	; $2A7A
 	rts	; $2A7E
-loc_2A80:
+EventAreaInit:
 	move.b D3, (-$61FB,A1)	; $2A80
 	lsr.w #$8, D3	; $2A84
 	andi.b #$1, D3	; $2A86
@@ -867,35 +867,35 @@ loc_2A80:
 	add.w D0, D0	; $2ABA
 			dc.w	$45fa,$007a	; dc.w
 	adda.w ($0,A2,D0.w), A2	; $2AC0
-loc_2AC4:
+DialogueWait:
 	move.l A2, (RAM_word_FFFF9ED6).w	; $2AC4
 	move.w #$3C, (RAM_word_FFFF9ED4).w	; $2AC8
-loc_2ACE:
+DialoguePoll:
 	jsr $400.w	; $2ACE
 	move.b (RAM_InputSelectedNew).w, D0	; $2AD2
 	andi.b #$70, D0	; $2AD6
 	bne.b *+$C	; $2ADA
 	subq.w #$1, (RAM_word_FFFF9ED4).w	; $2ADC
-	bne.b loc_2ACE	; $2AE0
+	bne.b DialoguePoll	; $2AE0
 	moveq #$1, D0	; $2AE2
 	bra.b *+$18	; $2AE4
-loc_2AE6:
+DialogueSelect:
 	bsr.b *+$22	; $2AE6
 	movea.l (RAM_word_FFFF9ED6).w, A2	; $2AE8
 	cmp.b (A2)+, D0	; $2AEC
 	bne.b *+$C	; $2AEE
 	cmpi.b #-$1, (A2)	; $2AF0
-	bne.b loc_2AC4	; $2AF4
+	bne.b DialogueWait	; $2AF4
 	moveq #$0, D0	; $2AF6
 	bra.b *+$4	; $2AF8
-loc_2AFA:
+DialogueSelect_Bad:
 	moveq #-$1, D0	; $2AFA
-loc_2AFC:
+DialogueSelect_Return:
 	movea.w (RAM_word_FFFF9C14).w, A1	; $2AFC
 	movea.l -(A1), A0	; $2B00
 	move.w A1, (RAM_word_FFFF9C14).w	; $2B02
 	jmp (A0)	; $2B06
-loc_2B08:
+DialogueChoice:
 	moveq #$0, D2	; $2B08
 	move.b (RAM_InputSelectedNew).w, D1	; $2B0A
 	btst.l #$6, D1	; $2B0E
@@ -908,7 +908,7 @@ loc_2B08:
 	bne.b *+$6	; $2B22
 	moveq #-$1, D0	; $2B24
 	rts	; $2B26
-loc_2B28:
+DialogueChoice_Sound:
 	move.b ($2B34,PC,D2.w), D0	; $2B28
 	jsr $366.w	; $2B2C
 	move.w D2, D0	; $2B30
@@ -930,10 +930,6 @@ QuizTextData:				; loc_0002B38 - music quiz dialogue (control+text)
 	dc.b	$6C,$6C,$2E,$05,$00,$07,$03,$06,$02,$54,$68,$65,$20,$6D,$65,$6C	; $2BE0
 	dc.b	$6F,$64,$79,$20,$69,$73,$6E,$27,$74,$20,$71,$75,$69,$74,$65,$20	; $2BF0
 	dc.b	$72,$69,$67,$68,$74,$2E,$05,$00				; $2C00
-loc_2BB8:
-loc_2BC2:
-loc_2BCC:
-loc_2BE8:
 	move.w (RAM_word_FFFF9A8C).w, D6	; $2C08
 	lsr.w #$4, D6	; $2C0C
 	subq.w #$1, D6	; $2C0E
@@ -942,12 +938,12 @@ loc_2BE8:
 	lsl.w #$2, D7	; $2C18
 	moveq #$0, D0	; $2C1A
 	move.b (RAM_word_FFFF9A8B).w, D0	; $2C1C
-loc_2C20:
+PlayNoteAnim:
 	lsl.w #$3, D0	; $2C20
 	lea ($2C46,PC,D0.w), A4	; $2C22
 	move.w (A4)+, D0	; $2C26
 	jsr $266C.w	; $2C28
-loc_2C2C:
+PlayNoteAnim_Note:
 	move.w (A4)+, D0	; $2C2C
 	addq.w #$1, D6	; $2C2E
 	jsr $2670.w	; $2C30
@@ -960,7 +956,7 @@ loc_2C2C:
 	dc.b	$02,$74,$02,$75,$02,$77,$02,$76			; $2C46  (attack bytes)
 	move.b	(RAM_word_FFFF9A8A).w, D0		; $2C4E
 	jsr $2752.w	; $2C52
-loc_2C56:
+SpawnNote:
 	moveq #$57, D0	; $2C56
 	jsr $366.w	; $2C58
 	clr.b (RAM_word_FFFF9A8A).w	; $2C5C
@@ -986,9 +982,9 @@ loc_2C56:
 	move.w #$1E, (-$2600,A4)	; $2CAE
 	move.b #$14, (-$3CFD,A4)	; $2CB4
 	dbf D5, $2C92	; $2CBA
-loc_2CBE:
+SpawnNote_Done:
 	rts	; $2CBE
-loc_2CC0:
+SpawnMusicNote:
 	move.w D6, (-$3800,A4)	; $2CC0
 	move.w D7, (-$3700,A4)	; $2CC4
 	jsr $A36.w	; $2CC8
@@ -1013,9 +1009,9 @@ StatDeltaTable:					; loc_0002CE0
 	bpl.b *+$8	; $2D20
 	subq.b #$1, (RAM_word_FFFF9BB8).w	; $2D22
 	beq.b *+$4	; $2D26
-loc_2D28:
+MonsterRage_Done:
 	rts	; $2D28
-loc_2D2A:
+MonsterRage:
 	move.b (RAM_word_FFFF9BB9).w, D5	; $2D2A
 	bpl.b *+$32	; $2D2E
 	andi.w #$7F, D5	; $2D30
@@ -1030,7 +1026,7 @@ loc_2D2A:
 	jsr $7E8.w	; $2D54
 	move.b #-$40, (-$4000,A4)	; $2D58
 	bra.b *+$80	; $2D5E
-loc_2D60:
+MonsterRage_Dx:
 	jsr $5D8.w	; $2D60
 	moveq #$0, D2	; $2D64
 	move.w D0, D2	; $2D66
@@ -1040,7 +1036,7 @@ loc_2D60:
 	tst.w D0	; $2D70
 	bpl.b *+$4	; $2D72
 	neg.w D2	; $2D74
-loc_2D76:
+MonsterRage_Dy:
 	jsr $5D8.w	; $2D76
 	moveq #$0, D1	; $2D7A
 	move.w D0, D1	; $2D7C
@@ -1050,7 +1046,7 @@ loc_2D76:
 	tst.w D0	; $2D86
 	bpl.b *+$4	; $2D88
 	neg.w D1	; $2D8A
-loc_2D8C:
+MonsterRage_HitTest:
 	movem.w D2/D1, -(SP)	; $2D8C
 	add.w (RAM_word_FFFF9BBE).w, D1	; $2D90
 	add.w (RAM_word_FFFF9BC0).w, D2	; $2D94
@@ -1063,7 +1059,7 @@ loc_2D8C:
 	bne.b *+$8	; $2DAC
 	move.b D0, (RAM_word_FFFF9BB6).w	; $2DAE
 	rts	; $2DB2
-loc_2DB4:
+MonsterRage_Apply:
 	ori.b #$1, (-$25FD,A0)	; $2DB4
 	asl.w #$3, D1	; $2DBA
 	move.w D1, (-$2100,A0)	; $2DBC
@@ -1071,14 +1067,14 @@ loc_2DB4:
 	beq.b *+$6	; $2DC6
 	moveq #$0, D0	; $2DC8
 	bra.b *+$10	; $2DCA
-loc_2DCC:
+MonsterRage_Random:
 	jsr $5D8.w	; $2DCC
 	andi.w #$1FF, D0	; $2DD0
 	addi.w #$400, D0	; $2DD4
 	neg.w D0	; $2DD8
-loc_2DDA:
+MonsterRage_Store:
 	move.w D0, (-$20FE,A0)	; $2DDA
-loc_2DDE:
+MonsterRage_Next:
 	movea.l (RAM_word_FFFF9BBA).w, A0	; $2DDE
 	move.b (A0)+, D0	; $2DE2
 	move.b D0, (RAM_word_FFFF9BB9).w	; $2DE4
@@ -1086,7 +1082,7 @@ loc_2DDE:
 	bne.b *+$8	; $2DEA
 	move.b D0, (RAM_word_FFFF9BB6).w	; $2DEC
 	rts	; $2DF0
-loc_2DF2:
+MonsterRage_SetDelay:
 	move.l A0, (RAM_word_FFFF9BBA).w	; $2DF2
 	move.b (RAM_word_FFFF9BB7).w, (RAM_word_FFFF9BB8).w	; $2DF6
 	rts	; $2DFC
@@ -1098,11 +1094,11 @@ loc_2DF2:
 	cmpi.b #$12, (RAM_word_FFFF9668).w	; $2E10
 	bne.b *+$6	; $2E16
 			dc.w	$41fa,$0010	; dc.w
-loc_2E1C:
+MonsterRage_Init:
 	move.l A0, (RAM_word_FFFF9BBA).w	; $2E1C
 	lea (-$643A).w, A0	; $2E20
 	movem.w D3/D2/D1/D0, -(A0)	; $2E24
-	bra.b loc_2DDE	; $2E28
+	bra.b MonsterRage_Next	; $2E28
 	dc.b	$0C,$16,$0C,$10,$0C,$16,$10,$0C			; $2E2A  (stat table)
 	dc.b	$0C,$0C,$12,$0C,$FF,$00				; $2E32
 	lea (-$68AC).w, A3	; $2E38
@@ -1126,7 +1122,7 @@ loc_2E1C:
 	move.w D2, (-$30FE,A4)	; $2E80
 	move.b D1, (-$30FF,A4)	; $2E84
 	rts	; $2E88
-loc_2E8A:
+MonsterMove_A:
 	jsr $AD6.w	; $2E8A
 	jsr $3C22.w	; $2E8E
 	jsr $3A54.w	; $2E92
@@ -1151,7 +1147,7 @@ loc_2E8A:
 	lea (-$68AC).w, A3	; $2EDE
 	jsr $AB8.w	; $2EE2
 	jsr $3F08.w	; $2EE6
-loc_2EEA:
+MonsterMove_B:
 	move.b (-$3100,A4), (-$2EFF,A4)	; $2EEA
 	move.w (-$30FE,A4), (-$2EFE,A4)	; $2EF0
 	moveq #$0, D0	; $2EF6
@@ -1168,7 +1164,7 @@ loc_2EEA:
 	jsr $30D2.w	; $2F1E
 	move.w D2, (-$30FE,A4)	; $2F22
 	rts	; $2F26
-loc_2F28:
+MonsterMove_C:
 	jsr $AD6.w	; $2F28
 	jsr $356E.w	; $2F2C
 	jmp $3098.w	; $2F30
@@ -1191,7 +1187,7 @@ loc_2F28:
 	jsr $30D2.w	; $2F74
 	move.w D2, (-$30FE,A4)	; $2F78
 	rts	; $2F7C
-loc_2F7E:
+MonsterMove_D:
 	jsr $AD6.w	; $2F7E
 	jsr $3AB0.w	; $2F82
 	jsr $356E.w	; $2F86
