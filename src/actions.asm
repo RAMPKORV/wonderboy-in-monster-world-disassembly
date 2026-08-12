@@ -194,7 +194,7 @@ SceneEventJump:
 	add.w D0, (RAM_CellX).w	; $1670
 	bra.w RunSceneEventScript	; $1674
 	ori.b #$1, (RAM_PlayerState).w	; $1678
-	bsr.w loc_1754	; $167E
+	bsr.w RenderFullScene_Scroll	; $167E
 	bset.b #$0, (RAM_PlayerSubState).w	; $1682
 	bra.w SceneEventSavePtr	; $1688
 SceneEventSkip:
@@ -270,7 +270,7 @@ SceneTransitionWait_Done:
 SceneTransitionSet:
 	bset.b #$0, (RAM_PlayerSubState).w	; $174C
 	bne.b SceneTransitionWait_Done	; $1752
-loc_1754:
+RenderFullScene_Scroll:
 	move.w #-$6FED, D0	; $1754
 ; ----------------------------------------------------------------------
 ; RenderFullScene: draws the whole 32x32 tilemap to Plane A on scene entry.
@@ -827,7 +827,6 @@ GetDictValue_Lookup:
 		dc.w	$0000,$4e20	; ori.b
 		dc.w	$0000,$1f40	; ori.b
 		dc.w	$0000,$0dac	; ori.b
-loc_1DFA:
 		dc.w	$0000,$07d0	; ori.b
 	ori.b #-$6A, D0	; $1DFE
 	ori.b #-$38, D0	; $1E02

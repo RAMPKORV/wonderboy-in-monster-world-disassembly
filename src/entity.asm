@@ -475,7 +475,7 @@ UnlinkCollisionPair_Done:
 	ori.b #$4, D4	; $E8C
 	or.b D4, (-$2AFD,A4)	; $E90
 	move.w A2, (-$22FE,A4)	; $E94
-loc_E98:
+CollisionHit_Done:
 	rts	; $E98
 CheckOverlapDistance:
 	moveq #$0, D4	; $E9A

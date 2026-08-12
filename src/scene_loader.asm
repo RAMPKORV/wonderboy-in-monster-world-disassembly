@@ -592,7 +592,7 @@ InitSceneData:
 	tst.w (RAM_word_FFFF965C).w	; $27B0
 	beq.b *+$6	; $27B4
 	bsr.w	$7F00				; $27B6
-loc_27BA:
+InitSceneData_Read:
 	moveq #$0, D0	; $27BA
 	move.b (A1)+, D0	; $27BC
 	move.w D0, (RAM_SceneOriginX).w	; $27BE

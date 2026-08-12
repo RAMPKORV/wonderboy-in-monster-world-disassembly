@@ -1,104 +1,14 @@
 const fs = require('fs');
-const renames = {
-  'loc_41A2': 'CopyEntityFields',
-  'loc_420C': 'RandomIdle_Done',
-  'loc_4218': 'IdleCheck',
-  'loc_421C': 'IdleCheck_Setup',
-  'loc_422A': 'IdleCheck_Scan',
-  'loc_423E': 'IdleCheck_X',
-  'loc_425C': 'DecelerateVelocity',
-  'loc_427C': 'DecelerateY',
-  'loc_4286': 'DecelerateY_Store',
-  'loc_42A4': 'SetAnimId',
-  'loc_42A8': 'SetAnimId_Done',
-  'loc_42C0': 'AnimTimer_Done',
-  'loc_42C2': 'AnimTimer_Return',
-  'loc_42DE': 'PlaySound3F',
-  'loc_42EA': 'SpawnHelper',
-  'loc_433E': 'SpawnHelper_Done',
-  'loc_4340': 'RandomSigned',
-  'loc_4354': 'RandomSigned_Done',
-  'loc_4360': 'CheckEntityState_Done',
-  'loc_4362': 'CheckEntityState',
-  'loc_437C': 'SetAnimId_Return',
-  'loc_4388': 'FaceTarget',
-  'loc_4398': 'FaceTarget_Store',
-  'loc_439E': 'CheckCollisionFlag',
-  'loc_43BA': 'CheckCollisionFlag_Done',
-  'loc_43C2': 'BounceHit',
-  'loc_4436': 'CheckState_Done',
-  'loc_444E': 'CheckState_Ret',
-  'loc_445C': 'CheckFacing',
-  'loc_446C': 'SetFacingBit',
-  'loc_4480': 'CheckFacing_Done',
-  'loc_448C': 'FlipFacing',
-  'loc_4492': 'ApplyFacingVelocity',
-  'loc_44A0': 'ApplyFacingVelocity_Store',
-  'loc_44B4': 'SetFacingRight',
-  'loc_44D6': 'FacePlayer',
-  'loc_44EC': 'FacePlayer_Left',
-  'loc_4508': 'SetJumpVelocity',
-  'loc_453C': 'ChasePlayer',
-  'loc_4548': 'ChasePlayer_Store',
-  'loc_4552': 'ChasePlayer_Done',
-  'loc_4572': 'FacePlayer_XNeg',
-  'loc_457A': 'GetYDelta',
-  'loc_4590': 'GetYDelta_Done',
-  'loc_45AA': 'CheckWallAhead_Done',
-  'loc_45AC': 'CheckWallAhead',
-  'loc_45BE': 'CheckWallAhead_X',
-  'loc_45E6': 'CheckObstacle_Done',
-  'loc_45F4': 'CheckObstacle',
-  'loc_4606': 'CheckObstacle_Neg',
-  'loc_460E': 'CheckObstacle_Sub',
-  'loc_4626': 'CheckObstacle_Compare',
-  'loc_4630': 'CheckObstacle_Found',
-  'loc_4638': 'CheckObstacle_Found_Done',
-  'loc_4640': 'CheckObstacle2',
-  'loc_4646': 'CheckEntityState2',
-  'loc_4658': 'CheckPlatformEdge',
-  'loc_4674': 'CheckPlatformEdge_Left',
-  'loc_467E': 'CheckPlatformEdge_No',
-  'loc_4682': 'CheckPlatformEdge_Yes',
-  'loc_4686': 'CheckCollisionAhead',
-  'loc_4696': 'CheckCollisionAhead_X',
-  'loc_469A': 'CheckCollisionAhead_Scan',
-  'loc_46D0': 'ApplyTurnVelocity',
-  'loc_46F0': 'HelperUpdate_Jump',
-  'loc_4704': 'HelperUpdate_Check',
-  'loc_470E': 'HelperUpdate_Link',
-  'loc_4716': 'HelperUpdate_Link2',
-  'loc_4720': 'HelperUpdate_Link3',
-  'loc_4728': 'HelperUpdate_Done',
-  'loc_472A': 'GetFacingDir',
-  'loc_4738': 'GetFacingDir_Calc',
-  'loc_4742': 'CheckHitPlayer',
-  'loc_4776': 'CheckHitPlayer_Done',
-  'loc_478A': 'HitPlayer_No',
-  'loc_47A2': 'HitPlayer_Link',
-  'loc_47A6': 'HitPlayer_Link2',
-  'loc_47C2': 'HitPlayer_Alt',
-  'loc_47F4': 'IdleAnim_Next',
-  'loc_47FA': 'IdleAnim_Set',
-  'loc_480C': 'IdleAnim_Next2',
-  'loc_482A': 'IdleAnim_Done',
-  'loc_485E': 'KillEntity_ClearFlag',
-  'loc_4862': 'KillEntity_Reward',
-  'loc_486A': 'KillEntity_Drop',
-  'loc_4894': 'KillEntity_DropItem',
-  'loc_489E': 'KillEntity_Done',
-  'loc_48A4': 'KillEntity_NoDrop',
-  'loc_48AA': 'KillEntity_SpawnDrop',
-  'loc_48B2': 'KillEntity_Item',
-  'loc_48E8': 'IdleCheck_Scan2',
-};
-let total = 0;
-for (const f of fs.readdirSync('src').filter(x => x.endsWith('.asm'))) {
-  let txt = fs.readFileSync('src/' + f, 'latin1');
-  let before = txt;
-  for (const [old, next] of Object.entries(renames)) {
-    txt = txt.split(old).join(next);
-  }
-  if (txt !== before) { fs.writeFileSync('src/' + f, txt); total++; console.log(f); }
+// delete data label loc_1DFA in actions.asm
+{
+  let lines = fs.readFileSync('src/actions.asm', 'latin1').split(/\r?\n/);
+  const out = lines.filter(l => l.trim() !== 'loc_1DFA:');
+  fs.writeFileSync('src/actions.asm', out.join('\n'));
 }
-console.log('files touched:', total);
+// rename loc_E98 in entity.asm
+{
+  let txt = fs.readFileSync('src/entity.asm', 'latin1');
+  txt = txt.split('loc_E98').join('UnlinkCollisionPair_Done');
+  fs.writeFileSync('src/entity.asm', txt);
+}
+console.log('done');
