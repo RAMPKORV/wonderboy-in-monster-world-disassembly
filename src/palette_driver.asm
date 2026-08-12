@@ -51,25 +51,25 @@ PaletteAnimationDriver:
 	dbf D0, $57A0	; $5814
 	rts	; $5818
 	bsr.b *+$64	; $581A
-	andi.b #-$39, ($FFFF8C56).w	; $581C
-	ori.b #$20, ($FFFF8C56).w	; $5822
-	move.b #-$10, ($FFFF8C70).w	; $5828
-	move.b #$1, ($FFFF8C6E).w	; $582E
-	move.b #$1, ($FFFF8C6F).w	; $5834
-	move.b #$2, ($FFFF8C74).w	; $583A
+	andi.b #-$39, (RAM_word_FFFF8C56).w	; $581C
+	ori.b #$20, (RAM_word_FFFF8C56).w	; $5822
+	move.b #-$10, (RAM_word_FFFF8C70).w	; $5828
+	move.b #$1, (RAM_word_FFFF8C6E).w	; $582E
+	move.b #$1, (RAM_word_FFFF8C6F).w	; $5834
+	move.b #$2, (RAM_word_FFFF8C74).w	; $583A
 	rts	; $5840
 	bsr.b *+$3C	; $5842
-	andi.b #-$39, ($FFFF8C56).w	; $5844
-	ori.b #$28, ($FFFF8C56).w	; $584A
-	clr.b ($FFFF8C70).w	; $5850
-	move.b #$1, ($FFFF8C6E).w	; $5854
-	move.b #$1, ($FFFF8C6F).w	; $585A
-	move.b #$2, ($FFFF8C74).w	; $5860
+	andi.b #-$39, (RAM_word_FFFF8C56).w	; $5844
+	ori.b #$28, (RAM_word_FFFF8C56).w	; $584A
+	clr.b (RAM_word_FFFF8C70).w	; $5850
+	move.b #$1, (RAM_word_FFFF8C6E).w	; $5854
+	move.b #$1, (RAM_word_FFFF8C6F).w	; $585A
+	move.b #$2, (RAM_word_FFFF8C74).w	; $5860
 	rts	; $5866
 	bsr.b *-$26	; $5868
-	move.b #$2, ($FFFF8C6E).w	; $586A
-	move.b #$2, ($FFFF8C6F).w	; $5870
-	move.b #$1, ($FFFF8C74).w	; $5876
+	move.b #$2, (RAM_word_FFFF8C6E).w	; $586A
+	move.b #$2, (RAM_word_FFFF8C6F).w	; $5870
+	move.b #$1, (RAM_word_FFFF8C74).w	; $5876
 	rts	; $587C
 	lea ($5608).l, A1	; $587E
 	jsr $47A.w	; $5884
@@ -77,58 +77,58 @@ PaletteAnimationDriver:
 	bne.b *+$6	; $588A
 	bsr.w *-$2B2	; $588C
 	rts	; $5890
-	subq.b #$1, ($FFFF8C6E).w	; $5892
+	subq.b #$1, (RAM_word_FFFF8C6E).w	; $5892
 	beq.b *+$4	; $5896
 	rts	; $5898
-	btst.b #$6, ($FFFF8A5D).w	; $589A
+	btst.b #$6, (RAM_word_FFFF8A5D).w	; $589A
 	bne.b *+$6	; $58A0
 	jsr $618.w	; $58A2
-	move.b ($FFFF8C6F).w, ($FFFF8C6E).w	; $58A6
-	move.b ($FFFF8C70).w, D0	; $58AC
-	add.b ($FFFF8C74).w, D0	; $58B0
+	move.b (RAM_word_FFFF8C6F).w, (RAM_word_FFFF8C6E).w	; $58A6
+	move.b (RAM_word_FFFF8C70).w, D0	; $58AC
+	add.b (RAM_word_FFFF8C74).w, D0	; $58B0
 	bmi.b *+$10	; $58B4
-	andi.b #-$39, ($FFFF8C56).w	; $58B6
-	ori.b #$52, ($FFFF8C56).w	; $58BC
+	andi.b #-$39, (RAM_word_FFFF8C56).w	; $58B6
+	ori.b #$52, (RAM_word_FFFF8C56).w	; $58BC
 	rts	; $58C2
-	move.b D0, ($FFFF8C70).w	; $58C4
-	move.b D0, ($FFFF8C71).w	; $58C8
-	move.b D0, ($FFFF8C72).w	; $58CC
-	move.b D0, ($FFFF8C73).w	; $58D0
+	move.b D0, (RAM_word_FFFF8C70).w	; $58C4
+	move.b D0, (RAM_word_FFFF8C71).w	; $58C8
+	move.b D0, (RAM_word_FFFF8C72).w	; $58CC
+	move.b D0, (RAM_word_FFFF8C73).w	; $58D0
 	rts	; $58D4
-	subq.b #$1, ($FFFF8C6E).w	; $58D6
+	subq.b #$1, (RAM_word_FFFF8C6E).w	; $58D6
 	beq.b *+$4	; $58DA
 	rts	; $58DC
-	move.b ($FFFF8C6F).w, ($FFFF8C6E).w	; $58DE
-	move.b ($FFFF8C70).w, D0	; $58E4
-	sub.b ($FFFF8C74).w, D0	; $58E8
+	move.b (RAM_word_FFFF8C6F).w, (RAM_word_FFFF8C6E).w	; $58DE
+	move.b (RAM_word_FFFF8C70).w, D0	; $58E4
+	sub.b (RAM_word_FFFF8C74).w, D0	; $58E8
 	cmpi.b #-$E, D0	; $58EC
 	bge.b *+$14	; $58F0
-	andi.b #-$39, ($FFFF8C56).w	; $58F2
-	ori.b #$10, ($FFFF8C56).w	; $58F8
+	andi.b #-$39, (RAM_word_FFFF8C56).w	; $58F2
+	ori.b #$10, (RAM_word_FFFF8C56).w	; $58F8
 	jsr $62A.w	; $58FE
 	rts	; $5902
-	move.b D0, ($FFFF8C70).w	; $5904
-	move.b D0, ($FFFF8C71).w	; $5908
-	move.b D0, ($FFFF8C72).w	; $590C
-	move.b D0, ($FFFF8C73).w	; $5910
+	move.b D0, (RAM_word_FFFF8C70).w	; $5904
+	move.b D0, (RAM_word_FFFF8C71).w	; $5908
+	move.b D0, (RAM_word_FFFF8C72).w	; $590C
+	move.b D0, (RAM_word_FFFF8C73).w	; $5910
 	rts	; $5914
 
 PaletteSourceToWorking:
 	lea (-$74AA).w, A0	; $5916
 	lea (-$742A).w, A1	; $591A
 	moveq #$3F, D0	; $591E
-	move.b ($FFFF8C71).w, D1	; $5920
+	move.b (RAM_word_FFFF8C71).w, D1	; $5920
 	ext.w D1	; $5924
-	move.b ($FFFF8C72).w, D2	; $5926
+	move.b (RAM_word_FFFF8C72).w, D2	; $5926
 	ext.w D2	; $592A
 	asl.w #$4, D2	; $592C
-	move.b ($FFFF8C73).w, D3	; $592E
+	move.b (RAM_word_FFFF8C73).w, D3	; $592E
 	ext.w D3	; $5932
 	asl.w #$8, D3	; $5934
 	bsr.b *+$14	; $5936
 	dbf D0, $5936	; $5938
-	andi.b #$3F, ($FFFF8C56).w	; $593C
-	ori.b #-$7F, ($FFFF8C56).w	; $5942
+	andi.b #$3F, (RAM_word_FFFF8C56).w	; $593C
+	ori.b #-$7F, (RAM_word_FFFF8C56).w	; $5942
 	rts	; $5948
 
 AdjustPaletteWord:

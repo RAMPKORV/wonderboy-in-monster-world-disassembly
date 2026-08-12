@@ -2,29 +2,29 @@
 ; src/gameplay7.asm ($9000-$A000)
 ; ======================================================================
 	bmi.b *+$A	; $9000
-	tst.b ($FFFF9667).w	; $9002
+	tst.b (RAM_word_FFFF9667).w	; $9002
 	beq.w *+$222	; $9006
-	bclr.b #$0, ($FFFF9659).w	; $900A
+	bclr.b #$0, (RAM_word_FFFF9659).w	; $900A
 	dc.b	$52,$78,$96,$5A	; $9010
-	move.l SP, ($FFFF9662).w	; $9014
+	move.l SP, (RAM_word_FFFF9662).w	; $9014
 	jsr $400.w	; $9018
-	btst.b #$7, ($FFFF9659).w	; $901C
+	btst.b #$7, (RAM_word_FFFF9659).w	; $901C
 	bne.w *+$64	; $9022
 	jsr $11C9E.l	; $9026
-	btst.b #$2, ($FFFF965F).w	; $902C
+	btst.b #$2, (RAM_word_FFFF965F).w	; $902C
 	bne.b *+$6	; $9032
 	bsr.w *+$4CD4	; $9034
-	tst.b ($FFFF9F03).w	; $9038
+	tst.b (RAM_word_FFFF9F03).w	; $9038
 	bpl.b *+$6	; $903C
 	bra.w *+$106	; $903E
-	btst.b #$3, ($FFFF965F).w	; $9042
+	btst.b #$3, (RAM_word_FFFF965F).w	; $9042
 	beq.b *+$E	; $9048
 	bsr.w *-$3EC2	; $904A
 	moveq #$1, D0	; $904E
 	jmp $4CA8.l	; $9050
-	btst.b #$1, ($FFFF965F).w	; $9056
+	btst.b #$1, (RAM_word_FFFF965F).w	; $9056
 	bne.w *+$6710	; $905C
-	move.w ($FFFF9962).w, D0	; $9060
+	move.w (RAM_word_FFFF9962).w, D0	; $9060
 	bne.w *+$186	; $9064
 	bsr.w *+$6A04	; $9068
 	jsr $133B2.l	; $906C
@@ -35,27 +35,27 @@
 	bsr.w *-$6366	; $9082
 	bsr.w *+$3760	; $9086
 	bsr.w *+$C48	; $908A
-	tst.w ($FFFF965C).w	; $908E
+	tst.w (RAM_word_FFFF965C).w	; $908E
 	beq.b *+$C	; $9092
 	dc.b	$53,$78,$96,$5C	; $9094
 	bne.b *+$6	; $9098
 	bsr.w *-$119A	; $909A
-	movea.w ($FFFF9EEE).w, A4	; $909E
+	movea.w (RAM_word_FFFF9EEE).w, A4	; $909E
 	bsr.w *+$1336	; $90A2
-	move.w ($FFFF9962).w, D0	; $90A6
+	move.w (RAM_word_FFFF9962).w, D0	; $90A6
 	bne.w *+$140	; $90AA
-	tst.b ($FFFF9F05).w	; $90AE
+	tst.b (RAM_word_FFFF9F05).w	; $90AE
 	bne.w *-$B6	; $90B2
-	btst.b #$7, ($FFFF9F0D).w	; $90B6
+	btst.b #$7, (RAM_word_FFFF9F0D).w	; $90B6
 	beq.w *-$C0	; $90BC
 	dc.b	$70,$FC	; $90C0
 	jsr $366.w	; $90C2
-	st ($FFFF950A).w	; $90C6
+	st (RAM_word_FFFF950A).w	; $90C6
 	moveq #$56, D0	; $90CA
 	jsr $366.w	; $90CC
-	clr.w ($FFFF965C).w	; $90D0
+	clr.w (RAM_word_FFFF965C).w	; $90D0
 	jsr $A66.w	; $90D4
-	btst.b #$2, ($FFFF9659).w	; $90D8
+	btst.b #$2, (RAM_word_FFFF9659).w	; $90D8
 	bne.b *+$C	; $90DE
 	bsr.w *-$1B5E	; $90E0
 	bsr.w *+$4A58	; $90E4
@@ -63,53 +63,53 @@
 	bsr.w *-$11DC	; $90EA
 	dc.b	$70,$FD	; $90EE
 	jsr $366.w	; $90F0
-	clr.b ($FFFF950A).w	; $90F4
+	clr.b (RAM_word_FFFF950A).w	; $90F4
 	jsr $A8E.w	; $90F8
 	bra.w *-$100	; $90FC
-	bclr.b #$1, ($FFFF965F).w	; $9100
+	bclr.b #$1, (RAM_word_FFFF965F).w	; $9100
 	beq.w *+$E	; $9106
-	ori.b #$4, ($FFFF965F).w	; $910A
+	ori.b #$4, (RAM_word_FFFF965F).w	; $910A
 	bra.w *-$114	; $9110
-	bclr.b #$1, ($FFFF966A).w	; $9114
+	bclr.b #$1, (RAM_word_FFFF966A).w	; $9114
 	beq.b *+$6	; $911A
 	bsr.w *+$1262	; $911C
 	bsr.w *+$1B4	; $9120
-	cmp.b ($FFFF9661).w, D0	; $9124
+	cmp.b (RAM_word_FFFF9661).w, D0	; $9124
 	beq.b *+$8	; $9128
 	dc.b	$70,$FE	; $912A
 	jsr $366.w	; $912C
 	bsr.w *-$38EE	; $9130
 	jsr $400.w	; $9134
-	btst.b #$4, ($FFFF8C56).w	; $9138
+	btst.b #$4, (RAM_word_FFFF8C56).w	; $9138
 	beq.b *-$A	; $913E
 	bra.w *-$25A	; $9140
 	bsr.w *-$3902	; $9144
 	jsr $400.w	; $9148
-	btst.b #$4, ($FFFF8C56).w	; $914C
+	btst.b #$4, (RAM_word_FFFF8C56).w	; $914C
 	beq.b *-$A	; $9152
 	bsr.w *-$3FCC	; $9154
 	dc.b	$41,$FA,$00,$64	; $9158
 	jsr $234C.w	; $915C
 	jsr $22F0.w	; $9160
 	dc.b	$45,$FA,$00,$5C	; $9164
-	move.b #$2, ($FFFF8C76).w	; $9168
+	move.b #$2, (RAM_word_FFFF8C76).w	; $9168
 	bsr.w *-$27C0	; $916E
 	dc.b	$41,$FA,$00,$46	; $9172
 	jsr $135C.w	; $9176
 	bsr.w *-$3960	; $917A
 	jsr $400.w	; $917E
-	btst.b #$4, ($FFFF8C56).w	; $9182
+	btst.b #$4, (RAM_word_FFFF8C56).w	; $9182
 	beq.b *-$A	; $9188
 	move.w #$F0, ($40,A5)	; $918A
 	jsr $400.w	; $9190
 	dc.b	$70,$F0	; $9194
-	and.b ($FFFF8A7C).w, D0	; $9196
+	and.b (RAM_InputSelectedNew).w, D0	; $9196
 	bne.b *+$8	; $919A
 	dc.b	$53,$6D,$00,$40	; $919C
 	bne.b *-$10	; $91A0
 	bsr.w *-$3960	; $91A2
 	jsr $400.w	; $91A6
-	btst.b #$4, ($FFFF8C56).w	; $91AA
+	btst.b #$4, (RAM_word_FFFF8C56).w	; $91AA
 	beq.b *-$A	; $91B0
 	moveq #$0, D0	; $91B2
 	jmp $4CA8.l	; $91B4

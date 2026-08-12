@@ -102,25 +102,25 @@ loc_30F4:
 	andi.w #$F, D2	; $3108
 	add.w D2, D2	; $310C
 	move.w ($0,A0,D2.w), D2	; $310E
-	cmpa.w ($FFFF9EEE).w, A4	; $3112
+	cmpa.w (RAM_word_FFFF9EEE).w, A4	; $3112
 	bne.b *+$2A	; $3116
 	move.w D2, D0	; $3118
 	andi.w #-$1000, D0	; $311A
 	cmpi.w #$5000, D0	; $311E
 	bne.b *+$E	; $3122
-	btst.b #$5, ($FFFF9EF1).w	; $3124
+	btst.b #$5, (RAM_word_FFFF9EF1).w	; $3124
 	bne.b *+$16	; $312A
 	moveq #$8, D2	; $312C
 	bra.b *+$12	; $312E
 loc_3130:
 	cmpi.w #$6000, D0	; $3130
 	bne.b *+$C	; $3134
-	btst.b #$4, ($FFFF9EF1).w	; $3136
+	btst.b #$4, (RAM_word_FFFF9EF1).w	; $3136
 	bne.b *+$4	; $313C
 	moveq #$F, D2	; $313E
 loc_3140:
 	rts	; $3140
-	btst.b #$1, ($FFFF966B).w	; $3142
+	btst.b #$1, (RAM_word_FFFF966B).w	; $3142
 	beq.b *+$6	; $3148
 	jsr $341C.w	; $314A
 loc_314E:
@@ -207,7 +207,7 @@ loc_322A:
 	bne.b *+$4	; $3232
 	rts	; $3234
 loc_3236:
-	btst.b #$1, ($FFFF966B).w	; $3236
+	btst.b #$1, (RAM_word_FFFF966B).w	; $3236
 	beq.b *+$6	; $323C
 	jsr $341C.w	; $323E
 loc_3242:
@@ -279,7 +279,7 @@ loc_32F0:
 loc_32FA:
 	unlk A6	; $32FA
 	rts	; $32FC
-	btst.b #$1, ($FFFF966B).w	; $32FE
+	btst.b #$1, (RAM_word_FFFF966B).w	; $32FE
 	beq.b *+$6	; $3304
 	jsr $341C.w	; $3306
 loc_330A:
@@ -508,13 +508,13 @@ loc_3562:
 loc_356A:
 	move.w (SP)+, D1	; $356A
 	rts	; $356C
-	btst.b #$1, ($FFFF966B).w	; $356E
+	btst.b #$1, (RAM_word_FFFF966B).w	; $356E
 	bne.b *+$6	; $3574
 	jmp $39FA.w	; $3576
 loc_357A:
-	move.l #-$1, ($FFFF9EE8).w	; $357A
+	move.l #-$1, (RAM_word_FFFF9EE8).w	; $357A
 	bra.b *+$A	; $3582
-	move.l #$38E4, ($FFFF9EE8).w	; $3584
+	move.l #$38E4, (RAM_word_FFFF9EE8).w	; $3584
 loc_358C:
 	link A6, #-$14	; $358C
 	move.w (-$3700,A4), D7	; $3590
@@ -528,7 +528,7 @@ loc_358C:
 	move.w D7, D1	; $35AC
 	sub.w D0, D1	; $35AE
 	move.w D1, (-$A,A6)	; $35B0
-	btst.b #$1, ($FFFF966B).w	; $35B4
+	btst.b #$1, (RAM_word_FFFF966B).w	; $35B4
 	beq.w loc_38D4	; $35BA
 	move.b (-$2EFF,A4), D0	; $35BE
 	andi.b #-$76, D0	; $35C2
@@ -569,9 +569,9 @@ loc_3604:
 	move.w A1, D0	; $3632
 	eori.w #$1, D0	; $3634
 	movea.w D0, A1	; $3638
-	cmpa.w ($FFFF9EEE).w, A4	; $363A
+	cmpa.w (RAM_word_FFFF9EEE).w, A4	; $363A
 	bne.b *+$A	; $363E
-	btst.b #$0, ($FFFF9F0B).w	; $3640
+	btst.b #$0, (RAM_word_FFFF9F0B).w	; $3640
 	bne.b *+$28	; $3646
 loc_3648:
 	btst.b #$0, (-$10,A6)	; $3648
@@ -798,9 +798,9 @@ loc_3888:
 	sub.w D0, D3	; $38D0
 	rts	; $38D2
 loc_38D4:
-	tst.l ($FFFF9EE8).w	; $38D4
+	tst.l (RAM_word_FFFF9EE8).w	; $38D4
 	bmi.b *+$8	; $38D8
-	movea.l ($FFFF9EE8).w, A0	; $38DA
+	movea.l (RAM_word_FFFF9EE8).w, A0	; $38DA
 	jmp (A0)	; $38DE
 loc_38E0:
 	unlk A6	; $38E0
@@ -995,10 +995,10 @@ loc_3AF8:
 	beq.b *+$4	; $3B02
 	rts	; $3B04
 loc_3B06:
-	btst.b #$4, ($FFFF966B).w	; $3B06
+	btst.b #$4, (RAM_word_FFFF966B).w	; $3B06
 	beq.b *+$12	; $3B0C
 	move.w A4, D0	; $3B0E
-	cmp.w ($FFFF9EEE).w, D0	; $3B10
+	cmp.w (RAM_word_FFFF9EEE).w, D0	; $3B10
 	bne.b *+$A	; $3B14
 	btst.b #$5, (-$2EFF,A4)	; $3B16
 	bne.b *+$10	; $3B1C
@@ -1102,11 +1102,11 @@ loc_3C20:
 	beq.b *+$4	; $3C28
 	rts	; $3C2A
 loc_3C2C:
-	move.w #-$1, ($FFFF9EE4).w	; $3C2C
-	btst.b #$4, ($FFFF966B).w	; $3C32
+	move.w #-$1, (RAM_word_FFFF9EE4).w	; $3C2C
+	btst.b #$4, (RAM_word_FFFF966B).w	; $3C32
 	beq.b *+$1E	; $3C38
 	move.w A4, D0	; $3C3A
-	cmp.w ($FFFF9EEE).w, D0	; $3C3C
+	cmp.w (RAM_word_FFFF9EEE).w, D0	; $3C3C
 	bne.b *+$16	; $3C40
 	btst.b #$5, (-$2EFF,A4)	; $3C42
 	beq.b *+$E	; $3C48
@@ -1124,7 +1124,7 @@ loc_3C56:
 	bpl.b *+$2E	; $3C6C
 	bsr.w loc_3E00	; $3C6E
 	bcs.b *+$28	; $3C72
-	move.w D1, ($FFFF9EE4).w	; $3C74
+	move.w D1, (RAM_word_FFFF9EE4).w	; $3C74
 	ori.b #-$7E, (-$3100,A4)	; $3C78
 loc_3C7E:
 	move.w (-$5FC8,A2), D0	; $3C7E
@@ -1168,7 +1168,7 @@ loc_3CD6:
 	bne.b *+$14	; $3CF0
 	movea.w (-$2D00,A4), A2	; $3CF2
 	moveq #$1, D0	; $3CF6
-	cmpa.w ($FFFF9EEE).w, A4	; $3CF8
+	cmpa.w (RAM_word_FFFF9EEE).w, A4	; $3CF8
 	beq.b *+$4	; $3CFC
 	moveq #$2, D0	; $3CFE
 loc_3D00:
@@ -1178,12 +1178,12 @@ loc_3D04:
 loc_3D06:
 	bsr.w loc_3E00	; $3D06
 	bcs.w loc_3DFE	; $3D0A
-	move.w D1, ($FFFF9EE6).w	; $3D0E
+	move.w D1, (RAM_word_FFFF9EE6).w	; $3D0E
 	move.w (-$5FC8,A2), D3	; $3D12
 	sub.w D4, D3	; $3D16
 	bmi.w loc_3D36	; $3D18
 	bne.w loc_3DAA	; $3D1C
-	tst.w ($FFFF9EE4).w	; $3D20
+	tst.w (RAM_word_FFFF9EE4).w	; $3D20
 	bpl.w loc_3D36	; $3D24
 	move.b (-$2EFF,A4), D0	; $3D28
 	andi.b #$A, D0	; $3D2C
@@ -1206,14 +1206,14 @@ loc_3D36:
 	move.w D0, D2	; $3D62
 	sub.w D1, D0	; $3D64
 	bhi.w loc_3DFE	; $3D66
-	tst.w ($FFFF9EE4).w	; $3D6A
+	tst.w (RAM_word_FFFF9EE4).w	; $3D6A
 	bmi.b *+$22	; $3D6E
 	movea.w (-$2D00,A4), A0	; $3D70
 	move.w (-$601C,A0), D1	; $3D74
 	sub.w (-$5F74,A0), D1	; $3D78
 	cmp.w D1, D2	; $3D7C
 	bne.b *+$12	; $3D7E
-	move.w ($FFFF9EE6).w, D2	; $3D80
+	move.w (RAM_word_FFFF9EE6).w, D2	; $3D80
 	moveq #$0, D1	; $3D84
 	move.b (-$34FE,A4), D1	; $3D86
 	sub.w D1, D2	; $3D8A
@@ -1284,15 +1284,15 @@ loc_3E0E:
 GaugeFillTable:					; loc_0003E32
 	dc.w	$00F8,$F808,$08F0,$10E8,$E818,$1800	; $3E32
 			dc.w	$41fa,$0078	; dc.w
-	btst.b #$0, ($FFFF966B).w	; $3E42
+	btst.b #$0, (RAM_word_FFFF966B).w	; $3E42
 	bne.b *+$12	; $3E48
 	rts	; $3E4A
 			dc.w	$41fa,$0092	; dc.w
-	btst.b #$0, ($FFFF966B).w	; $3E50
+	btst.b #$0, (RAM_word_FFFF966B).w	; $3E50
 	bne.b *+$4	; $3E56
 	rts	; $3E58
 loc_3E5A:
-	move.w ($FFFF9EE2).w, D0	; $3E5A
+	move.w (RAM_word_FFFF9EE2).w, D0	; $3E5A
 	move.w D0, D1	; $3E5E
 	andi.w #-$1000, D1	; $3E60
 	cmpi.w #-$5000, D1	; $3E64
@@ -1342,7 +1342,7 @@ AngleDeltaTable:				; loc_0003EB8 - sine delta curve
 	and.b	(-$2EFF,A4), D0		; $3F12
 	subq.b #$2, D0	; $3F16
 	bne.b *+$3A	; $3F18
-	move.w ($FFFF9EDE).w, D0	; $3F1A
+	move.w (RAM_word_FFFF9EDE).w, D0	; $3F1A
 	andi.w #-$FF8, D0	; $3F1E
 	cmpi.w #$1008, D0	; $3F22
 	beq.b *+$10	; $3F26
@@ -1351,7 +1351,7 @@ AngleDeltaTable:				; loc_0003EB8 - sine delta curve
 	cmpi.w #$1008, D1	; $3F30
 	bne.b *+$8	; $3F34
 loc_3F36:
-	move.b ($FFFF9EDA).w, D0	; $3F36
+	move.b (RAM_word_FFFF9EDA).w, D0	; $3F36
 	bra.b *+$12	; $3F3A
 loc_3F3C:
 	cmpi.w #$2008, D0	; $3F3C
@@ -1359,7 +1359,7 @@ loc_3F3C:
 	cmpi.w #$2008, D1	; $3F42
 	bne.b *+$C	; $3F46
 loc_3F48:
-	move.b ($FFFF9EDB).w, D0	; $3F48
+	move.b (RAM_word_FFFF9EDB).w, D0	; $3F48
 loc_3F4C:
 	ext.w D0	; $3F4C
 	add.w D0, (-$3800,A4)	; $3F4E
@@ -1371,7 +1371,7 @@ loc_3F52:
 	move.b (-$34FD,A4), D7	; $3F5E
 	add.w (-$3700,A4), D7	; $3F62
 	jsr $30D2.w	; $3F66
-	move.w D2, ($FFFF9EDE).w	; $3F6A
+	move.w D2, (RAM_word_FFFF9EDE).w	; $3F6A
 	rts	; $3F6E
 	lea (-$68AC).w, A3	; $3F70
 	move.w (-$3800,A4), D6	; $3F74
@@ -1380,7 +1380,7 @@ loc_3F52:
 	move.w (-$3700,A4), D7	; $3F7E
 	sub.w D0, D7	; $3F82
 	jsr $30D2.w	; $3F84
-	move.w D2, ($FFFF9EDC).w	; $3F88
+	move.w D2, (RAM_word_FFFF9EDC).w	; $3F88
 	rts	; $3F8C
 	lea (-$68AC).w, A3	; $3F8E
 	move.w (-$3800,A4), D6	; $3F92
@@ -1389,13 +1389,13 @@ loc_3F52:
 	add.w (-$3700,A4), D7	; $3F9C
 	subq.w #$1, D7	; $3FA0
 	jsr $30D2.w	; $3FA2
-	move.w D2, ($FFFF9EE0).w	; $3FA6
+	move.w D2, (RAM_word_FFFF9EE0).w	; $3FA6
 	rts	; $3FAA
 	lea (-$68AC).w, A3	; $3FAC
 	move.w (-$3800,A4), D6	; $3FB0
 	move.w (-$3700,A4), D7	; $3FB4
 	jsr $30D2.w	; $3FB8
-	move.w D2, ($FFFF9EE2).w	; $3FBC
+	move.w D2, (RAM_word_FFFF9EE2).w	; $3FBC
 	rts	; $3FC0
 AttackSpeedTable:			; loc_0003FC2
 	dc.b	$00,$0a,$00,$2a,$00,$4a,$00,$64,$00,$6a,$00,$00,$00,$0f,$00,$0f	; $3FC2

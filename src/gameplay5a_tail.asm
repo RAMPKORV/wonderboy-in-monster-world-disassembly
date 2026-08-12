@@ -6,5 +6,5 @@
 	lea (-$742A).w, A0	; $598A
 	move.l D0, (A0)+	; $598E
 	dbf D1, $598E	; $5990
-	ori.b #-$7C, ($FFFF8C56).w	; $5994
+	ori.b #-$7C, (RAM_word_FFFF8C56).w	; $5994
 	rts	; $599A

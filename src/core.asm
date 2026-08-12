@@ -113,7 +113,7 @@ PostBoot:
 ; Driver length is a 16-bit little-endian prefix at $98006.
 ; ======================================================================
 WriteZ80Driver:
-	move.w	#$0, ($FFFF8000).w		; $306
+	move.w	#$0, (RAM_word_FFFF8000).w		; $306
 	move.w	#$100, ($A11100).l		; $30C
 	bsr.b	*+$36				; $314  ; -> Z80ResetPulse
 WaitZ80Bus2:
@@ -180,23 +180,23 @@ WriteZ80Mailbox:
 ; VBlank flag ($FF8006 bit 0) and the end of VBlank, then polls $5262.
 ; ======================================================================
 FrameWait:
-	addq.l	#1, ($FFFF8002).w		; $3B8
-	addq.l	#1, ($FFFF8A56).w		; $3BC
-	move.b	($FFFF8A5D).w, D0		; $3C0
-	move.b	($FFFF8A7E).w, D1		; $3C4
+	addq.l	#1, (RAM_word_FFFF8002).w		; $3B8
+	addq.l	#1, (RAM_word_FFFF8A56).w		; $3BC
+	move.b	(RAM_word_FFFF8A5D).w, D0		; $3C0
+	move.b	(RAM_word_FFFF8A7E).w, D1		; $3C4
 	eor.b	D0, D1				; $3C8
 	andi.b	#$40, D1			; $3CA
 	bne.b	*+$8				; $3CE
 	andi.b	#$40, D0			; $3D0
 	beq.b	*+$2A				; $3D4
 WaitVBlankFlag:
-	andi.b	#$FE, ($FFFF8006).w		; $3D6
+	andi.b	#$FE, (RAM_VBlankFlag).w		; $3D6
 WaitVBlankSet:
-	btst.b	#$0, ($FFFF8006).w		; $3DC
+	btst.b	#$0, (RAM_VBlankFlag).w		; $3DC
 	beq.b	WaitVBlankSet			; $3E2
 	jsr	$5262.l				; $3E4
 WaitVBlankEnd:
-	btst.b	#$6, ($FFFF8A5D).w		; $3EA
+	btst.b	#$6, (RAM_word_FFFF8A5D).w		; $3EA
 	beq.b	*+$E				; $3F0
 	move.w	($C00004).l, D0			; $3F2
 	andi.w	#$8, D0				; $3F8
@@ -209,7 +209,7 @@ WaitVBlankEnd:
 ; callback field so the task resumes there on the next dispatch pass.
 ; ======================================================================
 ScheduleTaskContinuation:
-	movea.w	($FFFF8A4C).w, A5		; $400
+	movea.w	(RAM_CurrentTaskSlot).w, A5		; $400
 	movea.l	(SP)+, A0			; $404
 	move.l	A0, ($C,A5)			; $406
 	rts					; $40A
@@ -220,7 +220,7 @@ ScheduleTaskContinuation:
 ; display, then syncs on the HV counter to a stable scanline.
 ; ======================================================================
 WaitForVDPIdle:
-	btst.b	#$6, ($FFFF8A5D).w		; $40C
+	btst.b	#$6, (RAM_word_FFFF8A5D).w		; $40C
 	bne.b	*+$4				; $412
 	rts					; $414
 WaitScanline:
@@ -295,7 +295,7 @@ ObjectExists:
 ; ======================================================================
 ApplyToObjectsWithID:
 	move.l	(A0), D2			; $4A2
-	move.b	($FFFF8A48).w, D0		; $4A4
+	move.b	(RAM_SchedulerCursor).w, D0		; $4A4
 	move.w	D0, -(SP)			; $4A8
 	lea	(-$7DB8).w, A1			; $4AA
 	move.w	#$F, D1				; $4AE
@@ -309,7 +309,7 @@ CheckObjectByID:
 	move.w	A1, -(SP)			; $4C0
 	neg.w	D1				; $4C2
 	addi.w	#$F, D1				; $4C4
-	move.b	D1, ($FFFF8A48).w		; $4C8
+	move.b	D1, (RAM_SchedulerCursor).w		; $4C8
 	bsr.w	RunObjectTask			; $4CC
 	movea.w	(SP)+, A1			; $4D0
 	move.l	(SP)+, D2			; $4D2
@@ -318,7 +318,7 @@ NextObjectByID:
 	lea	($80,A1), A1			; $4D6
 	dbf	D1, CheckObjectByID		; $4DA
 	move.w	(SP)+, D0			; $4DE
-	move.b	D0, ($FFFF8A48).w		; $4E0
+	move.b	D0, (RAM_SchedulerCursor).w		; $4E0
 	rts					; $4E4
 
 ; ======================================================================
@@ -329,7 +329,7 @@ NextObjectByID:
 RunObjectTask:
 	move.l	A5, -(SP)			; $4E6
 	moveq	#$0, D0				; $4E8
-	move.b	($FFFF8A48).w, D0		; $4EA
+	move.b	(RAM_SchedulerCursor).w, D0		; $4EA
 	asl.w	#$7, D0				; $4EE
 	addi.w	#-$7DB8, D0			; $4F0
 	movea.w	D0, A5				; $4F4
@@ -340,7 +340,7 @@ RunObjectTask:
 RunObjectTaskEnd:
 	movea.l	(SP)+, A5			; $500
 	moveq	#$0, D0				; $502
-	move.b	($FFFF8A48).w, D0		; $504
+	move.b	(RAM_SchedulerCursor).w, D0		; $504
 	asl.w	#$7, D0				; $508
 	addi.w	#-$7DB8, D0			; $50A
 	movea.w	D0, A0				; $50E
@@ -353,7 +353,7 @@ RunObjectTaskEnd:
 ; links it into the immediate task slots (a 64-byte block at $FF0C00+).
 ; ======================================================================
 EnqueueObjectTask:
-	move.b	($FFFF8A48).w, D0		; $514
+	move.b	(RAM_SchedulerCursor).w, D0		; $514
 	lea	(-$7FF8).w, A1			; $518
 	moveq	#$1F, D1			; $51C
 FindFreeQueueEntry:
@@ -367,7 +367,7 @@ QueueObject:
 	neg.w	D1				; $530
 	addi.w	#$1F, D1			; $532
 	asl.l	#$6, D1				; $536
-	addi.l	#$FF0C00, D1			; $538
+	addi.l	#RAM_ObjectRAM, D1			; $538
 	movea.l	D1, A0				; $53E
 	move.b	#$80, (A1)			; $540
 	lea	(-$7DB8).w, A2			; $544
@@ -399,7 +399,7 @@ QueueEntryDone:
 ; Removes the object indexed by $FF8A48 from the task queue at $FF8008.
 ; ======================================================================
 DequeueObjectTask:
-	move.b	($FFFF8A48).w, D0		; $582
+	move.b	(RAM_SchedulerCursor).w, D0		; $582
 	lea	(-$7FF8).w, A0			; $586
 	moveq	#$1F, D1			; $58A
 FindQueuedObject:
@@ -433,16 +433,16 @@ CalcVRAMAddress:
 ; ======================================================================
 TileToVRAMAddress:
 	addq.w	#4, D2				; $5B6
-	and.w	($FFFF8A88).w, D2		; $5B8
+	and.w	(RAM_ScrollPixelY).w, D2		; $5B8
 	lsr.w	#$3, D2				; $5BC
 	addq.w	#4, D3				; $5BE
-	and.w	($FFFF8A86).w, D3		; $5C0
+	and.w	(RAM_ScrollPixelX).w, D3		; $5C0
 	lsr.w	#$3, D3				; $5C4
 	add.w	D2, D0				; $5C6
 	add.w	D3, D1				; $5C8
 	add.w	D0, D0				; $5CA
 	add.w	D1, D1				; $5CC
-	move.b	($FFFF8A8A).w, D2		; $5CE
+	move.b	(RAM_ScrollPlaneBase).w, D2		; $5CE
 	asl.w	D2, D1				; $5D2
 	add.w	D1, D0				; $5D4
 	rts					; $5D6
@@ -452,7 +452,7 @@ TileToVRAMAddress:
 ; 32-bit LCG: state = state * 0xA + ... ; returns D1. State at $FF8A52.
 ; ======================================================================
 RandomNumber:
-	move.l	($FFFF8A52).w, D1		; $5D8
+	move.l	(RAM_RNGState).w, D1		; $5D8
 	bne.b	*+$8				; $5DC
 	move.l	#$2A6D365A, D1			; $5DE
 UpdateRNG:
@@ -466,5 +466,5 @@ UpdateRNG:
 	add.w	D1, D0				; $5F2
 	move.w	D0, D1				; $5F4
 	swap	D1				; $5F6
-	move.l	D1, ($FFFF8A52).w		; $5F8
+	move.l	D1, (RAM_RNGState).w		; $5F8
 	rts					; $5FC

@@ -5,7 +5,7 @@
 	bne.b *+$8	; $16002
 	move.b #$3, (-$2BFF,A4)	; $16004
 	rts	; $1600A
-	btst.b #$5, ($FFFF966B).w	; $1600C
+	btst.b #$5, (RAM_word_FFFF966B).w	; $1600C
 	bne.b *+$A	; $16012
 	jsr $4792.w	; $16014
 	jmp $43BC.w	; $16018

@@ -7,7 +7,7 @@
 	moveq #$0, D0	; $6A5E
 	move.b (A2)+, D0	; $6A60
 	add.w (-$10,A6), D0	; $6A62
-	move.w ($FFFF8A70).w, D1	; $6A66
+	move.w (RAM_ScrollY).w, D1	; $6A66
 	subq.w #$1, D1	; $6A6A
 	and.w D1, D0	; $6A6C
 	move.w D0, (-$6,A6)	; $6A6E
@@ -15,7 +15,7 @@
 	moveq #$0, D1	; $6A76
 	move.b (A2)+, D1	; $6A78
 	add.w (-$12,A6), D1	; $6A7A
-	move.w ($FFFF8A72).w, D2	; $6A7E
+	move.w (RAM_ScrollX).w, D2	; $6A7E
 	subq.w #$1, D2	; $6A82
 	and.w D2, D1	; $6A84
 	move.w D1, (-$8,A6)	; $6A86
@@ -86,12 +86,12 @@
 	swap D7	; $6B2C
 	rts	; $6B2E
 	rts	; $6B30
-	move.b (A2)+, ($FFFF8C76).w	; $6B32
+	move.b (A2)+, (RAM_word_FFFF8C76).w	; $6B32
 	bra.w *-$144	; $6B36
 	move.w (-$6,A6), D0	; $6B3A
 	move.w (-$4,A6), D1	; $6B3E
 	addq.w #$1, D1	; $6B42
-	cmp.w ($FFFF8A72).w, D1	; $6B44
+	cmp.w (RAM_ScrollX).w, D1	; $6B44
 	bcs.b *+$4	; $6B48
 	moveq #$0, D1	; $6B4A
 	move.w D1, (-$4,A6)	; $6B4C
@@ -107,7 +107,7 @@
 	bra.b *-$38	; $6B72
 	move.w (-$2,A6), D0	; $6B74
 	addq.w #$1, D0	; $6B78
-	cmp.w ($FFFF8A70).w, D0	; $6B7A
+	cmp.w (RAM_ScrollY).w, D0	; $6B7A
 	bcc.b *+$8	; $6B7E
 	move.w D0, (-$2,A6)	; $6B80
 	rts	; $6B84

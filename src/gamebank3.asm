@@ -67,7 +67,7 @@
 	jmp $7E8.w	; $100EC
 	rts	; $100F0
 	bsr.w *+$752	; $100F2
-	movea.w ($FFFF9EEE).w, A2	; $100F6
+	movea.w (RAM_word_FFFF9EEE).w, A2	; $100F6
 	moveq #$7F, D0	; $100FA
 	and.b (-$2BFF,A4), D0	; $100FC
 	lea ($1010A,PC), A0	; $10100

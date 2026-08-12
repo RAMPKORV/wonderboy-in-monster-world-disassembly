@@ -79,7 +79,7 @@
 	add.b (-$A,A6), D0	; $A0C4
 	dc.b	$52,$2E,$FF,$F6	; $A0C8
 	lsl.w #$7, D0	; $A0CC
-	addi.l #$FF5000, D0	; $A0CE
+	addi.l #RAM_word_FF5000, D0	; $A0CE
 	move.l D0, (-$4,A6)	; $A0D4
 	lea (-$68F4).w, A0	; $A0D8
 	moveq #$0, D0	; $A0DC
@@ -204,11 +204,11 @@
 	rts	; $A1FC
 	dc.b	$4E,$56,$FF,$FC	; $A1FE
 	lea (-$68AC).w, A3	; $A202
-	lea ($FF3100).l, A1	; $A206
-	move.w ($FFFF974E).w, D7	; $A20C
-	move.w ($FFFF9752).w, (-$4,A6)	; $A210
-	move.w ($FFFF974C).w, D6	; $A216
-	move.w ($FFFF9750).w, (-$2,A6)	; $A21A
+	lea (RAM_long_FF3100).l, A1	; $A206
+	move.w (RAM_word_FFFF974E).w, D7	; $A20C
+	move.w (RAM_word_FFFF9752).w, (-$4,A6)	; $A210
+	move.w (RAM_word_FFFF974C).w, D6	; $A216
+	move.w (RAM_word_FFFF9750).w, (-$2,A6)	; $A21A
 	jsr $260A.w	; $A220
 	move.w (A0), (A1)+	; $A224
 	addq.w #$1, D6	; $A226
@@ -221,10 +221,10 @@
 	rts	; $A23A
 	dc.b	$4E,$56,$FF,$FC	; $A23C
 	lea (-$68AC).w, A3	; $A240
-	move.w ($FFFF974E).w, D7	; $A244
-	move.w ($FFFF9752).w, (-$4,A6)	; $A248
-	move.w ($FFFF974C).w, D6	; $A24E
-	move.w ($FFFF9750).w, (-$2,A6)	; $A252
+	move.w (RAM_word_FFFF974E).w, D7	; $A244
+	move.w (RAM_word_FFFF9752).w, (-$4,A6)	; $A248
+	move.w (RAM_word_FFFF974C).w, D6	; $A24E
+	move.w (RAM_word_FFFF9750).w, (-$2,A6)	; $A252
 	jsr $260A.w	; $A258
 	ori.w #-$8000, (A0)	; $A25C
 	addq.w #$1, D6	; $A260
@@ -236,12 +236,12 @@
 	unlk A6	; $A272
 	rts	; $A274
 	dc.b	$4E,$56,$FF,$FC	; $A276
-	lea ($FF3100).l, A1	; $A27A
+	lea (RAM_long_FF3100).l, A1	; $A27A
 	lea (-$68AC).w, A3	; $A280
-	move.w ($FFFF974E).w, D7	; $A284
-	move.w ($FFFF9752).w, (-$4,A6)	; $A288
-	move.w ($FFFF974C).w, D6	; $A28E
-	move.w ($FFFF9750).w, (-$2,A6)	; $A292
+	move.w (RAM_word_FFFF974E).w, D7	; $A284
+	move.w (RAM_word_FFFF9752).w, (-$4,A6)	; $A288
+	move.w (RAM_word_FFFF974C).w, D6	; $A28E
+	move.w (RAM_word_FFFF9750).w, (-$2,A6)	; $A292
 	jsr $260A.w	; $A298
 	move.w (A1)+, (A0)	; $A29C
 	addq.w #$1, D6	; $A29E
@@ -254,10 +254,10 @@
 	rts	; $A2B2
 	dc.b	$4E,$56,$FF,$FC	; $A2B4
 	lea (-$68AC).w, A3	; $A2B8
-	move.w ($FFFF974E).w, D7	; $A2BC
-	move.w ($FFFF9752).w, (-$4,A6)	; $A2C0
-	move.w ($FFFF974C).w, D6	; $A2C6
-	move.w ($FFFF9750).w, (-$2,A6)	; $A2CA
+	move.w (RAM_word_FFFF974E).w, D7	; $A2BC
+	move.w (RAM_word_FFFF9752).w, (-$4,A6)	; $A2C0
+	move.w (RAM_word_FFFF974C).w, D6	; $A2C6
+	move.w (RAM_word_FFFF9750).w, (-$2,A6)	; $A2CA
 	jsr $2542.w	; $A2D0
 	jsr $2672.w	; $A2D4
 	addq.w #$1, D6	; $A2D8
@@ -312,21 +312,21 @@
 	unlk A6	; $A37A
 	rts	; $A37C
 	movea.l ($1CC00).l, A1	; $A37E
-	move.w ($FFFF9676).w, D0	; $A384
+	move.w (RAM_word_FFFF9676).w, D0	; $A384
 	add.w D0, D0	; $A388
 	movea.w D0, A0	; $A38A
 	move.w ($0,A1,D0.w), D0	; $A38C
 	lea ($0,A1,D0.w), A2	; $A390
-	move.w (A2)+, ($FFFF9668).w	; $A394
-	move.w (A2)+, ($FFFF9678).w	; $A398
+	move.w (A2)+, (RAM_word_FFFF9668).w	; $A394
+	move.w (A2)+, (RAM_word_FFFF9678).w	; $A398
 	bsr.b *+$8	; $A39C
-	move.w (A2)+, ($FFFF996A).w	; $A39E
+	move.w (A2)+, (RAM_word_FFFF996A).w	; $A39E
 	rts	; $A3A2
 	move.b (A2)+, D0	; $A3A4
 	move.b (A2)+, D1	; $A3A6
 	bsr.b *+$C	; $A3A8
-	move.w D0, ($FFFF967A).w	; $A3AA
-	move.w D1, ($FFFF967C).w	; $A3AE
+	move.w D0, (RAM_word_FFFF967A).w	; $A3AA
+	move.w D1, (RAM_word_FFFF967C).w	; $A3AE
 	rts	; $A3B2
 	andi.w #$FF, D0	; $A3B4
 	lsl.w #$3, D0	; $A3B8
@@ -335,27 +335,27 @@
 	lsl.w #$3, D1	; $A3C2
 	addi.w #$1000, D1	; $A3C4
 	rts	; $A3C8
-	btst.b #$0, ($FFFF966B).w	; $A3CA
+	btst.b #$0, (RAM_word_FFFF966B).w	; $A3CA
 	beq.b *+$6	; $A3D0
 	asl (-$35FE,A4)	; $A3D2
 	rts	; $A3D6
-	btst.b #$6, ($FFFF9659).w	; $A3D8
+	btst.b #$6, (RAM_word_FFFF9659).w	; $A3D8
 	bne.b *+$20	; $A3DE
-	bclr.b #$0, ($FFFF9966).w	; $A3E0
+	bclr.b #$0, (RAM_word_FFFF9966).w	; $A3E0
 	bne.b *+$6	; $A3E6
-	clr.b ($FFFF9980).w	; $A3E8
-	bclr.b #$1, ($FFFF9966).w	; $A3EC
+	clr.b (RAM_word_FFFF9980).w	; $A3E8
+	bclr.b #$1, (RAM_word_FFFF9966).w	; $A3EC
 	bne.b *+$6	; $A3F2
-	clr.b ($FFFF9981).w	; $A3F4
-	move.l ($FFFF996C).w, D0	; $A3F8
+	clr.b (RAM_word_FFFF9981).w	; $A3F4
+	move.l (RAM_word_FFFF996C).w, D0	; $A3F8
 	bne.b *+$4	; $A3FC
 	rts	; $A3FE
 	movea.l D0, A2	; $A400
-	move.w #$1000, ($FFFF9978).w	; $A402
-	move.w #$1000, ($FFFF997A).w	; $A408
+	move.w #$1000, (RAM_word_FFFF9978).w	; $A402
+	move.w #$1000, (RAM_word_FFFF997A).w	; $A408
 	moveq #$10, D0	; $A40E
-	move.w D0, ($FFFF9974).w	; $A410
-	move.w D0, ($FFFF9976).w	; $A414
+	move.w D0, (RAM_word_FFFF9974).w	; $A410
+	move.w D0, (RAM_word_FFFF9976).w	; $A414
 	moveq #$0, D0	; $A418
 	move.b (A2)+, D0	; $A41A
 	cmpi.b #-$40, D0	; $A41C
@@ -365,21 +365,21 @@
 	andi.w #$F, D0	; $A428
 	addq.w #$1, D0	; $A42C
 	lsl.w #$4, D0	; $A42E
-	move.w D0, ($FFFF9974).w	; $A430
+	move.w D0, (RAM_word_FFFF9974).w	; $A430
 	bra.b *-$1C	; $A434
 	cmpi.b #-$20, D0	; $A436
 	bcc.b *+$10	; $A43A
 	andi.w #$F, D0	; $A43C
 	addq.w #$1, D0	; $A440
 	lsl.w #$4, D0	; $A442
-	move.w D0, ($FFFF9976).w	; $A444
+	move.w D0, (RAM_word_FFFF9976).w	; $A444
 	bra.b *-$30	; $A448
 	andi.w #$1F, D0	; $A44A
 	add.w D0, D0	; $A44E
 	dc.b	$41,$FA,$00,$3E	; $A450
 	adda.w ($0,A0,D0.w), A0	; $A454
 	jsr (A0)	; $A458
-	tst.w ($FFFF9962).w	; $A45A
+	tst.w (RAM_word_FFFF9962).w	; $A45A
 	beq.b *-$46	; $A45E
 	rts	; $A460
 	add.w D0, D0	; $A462

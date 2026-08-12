@@ -6,9 +6,9 @@
 	bcc.b *+$4C	; $12004
 	moveq #$1, D0	; $12006
 	or.b D0, (-$3200,A4)	; $12008
-	or.w D0, ($FFFF9994).w	; $1200C
+	or.w D0, (RAM_word_FFFF9994).w	; $1200C
 	bra.b *+$40	; $12010
-	bclr.b #$2, ($FFFF9995).w	; $12012
+	bclr.b #$2, (RAM_word_FFFF9995).w	; $12012
 	beq.b *+$E	; $12018
 	move.w (-$27FE,A4), (-$35FE,A4)	; $1201A
 	moveq #$41, D0	; $12020
@@ -20,9 +20,9 @@
 	bne.b *+$20	; $12034
 	moveq #$2, D0	; $12036
 	or.b D0, (-$3200,A4)	; $12038
-	or.w D0, ($FFFF9994).w	; $1203C
+	or.w D0, (RAM_word_FFFF9994).w	; $1203C
 	clr.w (-$35FE,A4)	; $12040
-	clr.b ($FFFF9F05).w	; $12044
+	clr.b (RAM_word_FFFF9F05).w	; $12044
 	moveq #$42, D0	; $12048
 	jsr $366.w	; $1204A
 	bra.b *+$6	; $1204E
@@ -97,7 +97,7 @@
 	sub.w D1, D0	; $12134
 	sub.w D1, D0	; $12136
 	lsr.w #$4, D0	; $12138
-	cmp.w ($FFFF9798).w, D0	; $1213A
+	cmp.w (RAM_word_FFFF9798).w, D0	; $1213A
 	bcc.b *+$1E	; $1213E
 	moveq #$0, D1	; $12140
 	move.b (-$34FD,A4), D1	; $12142
@@ -105,7 +105,7 @@
 	subi.w #$1030, D0	; $1214A
 	sub.w D1, D0	; $1214E
 	lsl.w #$2, D0	; $12150
-	cmp.w ($FFFF979A).w, D0	; $12152
+	cmp.w (RAM_word_FFFF979A).w, D0	; $12152
 	bge.b *+$6	; $12156
 	moveq #$0, D0	; $12158
 	rts	; $1215A

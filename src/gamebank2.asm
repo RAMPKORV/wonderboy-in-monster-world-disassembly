@@ -5,23 +5,23 @@
 	and.w D1, D0	; $E004
 	cmpi.w #-$3000, D0	; $E006
 	beq.w *+$F8	; $E00A
-	bclr.b #$1, ($FFFF9854).w	; $E00E
+	bclr.b #$1, (RAM_word_FFFF9854).w	; $E00E
 	bne.w *+$E8	; $E014
-	tst.b ($FFFF9F0A).w	; $E018
+	tst.b (RAM_word_FFFF9F0A).w	; $E018
 	bne.b *+$30	; $E01C
 	move.w #$3000, D2	; $E01E
 	and.w D1, D0	; $E022
 	cmp.w D2, D0	; $E024
 	beq.w *+$F4	; $E026
-	move.w ($FFFF9EE0).w, D0	; $E02A
+	move.w (RAM_word_FFFF9EE0).w, D0	; $E02A
 	and.w D1, D0	; $E02E
 	cmp.w D2, D0	; $E030
 	beq.w *+$E8	; $E032
-	move.w ($FFFF9EDC).w, D0	; $E036
+	move.w (RAM_word_FFFF9EDC).w, D0	; $E036
 	and.w D1, D0	; $E03A
 	cmp.w D2, D0	; $E03C
 	beq.w *+$DC	; $E03E
-	bclr.b #$0, ($FFFF9854).w	; $E042
+	bclr.b #$0, (RAM_word_FFFF9854).w	; $E042
 	bne.w *+$D2	; $E048
 	rts	; $E04C
 	tst.b (-$2AFD,A4)	; $E04E
@@ -32,12 +32,12 @@
 	beq.b *+$24	; $E062
 	moveq #$46, D0	; $E064
 	bra.b *+$E	; $E066
-	btst.b #$6, ($FFFF9F03).w	; $E068
+	btst.b #$6, (RAM_word_FFFF9F03).w	; $E068
 	bne.w *+$3452	; $E06E
 	moveq #$30, D0	; $E072
 	jsr $366.w	; $E074
 	bra.b *+$10	; $E078
-	tst.b ($FFFF9F0A).w	; $E07A
+	tst.b (RAM_word_FFFF9F0A).w	; $E07A
 	bne.w *+$EE	; $E07E
 	bra.w *+$A4	; $E082
 	rts	; $E086
@@ -59,11 +59,11 @@
 	moveq #$2A, D0	; $E0BC
 	jsr $24DC.w	; $E0BE
 	bsr.w *-$5620	; $E0C2
-	move.w ($FFFF9F00).w, D0	; $E0C6
+	move.w (RAM_word_FFFF9F00).w, D0	; $E0C6
 	addi.w #$100, D0	; $E0CA
 	lsr.w #$1, D0	; $E0CE
 	andi.w #-$100, D0	; $E0D0
-	move.w D0, ($FFFF9F14).w	; $E0D4
+	move.w D0, (RAM_word_FFFF9F14).w	; $E0D4
 	clr.b (-$2AFD,A4)	; $E0D8
 	bra.w *+$11AC	; $E0DC
 	clr.b (-$2BFF,A4)	; $E0E0
@@ -73,12 +73,12 @@
 	bsr.w *-$5650	; $E0F2
 	tst.w (-$2600,A4)	; $E0F6
 	rts	; $E0FA
-	move.w ($FFFF9856).w, D0	; $E0FC
+	move.w (RAM_word_FFFF9856).w, D0	; $E0FC
 	bra.b *+$4	; $E100
 	moveq #$1, D0	; $E102
 	move.w #$2101, (-$3900,A4)	; $E104
 	ori.b #$40, (-$3FFD,A4)	; $E10A
-	move.b #$3C, ($FFFF9F0A).w	; $E110
+	move.b #$3C, (RAM_word_FFFF9F0A).w	; $E110
 	bra.b *-$72	; $E116
 	rts	; $E118
 	bsr.b *+$6E	; $E11A
@@ -88,19 +88,19 @@
 	bsr.b *+$46	; $E126
 	bsr.b *+$6	; $E128
 	bra.w *-$8E	; $E12A
-	andi.b #-$6, ($FFFF9F02).w	; $E12E
-	ori.b #$10, ($FFFF9F02).w	; $E134
+	andi.b #-$6, (RAM_word_FFFF9F02).w	; $E12E
+	ori.b #$10, (RAM_word_FFFF9F02).w	; $E134
 	andi.b #-$39, (-$3200,A4)	; $E13A
 	ori.b #$40, (-$3200,A4)	; $E140
 	move.w #$2101, (-$3900,A4)	; $E146
 	ori.b #$40, (-$3FFD,A4)	; $E14C
 	move.b #$1E, (-$2800,A4)	; $E152
 	move.b #$0, (-$31FF,A4)	; $E158
-	move.b #$3C, ($FFFF9F0A).w	; $E15E
+	move.b #$3C, (RAM_word_FFFF9F0A).w	; $E15E
 	moveq #$36, D0	; $E164
 	jmp $366.w	; $E166
 	rts	; $E16A
-	btst.b #$2, ($FFFF9F02).w	; $E16C
+	btst.b #$2, (RAM_word_FFFF9F02).w	; $E16C
 	beq.b *+$4	; $E172
 	rts	; $E174
 	move.w (-$610A,A4), D0	; $E176
@@ -108,10 +108,10 @@
 	bne.b *+$4	; $E180
 	neg.w D0	; $E182
 	move.w D0, (-$3600,A4)	; $E184
-	tst.b ($FFFF9F0A).w	; $E188
+	tst.b (RAM_word_FFFF9F0A).w	; $E188
 	bne.b *+$18	; $E18C
 	andi.b #$75, (-$3100,A4)	; $E18E
-	move.w ($FFFF9EF2).w, D0	; $E194
+	move.w (RAM_word_FFFF9EF2).w, D0	; $E194
 	asr.w #$1, D0	; $E198
 	move.w D0, D1	; $E19A
 	asr.w #$1, D1	; $E19C
@@ -122,31 +122,31 @@
 	move.b D0, (-$2AFD,A4)	; $E1A8
 	move.l D0, (-$2A00,A4)	; $E1AC
 	move.l D0, (-$2900,A4)	; $E1B0
-	move.w ($FFFF9EFA).w, ($FFFF9EFE).w	; $E1B4
-	move.w ($FFFF9EFC).w, (-$33FE,A4)	; $E1BA
-	move.l ($FFFF9EF6).w, (-$3300,A4)	; $E1C0
+	move.w (RAM_word_FFFF9EFA).w, (RAM_word_FFFF9EFE).w	; $E1B4
+	move.w (RAM_word_FFFF9EFC).w, (-$33FE,A4)	; $E1BA
+	move.l (RAM_word_FFFF9EF6).w, (-$3300,A4)	; $E1C0
 	move.w #$100, (-$39FE,A4)	; $E1C6
-	andi.b #-$46, ($FFFF9F02).w	; $E1CC
-	andi.b #-$2, ($FFFF9F03).w	; $E1D2
+	andi.b #-$46, (RAM_word_FFFF9F02).w	; $E1CC
+	andi.b #-$2, (RAM_word_FFFF9F03).w	; $E1D2
 	andi.b #-$19, (-$3200,A4)	; $E1D8
-	andi.b #-$11, ($FFFF9F06).w	; $E1DE
-	clr.b ($FFFF9F0F).w	; $E1E4
+	andi.b #-$11, (RAM_word_FFFF9F06).w	; $E1DE
+	clr.b (RAM_word_FFFF9F0F).w	; $E1E4
 	moveq #$A, D0	; $E1E8
 	and.b (-$3100,A4), D0	; $E1EA
 	subq.b #$2, D0	; $E1EE
 	bne.b *+$8	; $E1F0
-	ori.b #$1, ($FFFF9F03).w	; $E1F2
-	tst.b ($FFFF9F09).w	; $E1F8
+	ori.b #$1, (RAM_word_FFFF9F03).w	; $E1F2
+	tst.b (RAM_word_FFFF9F09).w	; $E1F8
 	beq.b *+$6	; $E1FC
 	dc.b	$53,$38,$9F,$09	; $E1FE
-	tst.b ($FFFF9F07).w	; $E202
+	tst.b (RAM_word_FFFF9F07).w	; $E202
 	beq.b *+$6	; $E206
 	dc.b	$53,$38,$9F,$07	; $E208
-	tst.b ($FFFF9F08).w	; $E20C
+	tst.b (RAM_word_FFFF9F08).w	; $E20C
 	beq.b *+$6	; $E210
 	dc.b	$53,$38,$9F,$08	; $E212
 	andi.b #-$41, (-$3FFD,A4)	; $E216
-	tst.b ($FFFF9F0A).w	; $E21C
+	tst.b (RAM_word_FFFF9F0A).w	; $E21C
 	beq.b *+$C	; $E220
 	dc.b	$53,$38,$9F,$0A	; $E222
 	ori.b #$40, (-$3FFD,A4)	; $E226
@@ -154,16 +154,16 @@
 	bset.b #$7, (-$31FF,A4)	; $E22E
 	bne.b *+$68	; $E234
 	dc.b	$70,$FF	; $E236
-	move.b D0, ($FFFF9661).w	; $E238
+	move.b D0, (RAM_word_FFFF9661).w	; $E238
 	jsr $366.w	; $E23C
 	moveq #$53, D0	; $E240
 	jsr $366.w	; $E242
-	movea.l ($FFFF9F26).w, SP	; $E246
-	move.l (SP)+, ($FFFF9F1E).w	; $E24A
-	movea.l ($FFFF9662).w, SP	; $E24E
+	movea.l (RAM_word_FFFF9F26).w, SP	; $E246
+	move.l (SP)+, (RAM_word_FFFF9F1E).w	; $E24A
+	movea.l (RAM_word_FFFF9662).w, SP	; $E24E
 	jsr $A66.w	; $E252
-	movea.w ($FFFF9EEE).w, A4	; $E256
-	ori.b #$60, ($FFFF9659).w	; $E25A
+	movea.w (RAM_word_FFFF9EEE).w, A4	; $E256
+	ori.b #$60, (RAM_word_FFFF9659).w	; $E25A
 	ori.b #-$80, (-$3FFE,A4)	; $E260
 	move.w #$20, (-$3400,A4)	; $E266
 	move.w #$100, (-$3300,A4)	; $E26C
@@ -176,7 +176,7 @@
 	jsr $7E8.w	; $E28C
 	bsr.w *-$57EE	; $E290
 	jsr $400.w	; $E294
-	movea.w ($FFFF9EEE).w, A4	; $E298
+	movea.w (RAM_word_FFFF9EEE).w, A4	; $E298
 	dc.b	$53,$2C,$D8,$00	; $E29C
 	bne.b *+$C	; $E2A0
 	move.b #$1E, (-$2800,A4)	; $E2A2
@@ -185,13 +185,13 @@
 	bne.b *+$A	; $E2B0
 	jsr $AF4.w	; $E2B2
 	jmp $AB4.w	; $E2B6
-	ori.b #-$80, ($FFFF9F03).w	; $E2BA
-	movea.l ($FFFF9F1E).w, A0	; $E2C0
+	ori.b #-$80, (RAM_word_FFFF9F03).w	; $E2BA
+	movea.l (RAM_word_FFFF9F1E).w, A0	; $E2C0
 	jmp (A0)	; $E2C4
 	dc.b	$4E,$56,$00,$02	; $E2C6
 	lea ($E2FC).l, A0	; $E2CA
 	moveq #$0, D0	; $E2D0
-	move.b ($FFFF9F04).w, D0	; $E2D2
+	move.b (RAM_word_FFFF9F04).w, D0	; $E2D2
 	add.w D0, D0	; $E2D6
 	adda.w ($0,A0,D0.w), A0	; $E2D8
 	moveq #$0, D0	; $E2DC
@@ -341,15 +341,15 @@
 	dc.b	$67,$7e	; $E51C
 	moveq #$4A, D0	; $E51E
 	jsr $366.w	; $E520
-	move.w ($FFFF9EF2).w, D0	; $E524
+	move.w (RAM_word_FFFF9EF2).w, D0	; $E524
 	asr.w #$1, D0	; $E528
 	move.w D0, (-$35FE,A4)	; $E52A
-	btst.b #$0, ($FFFF9F0B).w	; $E52E
+	btst.b #$0, (RAM_word_FFFF9F0B).w	; $E52E
 	beq.b *+$C	; $E534
-	move.w ($FFFF9EF2).w, D0	; $E536
+	move.w (RAM_word_FFFF9EF2).w, D0	; $E536
 	add.w D0, (-$35FE,A4)	; $E53A
 	bra.b *+$1A	; $E53E
-	btst.b #$1, ($FFFF9F0B).w	; $E540
+	btst.b #$1, (RAM_word_FFFF9F0B).w	; $E540
 	beq.b *+$12	; $E546
 	move.w (-$33FE,A4), D0	; $E548
 	move.w D0, D1	; $E54C
@@ -357,13 +357,13 @@
 	add.w D0, D0	; $E550
 	add.w D1, D0	; $E552
 	move.w D0, (-$33FE,A4)	; $E554
-	btst.b #$6, ($FFFF9F0B).w	; $E558
+	btst.b #$6, (RAM_word_FFFF9F0B).w	; $E558
 	bne.w *+$9A	; $E55E
-	btst.b #$2, ($FFFF9F0B).w	; $E562
+	btst.b #$2, (RAM_word_FFFF9F0B).w	; $E562
 	beq.b *+$A	; $E568
-	ori.b #$2, ($FFFF9F02).w	; $E56A
+	ori.b #$2, (RAM_word_FFFF9F02).w	; $E56A
 	bra.b *+$10	; $E570
-	btst.b #$3, ($FFFF9F0B).w	; $E572
+	btst.b #$3, (RAM_word_FFFF9F0B).w	; $E572
 	dc.b	$67,$7e	; $E578
 	dc.b	$02,$38,$00,$fd,$9f,$02	; $E57A
 	dc.b	$30,$38,$9e,$fe	; $E580

@@ -1,12 +1,12 @@
 ; ======================================================================
 ; game_constants.asm
-; Game-specific symbolic constants and RAM addresses.
-; Filled in progressively as regions are disassembled.
+; Game-specific symbolic constants for Wonder Boy in Monster World (Genesis)
+; Verified against game.rom (see docs/engine.md for the engine deep-dive).
 ;
 ; CONVENTIONS:
-;   - RAM addresses:  RAM_<type>_<hex>  e.g. RAM_word_FFFFF600
-;   - ROM data addrs: <Name>_<hex>      e.g. SpriteTable_1234
-;   - State values:   STATE_0 ... STATE_N
+;   - RAM addresses:  RAM_*            (defined in ram_addresses.asm)
+;   - ROM data addrs: ROM_*            (here)
+;   - State values:   STATE_*          (here)
 ;
 ; NOTE: shared constants used across modules MUST live here (included
 ; first), because asm68k resolves EQU symbols at their point of use.
@@ -16,7 +16,24 @@
 ; ============================================================
 ; Program state
 ; ============================================================
-RAM_ProgramState       = $00FFF600   ; game state byte (see STATE_* below)
+; The byte at $00FFF600 is the game state. The main state dispatch
+; ($02B2-style) masks it; exact state values are decoded in
+; docs/engine.md and the module that owns the dispatcher.
+RAM_ProgramState       = RAM_word_00FFF600   ; game state byte
+STATE_MASK             = $0000001C   ; state dispatch mask (bits 2-4)
+
+; ============================================================
+; Scene / plane system (see docs/engine.md Â§4)
+; ============================================================
+; Two global pointers anchor the scene system. They are stored as longs
+; at ROM $1CC14 and $1CC18 and dereferenced by ResolveScene (loc_276C).
+ROM_SceneTablePtr      = $00001CC14  ; long: pointer to the scene table
+ROM_SceneTypeTablePtr  = $00001CC18  ; long: pointer to the scene type table
+ROM_SceneTable         = $0001DD94   ; scene table: [type byte][16-bit offset] per index
+ROM_SceneTypeTable     = $0001DD74   ; scene type table: [X-origin][Y-origin][W][H]
+
+; Scene data pointer RAM slot (written by ResolveScene).
+RAM_CurrentScene       = $00FF8C7A   ; current scene data pointer
 
 ; ============================================================
 ; ROM data locations (verified bit-exact)
@@ -37,19 +54,19 @@ FLAG_TAG_TILES         = $00          ; compressed tile stream ($6BFC)
 ; ============================================================
 ; Palette system
 ; ============================================================
-RAM_PaletteSource      = $00FF8B56   ; 4 palettes source (display layout), 128 bytes
-RAM_PaletteWorking     = $00FF8BD6   ; working palette uploaded to CRAM ($5370)
+; RAM_PaletteSource / RAM_PaletteWorking are defined in ram_addresses.asm.
 ; LoadPalettes/DecodePalette labels are in src/entity.asm ($135C/$1370)
 ; AdjustPaletteWord label is in src/palette_driver.asm ($594A)
 
 ; ============================================================
-; Data loaders (scene engine) — routine labels are in src/scene_decompressors.asm
+; Data loaders (scene engine) â routine labels are in src/scene_decompressors.asm
 ; ============================================================
 ; LoadFlaggedData ($6BC4) / DecompressTiles ($6BFC) / DecodeMap ($6D9C)
 
 ; ============================================================
-; RAM layout (discovered during disassembly)
+; Text / dialogue encoding
 ; ============================================================
-; TODO: fill in as addresses are identified. Use the format:
-;   RAM_word_FFFFF600    = $00FFF600   ; purpose / owner module
-;
+; Strings use 7-bit ASCII + control codes (0x09 = print, 0x0C = colour/
+; face/control). Dictionary words at ROM_TextDict shorten common words.
+TEXT_PRINT              = $09        ; print string control code
+TEXT_CONTROL            = $0C        ; colour/face/control code

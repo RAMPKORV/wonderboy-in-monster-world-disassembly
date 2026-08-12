@@ -198,7 +198,7 @@ loc_BC6:
 	move.w (-$3800,A4), D0	; $BC6
 	moveq #$0, D2	; $BCA
 	move.b (-$34FE,A4), D2	; $BCC
-	sub.w ($FFFF9758).w, D0	; $BD0
+	sub.w (RAM_PlayerX).w, D0	; $BD0
 	move.w D0, D1	; $BD4
 	add.w D2, D1	; $BD6
 	addi.w #$20, D1	; $BD8
@@ -218,7 +218,7 @@ loc_BF4:
 	move.w (-$3700,A4), D0	; $BF4
 	moveq #$0, D2	; $BF8
 	move.b (-$34FD,A4), D2	; $BFA
-	sub.w ($FFFF975A).w, D0	; $BFE
+	sub.w (RAM_PlayerY).w, D0	; $BFE
 	move.w D0, D1	; $C02
 	add.w D2, D1	; $C04
 	addi.w #$20, D1	; $C06
@@ -898,24 +898,24 @@ loc_13A6:
 	subq.w #$1, D6	; $13B6
 	subq.w #$1, D7	; $13B8
 	rts	; $13BA
-	tst.b ($FFFF8CA4).w	; $13BC
+	tst.b (RAM_PlayerState).w	; $13BC
 	bmi.b *+$4	; $13C0
 	rts	; $13C2
 loc_13C4:
-	bset.b #$6, ($FFFF8CA4).w	; $13C4
+	bset.b #$6, (RAM_PlayerState).w	; $13C4
 	bne.b *+$22	; $13CA
-	clr.b ($FFFF8CA5).w	; $13CC
-	clr.w ($FFFF8CA8).w	; $13D0
-	clr.l ($FFFF8C9A).w	; $13D4
-	clr.w ($FFFF8CA2).w	; $13D8
-	clr.b ($FFFF8CC2).w	; $13DC
-	move.b #$1, ($FFFF8CC3).w	; $13E0
-	move.w #-$8000, ($FFFF8CA6).w	; $13E6
+	clr.b (RAM_PlayerSubState).w	; $13CC
+	clr.w (RAM_SceneScriptPtr).w	; $13D0
+	clr.l (RAM_CellX).w	; $13D4
+	clr.w (RAM_SceneEventCounter).w	; $13D8
+	clr.b (RAM_EventFlag).w	; $13DC
+	move.b #$1, (RAM_EventCounter).w	; $13E0
+	move.w #-$8000, (RAM_PlayerStateValue).w	; $13E6
 loc_13EC:
-	btst.b #$2, ($FFFF8CA4).w	; $13EC
+	btst.b #$2, (RAM_PlayerState).w	; $13EC
 	beq.b *+$8	; $13F2
-	movea.l ($FFFF8CDA).w, A0	; $13F4
+	movea.l (RAM_PlayerEnterHandler).w, A0	; $13F4
 	jmp (A0)	; $13F8
 loc_13FA:
-	btst.b #$3, ($FFFF8CA4).w	; $13FA
+	btst.b #$3, (RAM_PlayerState).w	; $13FA
 

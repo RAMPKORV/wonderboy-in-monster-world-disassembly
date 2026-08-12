@@ -15,7 +15,7 @@
 	bne.b *-$10	; $5722
 	move.l A1, ($2,A0)	; $5724
 	move.w D1, ($6,A0)	; $5728
-	ori.b #$40, ($FFFF8C56).w	; $572C
+	ori.b #$40, (RAM_word_FFFF8C56).w	; $572C
 	bra.b *-$6A	; $5732
 	adda.w D1, A1	; $5734
 	move.w (A1)+, ($8,A0)	; $5736

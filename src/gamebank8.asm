@@ -15,7 +15,7 @@
 	bra.w *-$6AA4	; $1A022
 	bset.b #$7, (-$2BFF,A4)	; $1A026
 	bne.b *+$1A	; $1A02C
-	movea.w ($FFFFA11C).w, A2	; $1A02E
+	movea.w (RAM_word_FFFFA11C).w, A2	; $1A02E
 	jsr $1032.w	; $1A032
 	lsr.w #$8, D3	; $1A036
 	move.b D3, (-$27FD,A4)	; $1A038
@@ -108,7 +108,7 @@
 	move.b ($1A197,PC,D1.w), D0	; $1A156
 	move.l ($1A198,PC,D1.w), (-$3600,A4)	; $1A15A
 	jmp $7E8.w	; $1A160
-	movea.w ($FFFF9EEE).w, A2	; $1A164
+	movea.w (RAM_word_FFFF9EEE).w, A2	; $1A164
 	jsr $108C.w	; $1A168
 	lsr.w #$8, D3	; $1A16C
 	move.b D3, D0	; $1A16E

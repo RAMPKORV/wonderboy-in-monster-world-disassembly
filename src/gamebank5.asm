@@ -1583,7 +1583,7 @@
 	dc.b	$66,$18	; $155E8
 	dc.b	$19,$7c,$00,$68,$d1,$00	; $155EA
 	dc.b	$38,$3c,$02,$00	; $155F0
-	movea.w ($FFFFA11C).w, A2	; $155F4
+	movea.w (RAM_word_FFFFA11C).w, A2	; $155F4
 	dc.b	$4e,$b8,$12,$34	; $155F8
 	dc.b	$70,$0e	; $155FC
 	dc.b	$4e,$b8,$07,$e8	; $155FE

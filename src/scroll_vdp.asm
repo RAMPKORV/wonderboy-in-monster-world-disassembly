@@ -12,13 +12,13 @@
 ; ======================================================================
 SetScrollMode:
 	moveq	#$10, D0			; $5FE
-	or.w	($FFFF8A5A).w, D0		; $600
+	or.w	(RAM_word_FFFF8A5A).w, D0		; $600
 	bra.b	*+$8				; $604
 ClearScrollMode:
 	moveq	#-$11, D0			; $606
-	and.w	($FFFF8A5A).w, D0		; $608
+	and.w	(RAM_word_FFFF8A5A).w, D0		; $608
 WriteScrollMode:
-	move.w	D0, ($FFFF8A5A).w		; $60C
+	move.w	D0, (RAM_word_FFFF8A5A).w		; $60C
 	move.w	D0, ($C00004).l			; $610
 	rts					; $616
 
@@ -28,43 +28,43 @@ WriteScrollMode:
 ; ======================================================================
 ScrollControlSet:
 	moveq	#$40, D0			; $618
-	or.w	($FFFF8A5C).w, D0		; $61A
-	move.w	D0, ($FFFF8A5C).w		; $61E
-	ori.b	#$2, ($FFFF8006).w		; $622
+	or.w	(RAM_word_FFFF8A5C).w, D0		; $61A
+	move.w	D0, (RAM_word_FFFF8A5C).w		; $61E
+	ori.b	#$2, (RAM_VBlankFlag).w		; $622
 	rts					; $628
 ScrollControlClear:
 	moveq	#-$41, D0			; $62A
-	and.w	($FFFF8A5C).w, D0		; $62C
-	move.w	D0, ($FFFF8A5C).w		; $630
-	ori.b	#$2, ($FFFF8006).w		; $634
+	and.w	(RAM_word_FFFF8A5C).w, D0		; $62C
+	move.w	D0, (RAM_word_FFFF8A5C).w		; $630
+	ori.b	#$2, (RAM_VBlankFlag).w		; $634
 	jmp	FrameWait.w			; $63A
 SetScrollCtrlBit40:
 	moveq	#$40, D0			; $63E
-	or.w	($FFFF8A5C).w, D0		; $640
+	or.w	(RAM_word_FFFF8A5C).w, D0		; $640
 	bra.b	*+$1C				; $644
 ClearScrollCtrlBit40:
 	moveq	#-$41, D0			; $646
-	and.w	($FFFF8A5C).w, D0		; $648
+	and.w	(RAM_word_FFFF8A5C).w, D0		; $648
 	bra.b	*+$1C				; $64C
 SetScrollCtrlBit20:
 	moveq	#$20, D0			; $64E
-	or.w	($FFFF8A5C).w, D0		; $650
+	or.w	(RAM_word_FFFF8A5C).w, D0		; $650
 	bra.b	*+$C				; $654
 ClearScrollCtrlBit20:
 	moveq	#-$21, D0			; $656
-	and.w	($FFFF8A5C).w, D0		; $658
+	and.w	(RAM_word_FFFF8A5C).w, D0		; $658
 	bra.b	*+$C				; $65C
 SetScrollCtrlBit10:
 	moveq	#$10, D0			; $65E
 loc_660:
-	or.w	($FFFF8A5C).w, D0		; $660
+	or.w	(RAM_word_FFFF8A5C).w, D0		; $660
 	bra.b	*+$8				; $664
 ClearScrollCtrlBit10:
 	moveq	#-$11, D0			; $666
 loc_668:
-	and.w	($FFFF8A5C).w, D0		; $668
+	and.w	(RAM_word_FFFF8A5C).w, D0		; $668
 WriteScrollControl:
-	move.w	D0, ($FFFF8A5C).w		; $66C
+	move.w	D0, (RAM_word_FFFF8A5C).w		; $66C
 	move.w	D0, ($C00004).l			; $670
 	rts					; $676
 
@@ -73,8 +73,8 @@ WriteScrollControl:
 ; Writes VDP control word held in RAM $FF8A6C (value byte in D0 -> $FF8A6D).
 ; ======================================================================
 WriteScrollRegA:
-	move.b	D0, ($FFFF8A6D).w		; $678
-	move.w	($FFFF8A6C).w, ($C00004).l	; $67C
+	move.b	D0, (RAM_word_FFFF8A6D).w		; $678
+	move.w	(RAM_word_FFFF8A6C).w, ($C00004).l	; $67C
 	rts					; $684
 
 ; ======================================================================
@@ -95,19 +95,19 @@ loc_694:
 loc_698:
 	moveq	#-$4, D0			; $698
 loc_69A:
-	and.w	($FFFF8A5E).w, D0		; $69A
+	and.w	(RAM_word_FFFF8A5E).w, D0		; $69A
 	bra.b	*+$14				; $69E
 loc_6A0:
 	moveq	#-$4, D0			; $6A0
-	and.w	($FFFF8A5E).w, D0		; $6A2
+	and.w	(RAM_word_FFFF8A5E).w, D0		; $6A2
 	ori.w	#$2, D0				; $6A6
 	bra.b	*+$8				; $6AA
 loc_6AC:
 	moveq	#$3, D0				; $6AC
 loc_6AE:
-	or.w	($FFFF8A5E).w, D0		; $6AE
+	or.w	(RAM_word_FFFF8A5E).w, D0		; $6AE
 WriteScrollMode2:
-	move.w	D0, ($FFFF8A5E).w		; $6B2
+	move.w	D0, (RAM_word_FFFF8A5E).w		; $6B2
 	move.w	D0, ($C00004).l			; $6B6
 	rts					; $6BC
 
@@ -115,11 +115,11 @@ WriteScrollMode2:
 ; Scroll mode register $FF8A60 bit ops.
 ; ======================================================================
 loc_6BE:
-	move.w	($FFFF8A60).w, D0		; $6BE
+	move.w	(RAM_word_FFFF8A60).w, D0		; $6BE
 	andi.b	#$7E, D0			; $6C2
 	bra.b	*+$36				; $6C6
 loc_6C8:
-	move.w	($FFFF8A60).w, D0		; $6C8
+	move.w	(RAM_word_FFFF8A60).w, D0		; $6C8
 	andi.b	#$7E, D0			; $6CC
 	ori.b	#$81, D0			; $6D0
 	bra.b	*+$28				; $6D4
@@ -128,25 +128,25 @@ loc_6D6:
 	bra.b	*+$20				; $6D8
 loc_6DA:
 	moveq	#-$7, D0			; $6DA
-	and.w	D0, ($FFFF8A60).w		; $6DC
+	and.w	D0, (RAM_word_FFFF8A60).w		; $6DC
 	moveq	#$2, D0				; $6E0
 	bra.b	*+$E				; $6E2
 loc_6E4:
 	moveq	#-$7, D0			; $6E4
-	and.w	D0, ($FFFF8A60).w		; $6E6
+	and.w	D0, (RAM_word_FFFF8A60).w		; $6E6
 	moveq	#$4, D0				; $6EA
 	bra.b	*+$4				; $6EC
 loc_6EE:
 	moveq	#$8, D0				; $6EE
 loc_6F0:
-	or.w	($FFFF8A60).w, D0		; $6F0
+	or.w	(RAM_word_FFFF8A60).w, D0		; $6F0
 	bra.b	*+$8				; $6F4
 loc_6F6:
 	moveq	#-$9, D0			; $6F6
 loc_6F8:
-	and.w	($FFFF8A60).w, D0		; $6F8
+	and.w	(RAM_word_FFFF8A60).w, D0		; $6F8
 WriteScrollMode3:
-	move.w	D0, ($FFFF8A60).w		; $6FC
+	move.w	D0, (RAM_word_FFFF8A60).w		; $6FC
 	move.w	D0, ($C00004).l			; $700
 	rts					; $706
 
@@ -155,8 +155,8 @@ WriteScrollMode3:
 ; Writes VDP control word held in RAM $FF8A6E (value byte in D0 -> $FF8A6F).
 ; ======================================================================
 WriteScrollRegB:
-	move.b	D0, ($FFFF8A6F).w		; $708
-	move.w	($FFFF8A6E).w, ($C00004).l	; $70C
+	move.b	D0, (RAM_word_FFFF8A6F).w		; $708
+	move.w	(RAM_word_FFFF8A6E).w, ($C00004).l	; $70C
 	rts					; $714
 
 ; ======================================================================
@@ -164,17 +164,17 @@ WriteScrollRegB:
 ; register-set command word to the VDP control port).
 ; ======================================================================
 WritePlaneAAddr:				; reg 2: Plan A base
-	move.w	($FFFF8A62).w, D0		; $716
+	move.w	(RAM_PlaneA_Addr).w, D0		; $716
 	rol.w	#$6, D0				; $71A
 	andi.w	#$38, D0			; $71C
 	ori.w	#$8200, D0			; $720
 	move.w	D0, ($C00004).l			; $724
 	rts					; $72A
 WritePlaneBAddr:				; reg 3: Plan B base
-	move.w	($FFFF8A66).w, D0		; $72C
+	move.w	(RAM_PlaneB_Addr).w, D0		; $72C
 	rol.w	#$6, D0				; $730
 	andi.w	#$3E, D0			; $732
-	btst.b	#$0, ($FFFF8A60).w		; $736
+	btst.b	#$0, (RAM_word_FFFF8A60).w		; $736
 	beq.b	*+$6				; $73C
 	andi.w	#$3C, D0			; $73E
 loc_742:
@@ -182,17 +182,17 @@ loc_742:
 	move.w	D0, ($C00004).l			; $746
 	rts					; $74C
 WriteSpriteTableAddr:				; reg 4: sprite attribute table
-	move.w	($FFFF8A64).w, D0		; $74E
+	move.w	(RAM_SpriteTable_Addr).w, D0		; $74E
 	rol.w	#$3, D0				; $752
 	andi.w	#$7, D0				; $754
 	ori.w	#$8400, D0			; $758
 	move.w	D0, ($C00004).l			; $75C
 	rts					; $762
 WriteSpriteDim:					; reg 5: sprite size
-	move.w	($FFFF8A68).w, D0		; $764
+	move.w	(RAM_SpriteDims_Addr).w, D0		; $764
 	rol.w	#$7, D0				; $768
 	andi.w	#$7F, D0			; $76A
-	btst.b	#$0, ($FFFF8A60).w		; $76E
+	btst.b	#$0, (RAM_word_FFFF8A60).w		; $76E
 	beq.b	*+$6				; $774
 	andi.w	#$7E, D0			; $776
 loc_77A:
@@ -200,7 +200,7 @@ loc_77A:
 	move.w	D0, ($C00004).l			; $77E
 	rts					; $784
 WriteBackgroundColor:				; reg 7: background color
-	move.w	($FFFF8A6A).w, D0		; $786
+	move.w	(RAM_BgColor_Addr).w, D0		; $786
 	rol.w	#$6, D0				; $78A
 	andi.w	#$3F, D0			; $78C
 	ori.w	#$8D00, D0			; $790
@@ -215,24 +215,24 @@ WriteBackgroundColor:				; reg 7: background color
 SetScrollPlane:
 	moveq	#$0, D0				; $79C
 	lea	($7E0).l, A0			; $79E
-	move.w	($FFFF8A72).w, D1		; $7A4
+	move.w	(RAM_ScrollX).w, D1		; $7A4
 	move.w	D1, D2				; $7A8
 	asl.w	#$3, D2				; $7AA
 	subq.w	#1, D2				; $7AC
-	move.w	D2, ($FFFF8A86).w		; $7AE
+	move.w	D2, (RAM_ScrollPixelX).w		; $7AE
 	lsr.w	#$6, D1				; $7B2
 	move.b	($0,A0,D1.w), D0		; $7B4
 	asl.w	#$4, D0				; $7B8
-	move.w	($FFFF8A70).w, D1		; $7BA
+	move.w	(RAM_ScrollY).w, D1		; $7BA
 	move.w	D1, D2				; $7BE
 	asl.w	#$3, D2				; $7C0
 	subq.w	#1, D2				; $7C2
-	move.w	D2, ($FFFF8A88).w		; $7C4
+	move.w	D2, (RAM_ScrollPixelY).w		; $7C4
 	lsr.w	#$6, D1				; $7C8
 	or.b	($0,A0,D1.w), D0		; $7CA
 	ori.w	#$9000, D0			; $7CE
 	move.w	D0, ($C00004).l			; $7D2
-	move.b	($4,A0,D1.w), ($FFFF8A8A).w	; $7D8
+	move.b	($4,A0,D1.w), (RAM_ScrollPlaneBase).w	; $7D8
 	rts					; $7DE
 
 ; ======================================================================
