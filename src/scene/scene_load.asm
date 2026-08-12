@@ -134,6 +134,11 @@
 	dbf D0, $6BB8	; $6BBE
 	rts	; $6BC2
 
+; ----------------------------------------------------------------------
+; LoadFlaggedData: resolves flag index D0 in the flagged table (ROM_FlaggedTable,
+; 4-byte [tag][addr24] records) and loads the data into (A1): bit 18 = direct
+; 0x200-long copy, bit 19 = tile-stream decompress, else map decode.
+; ----------------------------------------------------------------------
 LoadFlaggedData:
 	lsl.w #$2, D0	; $6BC4
 	movea.w D0, A0	; $6BC6
@@ -155,6 +160,10 @@ LoadFlaggedData:
 	bclr.l #$19, D0	; $6BF4
 	bne.w *+$1A4	; $6BF8
 
+; ----------------------------------------------------------------------
+; DecompressTiles: decompresses a tag-$00 4bpp tile stream (RLE/planar) into
+; 32-byte tile rows.
+; ----------------------------------------------------------------------
 DecompressTiles:
 	movea.l D0, A0	; $6BFC
 	moveq #$1F, D7	; $6BFE
@@ -271,6 +280,10 @@ DecompressTiles:
 	dbf D0, $6C9E	; $6D14
 	bra.w *-$10C	; $6D18
 
+; ----------------------------------------------------------------------
+; DecodeMap: tree+LZSS decompresses a 32x32 tilemap (tag-$02 record) into the
+; destination buffer. Map values are tile-block indices.
+; ----------------------------------------------------------------------
 DecodeMap:
 ; $6D1C TileBitSpreadTables
 	dc.b	$00,$00,$00,$01,$00,$10,$00,$11,$01,$00,$01,$01,$01,$10,$01,$11	; $6D1C

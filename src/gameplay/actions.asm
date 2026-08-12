@@ -1122,6 +1122,11 @@ RenderTilemapPlane_Col2:
 	bne.b	RenderTilemapRow			; $210A
 	movea.l	(SP)+, A2			; $210C
 	rts					; $210E
+; ----------------------------------------------------------------------
+; UpdateScrollRegs: recomputes the scroll offset from the player position plus
+; the scene origin, writes the VDP H/V scroll registers, and marks off-screen
+; entities for culling.
+; ----------------------------------------------------------------------
 UpdateScrollRegs:				; loc_0002110
 	move.w	(RAM_PlayerX).w, D0		; $2110
 	lsr.w	#$3, D0				; $2114

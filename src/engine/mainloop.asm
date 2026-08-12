@@ -56,6 +56,11 @@ StatThresholdTable:				; loc_0004972
 	dc.w	$8040,$3028,$201C,$1814		; $4972  per-stat threshold words
 	dc.w	$1210,$0C0A,$0807,$0606		; $497A
 	dc.w	$0505,$0404			; $4982
+; ----------------------------------------------------------------------
+; DrawStatusPanel: refreshes the HUD. Plays sound $1F, computes the HP-bar
+; length (ComputeHPBar), and updates the gold/HP mirrors (RAM_HUD_HP/Gold)
+; applying the stat threshold scaling and damage table.
+; ----------------------------------------------------------------------
 DrawStatusPanel:				; loc_0004986
 	moveq	#$1F, D0			; $4986
 	jsr	$366.w				; $4988
@@ -105,6 +110,13 @@ TrapSpin_49FE:
 TrapSpin_4A02:
 	nop	; $4A02
 	bra.b TrapSpin_4A02	; $4A04
+; ----------------------------------------------------------------------
+; MainInit: full engine initialisation after PostBoot. Waits for VDP idle,
+; disables interrupts, clears VRAM, uploads the Z80 driver, initialises I/O,
+; runs the subsystem inits (InitSubsystems, palette/scene inits), enables
+; interrupts, then jumps to MainLoop. Sets the "2-player" flag from the
+; port-3 idle line and seeds RAM_VBlankFlag.
+; ----------------------------------------------------------------------
 MainInit:					; loc_0004A06
 	moveq #$2, D0	; $4A06
 WaitVDPIdle:
@@ -133,6 +145,12 @@ WaitVDPIdle:
 	bsr.w	$51C6				; $4A6C
 	bsr.w	$51C6				; $4A70
 	jmp LoadTaskList.l				; $4A74
+; ----------------------------------------------------------------------
+; SetupVDP: writes the 9 VDP registers from VDPRegTable (mirroring each to its
+; RAM shadow), then configures Plane A ($C000), Plane B ($D800), sprite table
+; ($E000), sprite size, background colour and initial scroll offsets via the
+; register writers in src/engine/scroll_vdp.asm.
+; ----------------------------------------------------------------------
 SetupVDP:					; loc_0004A7A
 	lea	(VDPRegTable).l, A0		; $4A7A
 	move.w #$8, D1	; $4A80
@@ -202,6 +220,10 @@ InitQueues:					; loc_0004B42
 TrapSpin:
 	nop	; $4B58
 	bra.b TrapSpin	; $4B5A
+; ----------------------------------------------------------------------
+; VBlankHandler (IRQ6): increments RAM_VBlankTick and sets bit 0 of
+; RAM_VBlankFlag. The main loop polls that flag to advance one frame.
+; ----------------------------------------------------------------------
 VBlankHandler:					; loc_0004B5C (IRQ6)
 	addq.b #$1, (RAM_VBlankTick).l	; $4B5C
 	ori.b #$1, (RAM_VBlankFlag).w	; $4B62
@@ -225,6 +247,11 @@ ClearFirstTaskSlots:
 	lea ($80,A0), A0	; $4B8C
 	dbf D1, $4B8A	; $4B90
 	rts	; $4B94
+; ----------------------------------------------------------------------
+; CleanupObjects: scans the 16 round-robin object slots ($FF8248, 0x80 stride);
+; slots whose first word is negative (active) have their ID processed via
+; ApplyToObjectsWithID ($4A4) and are then cleared.
+; ----------------------------------------------------------------------
 CleanupObjects:
 	lea (-$7DB8).w, A0	; $4B96
 	moveq #$F, D1	; $4B9A
@@ -241,6 +268,12 @@ CleanupObjects_Next:
 	lea ($80,A0), A0	; $4BB2
 	dbf D1, $4B9C	; $4BB6
 	rts	; $4BBA
+; ----------------------------------------------------------------------
+; MainLoop: the per-frame task dispatcher. Walks the 4 immediate task slots at
+; $FF8048 (0x80 stride), running each active slot's callback (pointer at +$0C),
+; then runs object maintenance ($53AA), waits for the VBlank scanline and frame,
+; and repeats forever. RAM_SchedulerCursor holds the current slot index.
+; ----------------------------------------------------------------------
 MainLoop:					; loc_0004BBC
 	move.b #-$80, (RAM_SchedulerCursor).w	; $4BBC
 	lea (-$7FB8).w, A5	; $4BC2
@@ -265,6 +298,11 @@ MainLoop_End:
 ResetStack:					; loc_0004BF8
 	movea.l #RAM_ObjectRAM, SP	; $4BF8
 	bra.b MainLoop_End	; $4BFE
+; ----------------------------------------------------------------------
+; WaitForVBlankScanline: synchronises to the raster. Waits for VBlank/H-counter
+; transitions, polling the VDP status port, so the next Plane A write lands in
+; the display period.
+; ----------------------------------------------------------------------
 WaitForVBlankScanline:				; loc_0004C00
 	btst.b #$6, (RAM_word_FFFF8A5D).w	; $4C00
 	beq.b *+$54	; $4C06
@@ -295,6 +333,10 @@ WaitHVStable:
 	bne.b WaitForScanline	; $4C56
 WaitForVBlankScanline_Done:
 	rts	; $4C58
+; ----------------------------------------------------------------------
+; RunRoundRobin: during VBlank, polls the 16 round-robin object slots, running
+; each active slot's callback. Clears RAM_VBlankTick before the loop.
+; ----------------------------------------------------------------------
 RunRoundRobin:
 	move.b #$10, (RAM_word_FFFF8A4B).w	; $4C5A
 	lea (-$7DB8).w, A5	; $4C60

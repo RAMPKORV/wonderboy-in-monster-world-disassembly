@@ -12,6 +12,10 @@
 	jsr ReadTile.w	; $3010
 	move.w D2, (-$30FE,A4)	; $3014
 	rts	; $3018
+; ----------------------------------------------------------------------
+; MoveVertical: applies the vertical movement state (gravity/impulse), calls the
+; vertical collision pass, and applies the result velocity.
+; ----------------------------------------------------------------------
 MoveVertical:
 	jsr $AD6.w	; $301A
 	jsr SlideCheck_Init3.w	; $301E
@@ -24,6 +28,10 @@ MoveVertical_Alt:
 	jsr CollideAndSlide_Init.w	; $3032
 MoveVertical_End:
 	bra.w MoveVertical_Apply	; $3036
+; ----------------------------------------------------------------------
+; MoveHorizontal: applies the horizontal movement state. Integrates velocity
+; into X, zeroes the subpixel accumulator, and stores the result velocity.
+; ----------------------------------------------------------------------
 MoveHorizontal:
 	btst.b #$0, (ENT_State,A4)	; $303A
 	beq.b *+$56	; $3040
@@ -82,6 +90,11 @@ MoveVertical_Done:
 	rts	; $30CC
 ReadTileSetup:
 	lea (-$68AC).w, A3	; $30CE
+; ----------------------------------------------------------------------
+; ReadTile: reads the collision byte at the tile containing (D6, D7). Computes
+; the tile index via ComputeTilemapIndex, looks up the tile data byte, and
+; expands it through GetTileBehavior. Returns the behaviour bits in D2.
+; ----------------------------------------------------------------------
 ReadTile:
 	lsr.w #$4, D6	; $30D2
 	andi.w #-$10, D7	; $30D4
@@ -95,6 +108,10 @@ ReadTileData:
 	move.w #$800, D1	; $30EA
 	move.b D0, D1	; $30EE
 	move.b ($0,A0,D1.w), D1	; $30F0
+; ----------------------------------------------------------------------
+; GetTileBehavior: expands a tile data byte (D1) into collision-behaviour bits
+; in D2 (solid/water/spike/... flags) using the tile-block table at $3FC2.
+; ----------------------------------------------------------------------
 GetTileBehavior:
 	move.b D1, D2	; $30F4
 	andi.w #$F0, D2	; $30F6
@@ -526,6 +543,11 @@ SlideCheck_Entry:
 	bra.b *+$A	; $3582
 CollideAndSlide_Init:
 	move.l #$38E4, (RAM_word_FFFF9EE8).w	; $3584
+; ----------------------------------------------------------------------
+; CollideAndSlide: the main tile-collision resolver. Sweeps the entity's
+; bounding box over the tile grid, resolving hits by sliding along walls,
+; floors and ceilings and setting the movement state bits (ENT_State).
+; ----------------------------------------------------------------------
 CollideAndSlide:
 	link A6, #-$14	; $358C
 	move.w (ENT_Y,A4), D7	; $3590
@@ -1279,6 +1301,10 @@ SlideCheck_YStore:
 	clr.w (ENT_YSub,A4)	; $3DFA
 SlideCheck_End:
 	rts	; $3DFE
+; ----------------------------------------------------------------------
+; CheckEntityProximity: tests whether another entity (A2) is within the
+; extended hitbox of this entity (A4). Used for contact damage and triggers.
+; ----------------------------------------------------------------------
 CheckEntityProximity:
 	move.w (ENT_X,A4), D0	; $3E00
 	move.w (-$601E,A2), D1	; $3E04

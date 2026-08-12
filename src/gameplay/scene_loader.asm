@@ -210,6 +210,10 @@ CheckItemId:
 	cmpi.b #$63, (RAM_word_FFFF959C).w	; $23FE
 	bcs.b *+$52	; $2404
 	bra.b *+$4C	; $2406
+; ----------------------------------------------------------------------
+; CheckItemCount: tests whether the player has at least N of item D0. Returns
+; carry set when the requirement is met.
+; ----------------------------------------------------------------------
 CheckItemCount:
 	cmp.b (A1)+, D0	; $2408
 	bcs.b *+$20	; $240A
@@ -462,6 +466,11 @@ TilemapAddr_Write:
 	rts	; $266A
 DrawTile_Setup:
 	lea (-$68AC).w, A3	; $266C
+; ----------------------------------------------------------------------
+; DrawTile: draws one tile at screen offset (D6, D7) into the map render
+; buffer, applying bounds checks against the scene geometry and the tile
+; behaviour attributes.
+; ----------------------------------------------------------------------
 DrawTile:
 	bsr.b TilemapAddr_Write	; $2670
 DrawTile_Bounded:
@@ -589,6 +598,10 @@ ResolveScene:
 	movea.l ($1CC18).l, A1	; $2792
 	adda.w D1, A1	; $2798
 	rts	; $279A
+; ----------------------------------------------------------------------
+; EnterScene: full scene entry. Resolves the scene, plays the scene-change
+; sound, initialises the scene data, and marks the player scene-active.
+; ----------------------------------------------------------------------
 EnterScene:
 	bsr.b ResolveScene	; $279C
 	moveq #$4F, D0	; $279E
@@ -1011,6 +1024,11 @@ SpawnMusicNote:
 	rts	; $2CDE
 ProjectileVelDeltaTable:					; loc_0002CE0
 	dc.w	$0400,$0400,$FC00,$0400,$FC00,$FC00,$0400,$FC00	; $2CE0
+; ----------------------------------------------------------------------
+; SpawnMonsterAt: spawns a monster at the current scene script position. Finds
+; a free entity slot (FindFreeEntitySlot), initialises it, sets its HP,
+; animation id and script state.
+; ----------------------------------------------------------------------
 SpawnMonsterAt:
 	jsr FindFreeEntitySlot.w				; $2CF4
 	jsr	$A36.w				; $2CF8
@@ -1028,6 +1046,11 @@ SpawnMonsterAt:
 	beq.b *+$4	; $2D26
 MonsterRage_Done:
 	rts	; $2D28
+; ----------------------------------------------------------------------
+; MonsterRage: the per-monster encounter/movement stream driver. Reads commands
+; from the monster's stream (RAM $FFFF9BBA): movement deltas, hit tests against
+; the player, and knockback.
+; ----------------------------------------------------------------------
 MonsterRage:
 	move.b (RAM_word_FFFF9BB9).w, D5	; $2D2A
 	bpl.b *+$32	; $2D2E

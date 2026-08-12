@@ -266,6 +266,11 @@ LoadTaskDescriptor:
 	jsr ClearScrollBuffers.l				; $50D6
 	jsr	$62A.w				; $50DC
 	movea.l	(SP)+, A1			; $50E0
+; ----------------------------------------------------------------------
+; InstallTaskList: installs a task-list descriptor (A1) into the immediate task
+; array. Runs VBlankTick, copies the descriptor, marks the slot active, and
+; resets the stack to the object RAM base.
+; ----------------------------------------------------------------------
 InstallTaskList:
 	move.l A1, -(SP)	; $50E2
 	jsr VBlankTick.l	; $50E4
@@ -321,6 +326,10 @@ SetStartFlag_Store:
 	move.b D0, (RAM_InputSelected2).w	; $516A
 SetStartFlag_Done:
 	rts	; $516E
+; ----------------------------------------------------------------------
+; InitSubsystems: called from MainInit. Clears the scroll-mode mirrors, runs the
+; four subsystem inits, and enters the scene/plane init chain.
+; ----------------------------------------------------------------------
 InitSubsystems:
 	jsr $6F6.w	; $5170
 	bsr.w $6910	; $5174
@@ -364,6 +373,11 @@ UpdateInputLatch:
 	move.b (A1), (RAM_InputSelected).w	; $5210
 UpdateInputLatch_Done:
 	rts	; $5214
+; ----------------------------------------------------------------------
+; ReadControllerPort: reads one controller port via the I/O registers ($A10003/05),
+; inverting and packing the pad bits into the per-pad triplet buffer, then
+; computes the new-press byte.
+; ----------------------------------------------------------------------
 ReadControllerPort:
 	move.b (A1), ($1,A1)	; $5216
 	move.b #$0, (A0)	; $521A
@@ -387,6 +401,10 @@ ReadControllerPort:
 	and.b D1, D0	; $5248
 	move.b D0, ($2,A1)	; $524A
 	rts	; $524E
+; ----------------------------------------------------------------------
+; ComputeNewPresses: new press = current & ~previous for the selected input
+; mirror; stores to RAM_InputSelectedNew.
+; ----------------------------------------------------------------------
 ComputeNewPresses:
 	move.b (RAM_InputSelected).w, D1	; $5250
 	move.b (RAM_InputSelectedPrev).w, D0	; $5254
@@ -394,6 +412,11 @@ ComputeNewPresses:
 	and.b D1, D0	; $525A
 	move.b D0, (RAM_InputSelectedNew).w	; $525C
 	rts	; $5260
+; ----------------------------------------------------------------------
+; FrameUpdate: per-frame subsystem driver. Runs the VBlank scroll/plane/window
+; writers, refreshes the sprite table, reads both controllers, computes new
+; presses, and updates the input latch.
+; ----------------------------------------------------------------------
 FrameUpdate:
 	bsr.w $529E	; $5262
 	bsr.w $5338	; $5266

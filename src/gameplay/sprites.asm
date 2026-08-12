@@ -519,6 +519,11 @@ UpdateHelperPos2:
 	jsr DrawHelperSprite.l	; $46EA
 HelperUpdate_Jump:
 	jmp MonsterMoveE.w	; $46F0
+; ----------------------------------------------------------------------
+; UpdateHelper: the helper/companion AI driver. Tracks the player (A2), keeps
+; within leash range, and applies facing/attack logic when the helper is
+; active.
+; ----------------------------------------------------------------------
 UpdateHelper:
 	movea.w (RAM_word_FFFF9EEE).w, A2	; $46F4
 	btst.b #$6, (RAM_word_FFFF9F03).w	; $46F8
@@ -554,6 +559,10 @@ GetFacingDir_Calc:
 	and.b (ENT_Counter,A4), D1	; $473A
 	eor.b D1, D0	; $473E
 	rts	; $4740
+; ----------------------------------------------------------------------
+; CheckHitPlayer: collision test between this entity and the player. On a hit,
+; applies contact damage and knockback to the player and flags the collision.
+; ----------------------------------------------------------------------
 CheckHitPlayer:
 	jsr $D2C.w	; $4742
 	jsr $C36.w	; $4746
@@ -624,6 +633,11 @@ IdleAnim_Next2:
 	addq.w #$4, A2	; $480C
 	dbf D2, $47DC	; $480E
 	rts	; $4812
+; ----------------------------------------------------------------------
+; KillEntity: removes an entity. Returns its kill-drop table (ENT_Object),
+; clears the monster-kill flag, and can spawn a reward/drop item at the entity
+; position based on the drop table.
+; ----------------------------------------------------------------------
 KillEntity:
 	clr.w (ENT_Flags,A4)	; $4814
 	move.w (-$2B00,A4), D0	; $4818

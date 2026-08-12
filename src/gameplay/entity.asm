@@ -8,6 +8,11 @@
 ;   $FF8300-02 tree/script indices   $FF8E00+ extra fields
 ; Verified bit-exact against the original ROM.
 ; ======================================================================
+; ----------------------------------------------------------------------
+; InitEntity: initialises an entity slot (A4). Sets the active flag, clears
+; counters/velocity, seeds the frame counter. InitEntityExt additionally zeroes
+; the extended object fields.
+; ----------------------------------------------------------------------
 InitEntity:					; loc_000A1A
 	move.w #-$4000, (ENT_Flags,A4)	; $A1A
 ClearEntityVelocity:
@@ -281,6 +286,10 @@ CheckCollisionBoxes_NoHit:
 CheckCollisionBoxes_Clear:
 	moveq #$0, D0	; $C9C
 	rts	; $C9E
+; ----------------------------------------------------------------------
+; CheckBoxOverlap: AABB overlap test between two hitboxes (A0, A1). Returns
+; carry clear when they overlap; used for attack/hurt-box and pickup checks.
+; ----------------------------------------------------------------------
 CheckBoxOverlap:
 	move.b ($0,A1), D0	; $CA0
 	btst.b #$3, (ENT_Counter,A4)	; $CA4
@@ -614,6 +623,11 @@ Atan2Fast_Lookup:
 	rts	; $106A
 	dc.w	$4000,$4000,$c000,$c000,$0000,$8000,$0000,$8000	; $106C
 	dc.w	$2000,$6000,$e000,$a000,$2000,$6000,$e000,$a000	; $107C
+; ----------------------------------------------------------------------
+; CalcAngleToTarget: atan2. Computes the 16-bit angle from entity A4 to entity
+; A2 using the atan2 LUT (ROM_Atan2Table). Returns the angle in D3 (bits 0-15).
+; Used by homing projectiles and AI facing.
+; ----------------------------------------------------------------------
 CalcAngleToTarget:			; loc_00108C (atan2: angle to another entity)
 	move.w (ENT_X,A2), D0	; $108C
 	sub.w (ENT_X,A4), D0	; $1090
@@ -859,6 +873,10 @@ ComputeArcTrajectory_Scale:
 ComputeArcTrajectory_ZeroD5:
 	moveq #$0, D5	; $1358
 	rts	; $135A
+; ----------------------------------------------------------------------
+; LoadPalettes: reads 4 palette index bytes from A0 and decodes each via
+; DecodePalette into RAM_PaletteSource (the display-layout buffer).
+; ----------------------------------------------------------------------
 LoadPalettes:				; loc_000135C (read 4 palette index bytes from A0, decode to RAM_PaletteSource)
 	lea (-$74A8).w, A1	; $135C
 	moveq #$3, D5	; $1360
@@ -868,6 +886,10 @@ LoadPalettes:				; loc_000135C (read 4 palette index bytes from A0, decode to RA
 	addq.w #$2, A1	; $1368
 	dbf D5, $1362	; $136A
 	rts	; $136E
+; ----------------------------------------------------------------------
+; DecodePalette: unpacks one 17-byte packed palette (ROM_PaletteTable + idx*17)
+; into 16 RGB555 colour words at (A1)+.
+; ----------------------------------------------------------------------
 DecodePalette:				; loc_0001370 (decode one 17-byte packed palette at ROM_PaletteTable+idx*17)
 	move.w D0, D1	; $1370
 	lsl.w #$4, D1	; $1372
