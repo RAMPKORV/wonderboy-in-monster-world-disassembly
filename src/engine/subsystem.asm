@@ -15,6 +15,7 @@
 	lea (-$7DB8).w, A5	; $4CA2
 RunTaskList_Done:
 	rts	; $4CA6
+ClearTaskSlot:
 	movea.w (RAM_CurrentTaskSlot).w, A5	; $4CA8
 	clr.w (A5)	; $4CAC
 	move.w D0, (RAM_word_FFFF8068).w	; $4CAE
@@ -22,6 +23,7 @@ RunTaskList_Done:
 SubsystemTrap:
 	nop	; $4CB4
 	bra.b $4CB4	; $4CB6
+LoadTaskList:
 	movea.l	#$4CC4, A1			; $4CB8
 	jmp InstallTaskList.l				; $4CBE
 TaskListData:					; loc_0004CC4
@@ -43,7 +45,7 @@ TaskListDispatch:
 	bne.b *+$8	; $4CFC
 	movea.l #$4D14, A1	; $4CFE
 TaskListDispatch_Jump:
-	jmp $50D4.l	; $4D04
+	jmp LoadTaskDescriptor.l	; $4D04
 TaskListDispatch_Done:
 	rts	; $4D0A
 TaskListData2:				; loc_0004D0C
@@ -153,10 +155,10 @@ EquipmentInitData:			; loc_0004E5C
 	dc.b	$00,$00,$00,$00,$16,$44,$00,$00,$4b,$65,$64,$6d	; $4F4C
 			dc.w	$43fa,$0066	; dc.w
 	bsr.w $5106	; $4F5C
-	jmp $1AA3C.l	; $4F60
+	jmp InitGameState.l	; $4F60
 	move.w #$E10, ($40,A5)	; $4F66
 	jsr $400.w	; $4F6C
-	jsr $1AD62.l	; $4F70
+	jsr UpdateEquipment.l	; $4F70
 	subq.w #$1, ($40,A5)	; $4F76
 	beq.b *+$A	; $4F7A
 	bsr.w $513C	; $4F7C
@@ -165,7 +167,7 @@ EquipmentInitData:			; loc_0004E5C
 TaskHandler_4F84:
 	bsr.w $5842	; $4F84
 	jsr $400.w	; $4F88
-	jsr $1AD62.l	; $4F8C
+	jsr UpdateEquipment.l	; $4F8C
 	btst.b #$4, (RAM_word_FFFF8C56).w	; $4F92
 	bne.b *+$4	; $4F98
 	rts	; $4F9A
@@ -259,6 +261,7 @@ LoadTaskList_Clear:
 TaskHandler_Done:
 	rts	; $50CA
 	dc.w	$0000,$8EB0,$0000,$0000	; $50CC
+LoadTaskDescriptor:
 	move.l	A1, -(SP)			; $50D4
 	jsr ClearScrollBuffers.l				; $50D6
 	jsr	$62A.w				; $50DC
@@ -391,6 +394,7 @@ ComputeNewPresses:
 	and.b D1, D0	; $525A
 	move.b D0, (RAM_InputSelectedNew).w	; $525C
 	rts	; $5260
+FrameUpdate:
 	bsr.w $529E	; $5262
 	bsr.w $5338	; $5266
 	bsr.w $557E	; $526A

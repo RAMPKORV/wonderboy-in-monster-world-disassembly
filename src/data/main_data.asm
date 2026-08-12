@@ -2687,7 +2687,7 @@
 	clr.b (RAM_word_FFFF9658).w	; $C26E
 	bra.w *-$33BE	; $C272
 	moveq #$0, D0	; $C276
-	jmp $4CA8.l	; $C278
+	jmp ClearTaskSlot.l	; $C278
 	bsr.w *-$974	; $C27E
 	clr.w (RAM_word_FFFF9962).w	; $C282
 	jsr $A66.w	; $C286
@@ -4579,6 +4579,7 @@
 	dc.b	$31,$c7,$9f,$1a	; $DD6E
 	dc.b	$11,$ec,$cf,$01,$9f,$1c	; $DD72
 	dc.b	$60,$00,$36,$a0	; $DD78
+DrawHelperSprite:
 	dc.b	$08,$38,$00,$00,$96,$6b	; $DD7C
 	dc.b	$66,$58	; $DD82
 	dc.b	$30,$38,$9e,$e2	; $DD84
@@ -4652,6 +4653,7 @@
 	dc.b	$06,$40,$ff,$80	; $DE60
 	dc.b	$31,$40,$ca,$02	; $DE64
 	dc.b	$4e,$75	; $DE68
+GameStateHandler:
 	dc.b	$11,$f8,$9f,$0b,$9f,$0c	; $DE6A
 	dc.b	$70,$00	; $DE70
 	dc.b	$10,$38,$9f,$05	; $DE72
@@ -6529,6 +6531,7 @@
 	dc.b	$35,$41,$d2,$02	; $F8FC
 	dc.b	$35,$41,$df,$02	; $F900
 	dc.b	$4e,$75	; $F904
+ApplyMagicEffect:
 	dc.b	$41,$fa,$00,$08	; $F906
 	dc.b	$d0,$f0,$00,$00	; $F90A
 	dc.b	$4e,$d0	; $F90E
@@ -7051,7 +7054,7 @@
 	btst.b #$6, (ENT_Flags,A4)	; $10062
 	bne.b *+$38	; $10068
 	move.w #$400, D1	; $1006A
-	jsr $4910.w	; $1006E
+	jsr FindWordInTable.w	; $1006E
 	move.w (A0), (-$3DFE,A4)	; $10072
 	ori.b #$8, (ENT_Counter,A4)	; $10076
 	move.w #$1618, (ENT_TreeIdx0,A4)	; $1007C
@@ -7700,8 +7703,10 @@
 	dc.b	$58,$48	; $10904
 	dc.b	$51,$c8,$ff,$f8	; $10906
 	dc.b	$4e,$75	; $1090A
+CheckCollisionPoint:
 	dc.b	$7c,$00	; $1090C
 	dc.b	$60,$06	; $1090E
+SpawnPickup:
 	dc.b	$7c,$80	; $10910
 	dc.b	$cc,$2c,$d1,$00	; $10912
 	dc.b	$0c,$40,$10,$00	; $10916
@@ -9097,7 +9102,9 @@
 	dc.b	$01,$c8,$01,$e2	; $11C8E
 	dc.b	$01,$f4,$00,$64	; $11C92
 	dc.b	$00,$64,$02,$8e,$02,$8e	; $11C96
-	dc.b	$02,$a6,$50,$f8,$a0,$de	; $11C9C
+	dc.b	$02,$a6	; $11C9C
+Subroutine_11C9E:
+	dc.b	$50,$f8,$a0,$de	; $11C9E
 	dc.b	$38,$7c,$00,$10	; $11CA2
 	dc.b	$7e,$0b	; $11CA6
 	dc.b	$4a,$2c,$c0,$00	; $11CA8
@@ -9982,6 +9989,7 @@
 	dc.b	$4a,$13	; $1280A
 	dc.b	$5a,$ca,$ff,$f8	; $1280C
 	dc.b	$4e,$75	; $12810
+SpawnMagicWave:
 	dc.b	$34,$78,$a1,$1a	; $12812
 	dc.b	$74,$0f	; $12816
 	dc.b	$60,$02	; $12818
@@ -10857,6 +10865,7 @@
 	dc.b	$61,$00,$f3,$f4	; $133AA
 	dc.b	$c9,$4a	; $133AE
 	dc.b	$4e,$75	; $133B0
+ApplyDamage:
 	dc.b	$61,$00,$f6,$bc	; $133B2
 	dc.b	$4e,$56,$ff,$fe	; $133B6
 	dc.b	$38,$78,$a1,$1a	; $133BA
@@ -10968,6 +10977,7 @@
 	dc.b	$05,$02	; $1353C
 	dc.b	$03,$21	; $1353E
 	dc.b	$22,$00	; $13540
+ApplyStatusEffect:
 	dc.b	$10,$2c,$de,$00	; $13542
 	dc.b	$0c,$00,$00,$ff	; $13546
 	dc.b	$66,$22	; $1354A
@@ -10988,6 +10998,7 @@
 	dc.b	$4e,$75	; $13576
 	dc.b	$61,$00,$ff,$c8	; $13578
 	dc.b	$60,$04	; $1357C
+ApplyKnockback:
 	dc.b	$19,$40,$d4,$01	; $1357E
 	dc.b	$70,$00	; $13582
 	dc.b	$10,$2c,$d4,$03	; $13584
@@ -14031,12 +14042,12 @@
 	rts	; $1600A
 	btst.b #$5, (RAM_word_FFFF966B).w	; $1600C
 	bne.b *+$A	; $16012
-	jsr $4792.w	; $16014
-	jmp $43BC.w	; $16018
+	jsr HelperAttack.w	; $16014
+	jmp CheckCollisionFlag2.w	; $16018
 	tst.b (-$2800,A4)	; $1601C
 	beq.b *+$6	; $16020
-	jmp $4778.w	; $16022
-	jmp $4792.w	; $16026
+	jmp HelperHitCheck.w	; $16022
+	jmp HelperAttack.w	; $16026
 	jsr $AD6.w	; $1602A
 	move.w (-$20FE,A4), D0	; $1602E
 	tst.w (ENT_VelY,A4)	; $16032
@@ -16610,7 +16621,7 @@
 	rts	; $18320
 	movea.w (-$2CFE,A4), A4	; $18322
 	jsr $B44.w	; $18326
-	jsr $46DA.w	; $1832A
+	jsr UpdateHelperPos2.w	; $1832A
 	movea.w (-$2CFE,A4), A4	; $1832E
 	movea.w (-$2CFE,A4), A0	; $18332
 	moveq #$0, D0	; $18336
@@ -18702,7 +18713,7 @@
 	bset.b #$7, (ENT_Anim,A4)	; $1A026
 	bne.b *+$1A	; $1A02C
 	movea.w (RAM_word_FFFFA11C).w, A2	; $1A02E
-	jsr $1032.w	; $1A032
+	jsr Atan2Fast0.w	; $1A032
 	lsr.w #$8, D3	; $1A036
 	move.b D3, (-$27FD,A4)	; $1A038
 	clr.b (-$31FF,A4)	; $1A03C
@@ -18775,7 +18786,7 @@
 	beq.b *+$8	; $1A11C
 	clr.w (ENT_Flags,A4)	; $1A11E
 	rts	; $1A122
-	jsr $47AE.w	; $1A124
+	jsr HelperAttack2.w	; $1A124
 	move.b (ENT_PlayerFlags,A4), D0	; $1A128
 	bne.w *-$3C8	; $1A12C
 	btst.b D0, (ENT_Flags,A4)	; $1A130
@@ -19396,6 +19407,7 @@
 	dc.b	$19,$7c,$00,$10,$d8,$00	; $1AA30
 	dc.b	$4e,$f8,$07,$e8	; $1AA36
 	dc.b	$4e,$75	; $1AA3A
+InitGameState:
 	dc.b	$42,$38,$a3,$9c	; $1AA3C
 	dc.b	$61,$00,$0d,$36	; $1AA40
 	dc.b	$61,$00,$03,$8c	; $1AA44
@@ -19614,6 +19626,7 @@
 	dc.b	$53,$48,$49,$5a,$41,$57	; $1AD58
 	dc.b	$41,$00	; $1AD5E
 	dc.b	$99,$00	; $1AD60
+UpdateEquipment:
 	dc.b	$38,$7c,$00,$00	; $1AD62
 	dc.b	$4a,$38,$a3,$9c	; $1AD66
 	dc.b	$6b,$10	; $1AD6A
@@ -21218,6 +21231,7 @@
 	dc.b	$e9,$40	; $1C32A
 	dc.b	$80,$41	; $1C32C
 	dc.b	$4e,$75	; $1C32E
+SceneSpawnCommand:
 	dc.b	$41,$f9,$00,$ff,$33,$00	; $1C330
 	dc.b	$42,$58	; $1C336
 	dc.b	$20,$fc,$20,$20,$20,$20	; $1C338
@@ -21335,6 +21349,7 @@
 	dc.b	$67,$00,$01,$50	; $1C488
 	dc.b	$60,$00,$00,$fc	; $1C48C
 	dc.b	$61,$00,$fe,$9e	; $1C490
+SceneItemCommand:
 	dc.b	$41,$f9,$00,$ff,$33,$00	; $1C494
 	dc.b	$72,$00	; $1C49A
 	dc.b	$74,$3f	; $1C49C

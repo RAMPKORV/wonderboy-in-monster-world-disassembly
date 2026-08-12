@@ -74,7 +74,7 @@ IdleCheck_X:
 	move.b (ENT_ColH2,A4), D2	; $4244
 	neg.w D2	; $4248
 	add.w (ENT_Y,A4), D2	; $424A
-	jmp $10910.l	; $424E
+	jmp SpawnPickup.l	; $424E
 	bsr.b *+$8	; $4254
 	jsr $AB4.w	; $4256
 	rts	; $425A
@@ -103,12 +103,12 @@ DecelerateY_Store:
 	move.b ($0,A0,D0.w), D0	; $4296
 	beq.b *+$E	; $429A
 	bpl.b *+$8	; $429C
-	jmp $13542.l	; $429E
+	jmp ApplyStatusEffect.l	; $429E
 SetAnimId:
 	move.b D0, (ENT_Anim,A4)	; $42A4
 SetAnimId_Done:
 	rts	; $42A8
-	jsr $4356.w	; $42AA
+	jsr CheckAnimTimer.w	; $42AA
 	bne.b *+$12	; $42AE
 	jsr FacePlayer.w	; $42B0
 	tst.b (-$27FF,A4)	; $42B4
@@ -119,10 +119,10 @@ AnimTimer_Done:
 	addq.w #$4, SP	; $42C0
 AnimTimer_Return:
 	rts	; $42C2
-	jsr $4792.w	; $42C4
-	jmp $46D6.w	; $42C8
-	jsr $46F4.w	; $42CC
-	jmp $46D6.w	; $42D0
+	jsr HelperAttack.w	; $42C4
+	jmp UpdateHelperPos.w	; $42C8
+	jsr UpdateHelper.w	; $42CC
+	jmp UpdateHelperPos.w	; $42D0
 	move.w #$1208, D6	; $42D4
 	bra.b *+$6	; $42D8
 	move.w #$120A, D6	; $42DA
@@ -133,7 +133,7 @@ PlaySound3F:
 	bra.b *+$4	; $42E6
 	moveq #$0, D1	; $42E8
 SpawnHelper:
-	jsr $12812.l	; $42EA
+	jsr SpawnMagicWave.l	; $42EA
 	bmi.b *+$4E	; $42F0
 	exg A2, A4	; $42F2
 	jsr $A36.w	; $42F4
@@ -169,6 +169,7 @@ RandomSigned:
 	neg.w D2	; $4352
 RandomSigned_Done:
 	rts	; $4354
+CheckAnimTimer:
 	bsr.b *+$C	; $4356
 	bne.b *+$8	; $4358
 	moveq #$40, D0	; $435A
@@ -211,13 +212,14 @@ CheckCollisionFlag:
 	moveq #-$1, D0	; $43B8
 CheckCollisionFlag_Done:
 	rts	; $43BA
+CheckCollisionFlag2:
 	bsr.b $439E	; $43BC
 	bmi.b *+$4	; $43BE
 	rts	; $43C0
 BounceHit:
 	moveq #$2, D0	; $43C2
 	addq.w #$4, SP	; $43C4
-	jmp $1357E.l	; $43C6
+	jmp ApplyKnockback.l	; $43C6
 	jsr $5D8.w	; $43CC
 	andi.b #$7F, D0	; $43D0
 	addi.w #$40, D0	; $43D4
@@ -382,7 +384,7 @@ GetYDelta_Done:
 	bne.b *+$C	; $459E
 	addq.w #$4, SP	; $45A0
 	moveq #$5, D0	; $45A2
-	jmp $13542.l	; $45A4
+	jmp ApplyStatusEffect.l	; $45A4
 CheckWallAhead_Done:
 	rts	; $45AA
 CheckWallAhead:
@@ -507,14 +509,17 @@ CheckCollisionAhead_Scan:
 ApplyTurnVelocity:
 	move.w D0, (ENT_AccelX,A4)	; $46D0
 	rts	; $46D4
+UpdateHelperPos:
 	jsr $B44.w	; $46D6
+UpdateHelperPos2:
 	jsr ReadTileAtEntityPos3.w	; $46DA
 	jsr ReadTileAtEntityPos2.w	; $46DE
 	btst.b #$0, (ENT_Flags,A4)	; $46E2
 	beq.b *+$8	; $46E8
-	jsr $DD7C.l	; $46EA
+	jsr DrawHelperSprite.l	; $46EA
 HelperUpdate_Jump:
 	jmp MonsterMoveE.w	; $46F0
+UpdateHelper:
 	movea.w (RAM_word_FFFF9EEE).w, A2	; $46F4
 	btst.b #$6, (RAM_word_FFFF9F03).w	; $46F8
 	beq.b *+$6	; $46FE
@@ -558,13 +563,14 @@ CheckHitPlayer:
 	sub.w (ENT_X,A2), D0	; $4754
 	move.w (ENT_Y,A4), D1	; $4758
 	sub.w (ENT_Y,A2), D1	; $475C
-	jsr $1042.w	; $4760
+	jsr Atan2Fast1.w	; $4760
 	rol.w #$3, D3	; $4764
 	bset.b D3, (RAM_word_FFFF9F13).w	; $4766
 	ori.b #-$80, (ENT_PlayerFlags,A4)	; $476A
 	move.w #$0, (ENT_Damage,A4)	; $4770
 CheckHitPlayer_Done:
 	rts	; $4776
+HelperHitCheck:
 	movea.w (RAM_word_FFFF9EEE).w, A2	; $4778
 	btst.b #$6, (RAM_word_FFFF9F03).w	; $477C
 	beq.b *+$8	; $4782
@@ -573,6 +579,7 @@ CheckHitPlayer_Done:
 HitPlayer_No:
 	jsr $E64.w	; $478A
 	bra.w $4948	; $478E
+HelperAttack:
 	movea.w (RAM_word_FFFF9EEE).w, A2	; $4792
 	btst.b #$6, (RAM_word_FFFF9F03).w	; $4796
 	beq.b *+$6	; $479C
@@ -583,6 +590,7 @@ HitPlayer_Link:
 HitPlayer_Link2:
 	jsr $D76.w	; $47A6
 	bra.w $4948	; $47AA
+HelperAttack2:
 	movea.w (RAM_word_FFFF9EEE).w, A2	; $47AE
 	btst.b #$6, (RAM_word_FFFF9F03).w	; $47B2
 	beq.b *+$A	; $47B8
@@ -616,6 +624,7 @@ IdleAnim_Next2:
 	addq.w #$4, A2	; $480C
 	dbf D2, $47DC	; $480E
 	rts	; $4812
+KillEntity:
 	clr.w (ENT_Flags,A4)	; $4814
 	move.w (-$2B00,A4), D0	; $4818
 	bmi.b *+$E	; $481C
@@ -682,7 +691,7 @@ KillEntity_Item:
 	clr.b (-$27FF,A4)	; $48B2
 	move.w (ENT_X,A4), D1	; $48B6
 	move.w (ENT_Y,A4), D2	; $48BA
-	jmp $10910.l	; $48BE
+	jmp SpawnPickup.l	; $48BE
 	btst.b #$0, (ENT_Flags,A4)	; $48C4
 	bne.b $490E	; $48CA
 	btst.b #$0, (-$3200,A4)	; $48CC

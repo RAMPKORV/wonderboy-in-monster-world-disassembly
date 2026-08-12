@@ -584,8 +584,12 @@ AngleToVectorQ:
 	dc.w	$0000,$f384,$e783,$dc72,$d2bf,$caca,$c4e0,$c13b	; $1002
 	dc.w	$c000,$c13b,$c4e0,$caca,$d2bf,$dc72,$e783,$f384	; $1012
 	dc.w	$0000	; $1022
-	dc.w	$0c7c,$187d,$238e,$2d41,$3536,$3b20,$3ec5,$302a	; $1024
-	dc.w	$c800,$906c,$c800,$322a,$c900,$926c,$c900,$7400	; $1034
+	dc.w	$0c7c,$187d,$238e,$2d41,$3536,$3b20,$3ec5	; $1024
+Atan2Fast0:
+	dc.w	$302a	; $1032
+	dc.w	$c800,$906c,$c800,$322a,$c900,$926c,$c900	; $1034
+Atan2Fast1:
+	dc.w	$7400	; $1042
 	tst.w D0	; $1044
 	bpl.b *+$6	; $1046
 	addq.w #$2, D2	; $1048
@@ -694,7 +698,7 @@ CalcAngleToTarget_Done:
 	jsr CalcAngleToTarget.w	; $1216
 	move.w D3, D6	; $121A
 	jmp $FA8.w	; $121C
-	jsr $1032.w	; $1220
+	jsr Atan2Fast0.w	; $1220
 	move.w D3, D6	; $1224
 	jsr $FC0.w	; $1226
 	move.w D0, (ENT_VelX,A4)	; $122A

@@ -194,7 +194,7 @@ WaitVBlankFlag:
 WaitVBlankSet:
 	btst.b	#$0, (RAM_VBlankFlag).w		; $3DC
 	beq.b	WaitVBlankSet			; $3E2
-	jsr	$5262.l				; $3E4
+	jsr FrameUpdate.l				; $3E4
 WaitVBlankEnd:
 	btst.b	#$6, (RAM_word_FFFF8A5D).w		; $3EA
 	beq.b	*+$E				; $3F0

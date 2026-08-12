@@ -67,7 +67,7 @@ RenderTilemapGrid_NextSlot:
 	dbf D0, $227E	; $2294
 	btst.b #$0, (RAM_word_FFFF8A51).w	; $2298
 	beq.b *+$8	; $229E
-	jmp $DE6A.l	; $22A0
+	jmp GameStateHandler.l	; $22A0
 RenderTilemapGrid_Done:
 	rts	; $22A6
 	jsr $5A0.w	; $22A8
@@ -260,7 +260,7 @@ CheckItemSprite:
 	jsr SetMonsterFlag.w	; $246C
 	move.b D2, D0	; $2470
 	andi.w #$F, D0	; $2472
-	jmp $8A04.l	; $2476
+	jmp SetItemState.l	; $2476
 AddItem:
 	cmp.b (A1)+, D0	; $247C
 	bcs.b *+$3C	; $247E
@@ -281,7 +281,7 @@ AddItem_Store:
 	cmpi.b #$C, (A0)	; $24A4
 	bcc.b *+$A	; $24A8
 	move.b D1, (A0)	; $24AA
-	jmp $76C4.l	; $24AC
+	jmp SetScenePalette.l	; $24AC
 AddItem_Next:
 	addq.w #$1, A0	; $24B2
 	dbf D0, $249E	; $24B4
@@ -289,12 +289,12 @@ AddItem_Next:
 CheckItemMulti:
 	cmp.b (A1)+, D0	; $24BA
 	bcs.b *+$8	; $24BC
-	jmp $8A3A.l	; $24BE
+	jmp SetItemState2.l	; $24BE
 CheckItemType2:
 	cmp.b (A1)+, D0	; $24C4
 	bcs.b *+$C	; $24C6
 	andi.w #$F, D0	; $24C8
-	jmp $8A04.l	; $24CC
+	jmp SetItemState.l	; $24CC
 SetItemFlag:
 	bsr.b *+$64	; $24D2
 	bset.b D0, (A0)	; $24D4
@@ -306,7 +306,7 @@ CheckItemType3:
 	cmpi.b #$20, D0	; $24E0
 	bcs.b *+$26	; $24E4
 	move.w D0, D3	; $24E6
-	jsr $882C.l	; $24E8
+	jsr ItemEffect.l	; $24E8
 	move.w D3, D0	; $24EE
 	move.w D0, D1	; $24F0
 	bsr.b *+$1E	; $24F2
@@ -827,7 +827,7 @@ EventAreaCheck:
 	move.w (-$6192,A3), D2	; $2A12
 	add.w (-$61C6,A3), D2	; $2A16
 	move.w A3, -(SP)	; $2A1A
-	jsr $1090C.l	; $2A1C
+	jsr CheckCollisionPoint.l	; $2A1C
 	movea.w (SP)+, A3	; $2A22
 	bmi.b *+$3C	; $2A24
 	move.b (-$61FB,A3), D0	; $2A26
@@ -1011,6 +1011,7 @@ SpawnMusicNote:
 	rts	; $2CDE
 ProjectileVelDeltaTable:					; loc_0002CE0
 	dc.w	$0400,$0400,$FC00,$0400,$FC00,$FC00,$0400,$FC00	; $2CE0
+SpawnMonsterAt:
 	jsr FindFreeEntitySlot.w				; $2CF4
 	jsr	$A36.w				; $2CF8
 	move.w D6, (ENT_X,A4)	; $2CF8
@@ -1033,7 +1034,7 @@ MonsterRage:
 	andi.w #$7F, D5	; $2D30
 	move.w (RAM_word_FFFF9BBE).w, D6	; $2D34
 	move.w (RAM_word_FFFF9BC0).w, D7	; $2D38
-	jsr $2CF0.w	; $2D3C
+	jsr SpawnMonsterAt.w	; $2D3C
 	move.w D7, (-$20FE,A4)	; $2D40
 	st (-$31FE,A4)	; $2D44
 	st (-$3200,A4)	; $2D48
@@ -1068,7 +1069,7 @@ MonsterRage_HitTest:
 	add.w (RAM_word_FFFF9BC0).w, D2	; $2D94
 	moveq #$0, D0	; $2D98
 	move.b (RAM_word_FFFF9BB9).w, D0	; $2D9A
-	jsr $1090C.l	; $2D9E
+	jsr CheckCollisionPoint.l	; $2D9E
 	spl D0	; $2DA4
 	movem.w (SP)+, D1/D2	; $2DA6
 	tst.b D0	; $2DAA

@@ -10,7 +10,7 @@
 	jsr $400.w	; $9018
 	btst.b #$7, (RAM_word_FFFF9659).w	; $901C
 	bne.w *+$64	; $9022
-	jsr $11C9E.l	; $9026
+	jsr Subroutine_11C9E.l	; $9026
 	btst.b #$2, (RAM_word_FFFF965F).w	; $902C
 	bne.b *+$6	; $9032
 	bsr.w *+$4CD4	; $9034
@@ -21,13 +21,13 @@
 	beq.b *+$E	; $9048
 	bsr.w *-$3EC2	; $904A
 	moveq #$1, D0	; $904E
-	jmp $4CA8.l	; $9050
+	jmp ClearTaskSlot.l	; $9050
 	btst.b #$1, (RAM_word_FFFF965F).w	; $9056
 	bne.w *+$6710	; $905C
 	move.w (RAM_word_FFFF9962).w, D0	; $9060
 	bne.w *+$186	; $9064
 	bsr.w *+$6A04	; $9068
-	jsr $133B2.l	; $906C
+	jsr ApplyDamage.l	; $906C
 	bsr.w *-$818	; $9072
 	bsr.w *+$79A8	; $9076
 	bsr.w *+$2532	; $907A
@@ -112,7 +112,7 @@
 	btst.b #$4, (RAM_word_FFFF8C56).w	; $91AA
 	beq.b *-$A	; $91B0
 	moveq #$0, D0	; $91B2
-	jmp $4CA8.l	; $91B4
+	jmp ClearTaskSlot.l	; $91B4
 	dc.b	$00,$01,$02,$03	; $91BA
 	dc.b	$89,$00,$ff,$ff	; $91BE
 	dc.b	$01,$08,$0c,$02	; $91C2

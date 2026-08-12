@@ -382,7 +382,7 @@ SceneCmd_Text2:
 	sub.l D0, (RAM_word_FFFF962C).w	; $1882
 SceneCmd_RunScript:
 	move.l A2, -(SP)	; $1886
-	jsr	$85A8.l				; $1888
+	jsr RunSceneScript.l				; $1888
 	movea.l (SP)+, A2	; $188E
 	bra.w RunSceneEventScript	; $1890
 	move.b (A2)+, D0	; $1894
@@ -400,7 +400,7 @@ SceneCmd_Sprite:
 	bra.w RunSceneEventScript	; $18BA
 	move.b (A2)+, (RAM_word_FFFF8CAE).w	; $18BE
 	bra.w RunSceneEventScript	; $18C2
-	jsr	$1C494.l			; $18C6
+	jsr SceneItemCommand.l			; $18C6
 	bra.w RunSceneEventScript	; $18CC
 	ori.b #$3, (RAM_word_FFFF9BF3).w	; $18D0
 	bra.w RunSceneEventScript	; $18D6
@@ -454,7 +454,7 @@ SceneCmd_ValueTable:
 	jsr SetMonsterFlag.w	; $1982
 	bra.w RunSceneEventScript	; $1986
 	move.l A2, -(SP)	; $198A
-	jsr	$1C330.l			; $198C
+	jsr SceneSpawnCommand.l			; $198C
 	movea.l (SP)+, A2	; $1992
 	bra.w RunSceneEventScript	; $1994
 	move.b (A2)+, (RAM_EventCounter).w	; $1998
@@ -499,7 +499,7 @@ SceneCmd_Subroutine:
 	move.b (RAM_word_FFFF8CC5).w, D2	; $1A18
 	bra.w SceneEventDispatch2	; $1A1C
 	move.w (RAM_word_FFFF968A).w, D0	; $1A20
-	jsr	$F906.l				; $1A24
+	jsr ApplyMagicEffect.l				; $1A24
 	bra.w RunSceneEventScript	; $1A2A
 	moveq #$0, D0	; $1A2E
 	move.b (A2)+, D0	; $1A30
@@ -672,7 +672,7 @@ SceneCmd_ItemCheck_Next:
 	moveq #$3E, D0	; $1C04
 	jsr $366.w	; $1C06
 SceneCmd_AddGold:
-	jmp	$8AA2.l				; $1C0A
+	jmp UpdateHUD.l				; $1C0A
 	moveq #$0, D0	; $1C10
 	move.b (RAM_word_FFFF8CAE).w, D0	; $1C12
 	move.l A2, -(SP)	; $1C16
@@ -716,13 +716,13 @@ SceneCmd_GoldCheck:
 	movea.w (RAM_word_FFFF9EEE).w, A0	; $1C8E
 	addi.w #$100, (-$2600,A0)	; $1C92
 	move.l A2, -(SP)	; $1C98
-	jsr	$8AA2.l				; $1C9A
+	jsr UpdateHUD.l				; $1C9A
 SceneCmd_RestoreStream:
 	movea.l (SP)+, A2	; $1CA0
 SceneCmd_Resume:
 	bra.w RunSceneEventScript	; $1CA2
 	move.l A2, -(SP)	; $1CA6
-	jsr	$76C4.l				; $1CA8
+	jsr SetScenePalette.l				; $1CA8
 	bra.b SceneCmd_RestoreStream	; $1CAE
 	moveq #$0, D0	; $1CB0
 	move.b (A2)+, D0	; $1CB2
@@ -997,7 +997,7 @@ DrawDialogueText:
 	bsr.w BuildTextLine	; $1FD0
 InitDialogue:
 	lea (-$72EE).w, A0	; $1FD4
-	jsr	$7EEE.l				; $1FD8
+	jsr DrawTextLine.l				; $1FD8
 	move.w #$3C, (RAM_word_FFFF965C).w	; $1FDE
 	rts					; $1FE4
 FoundGoldStrings:				; loc_0001FE6

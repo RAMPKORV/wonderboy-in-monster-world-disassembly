@@ -8,10 +8,11 @@
 	rts					; $4900
 	jsr $BEE.w	; $4902
 	beq.b *+$8	; $4906
-	jsr $4814.w	; $4908
+	jsr KillEntity.w	; $4908
 	addq.w #$4, SP	; $490C
 InputHandler_Return:
 	rts	; $490E
+FindWordInTable:
 	lea (-$5EDE).w, A0	; $4910
 	move.w (RAM_word_FFFFA142).w, D0	; $4914
 FindWordInTable_Loop:
@@ -131,7 +132,7 @@ WaitVDPIdle:
 	jsr	$64E.w				; $4A68
 	bsr.w	$51C6				; $4A6C
 	bsr.w	$51C6				; $4A70
-	jmp	$4CB8.l				; $4A74
+	jmp LoadTaskList.l				; $4A74
 SetupVDP:					; loc_0004A7A
 	lea	(VDPRegTable).l, A0		; $4A7A
 	move.w #$8, D1	; $4A80
