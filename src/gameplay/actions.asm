@@ -1160,14 +1160,14 @@ UpdateScrollRegs:				; loc_0002110
 	moveq	#$0, D1				; $2190
 	moveq	#$3F, D3				; $2192
 UpdateScrollRegs_EntityLoop:
-	tst.b	(-$4000,A4)			; $2194
+	tst.b	(ENT_Flags,A4)			; $2194
 	bpl.b	*+$48				; $2198
-	tst.b	(-$3FFE,A4)			; $219A
+	tst.b	(ENT_Counter,A4)			; $219A
 	bpl.b	*+$42				; $219E
 	cmpi.b	#$4, (-$3CFD,A4)		; $21A0
 	bcs.b	*+$3A				; $21A6
-	move.w	(-$3800,A4), D0		; $21A8
-	move.b	(-$34FE,A4), D1		; $21AC
+	move.w	(ENT_X,A4), D0		; $21A8
+	move.b	(ENT_ColW2,A4), D1		; $21AC
 	add.w	D1, D0				; $21B0
 	sub.w	D4, D0				; $21B2
 	bls.b	*+$2C				; $21B4
@@ -1175,8 +1175,8 @@ UpdateScrollRegs_EntityLoop:
 	sub.w	D1, D0				; $21B8
 	cmp.w	D6, D0				; $21BA
 	bge.b	*+$24				; $21BC
-	move.w	(-$3700,A4), D0		; $21BE
-	move.b	(-$34FD,A4), D1		; $21C2
+	move.w	(ENT_Y,A4), D0		; $21BE
+	move.b	(ENT_ColH2,A4), D1		; $21C2
 	add.w	D1, D0				; $21C6
 	sub.w	D5, D0				; $21C8
 	bls.b	*+$16				; $21CA
@@ -1184,8 +1184,8 @@ UpdateScrollRegs_EntityLoop:
 	sub.w	D1, D0				; $21CE
 	cmp.w	D7, D0				; $21D0
 	bge.b	*+$E				; $21D2
-	andi.b	#$7F, (-$3FFE,A4)		; $21D4
-	ori.b	#$4, (-$4000,A4)		; $21DA
+	andi.b	#$7F, (ENT_Counter,A4)		; $21D4
+	ori.b	#$4, (ENT_Flags,A4)		; $21DA
 UpdateScrollRegs_EntityNext:
 	addq.l	#$4, A4				; $21E0
 	dbf	D3, UpdateScrollRegs_EntityLoop			; $21E2

@@ -340,7 +340,7 @@
 	rts	; $A3C8
 	btst.b #$0, (RAM_word_FFFF966B).w	; $A3CA
 	beq.b *+$6	; $A3D0
-	asl (-$35FE,A4)	; $A3D2
+	asl (ENT_VelY,A4)	; $A3D2
 	rts	; $A3D6
 	btst.b #$6, (RAM_word_FFFF9659).w	; $A3D8
 	bne.b *+$20	; $A3DE
@@ -2533,15 +2533,15 @@
 	move.w D1, (RAM_word_FFFF9BC8).w	; $C020
 	movea.w (RAM_word_FFFF9EEE).w, A4	; $C024
 	move.w D4, D0	; $C028
-	add.w (-$3800,A4), D4	; $C02A
+	add.w (ENT_X,A4), D4	; $C02A
 	move.w D4, (RAM_word_FFFF9C20).w	; $C02E
 	move.w D5, D1	; $C032
-	add.w (-$3700,A4), D5	; $C034
+	add.w (ENT_Y,A4), D5	; $C034
 	move.w D5, (RAM_word_FFFF9C22).w	; $C038
 	move.w #$200, D2	; $C03C
 	jsr $127A.w	; $C040
-	move.w D4, (-$3600,A4)	; $C044
-	move.w D5, (-$35FE,A4)	; $C048
+	move.w D4, (ENT_VelX,A4)	; $C044
+	move.w D5, (ENT_VelY,A4)	; $C048
 	lsr.w #$1, D2	; $C04C
 	move.w D2, (RAM_word_FFFF9C1C).w	; $C04E
 	jsr $400.w	; $C052
@@ -2554,8 +2554,8 @@
 	bne.b *-$1A	; $C06C
 	movea.w (RAM_word_FFFF9EEE).w, A4	; $C06E
 	jsr $C1C.w	; $C072
-	move.w (RAM_word_FFFF9C20).w, (-$3800,A4)	; $C076
-	move.w (RAM_word_FFFF9C22).w, (-$3700,A4)	; $C07C
+	move.w (RAM_word_FFFF9C20).w, (ENT_X,A4)	; $C076
+	move.w (RAM_word_FFFF9C22).w, (ENT_Y,A4)	; $C07C
 	movea.w #$8, A4	; $C082
 	movea.l (RAM_word_FFFF9986).w, A2	; $C086
 	move.b ($1,A2), D0	; $C08A
@@ -2565,7 +2565,7 @@
 	bsr.w *-$668	; $C09C
 	movea.w (RAM_word_FFFF9EEE).w, A4	; $C0A0
 	bsr.w *+$1EEC	; $C0A4
-	andi.b #-$11, (-$3FFD,A4)	; $C0A8
+	andi.b #-$11, (ENT_ScriptFlag,A4)	; $C0A8
 	bsr.w *-$35C	; $C0AE
 	bsr.w *-$60A	; $C0B2
 	clr.b (RAM_word_FFFFC008).w	; $C0B6
@@ -2603,7 +2603,7 @@
 	jsr $366.w	; $C134
 	jsr $400.w	; $C138
 	movea.w #$8, A4	; $C13C
-	tst.b (-$3A00,A4)	; $C140
+	tst.b (ENT_Counter2,A4)	; $C140
 	bne.b *-$C	; $C144
 	movea.w (RAM_word_FFFF9C14).w, A1	; $C146
 	movea.l -(A1), A0	; $C14A
@@ -2618,7 +2618,7 @@
 	jsr $7F4.w	; $C166
 	jsr $400.w	; $C16A
 	movea.w #$8, A4	; $C16E
-	tst.b (-$3A00,A4)	; $C172
+	tst.b (ENT_Counter2,A4)	; $C172
 	bne.b *-$C	; $C176
 	movea.w (RAM_word_FFFF9C14).w, A1	; $C178
 	movea.l -(A1), A0	; $C17C
@@ -2637,7 +2637,7 @@
 	jsr $400.w	; $C1AC
 	bsr.w *+$1B58	; $C1B0
 	movea.w (RAM_word_FFFF9EEE).w, A4	; $C1B4
-	move.w (-$3800,A4), D0	; $C1B8
+	move.w (ENT_X,A4), D0	; $C1B8
 	sub.w (RAM_word_FFFF9BD6).w, D0	; $C1BC
 	cmpi.w #-$18, D0	; $C1C0
 	blt.b *+$4	; $C1C4
@@ -2692,11 +2692,11 @@
 	clr.w (RAM_word_FFFF9962).w	; $C282
 	jsr $A66.w	; $C286
 	bsr.w *+$EC	; $C28A
-	tst.b (-$4000,A4)	; $C28E
+	tst.b (ENT_Flags,A4)	; $C28E
 	bpl.b *+$8	; $C292
 	jsr $400.w	; $C294
 	bra.b *-$E	; $C298
-	move.w (-$2300,A4), D0	; $C29A
+	move.w (ENT_Defense,A4), D0	; $C29A
 	subi.b #$20, D0	; $C29E
 	bcc.w *+$A	; $C2A2
 	bsr.w *+$38	; $C2A6
@@ -4787,11 +4787,11 @@
 	bclr.b #$0, (RAM_word_FFFF9854).w	; $E042
 	bne.w *+$D2	; $E048
 	rts	; $E04C
-	tst.b (-$2AFD,A4)	; $E04E
+	tst.b (ENT_PlayerFlags,A4)	; $E04E
 	bmi.b *+$28	; $E052
-	btst.b #$4, (-$2AFD,A4)	; $E054
+	btst.b #$4, (ENT_PlayerFlags,A4)	; $E054
 	bne.b *+$E	; $E05A
-	btst.b #$6, (-$2AFD,A4)	; $E05C
+	btst.b #$6, (ENT_PlayerFlags,A4)	; $E05C
 	beq.b *+$24	; $E062
 	moveq #$46, D0	; $E064
 	bra.b *+$E	; $E066
@@ -4805,17 +4805,17 @@
 	bra.w *+$A4	; $E082
 	rts	; $E086
 	move.w #$180, D0	; $E088
-	btst.b #$3, (-$3FFE,A4)	; $E08C
+	btst.b #$3, (ENT_Counter,A4)	; $E08C
 	bne.b *+$4	; $E092
 	neg.w D0	; $E094
-	move.w D0, (-$3600,A4)	; $E096
+	move.w D0, (ENT_VelX,A4)	; $E096
 	rts	; $E09A
-	move.w (-$23FE,A4), D0	; $E09C
+	move.w (ENT_Damage,A4), D0	; $E09C
 	jsr $4964.w	; $E0A0
-	sub.w D0, (-$2600,A4)	; $E0A4
-	cmpi.w #$40, (-$2600,A4)	; $E0A8
+	sub.w D0, (ENT_Gold,A4)	; $E0A4
+	cmpi.w #$40, (ENT_Gold,A4)	; $E0A8
 	bge.b *+$44	; $E0AE
-	clr.w (-$2600,A4)	; $E0B0
+	clr.w (ENT_Gold,A4)	; $E0B0
 	moveq #$2A, D0	; $E0B4
 	jsr $23E4.w	; $E0B6
 	beq.b *+$26	; $E0BA
@@ -4827,20 +4827,20 @@
 	lsr.w #$1, D0	; $E0CE
 	andi.w #-$100, D0	; $E0D0
 	move.w D0, (RAM_word_FFFF9F14).w	; $E0D4
-	clr.b (-$2AFD,A4)	; $E0D8
+	clr.b (ENT_PlayerFlags,A4)	; $E0D8
 	bra.w *+$11AC	; $E0DC
-	clr.b (-$2BFF,A4)	; $E0E0
+	clr.b (ENT_Anim,A4)	; $E0E0
 	clr.b (-$31FF,A4)	; $E0E4
 	ori.b #-$80, (-$3200,A4)	; $E0E8
 	bra.w *+$140	; $E0EE
 	bsr.w *-$5650	; $E0F2
-	tst.w (-$2600,A4)	; $E0F6
+	tst.w (ENT_Gold,A4)	; $E0F6
 	rts	; $E0FA
 	move.w (RAM_word_FFFF9856).w, D0	; $E0FC
 	bra.b *+$4	; $E100
 	moveq #$1, D0	; $E102
-	move.w #$2101, (-$3900,A4)	; $E104
-	ori.b #$40, (-$3FFD,A4)	; $E10A
+	move.w #$2101, (ENT_Repeat,A4)	; $E104
+	ori.b #$40, (ENT_ScriptFlag,A4)	; $E10A
 	move.b #$3C, (RAM_word_FFFF9F0A).w	; $E110
 	bra.b *-$72	; $E116
 	rts	; $E118
@@ -4855,8 +4855,8 @@
 	ori.b #$10, (RAM_word_FFFF9F02).w	; $E134
 	andi.b #-$39, (-$3200,A4)	; $E13A
 	ori.b #$40, (-$3200,A4)	; $E140
-	move.w #$2101, (-$3900,A4)	; $E146
-	ori.b #$40, (-$3FFD,A4)	; $E14C
+	move.w #$2101, (ENT_Repeat,A4)	; $E146
+	ori.b #$40, (ENT_ScriptFlag,A4)	; $E14C
 	move.b #$1E, (-$2800,A4)	; $E152
 	move.b #$0, (-$31FF,A4)	; $E158
 	move.b #$3C, (RAM_word_FFFF9F0A).w	; $E15E
@@ -4867,35 +4867,35 @@
 	beq.b *+$4	; $E172
 	rts	; $E174
 	move.w (-$610A,A4), D0	; $E176
-	btst.b #$0, (-$2AFD,A4)	; $E17A
+	btst.b #$0, (ENT_PlayerFlags,A4)	; $E17A
 	bne.b *+$4	; $E180
 	neg.w D0	; $E182
-	move.w D0, (-$3600,A4)	; $E184
+	move.w D0, (ENT_VelX,A4)	; $E184
 	tst.b (RAM_word_FFFF9F0A).w	; $E188
 	bne.b *+$18	; $E18C
-	andi.b #$75, (-$3100,A4)	; $E18E
+	andi.b #$75, (ENT_State,A4)	; $E18E
 	move.w (RAM_word_FFFF9EF2).w, D0	; $E194
 	asr.w #$1, D0	; $E198
 	move.w D0, D1	; $E19A
 	asr.w #$1, D1	; $E19C
 	add.w D1, D0	; $E19E
-	move.w D0, (-$35FE,A4)	; $E1A0
+	move.w D0, (ENT_VelY,A4)	; $E1A0
 	rts	; $E1A4
 	moveq #$0, D0	; $E1A6
-	move.b D0, (-$2AFD,A4)	; $E1A8
+	move.b D0, (ENT_PlayerFlags,A4)	; $E1A8
 	move.l D0, (-$2A00,A4)	; $E1AC
 	move.l D0, (-$2900,A4)	; $E1B0
 	move.w (RAM_word_FFFF9EFA).w, (RAM_word_FFFF9EFE).w	; $E1B4
 	move.w (RAM_word_FFFF9EFC).w, (-$33FE,A4)	; $E1BA
-	move.l (RAM_word_FFFF9EF6).w, (-$3300,A4)	; $E1C0
-	move.w #$100, (-$39FE,A4)	; $E1C6
+	move.l (RAM_word_FFFF9EF6).w, (ENT_MaxVelX,A4)	; $E1C0
+	move.w #$100, (ENT_Decrement,A4)	; $E1C6
 	andi.b #-$46, (RAM_word_FFFF9F02).w	; $E1CC
 	andi.b #-$2, (RAM_word_FFFF9F03).w	; $E1D2
 	andi.b #-$19, (-$3200,A4)	; $E1D8
 	andi.b #-$11, (RAM_word_FFFF9F06).w	; $E1DE
 	clr.b (RAM_word_FFFF9F0F).w	; $E1E4
 	moveq #$A, D0	; $E1E8
-	and.b (-$3100,A4), D0	; $E1EA
+	and.b (ENT_State,A4), D0	; $E1EA
 	subq.b #$2, D0	; $E1EE
 	bne.b *+$8	; $E1F0
 	ori.b #$1, (RAM_word_FFFF9F03).w	; $E1F2
@@ -4908,11 +4908,11 @@
 	tst.b (RAM_word_FFFF9F08).w	; $E20C
 	beq.b *+$6	; $E210
 	dc.b	$53,$38,$9F,$08	; $E212
-	andi.b #-$41, (-$3FFD,A4)	; $E216
+	andi.b #-$41, (ENT_ScriptFlag,A4)	; $E216
 	tst.b (RAM_word_FFFF9F0A).w	; $E21C
 	beq.b *+$C	; $E220
 	dc.b	$53,$38,$9F,$0A	; $E222
-	ori.b #$40, (-$3FFD,A4)	; $E226
+	ori.b #$40, (ENT_ScriptFlag,A4)	; $E226
 	rts	; $E22C
 	bset.b #$7, (-$31FF,A4)	; $E22E
 	bne.b *+$68	; $E234
@@ -4927,14 +4927,14 @@
 	jsr $A66.w	; $E252
 	movea.w (RAM_word_FFFF9EEE).w, A4	; $E256
 	ori.b #$60, (RAM_word_FFFF9659).w	; $E25A
-	ori.b #-$80, (-$3FFE,A4)	; $E260
-	move.w #$20, (-$3400,A4)	; $E266
-	move.w #$100, (-$3300,A4)	; $E26C
+	ori.b #-$80, (ENT_Counter,A4)	; $E260
+	move.w #$20, (ENT_AccelX,A4)	; $E266
+	move.w #$100, (ENT_MaxVelX,A4)	; $E26C
 	move.b #$1E, (-$2800,A4)	; $E272
-	move.w #-$100, (-$35FE,A4)	; $E278
-	andi.b #-$41, (-$3FFD,A4)	; $E27E
+	move.w #-$100, (ENT_VelY,A4)	; $E278
+	andi.b #-$41, (ENT_ScriptFlag,A4)	; $E27E
 	moveq #$8, D0	; $E284
-	cmp.b (-$3CFE,A4), D0	; $E286
+	cmp.b (ENT_TreeIdx2,A4), D0	; $E286
 	beq.b *+$12	; $E28A
 	jsr $7E8.w	; $E28C
 	bsr.w *-$57EE	; $E290
@@ -4943,7 +4943,7 @@
 	dc.b	$53,$2C,$D8,$00	; $E29C
 	bne.b *+$C	; $E2A0
 	move.b #$1E, (-$2800,A4)	; $E2A2
-	neg.w (-$3400,A4)	; $E2A8
+	neg.w (ENT_AccelX,A4)	; $E2A8
 	jsr $BF4.w	; $E2AC
 	bne.b *+$A	; $E2B0
 	jsr $AF4.w	; $E2B2
@@ -5106,11 +5106,11 @@
 	jsr $366.w	; $E520
 	move.w (RAM_word_FFFF9EF2).w, D0	; $E524
 	asr.w #$1, D0	; $E528
-	move.w D0, (-$35FE,A4)	; $E52A
+	move.w D0, (ENT_VelY,A4)	; $E52A
 	btst.b #$0, (RAM_word_FFFF9F0B).w	; $E52E
 	beq.b *+$C	; $E534
 	move.w (RAM_word_FFFF9EF2).w, D0	; $E536
-	add.w D0, (-$35FE,A4)	; $E53A
+	add.w D0, (ENT_VelY,A4)	; $E53A
 	bra.b *+$1A	; $E53E
 	btst.b #$1, (RAM_word_FFFF9F0B).w	; $E540
 	beq.b *+$12	; $E546
@@ -7044,30 +7044,30 @@
 	bne.b *+$E	; $1004C
 	dc.b	$53,$2C,$D8,$00	; $1004E
 	bpl.b *-$32	; $10052
-	move.b #$A, (-$2BFF,A4)	; $10054
+	move.b #$A, (ENT_Anim,A4)	; $10054
 	rts	; $1005A
-	tst.b (-$2BFF,A4)	; $1005C
+	tst.b (ENT_Anim,A4)	; $1005C
 	bmi.b *+$5E	; $10060
-	btst.b #$6, (-$4000,A4)	; $10062
+	btst.b #$6, (ENT_Flags,A4)	; $10062
 	bne.b *+$38	; $10068
 	move.w #$400, D1	; $1006A
 	jsr $4910.w	; $1006E
 	move.w (A0), (-$3DFE,A4)	; $10072
-	ori.b #$8, (-$3FFE,A4)	; $10076
-	move.w #$1618, (-$3D00,A4)	; $1007C
+	ori.b #$8, (ENT_Counter,A4)	; $10076
+	move.w #$1618, (ENT_TreeIdx0,A4)	; $1007C
 	moveq #$0, D0	; $10082
 	jsr $7FC.w	; $10084
 	moveq #$0, D0	; $10088
-	move.b (-$34FD,A4), D0	; $1008A
+	move.b (ENT_ColH2,A4), D0	; $1008A
 	neg.w D0	; $1008E
-	add.w D0, (-$3700,A4)	; $10090
-	ori.b #$40, (-$4000,A4)	; $10094
-	move.b #$3, (-$2F00,A4)	; $1009A
+	add.w D0, (ENT_Y,A4)	; $10090
+	ori.b #$40, (ENT_Flags,A4)	; $10094
+	move.b #$3, (ENT_ColFlags,A4)	; $1009A
 	dc.b	$53,$6C,$C8,$00	; $100A0
-	cmpi.w #$1158, (-$3800,A4)	; $100A4
+	cmpi.w #$1158, (ENT_X,A4)	; $100A4
 	bcc.b *+$46	; $100AA
 	move.b #$1E, (-$2800,A4)	; $100AC
-	ori.b #-$80, (-$2BFF,A4)	; $100B2
+	ori.b #-$80, (ENT_Anim,A4)	; $100B2
 	moveq #$2, D0	; $100B8
 	jmp $7E8.w	; $100BA
 	tst.b (-$2800,A4)	; $100BE
@@ -7078,9 +7078,9 @@
 	jsr $366.w	; $100CC
 	moveq #$4, D0	; $100D0
 	jmp $7E8.w	; $100D2
-	tst.b (-$3A00,A4)	; $100D6
+	tst.b (ENT_Counter2,A4)	; $100D6
 	bne.b *+$16	; $100DA
-	move.b #$A, (-$2BFF,A4)	; $100DC
+	move.b #$A, (ENT_Anim,A4)	; $100DC
 	clr.w (-$3DFE,A4)	; $100E2
 	bsr.w *-$734	; $100E6
 	moveq #$0, D0	; $100EA
@@ -7089,7 +7089,7 @@
 	bsr.w *+$752	; $100F2
 	movea.w (RAM_word_FFFF9EEE).w, A2	; $100F6
 	moveq #$7F, D0	; $100FA
-	and.b (-$2BFF,A4), D0	; $100FC
+	and.b (ENT_Anim,A4), D0	; $100FC
 	lea ($1010A,PC), A0	; $10100
 	adda.w ($0,A0,D0.w), A0	; $10104
 	jmp (A0)	; $10108
@@ -9355,18 +9355,18 @@
 	bra.b *+$40	; $12010
 	bclr.b #$2, (RAM_word_FFFF9995).w	; $12012
 	beq.b *+$E	; $12018
-	move.w (-$27FE,A4), (-$35FE,A4)	; $1201A
+	move.w (-$27FE,A4), (ENT_VelY,A4)	; $1201A
 	moveq #$41, D0	; $12020
 	jsr $366.w	; $12022
 	jsr $AB4.w	; $12026
-	tst.w (-$35FE,A4)	; $1202A
+	tst.w (ENT_VelY,A4)	; $1202A
 	beq.b *+$26	; $1202E
 	dc.b	$53,$6C,$CE,$02	; $12030
 	bne.b *+$20	; $12034
 	moveq #$2, D0	; $12036
 	or.b D0, (-$3200,A4)	; $12038
 	or.w D0, (RAM_word_FFFF9994).w	; $1203C
-	clr.w (-$35FE,A4)	; $12040
+	clr.w (ENT_VelY,A4)	; $12040
 	clr.b (RAM_word_FFFF9F05).w	; $12044
 	moveq #$42, D0	; $12048
 	jsr $366.w	; $1204A
@@ -9375,7 +9375,7 @@
 	bra.w *-$358	; $12054
 	btst.b #$0, (-$3200,A4)	; $12058
 	bne.b *+$3C	; $1205E
-	move.w (-$2D00,A4), D0	; $12060
+	move.w (ENT_Object,A4), D0	; $12060
 	bmi.b *+$C	; $12064
 	movea.w D0, A0	; $12066
 	btst.b #$0, (-$6072,A0)	; $12068
@@ -9385,16 +9385,16 @@
 	moveq #$2, D0	; $12078
 	jsr $7E8.w	; $1207A
 	ori.b #$1, (-$3200,A4)	; $1207E
-	move.w #-$100, (-$35FE,A4)	; $12084
+	move.w #-$100, (ENT_VelY,A4)	; $12084
 	move.w #$400, D0	; $1208A
 	tst.b (-$31FE,A4)	; $1208E
 	bpl.b *+$4	; $12092
 	neg.w D0	; $12094
-	move.w D0, (-$3600,A4)	; $12096
+	move.w D0, (ENT_VelX,A4)	; $12096
 	jsr $2F8E.w	; $1209A
-	btst.b #$0, (-$3100,A4)	; $1209E
+	btst.b #$0, (ENT_State,A4)	; $1209E
 	beq.b *+$6	; $120A4
-	neg.w (-$3600,A4)	; $120A6
+	neg.w (ENT_VelX,A4)	; $120A6
 	jsr $4362.w	; $120AA
 	beq.b *+$8	; $120AE
 	jsr $B44.w	; $120B0
@@ -9403,38 +9403,38 @@
 	andi.w #-$1000, D2	; $120BA
 	cmpi.w #-$7000, D2	; $120BE
 	bne.b *+$26	; $120C2
-	subi.w #$600, (-$35FE,A4)	; $120C4
+	subi.w #$600, (ENT_VelY,A4)	; $120C4
 	moveq #$0, D2	; $120CA
-	move.b (-$34FD,A4), D2	; $120CC
-	add.w (-$3700,A4), D2	; $120D0
+	move.b (ENT_ColH2,A4), D2	; $120CC
+	add.w (ENT_Y,A4), D2	; $120D0
 	dc.b	$72,$F0	; $120D4
 	and.w D1, D2	; $120D6
-	and.w (-$3800,A4), D1	; $120D8
+	and.w (ENT_X,A4), D1	; $120D8
 	addq.w #$8, D1	; $120DC
 	move.w #$200, D0	; $120DE
 	bsr.w *-$17D2	; $120E2
 	bra.b *+$1E	; $120E6
 	btst.b #$1, (-$2EFF,A4)	; $120E8
 	bne.b *+$16	; $120EE
-	move.w (-$35FE,A4), D0	; $120F0
+	move.w (ENT_VelY,A4), D0	; $120F0
 	neg.w D0	; $120F4
 	asr.w #$2, D0	; $120F6
 	cmpi.w #-$80, D0	; $120F8
 	blt.b *+$4	; $120FC
 	clr.w D0	; $120FE
-	move.w D0, (-$35FE,A4)	; $12100
+	move.w D0, (ENT_VelY,A4)	; $12100
 	bsr.b *+$1A	; $12104
 	bmi.b *+$6	; $12106
 	bra.w *-$40C	; $12108
-	clr.b (-$4000,A4)	; $1210C
-	move.w (-$2D00,A4), D0	; $12110
+	clr.b (ENT_Flags,A4)	; $1210C
+	move.w (ENT_Object,A4), D0	; $12110
 	bmi.b *+$8	; $12114
 	movea.w D0, A0	; $12116
 	clr.b (-$6072,A0)	; $12118
 	rts	; $1211C
 	moveq #$0, D1	; $1211E
-	move.b (-$34FE,A4), D1	; $12120
-	move.w (-$3800,A4), D0	; $12124
+	move.b (ENT_ColW2,A4), D1	; $12120
+	move.w (ENT_X,A4), D0	; $12124
 	add.w D1, D0	; $12128
 	subi.w #$FE0, D0	; $1212A
 	bmi.b *+$30	; $1212E
@@ -9445,8 +9445,8 @@
 	cmp.w (RAM_word_FFFF9798).w, D0	; $1213A
 	bcc.b *+$1E	; $1213E
 	moveq #$0, D1	; $12140
-	move.b (-$34FD,A4), D1	; $12142
-	move.w (-$3700,A4), D0	; $12146
+	move.b (ENT_ColH2,A4), D1	; $12142
+	move.w (ENT_Y,A4), D0	; $12146
 	subi.w #$1030, D0	; $1214A
 	sub.w D1, D0	; $1214E
 	lsl.w #$2, D0	; $12150
@@ -9456,26 +9456,26 @@
 	rts	; $1215A
 	dc.b	$70,$FF	; $1215C
 	rts	; $1215E
-	move.w (-$2D00,A4), D0	; $12160
+	move.w (ENT_Object,A4), D0	; $12160
 	bmi.b *+$5C	; $12164
 	movea.w D0, A0	; $12166
 	btst.b #$0, (-$6072,A0)	; $12168
 	beq.b *+$52	; $1216E
 	moveq #$10, D0	; $12170
-	add.w (-$35FE,A4), D0	; $12172
+	add.w (ENT_VelY,A4), D0	; $12172
 	move.w #$200, D1	; $12176
 	cmp.w D1, D0	; $1217A
 	ble.b *+$4	; $1217C
 	move.w D1, D0	; $1217E
-	move.w D0, (-$35FE,A4)	; $12180
+	move.w D0, (ENT_VelY,A4)	; $12180
 	jsr $AB4.w	; $12184
 	moveq #$10, D0	; $12188
 	add.w (-$27FE,A4), D0	; $1218A
-	cmp.w (-$3700,A4), D0	; $1218E
+	cmp.w (ENT_Y,A4), D0	; $1218E
 	bhi.w *+$86	; $12192
-	move.w D0, (-$3700,A4)	; $12196
+	move.w D0, (ENT_Y,A4)	; $12196
 	moveq #$0, D0	; $1219A
-	move.w D0, (-$35FE,A4)	; $1219C
+	move.w D0, (ENT_VelY,A4)	; $1219C
 	btst.b D0, (-$3200,A4)	; $121A0
 	bne.b *+$74	; $121A4
 	ori.b #$1, (-$3200,A4)	; $121A6
@@ -9489,30 +9489,30 @@
 	beq.b *+$12	; $121C6
 	btst.b #$0, (-$3200,A4)	; $121C8
 	beq.b *+$A	; $121CE
-	move.w (-$3700,A4), (-$2DFE,A4)	; $121D0
+	move.w (ENT_Y,A4), (ENT_PrevY,A4)	; $121D0
 	bra.b *+$42	; $121D6
 	dc.b	$70,$E0	; $121D8
-	add.w (-$35FE,A4), D0	; $121DA
+	add.w (ENT_VelY,A4), D0	; $121DA
 	move.w #-$200, D1	; $121DE
 	cmp.w D1, D0	; $121E2
 	bge.b *+$4	; $121E4
 	move.w D1, D0	; $121E6
-	move.w D0, (-$35FE,A4)	; $121E8
+	move.w D0, (ENT_VelY,A4)	; $121E8
 	jsr $AB4.w	; $121EC
 	move.w (-$27FE,A4), D0	; $121F0
-	cmp.w (-$3700,A4), D0	; $121F4
+	cmp.w (ENT_Y,A4), D0	; $121F4
 	bcs.b *+$12	; $121F8
-	move.w D0, (-$3700,A4)	; $121FA
-	clr.w (-$35FE,A4)	; $121FE
+	move.w D0, (ENT_Y,A4)	; $121FA
+	clr.w (ENT_VelY,A4)	; $121FE
 	bclr.b #$0, (-$3200,A4)	; $12202
 	bra.b *+$10	; $12208
 	addi.w #$10, D0	; $1220A
-	cmp.w (-$3700,A4), D0	; $1220E
+	cmp.w (ENT_Y,A4), D0	; $1220E
 	bhi.b *+$6	; $12212
-	move.w D0, (-$3700,A4)	; $12214
+	move.w D0, (ENT_Y,A4)	; $12214
 	bra.w *-$51C	; $12218
-	move.w (-$3700,A4), (-$2DFE,A4)	; $1221C
-	move.b (-$2BFF,A4), D0	; $12222
+	move.w (ENT_Y,A4), (ENT_PrevY,A4)	; $1221C
+	move.b (ENT_Anim,A4), D0	; $12222
 	bne.b *+$2C	; $12226
 	move.b (-$31FE,A4), D0	; $12228
 	jsr $2758.w	; $1222C
@@ -9523,18 +9523,18 @@
 	dc.b	$52,$2C,$D4,$01	; $1223C
 	move.b #$70, (-$2800,A4)	; $12240
 	clr.b (-$27FF,A4)	; $12246
-	move.w #-$80, (-$35FE,A4)	; $1224A
+	move.w #-$80, (ENT_VelY,A4)	; $1224A
 	bra.b *+$3C	; $12250
 	subq.b #$1, D0	; $12252
 	bne.b *+$38	; $12254
 	jsr $AD6.w	; $12256
 	dc.b	$53,$2C,$D8,$00	; $1225A
 	beq.b *+$24	; $1225E
-	move.w (-$23FE,A4), D1	; $12260
+	move.w (ENT_Damage,A4), D1	; $12260
 	moveq #$0, D0	; $12264
 	move.b (-$27FF,A4), D0	; $12266
 	add.w ($12290,PC,D0.w), D1	; $1226A
-	move.w D1, (-$3800,A4)	; $1226E
+	move.w D1, (ENT_X,A4)	; $1226E
 	addq.w #$2, D0	; $12272
 	cmpi.w #$8, D0	; $12274
 	bcs.b *+$4	; $12278
@@ -9542,7 +9542,7 @@
 	move.b D0, (-$27FF,A4)	; $1227C
 	bra.b *+$C	; $12280
 	dc.b	$52,$2C,$D4,$01	; $12282
-	move.w (-$23FE,A4), (-$3800,A4)	; $12286
+	move.w (ENT_Damage,A4), (ENT_X,A4)	; $12286
 	dc.b	$60,$00,$fa,$6e,$ff,$ff	; $1228C
 	dc.b	$00,$00,$00,$01	; $12292
 	dc.b	$00,$00,$39,$6c	; $12296
@@ -12820,7 +12820,7 @@
 	dc.b	$4e,$75	; $14F26
 	dc.b	$08,$38,$00,$00,$96,$6b	; $14F28
 	dc.b	$67,$24	; $14F2E
-	bset.b #$7, (-$2BFF,A4)	; $14F30
+	bset.b #$7, (ENT_Anim,A4)	; $14F30
 	dc.b	$66,$2e	; $14F36
 	dc.b	$30,$2c,$cd,$02	; $14F38
 	dc.b	$32,$00	; $14F3C
@@ -13284,7 +13284,7 @@
 	dc.b	$66,$28	; $155AA
 	dc.b	$30,$2a,$c9,$00	; $155AC
 	dc.b	$04,$40,$00,$10	; $155B0
-	sub.w (-$3700,A4), D0	; $155B4
+	sub.w (ENT_Y,A4), D0	; $155B4
 	dc.b	$62,$26	; $155B8
 	dc.b	$39,$7c,$ff,$c0,$cc,$02	; $155BA
 	dc.b	$30,$3c,$00,$40	; $155C0
@@ -14027,7 +14027,7 @@
 
 	dc.b	$00,$2a	; $16000
 	bne.b *+$8	; $16002
-	move.b #$3, (-$2BFF,A4)	; $16004
+	move.b #$3, (ENT_Anim,A4)	; $16004
 	rts	; $1600A
 	btst.b #$5, (RAM_word_FFFF966B).w	; $1600C
 	bne.b *+$A	; $16012
@@ -14039,15 +14039,15 @@
 	jmp $4792.w	; $16026
 	jsr $AD6.w	; $1602A
 	move.w (-$20FE,A4), D0	; $1602E
-	tst.w (-$35FE,A4)	; $16032
+	tst.w (ENT_VelY,A4)	; $16032
 	bmi.b *+$A	; $16036
-	cmp.w (-$3700,A4), D0	; $16038
+	cmp.w (ENT_Y,A4), D0	; $16038
 	bhi.b *+$18	; $1603C
 	bra.b *+$C	; $1603E
 	subi.w #$30, D0	; $16040
-	cmp.w (-$3700,A4), D0	; $16044
+	cmp.w (ENT_Y,A4), D0	; $16044
 	bcs.b *+$C	; $16048
-	move.w D0, (-$3700,A4)	; $1604A
+	move.w D0, (ENT_Y,A4)	; $1604A
 	bsr.b *+$C	; $1604E
 	moveq #$0, D0	; $16050
 	rts	; $16052
@@ -14056,7 +14056,7 @@
 	rts	; $16058
 	moveq #$0, D2	; $1605A
 	move.w (-$20FE,A4), D1	; $1605C
-	sub.w (-$3700,A4), D1	; $16060
+	sub.w (ENT_Y,A4), D1	; $16060
 	beq.w *+$6A	; $16064
 	lsr.w #$1, D1	; $16068
 	cmpi.w #$8, D1	; $1606A
@@ -14070,21 +14070,21 @@
 	moveq #$18, D1	; $16080
 	neg.w D1	; $16082
 	add.w (-$20FE,A4), D1	; $16084
-	movea.w (-$2D00,A4), A3	; $16088
+	movea.w (ENT_Object,A4), A3	; $16088
 	movea.w ($4,A3), A2	; $1608C
 	move.b ($160C6,PC,D2.w), D0	; $16090
 	bsr.b *+$A	; $16094
 	movea.w ($6,A3), A2	; $16096
 	move.b ($160CA,PC,D2.w), D0	; $1609A
-	move.w D1, (-$3700,A2)	; $1609E
-	addi.w #$E, (-$3700,A2)	; $160A2
-	btst.b #$6, (-$4000,A2)	; $160A8
+	move.w D1, (ENT_Y,A2)	; $1609E
+	addi.w #$E, (ENT_Y,A2)	; $160A2
+	btst.b #$6, (ENT_Flags,A2)	; $160A8
 	beq.b *+$8	; $160AE
-	cmp.b (-$3CFE,A2), D0	; $160B0
+	cmp.b (ENT_TreeIdx2,A2), D0	; $160B0
 	beq.b *+$10	; $160B4
 	exg A2, A4	; $160B6
 	jsr $7E8.w	; $160B8
-	ori.b #$40, (-$4000,A4)	; $160BC
+	ori.b #$40, (ENT_Flags,A4)	; $160BC
 	exg A2, A4	; $160C2
 	dc.b	$4e,$75,$08,$0a	; $160C4
 	dc.b	$0c,$00,$0e,$10	; $160C8
@@ -15790,7 +15790,7 @@
 	dc.b	$30,$01	; $1781A
 	dc.b	$60,$00,$bd,$60	; $1781C
 	rts	; $17820
-	bset.b #$7, (-$2BFF,A4)	; $17822
+	bset.b #$7, (ENT_Anim,A4)	; $17822
 	dc.b	$66,$0e	; $17828
 	dc.b	$70,$08	; $1782A
 	jsr $7E8.w	; $1782C
@@ -16425,13 +16425,13 @@
 	sub.w D0, (RAM_word_FFFF975C).w	; $180B8
 	movea.w #$0, A4	; $180BC
 	moveq #$3F, D0	; $180C0
-	tst.b (-$4000,A4)	; $180C2
+	tst.b (ENT_Flags,A4)	; $180C2
 	bpl.b *+$14	; $180C6
 	tst.w (-$3E00,A4)	; $180C8
 	bne.b *+$E	; $180CC
-	sub.w D1, (-$3800,A4)	; $180CE
-	sub.w D1, (-$2E00,A4)	; $180D2
-	sub.w D1, (-$2100,A4)	; $180D6
+	sub.w D1, (ENT_X,A4)	; $180CE
+	sub.w D1, (ENT_PrevX,A4)	; $180D2
+	sub.w D1, (ENT_AttackRange,A4)	; $180D6
 	addq.w #$4, A4	; $180DA
 	dbf D0, $180C2	; $180DC
 	movea.w #$0, A0	; $180E0
@@ -16452,13 +16452,13 @@
 	add.w D7, (-$601E,A1)	; $18114
 	movea.w (RAM_word_FFFFA11A).w, A4	; $18118
 	moveq #$F, D0	; $1811C
-	tst.b (-$4000,A4)	; $1811E
+	tst.b (ENT_Flags,A4)	; $1811E
 	bpl.b *+$14	; $18122
 	tst.w (-$3E00,A4)	; $18124
 	bne.b *+$E	; $18128
-	add.w D7, (-$3800,A4)	; $1812A
-	add.w D7, (-$2E00,A4)	; $1812E
-	add.w D7, (-$2100,A4)	; $18132
+	add.w D7, (ENT_X,A4)	; $1812A
+	add.w D7, (ENT_PrevX,A4)	; $1812E
+	add.w D7, (ENT_AttackRange,A4)	; $18132
 	addq.w #$4, A4	; $18136
 	dbf D0, $1811E	; $18138
 	rts	; $1813C
@@ -16540,17 +16540,17 @@
 	move.w D0, (RAM_word_FFFFA394).w	; $18256
 	move.b (A0)+, D0	; $1825A
 	ext.w D0	; $1825C
-	btst.b #$3, (-$3FFE,A4)	; $1825E
+	btst.b #$3, (ENT_Counter,A4)	; $1825E
 	beq.b *+$4	; $18264
 	neg.w D0	; $18266
-	add.w (-$3800,A4), D0	; $18268
+	add.w (ENT_X,A4), D0	; $18268
 	move.w D0, (RAM_word_FFFFA396).w	; $1826C
 	move.b (A0), D0	; $18270
 	ext.w D0	; $18272
-	btst.b #$4, (-$3FFE,A4)	; $18274
+	btst.b #$4, (ENT_Counter,A4)	; $18274
 	beq.b *+$4	; $1827A
 	neg.w D0	; $1827C
-	add.w (-$3700,A4), D0	; $1827E
+	add.w (ENT_Y,A4), D0	; $1827E
 	move.w D0, (RAM_word_FFFFA398).w	; $18282
 	move.w (-$3DFE,A4), (RAM_word_FFFFA39A).w	; $18286
 	bra.w *+$21AC	; $1828C
@@ -16622,13 +16622,13 @@
 	beq.b *+$4	; $1834A
 	neg.w D1	; $1834C
 	add.w (-$3800,A0), D1	; $1834E
-	move.w D1, (-$3800,A4)	; $18352
+	move.w D1, (ENT_X,A4)	; $18352
 	move.b ($18373,PC,D0.w), D1	; $18356
 	ext.w D1	; $1835A
 	add.w (-$3700,A0), D1	; $1835C
-	move.w D1, (-$3700,A4)	; $18360
-	move.b ($18374,PC,D0.w), (-$3500,A4)	; $18364
-	move.b ($18375,PC,D0.w), (-$34FF,A4)	; $1836A
+	move.w D1, (ENT_Y,A4)	; $18360
+	move.b ($18374,PC,D0.w), (ENT_ColW,A4)	; $18364
+	move.b ($18375,PC,D0.w), (ENT_ColH,A4)	; $1836A
 	dc.b	$4e,$75,$0c,$dc	; $18370
 	dc.b	$14,$14,$0c,$dc	; $18374
 	dc.b	$14,$14,$0c,$dc	; $18378
@@ -18699,7 +18699,7 @@
 	st (-$36FD,A4)	; $1A01C
 	moveq #$6, D0	; $1A020
 	bra.w *-$6AA4	; $1A022
-	bset.b #$7, (-$2BFF,A4)	; $1A026
+	bset.b #$7, (ENT_Anim,A4)	; $1A026
 	bne.b *+$1A	; $1A02C
 	movea.w (RAM_word_FFFFA11C).w, A2	; $1A02E
 	jsr $1032.w	; $1A032
@@ -18744,15 +18744,15 @@
 	move.b (-$31FF,A4), D0	; $1A0B0
 	bne.b *+$20	; $1A0B4
 	dc.b	$52,$2C,$CE,$01	; $1A0B6
-	move.w #$404, (-$34FE,A4)	; $1A0BA
+	move.w #$404, (ENT_ColW2,A4)	; $1A0BA
 	move.b #$C, (-$3CFD,A4)	; $1A0C0
 	moveq #$10, D0	; $1A0C6
 	jsr $7E8.w	; $1A0C8
-	ori.b #$40, (-$4000,A4)	; $1A0CC
+	ori.b #$40, (ENT_Flags,A4)	; $1A0CC
 	rts	; $1A0D2
 	subq.b #$1, D0	; $1A0D4
 	bne.b *+$2A	; $1A0D6
-	tst.b (-$3A00,A4)	; $1A0D8
+	tst.b (ENT_Counter2,A4)	; $1A0D8
 	bne.b *+$5C	; $1A0DC
 	clr.b (-$27FD,A4)	; $1A0DE
 	move.b #$4, (-$25FE,A4)	; $1A0E2
@@ -18773,12 +18773,12 @@
 	jsr $AB4.w	; $1A114
 	jsr $BEE.w	; $1A118
 	beq.b *+$8	; $1A11C
-	clr.w (-$4000,A4)	; $1A11E
+	clr.w (ENT_Flags,A4)	; $1A11E
 	rts	; $1A122
 	jsr $47AE.w	; $1A124
-	move.b (-$2AFD,A4), D0	; $1A128
+	move.b (ENT_PlayerFlags,A4), D0	; $1A128
 	bne.w *-$3C8	; $1A12C
-	btst.b D0, (-$4000,A4)	; $1A130
+	btst.b D0, (ENT_Flags,A4)	; $1A130
 	beq.w *-$3D0	; $1A134
 	rts	; $1A138
 	moveq #$0, D0	; $1A13A
@@ -18788,11 +18788,11 @@
 	lsr.w #$1, D0	; $1A144
 	add.w D0, D1	; $1A146
 	dc.b	$70,$E7	; $1A148
-	and.b (-$3FFE,A4), D0	; $1A14A
+	and.b (ENT_Counter,A4), D0	; $1A14A
 	or.b ($1A196,PC,D1.w), D0	; $1A14E
-	move.b D0, (-$3FFE,A4)	; $1A152
+	move.b D0, (ENT_Counter,A4)	; $1A152
 	move.b ($1A197,PC,D1.w), D0	; $1A156
-	move.l ($1A198,PC,D1.w), (-$3600,A4)	; $1A15A
+	move.l ($1A198,PC,D1.w), (ENT_VelX,A4)	; $1A15A
 	jmp $7E8.w	; $1A160
 	movea.w (RAM_word_FFFF9EEE).w, A2	; $1A164
 	jsr $108C.w	; $1A168
@@ -19130,7 +19130,7 @@
 	dc.b	$02,$42,$00,$0f	; $1A66E
 	dc.b	$66,$00,$01,$10	; $1A672
 	dc.b	$4e,$75	; $1A676
-	bset.b #$7, (-$2BFF,A4)	; $1A678
+	bset.b #$7, (ENT_Anim,A4)	; $1A678
 	dc.b	$66,$ce	; $1A67E
 	dc.b	$42,$6c,$c2,$02	; $1A680
 	dc.b	$60,$ae	; $1A684

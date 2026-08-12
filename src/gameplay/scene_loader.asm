@@ -56,11 +56,11 @@ RenderTilemapGridCol:
 	bcs.b RenderTilemapGridRow	; $2276
 	movea.w #$0, A4	; $2278
 	moveq #$40, D0	; $227C
-	tst.b (-$4000,A4)	; $227E
+	tst.b (ENT_Flags,A4)	; $227E
 	bpl.b *+$10	; $2282
-	bclr.b #$2, (-$4000,A4)	; $2284
+	bclr.b #$2, (ENT_Flags,A4)	; $2284
 	beq.b *+$8	; $228A
-	ori.b #-$80, (-$3FFE,A4)	; $228C
+	ori.b #-$80, (ENT_Counter,A4)	; $228C
 RenderTilemapGrid_NextSlot:
 	addq.l #$4, A4	; $2292
 	dbf D0, $227E	; $2294
@@ -404,7 +404,7 @@ TilemapAddr_Lookup:
 	move.w ($0,A0,D1.w), D0	; $25C4
 TilemapAddr_Done:
 	rts	; $25C8
-DamageStatTable:				; loc_00025CA
+TilemapVramOffsetTable:				; loc_00025CA
 	dc.w	$0000,$0180,$0300,$0480,$0600,$0780,$0900,$0A80	; $25CA
 	dc.w	$0C00,$0D80,$0F00,$1080,$1200,$1380,$1500,$1680	; $25DA
 	dc.w	$1800,$1980,$1B00,$1C80,$1E00,$1F80,$2100,$2280	; $25EA
@@ -613,7 +613,7 @@ InitSceneData_Read:
 	bra.b *+$4	; $27EC
 	addq.w #$4, A4	; $27EE
 FindEntitySlot:
-	tst.b (-$4000,A4)	; $27F0
+	tst.b (ENT_Flags,A4)	; $27F0
 	dbpl D0, $27EE	; $27F4
 	rts	; $27F8
 	lea (-$68AC).w, A3	; $27FA
@@ -785,12 +785,12 @@ EventAnimInit:
 EventAreaLoop:
 	tst.b (-$61FC,A3)	; $29BC
 	bpl.w EventAreaNext2	; $29C0
-	move.w (-$3800,A4), D0	; $29C4
+	move.w (ENT_X,A4), D0	; $29C4
 	sub.w (-$61C8,A3), D0	; $29C8
 	bcs.b *+$28	; $29CC
 	cmp.w (-$6194,A3), D0	; $29CE
 	bcc.b *+$22	; $29D2
-	move.w (-$3700,A4), D0	; $29D4
+	move.w (ENT_Y,A4), D0	; $29D4
 	sub.w (-$61C6,A3), D0	; $29D8
 	bcs.b *+$18	; $29DC
 	cmp.w (-$6192,A3), D0	; $29DE
@@ -966,44 +966,44 @@ SpawnNote:
 	subi.w #$10, D7	; $2C6E
 	jsr $27E6.w	; $2C72
 	bmi.b *+$48	; $2C76
-	move.w #$120A, (-$3D00,A4)	; $2C78
+	move.w #$120A, (ENT_TreeIdx0,A4)	; $2C78
 	bsr.b *+$42	; $2C7E
-	move.w #$6, (-$2BFE,A4)	; $2C80
+	move.w #$6, (ENT_HPTimer,A4)	; $2C80
 	move.b #$12, (-$3CFD,A4)	; $2C86
 			dc.w	$41fa,$0052	; dc.w
 	moveq #$3, D5	; $2C90
 	jsr $27E6.w	; $2C92
 	bmi.b *+$28	; $2C96
-	move.w #$160A, (-$3D00,A4)	; $2C98
+	move.w #$160A, (ENT_TreeIdx0,A4)	; $2C98
 	bsr.b *+$22	; $2C9E
-	move.w (A0)+, (-$3600,A4)	; $2CA0
-	move.w (A0)+, (-$35FE,A4)	; $2CA4
-	move.w #$A, (-$2BFE,A4)	; $2CA8
-	move.w #$1E, (-$2600,A4)	; $2CAE
+	move.w (A0)+, (ENT_VelX,A4)	; $2CA0
+	move.w (A0)+, (ENT_VelY,A4)	; $2CA4
+	move.w #$A, (ENT_HPTimer,A4)	; $2CA8
+	move.w #$1E, (ENT_Gold,A4)	; $2CAE
 	move.b #$14, (-$3CFD,A4)	; $2CB4
 	dbf D5, $2C92	; $2CBA
 SpawnNote_Done:
 	rts	; $2CBE
 SpawnMusicNote:
-	move.w D6, (-$3800,A4)	; $2CC0
-	move.w D7, (-$3700,A4)	; $2CC4
+	move.w D6, (ENT_X,A4)	; $2CC0
+	move.w D7, (ENT_Y,A4)	; $2CC4
 	jsr $A36.w	; $2CC8
-	move.b #-$80, (-$3FFE,A4)	; $2CCC
+	move.b #-$80, (ENT_Counter,A4)	; $2CCC
 	moveq #$0, D0	; $2CD2
 	jsr $7E8.w	; $2CD4
-	move.b #-$40, (-$4000,A4)	; $2CD8
+	move.b #-$40, (ENT_Flags,A4)	; $2CD8
 	rts	; $2CDE
-StatDeltaTable:					; loc_0002CE0
+ProjectileVelDeltaTable:					; loc_0002CE0
 	dc.w	$0400,$0400,$FC00,$0400,$FC00,$FC00,$0400,$FC00	; $2CE0
 	jsr	$27E6.w				; $2CF4
 	jsr	$A36.w				; $2CF8
-	move.w D6, (-$3800,A4)	; $2CF8
-	move.w D7, (-$3700,A4)	; $2CFC
-	move.w #$1600, (-$3D00,A4)	; $2D00
+	move.w D6, (ENT_X,A4)	; $2CF8
+	move.w D7, (ENT_Y,A4)	; $2CFC
+	move.w #$1600, (ENT_TreeIdx0,A4)	; $2D00
 	move.b #$1E, (-$3CFD,A4)	; $2D06
 	andi.w #$FF, D5	; $2D0C
 	move.w D5, (-$2800,A4)	; $2D10
-	move.w #$10, (-$2BFE,A4)	; $2D14
+	move.w #$10, (ENT_HPTimer,A4)	; $2D14
 	rts	; $2D1A
 	tst.b (RAM_word_FFFF9BB6).w	; $2D1C
 	bpl.b *+$8	; $2D20
@@ -1021,10 +1021,10 @@ MonsterRage:
 	move.w D7, (-$20FE,A4)	; $2D40
 	st (-$31FE,A4)	; $2D44
 	st (-$3200,A4)	; $2D48
-	move.w #-$600, (-$35FE,A4)	; $2D4C
+	move.w #-$600, (ENT_VelY,A4)	; $2D4C
 	moveq #$0, D0	; $2D52
 	jsr $7E8.w	; $2D54
-	move.b #-$40, (-$4000,A4)	; $2D58
+	move.b #-$40, (ENT_Flags,A4)	; $2D58
 	bra.b *+$80	; $2D5E
 MonsterRage_Dx:
 	jsr $5D8.w	; $2D60
@@ -1104,20 +1104,20 @@ MonsterRage_Init:
 	lea (-$68AC).w, A3	; $2E38
 	jsr $AB8.w	; $2E3C
 	jsr $3F08.w	; $2E40
-	move.b (-$3100,A4), (-$2EFF,A4)	; $2E44
+	move.b (ENT_State,A4), (-$2EFF,A4)	; $2E44
 	move.w (-$30FE,A4), (-$2EFE,A4)	; $2E4A
 	moveq #$0, D0	; $2E50
-	move.b D0, (-$3100,A4)	; $2E52
+	move.b D0, (ENT_State,A4)	; $2E52
 	move.w D0, (-$30FE,A4)	; $2E56
 	jsr $3AFC.w	; $2E5A
 	jsr $3142.w	; $2E5E
 	jsr $303A.w	; $2E62
-	btst.b #$6, (-$3100,A4)	; $2E66
+	btst.b #$6, (ENT_State,A4)	; $2E66
 	beq.b *+$1E	; $2E6C
-	move.w (-$3800,A4), D6	; $2E6E
+	move.w (ENT_X,A4), D6	; $2E6E
 	moveq #$0, D7	; $2E72
-	move.b (-$34FD,A4), D7	; $2E74
-	add.w (-$3700,A4), D7	; $2E78
+	move.b (ENT_ColH2,A4), D7	; $2E74
+	add.w (ENT_Y,A4), D7	; $2E78
 	jsr $30D2.w	; $2E7C
 	move.w D2, (-$30FE,A4)	; $2E80
 	move.b D1, (-$30FF,A4)	; $2E84
@@ -1131,10 +1131,10 @@ MonsterMove_A:
 	lea (-$68AC).w, A3	; $2E9E
 	jsr $AB8.w	; $2EA2
 	jsr $3F08.w	; $2EA6
-	move.b (-$3100,A4), (-$2EFF,A4)	; $2EAA
+	move.b (ENT_State,A4), (-$2EFF,A4)	; $2EAA
 	move.w (-$30FE,A4), (-$2EFE,A4)	; $2EB0
 	moveq #$0, D0	; $2EB6
-	move.b D0, (-$3100,A4)	; $2EB8
+	move.b D0, (ENT_State,A4)	; $2EB8
 	move.w D0, (-$30FE,A4)	; $2EBC
 	jsr $3310.w	; $2EC0
 	jsr $303A.w	; $2EC4
@@ -1148,19 +1148,19 @@ MonsterMove_A:
 	jsr $AB8.w	; $2EE2
 	jsr $3F08.w	; $2EE6
 MonsterMove_B:
-	move.b (-$3100,A4), (-$2EFF,A4)	; $2EEA
+	move.b (ENT_State,A4), (-$2EFF,A4)	; $2EEA
 	move.w (-$30FE,A4), (-$2EFE,A4)	; $2EF0
 	moveq #$0, D0	; $2EF6
-	move.b D0, (-$3100,A4)	; $2EF8
+	move.b D0, (ENT_State,A4)	; $2EF8
 	move.w D0, (-$30FE,A4)	; $2EFC
 	jsr $32FE.w	; $2F00
 	jsr $303A.w	; $2F04
-	btst.b #$6, (-$3100,A4)	; $2F08
+	btst.b #$6, (ENT_State,A4)	; $2F08
 	beq.b *+$1A	; $2F0E
-	move.w (-$3800,A4), D6	; $2F10
+	move.w (ENT_X,A4), D6	; $2F10
 	moveq #$0, D7	; $2F14
-	move.b (-$34FD,A4), D7	; $2F16
-	add.w (-$3700,A4), D7	; $2F1A
+	move.b (ENT_ColH2,A4), D7	; $2F16
+	add.w (ENT_Y,A4), D7	; $2F1A
 	jsr $30D2.w	; $2F1E
 	move.w D2, (-$30FE,A4)	; $2F22
 	rts	; $2F26
@@ -1171,19 +1171,19 @@ MonsterMove_C:
 	lea (-$68AC).w, A3	; $2F34
 	jsr $AB8.w	; $2F38
 	jsr $3F08.w	; $2F3C
-	move.b (-$3100,A4), (-$2EFF,A4)	; $2F40
+	move.b (ENT_State,A4), (-$2EFF,A4)	; $2F40
 	move.w (-$30FE,A4), (-$2EFE,A4)	; $2F46
 	moveq #$0, D0	; $2F4C
-	move.b D0, (-$3100,A4)	; $2F4E
+	move.b D0, (ENT_State,A4)	; $2F4E
 	move.w D0, (-$30FE,A4)	; $2F52
 	jsr $32FE.w	; $2F56
 	jsr $303A.w	; $2F5A
-	btst.b #$6, (-$3100,A4)	; $2F5E
+	btst.b #$6, (ENT_State,A4)	; $2F5E
 	beq.b *+$1A	; $2F64
-	move.w (-$3800,A4), D6	; $2F66
+	move.w (ENT_X,A4), D6	; $2F66
 	moveq #$0, D7	; $2F6A
-	move.b (-$34FD,A4), D7	; $2F6C
-	add.w (-$3700,A4), D7	; $2F70
+	move.b (ENT_ColH2,A4), D7	; $2F6C
+	add.w (ENT_Y,A4), D7	; $2F70
 	jsr $30D2.w	; $2F74
 	move.w D2, (-$30FE,A4)	; $2F78
 	rts	; $2F7C
@@ -1195,10 +1195,10 @@ MonsterMove_D:
 	lea (-$68AC).w, A3	; $2F8E
 	jsr $AB8.w	; $2F92
 	jsr $3F08.w	; $2F96
-	move.b (-$3100,A4), (-$2EFF,A4)	; $2F9A
+	move.b (ENT_State,A4), (-$2EFF,A4)	; $2F9A
 	move.w (-$30FE,A4), (-$2EFE,A4)	; $2FA0
 	moveq #$0, D0	; $2FA6
-	move.b D0, (-$3100,A4)	; $2FA8
+	move.b D0, (ENT_State,A4)	; $2FA8
 	move.w D0, (-$30FE,A4)	; $2FAC
 	jsr $3AFC.w	; $2FB0
 	jsr $322E.w	; $2FB4
@@ -1210,12 +1210,12 @@ MonsterMove_D:
 	jmp $3098.w	; $2FCC
 	lea (-$68AC).w, A3	; $2FD0
 	jsr $AB8.w	; $2FD4
-	move.b (-$3100,A4), (-$2EFF,A4)	; $2FD8
+	move.b (ENT_State,A4), (-$2EFF,A4)	; $2FD8
 	move.w (-$30FE,A4), (-$2EFE,A4)	; $2FDE
 	moveq #$0, D0	; $2FE4
-	move.b D0, (-$3100,A4)	; $2FE6
+	move.b D0, (ENT_State,A4)	; $2FE6
 	move.w D0, (-$30FE,A4)	; $2FEA
 	jsr $3AFC.w	; $2FEE
 	jsr $322E.w	; $2FF2
 	jsr $303A.w	; $2FF6
-	btst.b #$6, (-$3100,A4)	; $2FFA
+	btst.b #$6, (ENT_State,A4)	; $2FFA

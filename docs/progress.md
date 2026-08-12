@@ -39,13 +39,13 @@
 - Code $200-$5700: core, scroll_vdp, script_engine, entity, actions, scene_loader, movement, sprites,
   mainloop, subsystem.
 - $599C-$6A58: **palette_table.asm** (labeled, 252 palettes, asset-wired).
-- $579A-$5985: **palette_driver.asm** (PaletteAnimationDriver, PaletteSourceToWorking,
+- $579A-$5985: **src/scene/palette.asm** (PaletteAnimationDriver, PaletteSourceToWorking,
   AdjustPaletteWord) ÃÂ¢ÃÂÃÂ hand-converted, bit-exact.
-- $6BC4-$6EA6: **scene_decompressors.asm** (LoadFlaggedData, DecompressTiles,
+- $6BC4-$6EA6: **src/scene/scene_load.asm** (LoadFlaggedData, DecompressTiles,
   DecodeMap) ÃÂ¢ÃÂÃÂ hand-converted, bit-exact.
-- $6EA6-$6F85: **flagged_loader_data.asm** code (hand-verified per-instruction vs ROM) +
+- $6EA6-$6F85: **src/scene/scene_load.asm** code (hand-verified per-instruction vs ROM) +
   $6F86-$6FFF data ÃÂ¢ÃÂÃÂ bit-exact.
-- **$7000-$8000: anim_data.asm CONVERTED** ÃÂ¢ÃÂÃÂ 23 code instructions (code islands)
+- **$7000-$8000: sprite_data.asm CONVERTED** ÃÂ¢ÃÂÃÂ 23 code instructions (code islands)
   + sprite/animation data tables as dc.b; bit-exact. Method: Ghidra convert ->
   fix errors -> fix PC-relative operands -> one-pass convert mismatched runs to
   exact dc.b -> manual boundary fixes (Ghidra skips, mis-rendered operands,
@@ -80,10 +80,10 @@ an include twice (benign; dedupe by address).
 spanforce will oscillate forever against data_rest's raw rows. Register the
 module BEFORE running spanforce.
 - Tile blocks $45842..$6BB12: **tile_blocks_0..4.asm** (labeled, from assets).
-- $5700-$579A: **palette_pre.asm CONVERTED** ÃÂ¢ÃÂÃÂ 43 instructions + data, bit-exact.
+- $5700-$579A: **palette.asm CONVERTED** ÃÂ¢ÃÂÃÂ 43 instructions + data, bit-exact.
 - $5986-$599C: **palette_post.asm CONVERTED** ÃÂ¢ÃÂÃÂ 6 instructions + data, bit-exact.
-- $6A58-$6BC4: **flagged_loader_pre.asm CONVERTED** ÃÂ¢ÃÂÃÂ 127 instructions + data, bit-exact.
-- $6EA6-$6FFF: **flagged_loader_data.asm CONVERTED** ÃÂ¢ÃÂÃÂ data (flagged-loader tables), bit-exact.
+- $6A58-$6BC4: **scene_load.asm CONVERTED** ÃÂ¢ÃÂÃÂ 127 instructions + data, bit-exact.
+- $6EA6-$6FFF: **scene_load.asm CONVERTED** ÃÂ¢ÃÂÃÂ data (flagged-loader tables), bit-exact.
 - $20000-$45842: raw dc.b (data tables: text, maps, level data ÃÂ¢ÃÂÃÂ deferred).
 - $98000-$99A76: **z80_driver.asm** (full Z80 disassembly annotated + 20 labels).
 - $A0000-$A4C76: data_banks.asm.

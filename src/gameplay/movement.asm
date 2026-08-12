@@ -5,18 +5,18 @@
 ; Verified bit-exact against the original ROM.
 ; ======================================================================
 	beq.b *+$1A	; $3000
-	move.w (-$3800,A4), D6	; $3002
+	move.w (ENT_X,A4), D6	; $3002
 	moveq #$0, D7	; $3006
-	move.b (-$34FD,A4), D7	; $3008
-	add.w (-$3700,A4), D7	; $300C
+	move.b (ENT_ColH2,A4), D7	; $3008
+	add.w (ENT_Y,A4), D7	; $300C
 	jsr $30D2.w	; $3010
 	move.w D2, (-$30FE,A4)	; $3014
 	rts	; $3018
 MoveVertical:
 	jsr $AD6.w	; $301A
 	jsr $3C22.w	; $301E
-	move.w (-$3700,A4), D0	; $3022
-	sub.w (-$2DFE,A4), D0	; $3026
+	move.w (ENT_Y,A4), D0	; $3022
+	sub.w (ENT_PrevY,A4), D0	; $3026
 	bpl.b *+$8	; $302A
 	jsr $3A54.w	; $302C
 	bra.b *+$6	; $3030
@@ -24,22 +24,22 @@ MoveVertical_Alt:
 	jsr $3584.w	; $3032
 MoveVertical_End:
 	bra.w MoveVertical_Apply	; $3036
-	btst.b #$0, (-$3100,A4)	; $303A
+	btst.b #$0, (ENT_State,A4)	; $303A
 	beq.b *+$56	; $3040
-	tst.b (-$3100,A4)	; $3042
+	tst.b (ENT_State,A4)	; $3042
 	bmi.b *+$A	; $3046
-	move.w (-$3000,A4), D0	; $3048
-	add.w D0, (-$3800,A4)	; $304C
+	move.w (ENT_StateVal,A4), D0	; $3048
+	add.w D0, (ENT_X,A4)	; $304C
 MoveHorizontal_Apply:
 	moveq #$0, D0	; $3050
-	move.w D0, (-$37FE,A4)	; $3052
-	btst.b #$2, (-$3100,A4)	; $3056
+	move.w D0, (ENT_XSub,A4)	; $3052
+	btst.b #$2, (ENT_State,A4)	; $3056
 	bne.b *+$8	; $305C
-	move.w #-$1, (-$37FE,A4)	; $305E
+	move.w #-$1, (ENT_XSub,A4)	; $305E
 MoveHorizontal_Vel:
-	move.w (-$3600,A4), D0	; $3064
+	move.w (ENT_VelX,A4), D0	; $3064
 	beq.b *+$2E	; $3068
-	btst.b #$2, (-$3100,A4)	; $306A
+	btst.b #$2, (ENT_State,A4)	; $306A
 	beq.b *+$8	; $3070
 	tst.w D0	; $3072
 	bpl.b *+$22	; $3074
@@ -48,35 +48,35 @@ MoveHorizontal_VelNeg:
 	tst.w D0	; $3078
 	bmi.b *+$1C	; $307A
 MoveHorizontal_VelTest:
-	btst.b #$4, (-$2F00,A4)	; $307C
+	btst.b #$4, (ENT_ColFlags,A4)	; $307C
 	bne.b *+$6	; $3082
 	moveq #$0, D0	; $3084
 	bra.b *+$C	; $3086
 MoveHorizontal_VelFlip:
-	btst.b #$2, (-$2F00,A4)	; $3088
+	btst.b #$2, (ENT_ColFlags,A4)	; $3088
 	bne.b *+$8	; $308E
 	neg.w D0	; $3090
 MoveHorizontal_VelStore:
-	move.w D0, (-$3600,A4)	; $3092
+	move.w D0, (ENT_VelX,A4)	; $3092
 MoveHorizontal_Done:
 	rts	; $3096
 MoveVertical_Apply:
-	move.b (-$3100,A4), D0	; $3098
+	move.b (ENT_State,A4), D0	; $3098
 	andi.b #-$5E, D0	; $309C
 	subq.b #$2, D0	; $30A0
 	bne.b *+$2A	; $30A2
 	move.w (-$2FFE,A4), D0	; $30A4
-	add.w D0, (-$3700,A4)	; $30A8
+	add.w D0, (ENT_Y,A4)	; $30A8
 	moveq #$0, D0	; $30AC
-	move.w D0, (-$36FE,A4)	; $30AE
-	btst.b #$5, (-$2F00,A4)	; $30B2
+	move.w D0, (ENT_YSub,A4)	; $30AE
+	btst.b #$5, (ENT_ColFlags,A4)	; $30B2
 	bne.b *+$8	; $30B8
-	move.w D0, (-$35FE,A4)	; $30BA
+	move.w D0, (ENT_VelY,A4)	; $30BA
 	rts	; $30BE
 MoveVertical_Bounce:
-	btst.b #$3, (-$2F00,A4)	; $30C0
+	btst.b #$3, (ENT_ColFlags,A4)	; $30C0
 	bne.b *+$6	; $30C6
-	neg.w (-$35FE,A4)	; $30C8
+	neg.w (ENT_VelY,A4)	; $30C8
 MoveVertical_Done:
 	rts	; $30CC
 ReadTileSetup:
@@ -130,8 +130,8 @@ CheckCollision:
 CheckCollisionRect:
 	link A6, #-$A	; $314E
 	moveq #$0, D0	; $3152
-	move.b (-$34FE,A4), D0	; $3154
-	move.w (-$3800,A4), D6	; $3158
+	move.b (ENT_ColW2,A4), D0	; $3154
+	move.w (ENT_X,A4), D6	; $3158
 	move.w D6, D1	; $315C
 	add.w D0, D1	; $315E
 	subq.w #$1, D1	; $3160
@@ -139,12 +139,12 @@ CheckCollisionRect:
 	sub.w D0, D6	; $3166
 	move.w D6, (-$6,A6)	; $3168
 	moveq #$0, D7	; $316C
-	move.b (-$34FD,A4), D7	; $316E
+	move.b (ENT_ColH2,A4), D7	; $316E
 	move.w D7, D0	; $3172
-	add.w (-$3700,A4), D0	; $3174
+	add.w (ENT_Y,A4), D0	; $3174
 	subq.w #$1, D0	; $3178
 	neg.w D7	; $317A
-	add.w (-$3700,A4), D7	; $317C
+	add.w (ENT_Y,A4), D7	; $317C
 	move.w D7, (-$A,A6)	; $3180
 	moveq #-$10, D1	; $3184
 	and.w D1, D0	; $3186
@@ -165,9 +165,9 @@ CheckCollisionRect_Row:
 	move.w (-$6,A6), D0	; $31AC
 	neg.w D0	; $31B0
 	andi.w #$F, D0	; $31B2
-	move.w D0, (-$3000,A4)	; $31B6
-	andi.b #$7F, (-$3100,A4)	; $31BA
-	ori.b #$5, (-$3100,A4)	; $31C0
+	move.w D0, (ENT_StateVal,A4)	; $31B6
+	andi.b #$7F, (ENT_State,A4)	; $31BA
+	ori.b #$5, (ENT_State,A4)	; $31C0
 	bra.b *+$C	; $31C6
 CheckCollisionRect_NextRow:
 	addi.w #$40, D7	; $31C8
@@ -185,20 +185,20 @@ CheckCollisionRect_ColLoop:
 	andi.w #$101, D0	; $31E8
 	subq.w #$1, D0	; $31EC
 	bne.b *+$32	; $31EE
-	move.b (-$3100,A4), D0	; $31F0
+	move.b (ENT_State,A4), D0	; $31F0
 	andi.b #-$7B, D0	; $31F4
 	subq.b #$5, D0	; $31F8
 	bne.b *+$A	; $31FA
-	andi.b #-$2, (-$3100,A4)	; $31FC
+	andi.b #-$2, (ENT_State,A4)	; $31FC
 	bra.b *+$28	; $3202
 CheckCollisionRect_Block:
 	moveq #$F, D0	; $3204
 	and.w (-$8,A6), D0	; $3206
 	addq.w #$1, D0	; $320A
 	neg.w D0	; $320C
-	move.w D0, (-$3000,A4)	; $320E
-	andi.b #$7F, (-$3100,A4)	; $3212
-	ori.b #$1, (-$3100,A4)	; $3218
+	move.w D0, (ENT_StateVal,A4)	; $320E
+	andi.b #$7F, (ENT_State,A4)	; $3212
+	ori.b #$1, (ENT_State,A4)	; $3218
 	bra.b *+$C	; $321E
 CheckCollisionRect_NextCol:
 	addi.w #$40, D7	; $3220
@@ -208,7 +208,7 @@ CheckCollisionRect_Done:
 	unlk A6	; $322A
 	rts	; $322C
 CheckHorizontalVelocity:
-	tst.w (-$3600,A4)	; $322E
+	tst.w (ENT_VelX,A4)	; $322E
 	bne.b *+$4	; $3232
 	rts	; $3234
 CheckCollisionRow_Scan:
@@ -218,12 +218,12 @@ CheckCollisionRow_Scan:
 CheckCollisionRow_Setup:
 	link A6, #-$4	; $3242
 	moveq #$0, D7	; $3246
-	move.b (-$34FD,A4), D7	; $3248
+	move.b (ENT_ColH2,A4), D7	; $3248
 	move.w D7, D0	; $324C
-	add.w (-$3700,A4), D0	; $324E
+	add.w (ENT_Y,A4), D0	; $324E
 	subq.w #$1, D0	; $3252
 	neg.w D7	; $3254
-	add.w (-$3700,A4), D7	; $3256
+	add.w (ENT_Y,A4), D7	; $3256
 	moveq #-$10, D1	; $325A
 	and.w D1, D0	; $325C
 	and.w D1, D7	; $325E
@@ -231,11 +231,11 @@ CheckCollisionRow_Setup:
 	lsr.w #$4, D0	; $3262
 	move.w D0, (-$4,A6)	; $3264
 	moveq #$0, D6	; $3268
-	move.b (-$34FE,A4), D6	; $326A
-	tst.w (-$3600,A4)	; $326E
+	move.b (ENT_ColW2,A4), D6	; $326A
+	tst.w (ENT_VelX,A4)	; $326E
 	bpl.b *+$42	; $3272
 	neg.w D6	; $3274
-	add.w (-$3800,A4), D6	; $3276
+	add.w (ENT_X,A4), D6	; $3276
 	move.w D6, (-$2,A6)	; $327A
 	lsr.w #$4, D6	; $327E
 	andi.w #-$10, D7	; $3280
@@ -254,10 +254,10 @@ CheckCollisionRow_Hit:
 	move.w (-$2,A6), D0	; $32A2
 	neg.w D0	; $32A6
 	andi.w #$F, D0	; $32A8
-	ori.b #$5, (-$3100,A4)	; $32AC
+	ori.b #$5, (ENT_State,A4)	; $32AC
 	bra.b *+$3E	; $32B2
 CheckCollisionRow_Scan2:
-	add.w (-$3800,A4), D6	; $32B4
+	add.w (ENT_X,A4), D6	; $32B4
 	move.w D6, (-$2,A6)	; $32B8
 	lsr.w #$4, D6	; $32BC
 	andi.w #-$10, D7	; $32BE
@@ -277,10 +277,10 @@ CheckCollisionRow_Block:
 	and.w (-$2,A6), D0	; $32E2
 	addq.w #$1, D0	; $32E6
 	neg.w D0	; $32E8
-	ori.b #$1, (-$3100,A4)	; $32EA
+	ori.b #$1, (ENT_State,A4)	; $32EA
 CheckCollisionRow_Store:
-	andi.b #$7F, (-$3100,A4)	; $32F0
-	move.w D0, (-$3000,A4)	; $32F6
+	andi.b #$7F, (ENT_State,A4)	; $32F0
+	move.w D0, (ENT_StateVal,A4)	; $32F6
 CheckCollisionRow_Done:
 	unlk A6	; $32FA
 	rts	; $32FC
@@ -294,31 +294,31 @@ CheckCollisionCol_Start:
 CheckCollisionCol_Entry2:
 	moveq #$0, D0	; $3310
 CheckCollisionCol_Check:
-	tst.w (-$3600,A4)	; $3312
+	tst.w (ENT_VelX,A4)	; $3312
 	bne.b *+$4	; $3316
 	rts	; $3318
 CheckCollisionCol_Setup:
 	link A6, #-$6	; $331A
 	move.w D0, (-$6,A6)	; $331E
 	clr.b (-$4,A6)	; $3322
-	tst.w (-$3600,A4)	; $3326
+	tst.w (ENT_VelX,A4)	; $3326
 	bpl.b *+$8	; $332A
 	move.b #$1, (-$4,A6)	; $332C
 CheckCollisionCol_Scan:
 	moveq #$0, D7	; $3332
-	move.b (-$34FD,A4), D7	; $3334
+	move.b (ENT_ColH2,A4), D7	; $3334
 	move.w D7, D0	; $3338
-	add.w (-$3700,A4), D0	; $333A
+	add.w (ENT_Y,A4), D0	; $333A
 	subq.w #$1, D0	; $333E
 	neg.w D7	; $3340
-	add.w (-$3700,A4), D7	; $3342
+	add.w (ENT_Y,A4), D7	; $3342
 	moveq #-$10, D1	; $3346
 	and.w D1, D0	; $3348
 	and.w D1, D7	; $334A
 	sub.w D7, D0	; $334C
 	lsr.w #$4, D0	; $334E
 	move.w D0, (-$2,A6)	; $3350
-	move.w (-$3800,A4), D6	; $3354
+	move.w (ENT_X,A4), D6	; $3354
 	lsr.w #$4, D6	; $3358
 	andi.w #-$10, D7	; $335A
 	asl.w #$2, D7	; $335E
@@ -338,63 +338,63 @@ CheckCollisionCol_Next:
 	bpl.b CheckCollisionCol_ScanLoop	; $3382
 	bra.b *+$30	; $3384
 CheckCollisionCol_Hit:
-	andi.b #$7F, (-$3100,A4)	; $3386
-	move.w (-$3800,A4), D0	; $338C
+	andi.b #$7F, (ENT_State,A4)	; $3386
+	move.w (ENT_X,A4), D0	; $338C
 	tst.b D1	; $3390
 	bne.b *+$12	; $3392
 	andi.w #$F, D0	; $3394
 	addq.w #$1, D0	; $3398
 	neg.w D0	; $339A
-	ori.b #$1, (-$3100,A4)	; $339C
+	ori.b #$1, (ENT_State,A4)	; $339C
 	bra.b *+$E	; $33A2
 CheckCollisionCol_Hit2:
 	neg.w D0	; $33A4
 	andi.w #$F, D0	; $33A6
-	ori.b #$5, (-$3100,A4)	; $33AA
+	ori.b #$5, (ENT_State,A4)	; $33AA
 CheckCollisionCol_Store:
-	move.w D0, (-$3000,A4)	; $33B0
+	move.w D0, (ENT_StateVal,A4)	; $33B0
 CheckCollisionCol_Done:
 	unlk A6	; $33B4
 	rts	; $33B6
-	tst.w (-$3600,A4)	; $33B8
+	tst.w (ENT_VelX,A4)	; $33B8
 	bne.b *+$4	; $33BC
 	rts	; $33BE
 CheckCollisionFoot:
 	link A6, #-$2	; $33C0
 	clr.b (-$2,A6)	; $33C4
-	tst.w (-$3600,A4)	; $33C8
+	tst.w (ENT_VelX,A4)	; $33C8
 	bpl.b *+$8	; $33CC
 	move.b #$1, (-$2,A6)	; $33CE
 CheckCollisionFoot_Scan:
-	move.w (-$3800,A4), D6	; $33D4
+	move.w (ENT_X,A4), D6	; $33D4
 	moveq #$0, D7	; $33D8
-	move.b (-$34FD,A4), D7	; $33DA
+	move.b (ENT_ColH2,A4), D7	; $33DA
 	subq.b #$1, D7	; $33DE
-	add.w (-$3700,A4), D7	; $33E0
+	add.w (ENT_Y,A4), D7	; $33E0
 	jsr $30D2.w	; $33E4
 	move.b (-$2,A6), D1	; $33E8
 	btst.l D1, D2	; $33EC
 	beq.b *+$2A	; $33EE
-	move.w (-$3800,A4), D0	; $33F0
+	move.w (ENT_X,A4), D0	; $33F0
 	tst.b D1	; $33F4
 	bne.b *+$12	; $33F6
 	andi.w #$F, D0	; $33F8
 	addq.w #$1, D0	; $33FC
 	neg.w D0	; $33FE
-	ori.b #$1, (-$3100,A4)	; $3400
+	ori.b #$1, (ENT_State,A4)	; $3400
 	bra.b *+$E	; $3406
 CheckCollisionFoot_Hit:
 	neg.w D0	; $3408
 	andi.w #$F, D0	; $340A
-	ori.b #$5, (-$3100,A4)	; $340E
+	ori.b #$5, (ENT_State,A4)	; $340E
 CheckCollisionFoot_Store:
-	move.w D0, (-$3000,A4)	; $3414
+	move.w D0, (ENT_StateVal,A4)	; $3414
 CheckCollisionFoot_Done:
 	unlk A6	; $3418
 	rts	; $341A
 GetXDelta:
-	move.w (-$3800,A4), D1	; $341C
-	move.w (-$2E00,A4), D0	; $3420
+	move.w (ENT_X,A4), D1	; $341C
+	move.w (ENT_PrevX,A4), D0	; $3420
 	sub.w D1, D0	; $3424
 	bne.b *+$4	; $3426
 	rts	; $3428
@@ -407,7 +407,7 @@ SlideCollision:
 SlideCollision_Setup:
 	move.w D0, (-$2,A6)	; $343E
 	moveq #-$10, D2	; $3442
-	move.w (-$2E00,A4), D0	; $3444
+	move.w (ENT_PrevX,A4), D0	; $3444
 	and.w D2, D0	; $3448
 	and.w D2, D1	; $344A
 	sub.w D0, D1	; $344C
@@ -415,14 +415,14 @@ SlideCollision_Setup:
 	btst.b #$1, (-$2EFF,A4)	; $3452
 	bne.w SlideCollision_Done	; $3458
 	moveq #$0, D0	; $345C
-	move.b (-$34FD,A4), D0	; $345E
-	move.w (-$3700,A4), D7	; $3462
+	move.b (ENT_ColH2,A4), D0	; $345E
+	move.w (ENT_Y,A4), D7	; $3462
 	subq.w #$1, D0	; $3466
 	add.w D0, D7	; $3468
 	move.w D7, (-$8,A6)	; $346A
 	tst.w D1	; $346E
 	beq.b *+$56	; $3470
-	move.w (-$2E00,A4), D6	; $3472
+	move.w (ENT_PrevX,A4), D6	; $3472
 	jsr $30D2.w	; $3476
 	move.w D2, D0	; $347A
 	move.w #$108, D3	; $347C
@@ -432,7 +432,7 @@ SlideCollision_Setup:
 	bne.b *+$3E	; $3488
 	jsr $3860.w	; $348A
 	bmi.w SlideCollision_XScan	; $348E
-	move.w (-$2E00,A4), D0	; $3492
+	move.w (ENT_PrevX,A4), D0	; $3492
 	move.w (-$8,A6), D1	; $3496
 	movea.w #$40DC, A0	; $349A
 	bsr.w ReadCollisionOffset	; $349E
@@ -454,7 +454,7 @@ SlideCollision_XNeg:
 	bpl.b *+$54	; $34C4
 SlideCollision_XScan:
 	move.w (-$8,A6), D7	; $34C6
-	move.w (-$3800,A4), D6	; $34CA
+	move.w (ENT_X,A4), D6	; $34CA
 	jsr $30D2.w	; $34CE
 	move.w D2, D0	; $34D2
 	move.w #$108, D3	; $34D4
@@ -464,7 +464,7 @@ SlideCollision_XScan:
 	bne.b *+$54	; $34E0
 	jsr $3860.w	; $34E2
 	bmi.w SlideCollision_Done	; $34E6
-	move.w (-$3800,A4), D0	; $34EA
+	move.w (ENT_X,A4), D0	; $34EA
 	move.w (-$8,A6), D1	; $34EE
 	movea.w #$40DC, A0	; $34F2
 	bsr.w ReadCollisionOffset	; $34F6
@@ -484,12 +484,12 @@ SlideCollision_X2:
 	sub.w D0, D4	; $3514
 	bmi.b *+$1E	; $3516
 SlideCollision_Apply:
-	add.w D0, (-$3800,A4)	; $3518
-	andi.b #$77, (-$3100,A4)	; $351C
-	ori.b #$42, (-$3100,A4)	; $3522
+	add.w D0, (ENT_X,A4)	; $3518
+	andi.b #$77, (ENT_State,A4)	; $351C
+	ori.b #$42, (ENT_State,A4)	; $3522
 	move.w D2, (-$30FE,A4)	; $3528
-	clr.w (-$36FE,A4)	; $352C
-	clr.w (-$35FE,A4)	; $3530
+	clr.w (ENT_YSub,A4)	; $352C
+	clr.w (ENT_VelY,A4)	; $3530
 SlideCollision_Done:
 	unlk A6	; $3534
 	rts	; $3536
@@ -527,13 +527,13 @@ CollideAndSlide_Init:
 	move.l #$38E4, (RAM_word_FFFF9EE8).w	; $3584
 CollideAndSlide:
 	link A6, #-$14	; $358C
-	move.w (-$3700,A4), D7	; $3590
+	move.w (ENT_Y,A4), D7	; $3590
 	moveq #$0, D0	; $3594
-	move.b (-$34FD,A4), D0	; $3596
+	move.b (ENT_ColH2,A4), D0	; $3596
 	add.w D0, D7	; $359A
 	move.w D7, (-$4,A6)	; $359C
 	move.w D7, (-$6,A6)	; $35A0
-	add.w (-$2DFE,A4), D0	; $35A4
+	add.w (ENT_PrevY,A4), D0	; $35A4
 	move.w D0, (-$2,A6)	; $35A8
 	move.w D7, D1	; $35AC
 	sub.w D0, D1	; $35AE
@@ -544,7 +544,7 @@ CollideAndSlide:
 	andi.b #-$76, D0	; $35C2
 	subq.b #$2, D0	; $35C6
 	bne.w CollideAndSlide_Right	; $35C8
-	move.w (-$3800,A4), D6	; $35CC
+	move.w (ENT_X,A4), D6	; $35CC
 	move.w (-$4,A6), D7	; $35D0
 	lsr.w #$4, D6	; $35D4
 	andi.w #-$10, D7	; $35D6
@@ -553,8 +553,8 @@ CollideAndSlide:
 	movea.w #$0, A1	; $35E0
 	move.b #$2, (-$10,A6)	; $35E4
 	moveq #-$10, D2	; $35EA
-	move.w (-$3800,A4), D0	; $35EC
-	move.w (-$2E00,A4), D1	; $35F0
+	move.w (ENT_X,A4), D0	; $35EC
+	move.w (ENT_PrevX,A4), D1	; $35F0
 	and.w D2, D0	; $35F4
 	and.w D2, D1	; $35F6
 	sub.w D1, D0	; $35F8
@@ -663,8 +663,8 @@ CollideAndSlide_Left:
 	bsr.w ReadTileSign	; $372C
 	subi.w #$10, D0	; $3730
 CollideAndSlide_Apply:
-	andi.b #$77, (-$3100,A4)	; $3734
-	ori.b #$2, (-$3100,A4)	; $373A
+	andi.b #$77, (ENT_State,A4)	; $3734
+	ori.b #$2, (ENT_State,A4)	; $373A
 	move.b D1, (-$30FF,A4)	; $3740
 	move.w D0, (-$2FFE,A4)	; $3744
 	move.w D2, (-$30FE,A4)	; $3748
@@ -696,7 +696,7 @@ CollideAndSlide_Right:
 	sub.w D1, D0	; $3788
 	bmi.b *+$4E	; $378A
 CollideAndSlide_RightScan:
-	move.w (-$3800,A4), D6	; $378C
+	move.w (ENT_X,A4), D6	; $378C
 	move.w (-$4,A6), D7	; $3790
 	move.w D7, (-$6,A6)	; $3794
 	jsr $30D2.w	; $3798
@@ -723,7 +723,7 @@ CollideAndSlide_Right2:
 	bmi.b *+$64	; $37D4
 	bra.b *+$4A	; $37D6
 CollideAndSlide_Right3:
-	move.w (-$3800,A4), D6	; $37D8
+	move.w (ENT_X,A4), D6	; $37D8
 	move.w (-$2,A6), D7	; $37DC
 	move.w D7, (-$6,A6)	; $37E0
 	jsr $30D2.w	; $37E4
@@ -751,8 +751,8 @@ CollideAndSlide_Store:
 	move.w D0, (-$2FFE,A4)	; $3820
 	move.b D1, (-$30FF,A4)	; $3824
 	move.w D2, (-$30FE,A4)	; $3828
-	andi.b #$77, (-$3100,A4)	; $382C
-	ori.b #$2, (-$3100,A4)	; $3832
+	andi.b #$77, (ENT_State,A4)	; $382C
+	ori.b #$2, (ENT_State,A4)	; $3832
 CollideAndSlide_Unlink:
 	unlk A6	; $3838
 	rts	; $383A
@@ -762,7 +762,7 @@ ReadTileSign:
 	movea.w #$403C, A0	; $3842
 	adda.w D0, A0	; $3846
 	moveq #$F, D0	; $3848
-	and.w (-$3800,A4), D0	; $384A
+	and.w (ENT_X,A4), D0	; $384A
 	move.b ($0,A0,D0.w), D0	; $384E
 	ext.w D0	; $3852
 	moveq #$F, D3	; $3854
@@ -783,28 +783,28 @@ StatGateTable:					; loc_0003872
 TrapSpin_3888:
 	nop					; $3888
 	bra.b	TrapSpin_3888				; $388A
-	move.w (-$35FE,A4), D0	; $388C
+	move.w (ENT_VelY,A4), D0	; $388C
 	add.w D0, D0	; $3890
-	add.w (-$3600,A4), D0	; $3892
+	add.w (ENT_VelX,A4), D0	; $3892
 	rts	; $3896
-	move.w (-$35FE,A4), D0	; $3898
+	move.w (ENT_VelY,A4), D0	; $3898
 	add.w D0, D0	; $389C
-	sub.w (-$3600,A4), D0	; $389E
+	sub.w (ENT_VelX,A4), D0	; $389E
 	rts	; $38A2
-	move.w (-$35FE,A4), D0	; $38A4
-	add.w (-$3600,A4), D0	; $38A8
+	move.w (ENT_VelY,A4), D0	; $38A4
+	add.w (ENT_VelX,A4), D0	; $38A8
 	rts	; $38AC
-	move.w (-$35FE,A4), D0	; $38AE
-	sub.w (-$3600,A4), D0	; $38B2
+	move.w (ENT_VelY,A4), D0	; $38AE
+	sub.w (ENT_VelX,A4), D0	; $38B2
 	rts	; $38B6
-	move.w (-$3600,A4), D0	; $38B8
+	move.w (ENT_VelX,A4), D0	; $38B8
 	add.w D0, D0	; $38BC
-	move.w (-$35FE,A4), D3	; $38BE
+	move.w (ENT_VelY,A4), D3	; $38BE
 	add.w D0, D3	; $38C2
 	rts	; $38C4
-	move.w (-$3600,A4), D0	; $38C6
+	move.w (ENT_VelX,A4), D0	; $38C6
 	add.w D0, D0	; $38CA
-	move.w (-$35FE,A4), D3	; $38CC
+	move.w (ENT_VelY,A4), D3	; $38CC
 	sub.w D0, D3	; $38D0
 	rts	; $38D2
 CollideAndSlide_Jump:
@@ -846,28 +846,28 @@ SlideScan_Hit:
 	move.w D0, (-$2FFE,A4)	; $392C
 	move.b D1, (-$30FF,A4)	; $3930
 	move.w D2, (-$30FE,A4)	; $3934
-	andi.b #$77, (-$3100,A4)	; $3938
-	ori.b #$2, (-$3100,A4)	; $393E
+	andi.b #$77, (ENT_State,A4)	; $3938
+	ori.b #$2, (ENT_State,A4)	; $393E
 SlideScan_Done:
 	unlk A6	; $3944
 	rts	; $3946
 SlideCheck_Status:
-	move.b (-$3100,A4), D0	; $3948
+	move.b (ENT_State,A4), D0	; $3948
 	andi.b #-$76, D0	; $394C
 	subi.b #-$7E, D0	; $3950
 	beq.b *+$A	; $3954
-	tst.w (-$35FE,A4)	; $3956
+	tst.w (ENT_VelY,A4)	; $3956
 	bmi.w SlideUp	; $395A
 SlideDown:
 	link A6, #-$6	; $395E
 	jsr $39DA.w	; $3962
 	move.w D0, (-$6,A6)	; $3966
-	move.w (-$3700,A4), D7	; $396A
+	move.w (ENT_Y,A4), D7	; $396A
 	move.w D7, D0	; $396E
-	sub.w (-$2DFE,A4), D0	; $3970
+	sub.w (ENT_PrevY,A4), D0	; $3970
 	move.w D0, (-$4,A6)	; $3974
 	moveq #$0, D0	; $3978
-	move.b (-$34FD,A4), D0	; $397A
+	move.b (ENT_ColH2,A4), D0	; $397A
 	add.w D0, D7	; $397E
 	move.w D7, (-$2,A6)	; $3980
 	move.w D7, D0	; $3984
@@ -897,19 +897,19 @@ SlideDown_Hit:
 	move.w D0, (-$2FFE,A4)	; $39BE
 	move.b D1, (-$30FF,A4)	; $39C2
 	move.w D2, (-$30FE,A4)	; $39C6
-	andi.b #$77, (-$3100,A4)	; $39CA
-	ori.b #$2, (-$3100,A4)	; $39D0
+	andi.b #$77, (ENT_State,A4)	; $39CA
+	ori.b #$2, (ENT_State,A4)	; $39D0
 SlideDown_Done:
 	unlk A6	; $39D6
 	rts	; $39D8
 GetXSpan:
 	moveq #$0, D6	; $39DA
-	move.b (-$34FE,A4), D6	; $39DC
+	move.b (ENT_ColW2,A4), D6	; $39DC
 	move.w D6, D0	; $39E0
-	add.w (-$3800,A4), D0	; $39E2
+	add.w (ENT_X,A4), D0	; $39E2
 	subq.w #$1, D0	; $39E6
 	neg.w D6	; $39E8
-	add.w (-$3800,A4), D6	; $39EA
+	add.w (ENT_X,A4), D6	; $39EA
 	moveq #-$10, D1	; $39EE
 	and.w D1, D0	; $39F0
 	and.w D1, D6	; $39F2
@@ -917,41 +917,41 @@ GetXSpan:
 	lsr.w #$4, D0	; $39F6
 	rts	; $39F8
 SlideCheck_Entry2:
-	tst.w (-$35FE,A4)	; $39FA
+	tst.w (ENT_VelY,A4)	; $39FA
 	bmi.b *+$4C	; $39FE
-	move.w (-$3800,A4), D6	; $3A00
+	move.w (ENT_X,A4), D6	; $3A00
 	moveq #$0, D7	; $3A04
-	move.b (-$34FD,A4), D7	; $3A06
-	add.w (-$3700,A4), D7	; $3A0A
+	move.b (ENT_ColH2,A4), D7	; $3A06
+	add.w (ENT_Y,A4), D7	; $3A0A
 	jsr $30D2.w	; $3A0E
 	btst.l #$3, D2	; $3A12
 	beq.b *+$34	; $3A16
 	moveq #$0, D0	; $3A18
-	move.b (-$34FD,A4), D0	; $3A1A
-	move.w (-$3700,A4), D3	; $3A1E
+	move.b (ENT_ColH2,A4), D0	; $3A1A
+	move.w (ENT_Y,A4), D3	; $3A1E
 	add.w D3, D0	; $3A22
-	sub.w (-$2DFE,A4), D3	; $3A24
+	sub.w (ENT_PrevY,A4), D3	; $3A24
 	andi.w #$F, D0	; $3A28
 	neg.w D0	; $3A2C
 	add.w D0, D3	; $3A2E
 	bmi.b *+$1A	; $3A30
-	andi.b #$77, (-$3100,A4)	; $3A32
-	ori.b #$2, (-$3100,A4)	; $3A38
+	andi.b #$77, (ENT_State,A4)	; $3A32
+	ori.b #$2, (ENT_State,A4)	; $3A38
 	move.w D0, (-$2FFE,A4)	; $3A3E
 	move.b D1, (-$30FF,A4)	; $3A42
 	move.w D2, (-$30FE,A4)	; $3A46
 SlideDown_End:
 	rts	; $3A4A
 SlideUp_Entry:
-	tst.w (-$35FE,A4)	; $3A4C
+	tst.w (ENT_VelY,A4)	; $3A4C
 	bmi.b *+$4	; $3A50
 	rts	; $3A52
 SlideUp:
 	link A6, #-$4	; $3A54
 	moveq #$0, D7	; $3A58
-	move.b (-$34FD,A4), D7	; $3A5A
+	move.b (ENT_ColH2,A4), D7	; $3A5A
 	neg.w D7	; $3A5E
-	add.w (-$3700,A4), D7	; $3A60
+	add.w (ENT_Y,A4), D7	; $3A60
 	move.w D7, (-$2,A6)	; $3A64
 	jsr $39DA.w	; $3A68
 	move.w D0, (-$4,A6)	; $3A6C
@@ -975,23 +975,23 @@ SlideUp_Next:
 	bra.b *+$12	; $3A9A
 SlideUp_Hit:
 	move.w D0, (-$2FFE,A4)	; $3A9C
-	andi.b #$5F, (-$3100,A4)	; $3AA0
-	ori.b #$A, (-$3100,A4)	; $3AA6
+	andi.b #$5F, (ENT_State,A4)	; $3AA0
+	ori.b #$A, (ENT_State,A4)	; $3AA6
 SlideUp_Done:
 	unlk A6	; $3AAC
 	rts	; $3AAE
 SlideUp2_Entry:
-	tst.w (-$35FE,A4)	; $3AB0
+	tst.w (ENT_VelY,A4)	; $3AB0
 	bmi.b *+$4	; $3AB4
 	rts	; $3AB6
 SlideUp2:
 	link A6, #-$2	; $3AB8
 	moveq #$0, D7	; $3ABC
-	move.b (-$34FD,A4), D7	; $3ABE
+	move.b (ENT_ColH2,A4), D7	; $3ABE
 	neg.w D7	; $3AC2
-	add.w (-$3700,A4), D7	; $3AC4
+	add.w (ENT_Y,A4), D7	; $3AC4
 	move.w D7, (-$2,A6)	; $3AC8
-	move.w (-$3800,A4), D6	; $3ACC
+	move.w (ENT_X,A4), D6	; $3ACC
 	jsr $30CE.w	; $3AD0
 	move.w D2, D0	; $3AD4
 	andi.w #$4, D0	; $3AD6
@@ -1001,13 +1001,13 @@ SlideUp2:
 	neg.w D0	; $3AE2
 	andi.w #$F, D0	; $3AE4
 	move.w D0, (-$2FFE,A4)	; $3AE8
-	andi.b #$5F, (-$3100,A4)	; $3AEC
-	ori.b #$A, (-$3100,A4)	; $3AF2
+	andi.b #$5F, (ENT_State,A4)	; $3AEC
+	ori.b #$A, (ENT_State,A4)	; $3AF2
 SlideUp2_Done:
 	unlk A6	; $3AF8
 	rts	; $3AFA
 SlideCheck_Init2:
-	btst.b #$6, (-$2F00,A4)	; $3AFC
+	btst.b #$6, (ENT_ColFlags,A4)	; $3AFC
 	beq.b *+$4	; $3B02
 	rts	; $3B04
 SlideCheck_V:
@@ -1024,22 +1024,22 @@ SlideCheck_VTest:
 	eori.b #-$7E, D0	; $3B26
 	bne.b *+$14	; $3B2A
 SlideCheck_VApply:
-	movea.w (-$2D00,A4), A2	; $3B2C
+	movea.w (ENT_Object,A4), A2	; $3B2C
 	tst.w (-$6072,A2)	; $3B30
 	bpl.b *+$A	; $3B34
 	move.w (-$5FCA,A2), D0	; $3B36
-	add.w D0, (-$3800,A4)	; $3B3A
+	add.w D0, (ENT_X,A4)	; $3B3A
 SlideCheck_VX:
 	moveq #$0, D0	; $3B3E
 	movea.w D0, A2	; $3B40
-	move.w D0, (-$3000,A4)	; $3B42
-	move.b (-$34FE,A4), D0	; $3B46
-	move.w (-$3800,A4), D4	; $3B4A
+	move.w D0, (ENT_StateVal,A4)	; $3B42
+	move.b (ENT_ColW2,A4), D0	; $3B46
+	move.w (ENT_X,A4), D4	; $3B4A
 	move.w D4, D5	; $3B4E
 	move.w D4, D6	; $3B50
 	add.w D0, D5	; $3B52
 	sub.w D0, D6	; $3B54
-	sub.w (-$2E00,A4), D4	; $3B56
+	sub.w (ENT_PrevX,A4), D4	; $3B56
 	moveq #$5, D7	; $3B5A
 	tst.b (-$6072,A2)	; $3B5C
 	bpl.b *+$4	; $3B60
@@ -1047,11 +1047,11 @@ SlideCheck_VX:
 SlideCheck_VNext:
 	addq.w #$4, A2	; $3B64
 	dbf D7, $3B5C	; $3B66
-	move.w (-$3000,A4), D0	; $3B6A
-	add.w D0, (-$3800,A4)	; $3B6E
+	move.w (ENT_StateVal,A4), D0	; $3B6A
+	add.w D0, (ENT_X,A4)	; $3B6E
 	rts	; $3B72
 SlideCheck_VTest2:
-	move.w (-$3700,A4), D0	; $3B74
+	move.w (ENT_Y,A4), D0	; $3B74
 	move.w (-$601C,A2), D1	; $3B78
 	cmp.w D1, D0	; $3B7C
 	bcc.b *+$4	; $3B7E
@@ -1059,7 +1059,7 @@ SlideCheck_VTest2:
 SlideCheck_VTest3:
 	sub.w D1, D0	; $3B82
 	moveq #$0, D1	; $3B84
-	move.b (-$34FD,A4), D1	; $3B86
+	move.b (ENT_ColH2,A4), D1	; $3B86
 	subq.w #$1, D1	; $3B8A
 	add.w (-$5F74,A2), D1	; $3B8C
 	cmp.w D1, D0	; $3B90
@@ -1068,7 +1068,7 @@ SlideCheck_VTest3:
 	sub.w D4, D3	; $3B9A
 	beq.w SlideCheck_VDone	; $3B9C
 	bpl.b *+$40	; $3BA0
-	move.b (-$3100,A4), D0	; $3BA2
+	move.b (ENT_State,A4), D0	; $3BA2
 	andi.b #-$7B, D0	; $3BA6
 	eori.b #-$7B, D0	; $3BAA
 	beq.b *+$72	; $3BAE
@@ -1085,12 +1085,12 @@ SlideCheck_VTest3:
 	bpl.b *+$54	; $3BCC
 	cmp.w D3, D0	; $3BCE
 	bcs.b *+$50	; $3BD0
-	cmp.w (-$3000,A4), D0	; $3BD2
+	cmp.w (ENT_StateVal,A4), D0	; $3BD2
 	bge.b *+$4A	; $3BD6
-	ori.b #-$7F, (-$3100,A4)	; $3BD8
+	ori.b #-$7F, (ENT_State,A4)	; $3BD8
 	bra.b *+$3E	; $3BDE
 SlideCheck_VTest4:
-	move.b (-$3100,A4), D0	; $3BE0
+	move.b (ENT_State,A4), D0	; $3BE0
 	andi.b #-$7B, D0	; $3BE4
 	eori.b #-$7F, D0	; $3BE8
 	beq.b *+$34	; $3BEC
@@ -1107,15 +1107,15 @@ SlideCheck_VTest4:
 	bmi.b *+$16	; $3C0A
 	cmp.w D3, D0	; $3C0C
 	bhi.b *+$12	; $3C0E
-	cmp.w (-$3000,A4), D0	; $3C10
+	cmp.w (ENT_StateVal,A4), D0	; $3C10
 	ble.b *+$C	; $3C14
-	ori.b #-$7B, (-$3100,A4)	; $3C16
+	ori.b #-$7B, (ENT_State,A4)	; $3C16
 SlideCheck_VStore:
-	move.w D0, (-$3000,A4)	; $3C1C
+	move.w D0, (ENT_StateVal,A4)	; $3C1C
 SlideCheck_VDone:
 	rts	; $3C20
 SlideCheck_Init3:
-	btst.b #$6, (-$2F00,A4)	; $3C22
+	btst.b #$6, (ENT_ColFlags,A4)	; $3C22
 	beq.b *+$4	; $3C28
 	rts	; $3C2A
 SlideCheck_Init:
@@ -1127,7 +1127,7 @@ SlideCheck_Init:
 	bne.b *+$16	; $3C40
 	btst.b #$5, (-$2EFF,A4)	; $3C42
 	beq.b *+$E	; $3C48
-	movea.w (-$2D00,A4), A2	; $3C4A
+	movea.w (ENT_Object,A4), A2	; $3C4A
 	tst.b (-$6072,A2)	; $3C4E
 	bpl.b *+$48	; $3C52
 	bra.b *+$2A	; $3C54
@@ -1136,32 +1136,32 @@ SlideCheck_B:
 	andi.b #-$76, D0	; $3C5A
 	eori.b #-$7E, D0	; $3C5E
 	bne.b *+$38	; $3C62
-	movea.w (-$2D00,A4), A2	; $3C64
+	movea.w (ENT_Object,A4), A2	; $3C64
 	tst.b (-$6072,A2)	; $3C68
 	bpl.b *+$2E	; $3C6C
 	bsr.w CheckEntityProximity	; $3C6E
 	bcs.b *+$28	; $3C72
 	move.w D1, (RAM_word_FFFF9EE4).w	; $3C74
-	ori.b #-$7E, (-$3100,A4)	; $3C78
+	ori.b #-$7E, (ENT_State,A4)	; $3C78
 SlideCheck_ApplyB:
 	move.w (-$5FC8,A2), D0	; $3C7E
-	add.w D0, (-$3700,A4)	; $3C82
+	add.w D0, (ENT_Y,A4)	; $3C82
 	move.b (-$6071,A2), D1	; $3C86
 	jsr $30F4.w	; $3C8A
 	move.w D2, (-$30FE,A4)	; $3C8E
-	clr.w (-$35FE,A4)	; $3C92
-	clr.w (-$36FE,A4)	; $3C96
+	clr.w (ENT_VelY,A4)	; $3C92
+	clr.w (ENT_YSub,A4)	; $3C96
 SlideCheck_Y:
 	moveq #$0, D0	; $3C9A
 	movea.w D0, A2	; $3C9C
 	move.w D0, (-$2FFE,A4)	; $3C9E
-	move.b (-$34FD,A4), D0	; $3CA2
-	move.w (-$3700,A4), D4	; $3CA6
+	move.b (ENT_ColH2,A4), D0	; $3CA2
+	move.w (ENT_Y,A4), D4	; $3CA6
 	move.w D4, D5	; $3CAA
 	move.w D5, D6	; $3CAC
 	sub.w D0, D6	; $3CAE
 	add.w D0, D5	; $3CB0
-	sub.w (-$2DFE,A4), D4	; $3CB2
+	sub.w (ENT_PrevY,A4), D4	; $3CB2
 	moveq #$5, D7	; $3CB6
 	tst.b (-$6072,A2)	; $3CB8
 	bpl.b *+$1A	; $3CBC
@@ -1169,7 +1169,7 @@ SlideCheck_Y:
 	andi.b #-$76, D0	; $3CC2
 	eori.b #-$7E, D0	; $3CC6
 	bne.b *+$A	; $3CCA
-	move.w (-$2D00,A4), D0	; $3CCC
+	move.w (ENT_Object,A4), D0	; $3CCC
 	sub.w A2, D0	; $3CD0
 	beq.b *+$4	; $3CD2
 SlideCheck_YScan:
@@ -1178,12 +1178,12 @@ SlideCheck_YNext:
 	addq.w #$4, A2	; $3CD6
 	dbf D7, $3CB8	; $3CD8
 	move.w (-$2FFE,A4), D0	; $3CDC
-	add.w D0, (-$3700,A4)	; $3CE0
-	move.b (-$3100,A4), D0	; $3CE4
+	add.w D0, (ENT_Y,A4)	; $3CE0
+	move.b (ENT_State,A4), D0	; $3CE4
 	andi.b #-$76, D0	; $3CE8
 	eori.b #-$7E, D0	; $3CEC
 	bne.b *+$14	; $3CF0
-	movea.w (-$2D00,A4), A2	; $3CF2
+	movea.w (ENT_Object,A4), A2	; $3CF2
 	moveq #$1, D0	; $3CF6
 	cmpa.w (RAM_word_FFFF9EEE).w, A4	; $3CF8
 	beq.b *+$4	; $3CFC
@@ -1207,7 +1207,7 @@ SlideCheck_YTest:
 	subq.b #$2, D0	; $3D30
 	bne.w SlideCheck_End	; $3D32
 SlideCheck_YTest2:
-	move.b (-$3100,A4), D0	; $3D36
+	move.b (ENT_State,A4), D0	; $3D36
 	andi.b #-$76, D0	; $3D3A
 	eori.b #-$76, D0	; $3D3E
 	beq.w SlideCheck_End	; $3D42
@@ -1225,14 +1225,14 @@ SlideCheck_YTest2:
 	bhi.w SlideCheck_End	; $3D66
 	tst.w (RAM_word_FFFF9EE4).w	; $3D6A
 	bmi.b *+$22	; $3D6E
-	movea.w (-$2D00,A4), A0	; $3D70
+	movea.w (ENT_Object,A4), A0	; $3D70
 	move.w (-$601C,A0), D1	; $3D74
 	sub.w (-$5F74,A0), D1	; $3D78
 	cmp.w D1, D2	; $3D7C
 	bne.b *+$12	; $3D7E
 	move.w (RAM_word_FFFF9EE6).w, D2	; $3D80
 	moveq #$0, D1	; $3D84
-	move.b (-$34FE,A4), D1	; $3D86
+	move.b (ENT_ColW2,A4), D1	; $3D86
 	sub.w D1, D2	; $3D8A
 	bls.b *+$72	; $3D8C
 	bra.b *+$6	; $3D8E
@@ -1242,9 +1242,9 @@ SlideCheck_YTest3:
 SlideCheck_YTest4:
 	cmp.w (-$2FFE,A4), D0	; $3D94
 	bgt.b *+$66	; $3D98
-	ori.b #-$7E, (-$3100,A4)	; $3D9A
-	clr.w (-$35FE,A4)	; $3DA0
-	clr.w (-$36FE,A4)	; $3DA4
+	ori.b #-$7E, (ENT_State,A4)	; $3D9A
+	clr.w (ENT_VelY,A4)	; $3DA0
+	clr.w (ENT_YSub,A4)	; $3DA4
 	bra.b *+$48	; $3DA8
 SlideCheck_YTest5:
 	move.b (-$6071,A2), D1	; $3DAA
@@ -1260,26 +1260,26 @@ SlideCheck_YTest5:
 	bmi.b *+$38	; $3DC6
 	cmp.w D3, D0	; $3DC8
 	bhi.b *+$34	; $3DCA
-	move.b (-$3100,A4), D1	; $3DCC
+	move.b (ENT_State,A4), D1	; $3DCC
 	andi.w #$8A, D1	; $3DD0
 	eori.w #$82, D1	; $3DD4
 	beq.b *+$8	; $3DD8
 	cmp.w (-$2FFE,A4), D0	; $3DDA
 	blt.b *+$20	; $3DDE
 SlideCheck_YApply:
-	ori.b #-$76, (-$3100,A4)	; $3DE0
-	tst.w (-$35FE,A4)	; $3DE6
+	ori.b #-$76, (ENT_State,A4)	; $3DE0
+	tst.w (ENT_VelY,A4)	; $3DE6
 	bpl.b *+$6	; $3DEA
-	clr.w (-$35FE,A4)	; $3DEC
+	clr.w (ENT_VelY,A4)	; $3DEC
 SlideCheck_YStore:
 	move.w A2, D1	; $3DF0
-	move.w D1, (-$2D00,A4)	; $3DF2
+	move.w D1, (ENT_Object,A4)	; $3DF2
 	move.w D0, (-$2FFE,A4)	; $3DF6
-	clr.w (-$36FE,A4)	; $3DFA
+	clr.w (ENT_YSub,A4)	; $3DFA
 SlideCheck_End:
 	rts	; $3DFE
 CheckEntityProximity:
-	move.w (-$3800,A4), D0	; $3E00
+	move.w (ENT_X,A4), D0	; $3E00
 	move.w (-$601E,A2), D1	; $3E04
 	cmp.w D1, D0	; $3E08
 	bcc.b *+$4	; $3E0A
@@ -1287,7 +1287,7 @@ CheckEntityProximity:
 CheckEntityProximity_Calc:
 	sub.w D1, D0	; $3E0E
 	moveq #$0, D1	; $3E10
-	move.b (-$34FE,A4), D1	; $3E12
+	move.b (ENT_ColW2,A4), D1	; $3E12
 	subq.b #$1, D1	; $3E16
 	add.w (-$5F76,A2), D1	; $3E18
 	sub.w D0, D1	; $3E1C
@@ -1319,11 +1319,11 @@ GaugeFill:
 	move.w ($0,A0,D0.w), D1	; $3E70
 	beq.b *+$24	; $3E74
 	bmi.b *+$C	; $3E76
-	cmpi.w #$180, (-$35FE,A4)	; $3E78
+	cmpi.w #$180, (ENT_VelY,A4)	; $3E78
 	bge.b *+$1A	; $3E7E
 	bra.b *+$A	; $3E80
 GaugeFill_Neg:
-	cmpi.w #-$180, (-$35FE,A4)	; $3E82
+	cmpi.w #-$180, (ENT_VelY,A4)	; $3E82
 	ble.b *+$10	; $3E88
 GaugeFill_Add:
 	tst.w D1	; $3E8A
@@ -1332,19 +1332,19 @@ GaugeFill_Add:
 	add.w D1, D1	; $3E90
 	add.w D2, D1	; $3E92
 GaugeFill_X:
-	add.w D1, (-$35FE,A4)	; $3E94
+	add.w D1, (ENT_VelY,A4)	; $3E94
 GaugeFill_X2:
 	move.w ($8,A0,D0.w), D1	; $3E98
 	beq.b *+$1A	; $3E9C
 	bmi.b *+$C	; $3E9E
-	cmpi.w #$180, (-$3600,A4)	; $3EA0
+	cmpi.w #$180, (ENT_VelX,A4)	; $3EA0
 	bge.b *+$10	; $3EA6
 	bra.b *+$A	; $3EA8
 GaugeFill_XNeg:
-	cmpi.w #-$180, (-$3600,A4)	; $3EAA
+	cmpi.w #-$180, (ENT_VelX,A4)	; $3EAA
 	ble.b *+$6	; $3EB0
 GaugeFill_Store:
-	add.w D1, (-$3600,A4)	; $3EB2
+	add.w D1, (ENT_VelX,A4)	; $3EB2
 GaugeFill_Done:
 	rts					; $3EB6
 AngleDeltaTable:				; loc_0003EB8 - sine delta curve
@@ -1354,7 +1354,7 @@ AngleDeltaTable:				; loc_0003EB8 - sine delta curve
 	dc.w	$0040,$003B,$002D,$0018,$0000,$FFE8,$FFD3,$FFC5	; $3EE8
 	dc.w	$FFC0,$FFC5,$FFD3,$FFE8,$0000,$0018,$002D,$003B	; $3EF8
 TileBehaviorCheck:
-	btst.b	#$6, (-$2F00,A4)		; $3F08
+	btst.b	#$6, (ENT_ColFlags,A4)		; $3F08
 	bne.b	*+$44				; $3F0E
 	moveq	#$A, D0				; $3F10
 	and.b	(-$2EFF,A4), D0		; $3F12
@@ -1380,38 +1380,38 @@ SlideAdjust3:
 	move.b (RAM_word_FFFF9EDB).w, D0	; $3F48
 SlideAdjust_Apply:
 	ext.w D0	; $3F4C
-	add.w D0, (-$3800,A4)	; $3F4E
+	add.w D0, (ENT_X,A4)	; $3F4E
 SlideAdjust_Done:
 	rts	; $3F52
 	lea (-$68AC).w, A3	; $3F54
-	move.w (-$3800,A4), D6	; $3F58
+	move.w (ENT_X,A4), D6	; $3F58
 	moveq #$0, D7	; $3F5C
-	move.b (-$34FD,A4), D7	; $3F5E
-	add.w (-$3700,A4), D7	; $3F62
+	move.b (ENT_ColH2,A4), D7	; $3F5E
+	add.w (ENT_Y,A4), D7	; $3F62
 	jsr $30D2.w	; $3F66
 	move.w D2, (RAM_word_FFFF9EDE).w	; $3F6A
 	rts	; $3F6E
 	lea (-$68AC).w, A3	; $3F70
-	move.w (-$3800,A4), D6	; $3F74
+	move.w (ENT_X,A4), D6	; $3F74
 	moveq #$0, D0	; $3F78
-	move.b (-$34FD,A4), D0	; $3F7A
-	move.w (-$3700,A4), D7	; $3F7E
+	move.b (ENT_ColH2,A4), D0	; $3F7A
+	move.w (ENT_Y,A4), D7	; $3F7E
 	sub.w D0, D7	; $3F82
 	jsr $30D2.w	; $3F84
 	move.w D2, (RAM_word_FFFF9EDC).w	; $3F88
 	rts	; $3F8C
 	lea (-$68AC).w, A3	; $3F8E
-	move.w (-$3800,A4), D6	; $3F92
+	move.w (ENT_X,A4), D6	; $3F92
 	moveq #$0, D7	; $3F96
-	move.b (-$34FD,A4), D7	; $3F98
-	add.w (-$3700,A4), D7	; $3F9C
+	move.b (ENT_ColH2,A4), D7	; $3F98
+	add.w (ENT_Y,A4), D7	; $3F9C
 	subq.w #$1, D7	; $3FA0
 	jsr $30D2.w	; $3FA2
 	move.w D2, (RAM_word_FFFF9EE0).w	; $3FA6
 	rts	; $3FAA
 	lea (-$68AC).w, A3	; $3FAC
-	move.w (-$3800,A4), D6	; $3FB0
-	move.w (-$3700,A4), D7	; $3FB4
+	move.w (ENT_X,A4), D6	; $3FB0
+	move.w (ENT_Y,A4), D7	; $3FB4
 	jsr $30D2.w	; $3FB8
 	move.w D2, (RAM_word_FFFF9EE2).w	; $3FBC
 	rts	; $3FC0

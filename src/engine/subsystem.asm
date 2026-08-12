@@ -498,7 +498,7 @@ ClearEntitySlots:
 	moveq #$0, D0	; $5398
 	movea.w D0, A4	; $539A
 	moveq #$3F, D1	; $539C
-	move.b D0, (-$4000,A4)	; $539E
+	move.b D0, (ENT_Flags,A4)	; $539E
 	addq.w #$4, A4	; $53A2
 	dbf D1, $539E	; $53A4
 	rts	; $53A8
@@ -509,17 +509,17 @@ ClearEntitySlots:
 	dbf D1, $53B2	; $53B4
 	movea.w #$0, A4	; $53B8
 EntitySlotMaintain:
-	andi.b #-$2, (-$4000,A4)	; $53BC
-	move.b (-$4000,A4), D0	; $53C2
+	andi.b #-$2, (ENT_Flags,A4)	; $53BC
+	move.b (ENT_Flags,A4), D0	; $53C2
 	andi.b #-$40, D0	; $53C6
 	cmpi.b #-$40, D0	; $53CA
 	bne.b *+$42	; $53CE
-	bclr.b #$7, (-$3FFD,A4)	; $53D0
+	bclr.b #$7, (ENT_ScriptFlag,A4)	; $53D0
 	bne.b *+$C	; $53D6
 	jsr $80E.w	; $53D8
-	andi.b #$7F, (-$3FFD,A4)	; $53DC
+	andi.b #$7F, (ENT_ScriptFlag,A4)	; $53DC
 EntitySlotMaintain_Check:
-	btst.b #$2, (-$3FFD,A4)	; $53E2
+	btst.b #$2, (ENT_ScriptFlag,A4)	; $53E2
 	bne.b *+$28	; $53E8
 	move.w #-$1, (-$38FE,A4)	; $53EA
 	move.b (-$3CFD,A4), D0	; $53F0
@@ -601,19 +601,19 @@ BuildSpriteAttrs_Done:
 BuildSpriteEntry:
 	lea (-$74CC).w, A0	; $54C4
 	adda.w (-$3E00,A4), A0	; $54C8
-	move.w (-$3800,A4), D2	; $54CC
+	move.w (ENT_X,A4), D2	; $54CC
 	sub.w (A0)+, D2	; $54D0
-	move.w (-$3700,A4), D3	; $54D2
+	move.w (ENT_Y,A4), D3	; $54D2
 	sub.w (A0)+, D3	; $54D6
-	move.w (-$3FFE,A4), D1	; $54D8
+	move.w (ENT_Counter,A4), D1	; $54D8
 	andi.w #-$800, D1	; $54DC
 	moveq #$0, D0	; $54E0
-	btst.b #$3, (-$3FFD,A4)	; $54E2
+	btst.b #$3, (ENT_ScriptFlag,A4)	; $54E2
 	bne.b *+$6	; $54E8
 	move.w (-$3DFE,A4), D0	; $54EA
 BuildSpriteEntry_Store:
 	move.w D0, (RAM_word_FFFF8B50).w	; $54EE
-	movea.l (-$3F00,A4), A0	; $54F2
+	movea.l (ENT_DataPtr,A4), A0	; $54F2
 BuildSpriteEntry_Loop:
 	move.b (A0)+, D6	; $54F6
 	bmi.w $557C	; $54F8
@@ -665,7 +665,7 @@ BuildSpriteEntry_Y:
 	move.b D6, (RAM_word_FFFF8B30).w	; $5566
 	move.w D6, (A3)+	; $556A
 	move.l D5, (A3)+	; $556C
-	ori.b #$1, (-$4000,A4)	; $556E
+	ori.b #$1, (ENT_Flags,A4)	; $556E
 	subq.b #$1, (RAM_word_FFFF8B31).w	; $5574
 	bne.w $54F6	; $5578
 BuildSpriteEntry_Done:

@@ -26,7 +26,7 @@ FindWordInTable_Found:
 	rts	; $4926
 ComputeHPBar:
 	moveq #$0, D0	; $4928
-	move.b (-$2BFD,A4), D0	; $492A
+	move.b (ENT_HP,A4), D0	; $492A
 	lea ($1BA6C).l, A0	; $492E
 	adda.w (A0), A0	; $4934
 	move.w D0, D1	; $4936
@@ -36,17 +36,17 @@ ComputeHPBar:
 	andi.w #$FF, D0	; $4940
 	lsl.w #$5, D0	; $4944
 	rts	; $4946
-	tst.b (-$2BFE,A4)	; $4948
+	tst.b (ENT_HPTimer,A4)	; $4948
 	bne.b *+$16	; $494C
-	btst.b #$2, (-$2AFD,A4)	; $494E
+	btst.b #$2, (ENT_PlayerFlags,A4)	; $494E
 	beq.b *+$E	; $4954
 	bsr.b ComputeHPBar	; $4956
 	move.w D0, (RAM_HUD_HP).w	; $4958
-	move.w (-$2600,A4), (RAM_HUD_Gold).w	; $495C
+	move.w (ENT_Gold,A4), (RAM_HUD_Gold).w	; $495C
 DrawStatusPanel_Done:
 	rts	; $4962
 ScaleByStatThreshold:
-	move.w (-$26FE,A4), D1	; $4964
+	move.w (ENT_StatIdx,A4), D1	; $4964
 	move.b ($4972,PC,D1.w), D1	; $4968
 	mulu.w D1, D0	; $496C
 	lsr.l #$6, D0	; $496E
@@ -61,20 +61,20 @@ DrawStatusPanel:				; loc_0004986
 	bsr.w ComputeHPBar	; $498C
 	move.w D0, (RAM_HUD_HP).w	; $4990
 	moveq #$0, D0	; $4994
-	move.w (-$2600,A4), D2	; $4996
-	tst.b (-$2AFD,A4)	; $499A
+	move.w (ENT_Gold,A4), D2	; $4996
+	tst.b (ENT_PlayerFlags,A4)	; $499A
 	bpl.b *+$38	; $499E
-	move.w (-$23FE,A4), D0	; $49A0
+	move.w (ENT_Damage,A4), D0	; $49A0
 	beq.b *+$32	; $49A4
 	bsr.b ScaleByStatThreshold	; $49A6
 	btst.b #$5, (RAM_word_FFFF9F03).w	; $49A8
 	beq.b *+$28	; $49AE
-	btst.b #$3, (-$2AFD,A4)	; $49B0
+	btst.b #$3, (ENT_PlayerFlags,A4)	; $49B0
 	beq.b *+$20	; $49B6
 	move.w (RAM_word_FFFF9F16).w, D1	; $49B8
 	beq.b *+$1A	; $49BC
 	add.w D0, D0	; $49BE
-	move.w (-$2300,A4), D3	; $49C0
+	move.w (ENT_Defense,A4), D3	; $49C0
 	andi.w #$C0, D3	; $49C4
 	lsr.w #$5, D3	; $49C8
 	sub.w ($49F0,PC,D3.w), D1	; $49CA
@@ -91,7 +91,7 @@ ClampGold:
 	bhi.b *+$4	; $49E2
 	moveq #$0, D2	; $49E4
 UpdateGoldMirror:
-	move.w D2, (-$2600,A4)	; $49E6
+	move.w D2, (ENT_Gold,A4)	; $49E6
 	move.w D2, (RAM_HUD_Gold).w	; $49EA
 	rts					; $49EE
 DamageTable:					; loc_00049F0

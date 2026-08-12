@@ -9,22 +9,22 @@
 ; Verified bit-exact against the original ROM.
 ; ======================================================================
 InitEntity:					; loc_000A1A
-	move.w #-$4000, (-$4000,A4)	; $A1A
+	move.w #-$4000, (ENT_Flags,A4)	; $A1A
 ClearEntityVelocity:
 	jsr $C1C.w	; $A20
 	moveq #$0, D0	; $A24
-	move.w D0, (-$3FFE,A4)	; $A26
+	move.w D0, (ENT_Counter,A4)	; $A26
 	move.l D0, (-$3E00,A4)	; $A2A
-	move.w #$100, (-$39FE,A4)	; $A2E
+	move.w #$100, (ENT_Decrement,A4)	; $A2E
 	rts	; $A34
 InitEntityExt:				; loc_000A36
 	bsr.b ClearEntityVelocity	; $A36
-	move.w D0, (-$3FFE,A4)	; $A38
+	move.w D0, (ENT_Counter,A4)	; $A38
 	move.l D0, (-$3200,A4)	; $A3C
-	move.l D0, (-$3100,A4)	; $A40
-	move.l D0, (-$3000,A4)	; $A44
-	move.l D0, (-$2F00,A4)	; $A48
-	move.w D0, (-$2C00,A4)	; $A4C
+	move.l D0, (ENT_State,A4)	; $A40
+	move.l D0, (ENT_StateVal,A4)	; $A44
+	move.l D0, (ENT_ColFlags,A4)	; $A48
+	move.w D0, (ENT_Step,A4)	; $A4C
 	move.l D0, (-$2B00,A4)	; $A50
 	move.l D0, (-$2A00,A4)	; $A54
 	move.l D0, (-$2900,A4)	; $A58
@@ -34,7 +34,7 @@ InitEntityExt:				; loc_000A36
 SetEntityFlagsActive:			; loc_000A66
 	movea.w #$0, A4	; $A66
 	moveq #$3F, D1	; $A6A
-	move.b (-$4000,A4), D0	; $A6C
+	move.b (ENT_Flags,A4), D0	; $A6C
 	bpl.b *+$16	; $A70
 	bset.l #$5, D0	; $A72
 	beq.b *+$8	; $A76
@@ -43,7 +43,7 @@ SetEntityFlagsActive:			; loc_000A66
 SetEntityFlags_ClearBit4:
 	andi.b #-$11, D0	; $A7E
 SetEntityFlags_Store:
-	move.b D0, (-$4000,A4)	; $A82
+	move.b D0, (ENT_Flags,A4)	; $A82
 SetEntityFlags_Next:
 	addq.w #$4, A4	; $A86
 	dbf D1, $A6C	; $A88
@@ -51,14 +51,14 @@ SetEntityFlags_Next:
 ClearEntityFlagsActive:			; loc_000A8E
 	movea.w #$0, A4	; $A8E
 	moveq #$3F, D1	; $A92
-	move.b (-$4000,A4), D0	; $A94
+	move.b (ENT_Flags,A4), D0	; $A94
 	bpl.b *+$14	; $A98
 	andi.b #-$21, D0	; $A9A
 	bclr.l #$4, D0	; $A9E
 	beq.b *+$6	; $AA2
 	ori.b #$20, D0	; $AA4
 ClearEntityFlags_Store:
-	move.b D0, (-$4000,A4)	; $AA8
+	move.b D0, (ENT_Flags,A4)	; $AA8
 ClearEntityFlags_Next:
 	addq.w #$4, A4	; $AAC
 	dbf D1, $A94	; $AAE
@@ -66,33 +66,33 @@ ClearEntityFlags_Next:
 	bsr.b *+$22	; $AB4
 	swap D0	; $AB6
 	move.b (-$35FF,A4), D0	; $AB8
-	add.b D0, (-$37FE,A4)	; $ABC
-	move.w (-$3800,A4), D2	; $AC0
-	move.b (-$3600,A4), D0	; $AC4
+	add.b D0, (ENT_XSub,A4)	; $ABC
+	move.w (ENT_X,A4), D2	; $AC0
+	move.b (ENT_VelX,A4), D0	; $AC4
 	ext.w D0	; $AC8
 	addx.w D2, D0	; $ACA
-	move.w D0, (-$3800,A4)	; $ACC
-	move.w D2, (-$2E00,A4)	; $AD0
+	move.w D0, (ENT_X,A4)	; $ACC
+	move.w D2, (ENT_PrevX,A4)	; $AD0
 	rts	; $AD4
 IntegrateVelocityY:
-	move.b (-$35FD,A4), D0	; $AD6
-	add.b D0, (-$36FE,A4)	; $ADA
-	move.w (-$3700,A4), D3	; $ADE
-	move.b (-$35FE,A4), D0	; $AE2
+	move.b (ENT_VelYSub,A4), D0	; $AD6
+	add.b D0, (ENT_YSub,A4)	; $ADA
+	move.w (ENT_Y,A4), D3	; $ADE
+	move.b (ENT_VelY,A4), D0	; $AE2
 	ext.w D0	; $AE6
 	addx.w D3, D0	; $AE8
-	move.w D0, (-$3700,A4)	; $AEA
-	move.w D3, (-$2DFE,A4)	; $AEE
+	move.w D0, (ENT_Y,A4)	; $AEA
+	move.w D3, (ENT_PrevY,A4)	; $AEE
 	rts	; $AF2
 UpdateVelocityX:
-	move.w (-$3400,A4), D0	; $AF4
-	btst.b #$0, (-$2F00,A4)	; $AF8
+	move.w (ENT_AccelX,A4), D0	; $AF4
+	btst.b #$0, (ENT_ColFlags,A4)	; $AF8
 	bne.b *+$8	; $AFE
-	add.w (-$3600,A4), D0	; $B00
+	add.w (ENT_VelX,A4), D0	; $B00
 	bra.b *+$38	; $B04
 UpdateVelocityX_Clamp:
-	move.w (-$3300,A4), D2	; $B06
-	move.w (-$3600,A4), D1	; $B0A
+	move.w (ENT_MaxVelX,A4), D2	; $B06
+	move.w (ENT_VelX,A4), D1	; $B0A
 	tst.w D0	; $B0E
 	beq.b *+$30	; $B10
 	bmi.b *+$16	; $B12
@@ -121,18 +121,18 @@ UpdateVelocityX_Check:
 UpdateVelocityX_Max:
 	move.w D2, D0	; $B3A
 UpdateVelocityX_Store:
-	move.w D0, (-$3600,A4)	; $B3C
+	move.w D0, (ENT_VelX,A4)	; $B3C
 UpdateVelocityX_Done:
 	rts	; $B40
 	bsr.b UpdateVelocityX	; $B42
 	move.w (-$33FE,A4), D0	; $B44
-	btst.b #$1, (-$2F00,A4)	; $B48
+	btst.b #$1, (ENT_ColFlags,A4)	; $B48
 	bne.b *+$8	; $B4E
-	add.w (-$35FE,A4), D0	; $B50
+	add.w (ENT_VelY,A4), D0	; $B50
 	bra.b *+$38	; $B54
 UpdateVelocityY_Clamp:
-	move.w (-$32FE,A4), D2	; $B56
-	move.w (-$35FE,A4), D1	; $B5A
+	move.w (ENT_MaxVelY,A4), D2	; $B56
+	move.w (ENT_VelY,A4), D1	; $B5A
 	tst.w D0	; $B5E
 	beq.b *+$30	; $B60
 	bmi.b *+$16	; $B62
@@ -161,10 +161,10 @@ UpdateVelocityY_Check:
 UpdateVelocityY_Max:
 	move.w D2, D0	; $B8A
 UpdateVelocityY_Store:
-	move.w D0, (-$35FE,A4)	; $B8C
+	move.w D0, (ENT_VelY,A4)	; $B8C
 UpdateVelocityY_Done:
 	rts	; $B90
-	move.w (-$3600,A4), D1	; $B92
+	move.w (ENT_VelX,A4), D1	; $B92
 	beq.b *+$14	; $B96
 	bpl.b *+$8	; $B98
 	add.w D0, D1	; $B9A
@@ -176,10 +176,10 @@ DecelerateVelocityX:
 DecelerateVelocityX_Zero:
 	moveq #$0, D1	; $BA4
 DecelerateVelocityX_Store:
-	move.w D1, (-$3600,A4)	; $BA6
+	move.w D1, (ENT_VelX,A4)	; $BA6
 DecelerateVelocityX_Done:
 	rts	; $BAA
-	move.w (-$35FE,A4), D1	; $BAC
+	move.w (ENT_VelY,A4), D1	; $BAC
 	beq.b *+$14	; $BB0
 	bpl.b *+$8	; $BB2
 	add.w D0, D1	; $BB4
@@ -191,13 +191,13 @@ DecelerateVelocityY:
 DecelerateVelocityY_Zero:
 	moveq #$0, D1	; $BBE
 DecelerateVelocityY_Store:
-	move.w D1, (-$35FE,A4)	; $BC0
+	move.w D1, (ENT_VelY,A4)	; $BC0
 DecelerateVelocityY_Done:
 	rts	; $BC4
 IsOnScreenX:
-	move.w (-$3800,A4), D0	; $BC6
+	move.w (ENT_X,A4), D0	; $BC6
 	moveq #$0, D2	; $BCA
-	move.b (-$34FE,A4), D2	; $BCC
+	move.b (ENT_ColW2,A4), D2	; $BCC
 	sub.w (RAM_PlayerX).w, D0	; $BD0
 	move.w D0, D1	; $BD4
 	add.w D2, D1	; $BD6
@@ -215,9 +215,9 @@ IsOnScreenX_Visible:
 	beq.b *+$4	; $BF0
 	rts	; $BF2
 IsOnScreenY:
-	move.w (-$3700,A4), D0	; $BF4
+	move.w (ENT_Y,A4), D0	; $BF4
 	moveq #$0, D2	; $BF8
-	move.b (-$34FD,A4), D2	; $BFA
+	move.b (ENT_ColH2,A4), D2	; $BFA
 	sub.w (RAM_PlayerY).w, D0	; $BFE
 	move.w D0, D1	; $C02
 	add.w D2, D1	; $C04
@@ -232,13 +232,13 @@ IsOnScreenY_Visible:
 	moveq #-$1, D0	; $C18
 	rts	; $C1A
 	moveq #$0, D0	; $C1C
-	move.l D0, (-$3600,A4)	; $C1E
+	move.l D0, (ENT_VelX,A4)	; $C1E
 	moveq #$0, D0	; $C22
-	move.w D0, (-$37FE,A4)	; $C24
-	move.w D0, (-$36FE,A4)	; $C28
+	move.w D0, (ENT_XSub,A4)	; $C24
+	move.w D0, (ENT_YSub,A4)	; $C28
 	rts	; $C2C
 	moveq #$0, D0	; $C2E
-	move.l D0, (-$3600,A4)	; $C30
+	move.l D0, (ENT_VelX,A4)	; $C30
 	rts	; $C34
 	exg A2, A4	; $C36
 	bsr.b *+$6	; $C38
@@ -270,8 +270,8 @@ CheckCollisionBoxes_Loop:
 	bne.b CheckCollisionBoxes_Loop	; $C80
 	bra.b *+$18	; $C82
 CheckCollisionBoxes_Hit:
-	ori.b #$40, (-$2AFD,A2)	; $C84
-	ori.b #$10, (-$2AFD,A4)	; $C8A
+	ori.b #$40, (ENT_PlayerFlags,A2)	; $C84
+	ori.b #$10, (ENT_PlayerFlags,A4)	; $C8A
 	bsr.w LinkCollisionPair	; $C90
 	unlk A6	; $C94
 	moveq #-$1, D0	; $C96
@@ -283,19 +283,19 @@ CheckCollisionBoxes_Clear:
 	rts	; $C9E
 CheckBoxOverlap:
 	move.b ($0,A1), D0	; $CA0
-	btst.b #$3, (-$3FFE,A4)	; $CA4
+	btst.b #$3, (ENT_Counter,A4)	; $CA4
 	beq.b *+$4	; $CAA
 	neg.b D0	; $CAC
 CheckBoxOverlap_XNeg:
 	ext.w D0	; $CAE
-	add.w (-$3800,A4), D0	; $CB0
+	add.w (ENT_X,A4), D0	; $CB0
 	move.b ($0,A0), D1	; $CB4
-	btst.b #$3, (-$3FFE,A2)	; $CB8
+	btst.b #$3, (ENT_Counter,A2)	; $CB8
 	beq.b *+$4	; $CBE
 	neg.b D1	; $CC0
 CheckBoxOverlap_YNeg:
 	ext.w D1	; $CC2
-	add.w (-$3800,A2), D1	; $CC4
+	add.w (ENT_X,A2), D1	; $CC4
 	cmp.w D1, D0	; $CC8
 	bcc.b *+$4	; $CCA
 			dc.w	$c340	; EXG D1,D0
@@ -310,18 +310,18 @@ CheckBoxOverlap_XTest:
 	bhi.b *+$42	; $CE0
 	move.b ($1,A1), D1	; $CE2
 	ext.w D1	; $CE6
-	btst.b #$4, (-$3FFE,A4)	; $CE8
+	btst.b #$4, (ENT_Counter,A4)	; $CE8
 	beq.b *+$4	; $CEE
 	neg.b D1	; $CF0
 CheckBoxOverlap_YAdd:
-	add.w (-$3700,A4), D1	; $CF2
+	add.w (ENT_Y,A4), D1	; $CF2
 	move.b ($1,A0), D2	; $CF6
-	btst.b #$4, (-$3FFE,A2)	; $CFA
+	btst.b #$4, (ENT_Counter,A2)	; $CFA
 	beq.b *+$4	; $D00
 	neg.b D2	; $D02
 CheckBoxOverlap_YNeg2:
 	ext.w D2	; $D04
-	add.w (-$3700,A2), D2	; $D06
+	add.w (ENT_Y,A2), D2	; $D06
 	cmp.w D2, D1	; $D0A
 	bcc.b *+$4	; $D0C
 			dc.w	$c541	; EXG D2,D1
@@ -340,7 +340,7 @@ CheckBoxOverlap_Done:
 	exg A2, A4	; $D28
 	rts	; $D2A
 CheckEntityCollision:
-	btst.b #$5, (-$2AFD,A4)	; $D2C
+	btst.b #$5, (ENT_PlayerFlags,A4)	; $D2C
 	bne.b *+$38	; $D32
 	move.l (-$2900,A2), D0	; $D34
 	beq.b *+$32	; $D38
@@ -355,8 +355,8 @@ CheckEntityCollision_Loop:
 	bne.b CheckEntityCollision_Loop	; $D4E
 	bra.b *+$18	; $D50
 CheckEntityCollision_Hit:
-	ori.b #$10, (-$2AFD,A2)	; $D52
-	ori.b #$2, (-$2AFD,A4)	; $D58
+	ori.b #$10, (ENT_PlayerFlags,A2)	; $D52
+	ori.b #$2, (ENT_PlayerFlags,A4)	; $D58
 	bsr.w LinkCollisionPair	; $D5E
 	unlk A6	; $D62
 	moveq #-$1, D0	; $D64
@@ -371,7 +371,7 @@ CheckEntityCollision_Clear:
 	exg A2, A4	; $D72
 	rts	; $D74
 CheckObjectCollision:
-	btst.b #$6, (-$2AFD,A4)	; $D76
+	btst.b #$6, (ENT_PlayerFlags,A4)	; $D76
 	bne.b *+$8	; $D7C
 	move.l (-$2A00,A2), D0	; $D7E
 	bne.b *+$4	; $D82
@@ -389,22 +389,22 @@ CheckObjectCollision_Loop:
 	bne.b CheckObjectCollision_Loop	; $D9A
 	bra.b *+$16	; $D9C
 CheckObjectCollision_Hit:
-	ori.b #$20, (-$2AFD,A2)	; $D9E
-	ori.b #-$78, (-$2AFD,A4)	; $DA4
-	move.w (-$2400,A2), (-$23FE,A4)	; $DAA
+	ori.b #$20, (ENT_PlayerFlags,A2)	; $D9E
+	ori.b #-$78, (ENT_PlayerFlags,A4)	; $DA4
+	move.w (-$2400,A2), (ENT_Damage,A4)	; $DAA
 	bsr.b *+$6A	; $DB0
 CheckObjectCollision_NoHit:
 	unlk A6	; $DB2
 	rts	; $DB4
 CheckBoxOverlap2:
-	move.w (-$3800,A4), D0	; $DB6
+	move.w (ENT_X,A4), D0	; $DB6
 	move.b ($0,A0), D1	; $DBA
-	btst.b #$3, (-$3FFE,A2)	; $DBE
+	btst.b #$3, (ENT_Counter,A2)	; $DBE
 	beq.b *+$4	; $DC4
 	neg.b D1	; $DC6
 CheckBoxOverlap2_XNeg:
 	ext.w D1	; $DC8
-	add.w (-$3800,A2), D1	; $DCA
+	add.w (ENT_X,A2), D1	; $DCA
 	cmp.w D1, D0	; $DCE
 	bcc.b *+$4	; $DD0
 			dc.w	$c340	; EXG D1,D0
@@ -412,19 +412,19 @@ CheckBoxOverlap2_XTest:
 	sub.w D1, D0	; $DD4
 	moveq #$0, D1	; $DD6
 	moveq #$0, D2	; $DD8
-	move.b (-$3500,A4), D1	; $DDA
+	move.b (ENT_ColW,A4), D1	; $DDA
 	move.b ($2,A0), D2	; $DDE
 	add.w D2, D1	; $DE2
 	sub.w D1, D0	; $DE4
 	bhi.b *+$32	; $DE6
-	move.w (-$3700,A4), D1	; $DE8
+	move.w (ENT_Y,A4), D1	; $DE8
 	move.b ($1,A0), D2	; $DEC
-	btst.b #$4, (-$3FFE,A2)	; $DF0
+	btst.b #$4, (ENT_Counter,A2)	; $DF0
 	beq.b *+$4	; $DF6
 	neg.b D2	; $DF8
 CheckBoxOverlap2_YNeg:
 	ext.w D2	; $DFA
-	add.w (-$3700,A2), D2	; $DFC
+	add.w (ENT_Y,A2), D2	; $DFC
 	cmp.w D2, D1	; $E00
 	bcc.b *+$4	; $E02
 			dc.w	$c541	; EXG D2,D1
@@ -432,7 +432,7 @@ CheckBoxOverlap2_YTest:
 	sub.w D2, D1	; $E06
 	moveq #$0, D2	; $E08
 	moveq #$0, D3	; $E0A
-	move.b (-$34FF,A4), D2	; $E0C
+	move.b (ENT_ColH,A4), D2	; $E0C
 	move.b ($3,A0), D3	; $E10
 	add.w D3, D2	; $E14
 	sub.w D2, D1	; $E16
@@ -440,47 +440,47 @@ CheckBoxOverlap2_Done:
 	rts	; $E18
 LinkCollisionPair:
 	bsr.b *+$30	; $E1A
-	or.b D4, (-$2AFD,A2)	; $E1C
+	or.b D4, (ENT_PlayerFlags,A2)	; $E1C
 	bchg.l #$0, D4	; $E20
-	or.b D4, (-$2AFD,A4)	; $E24
-	move.w (-$3800,A2), (-$2500,A4)	; $E28
-	move.w (-$3800,A4), (-$2500,A2)	; $E2E
-	move.w (-$3700,A2), (-$24FE,A4)	; $E34
-	move.w (-$3700,A4), (-$24FE,A2)	; $E3A
+	or.b D4, (ENT_PlayerFlags,A4)	; $E24
+	move.w (ENT_X,A2), (-$2500,A4)	; $E28
+	move.w (ENT_X,A4), (-$2500,A2)	; $E2E
+	move.w (ENT_Y,A2), (-$24FE,A4)	; $E34
+	move.w (ENT_Y,A4), (-$24FE,A2)	; $E3A
 	move.w A4, (-$22FE,A2)	; $E40
 	move.w A2, (-$22FE,A4)	; $E44
 	rts	; $E48
 UnlinkCollisionPair:
 	moveq #-$2, D0	; $E4A
-	and.b D0, (-$2AFD,A4)	; $E4C
-	and.b D0, (-$2AFD,A2)	; $E50
+	and.b D0, (ENT_PlayerFlags,A4)	; $E4C
+	and.b D0, (ENT_PlayerFlags,A2)	; $E50
 	moveq #$0, D4	; $E54
-	move.w (-$3800,A4), D0	; $E56
-	cmp.w (-$3800,A2), D0	; $E5A
+	move.w (ENT_X,A4), D0	; $E56
+	cmp.w (ENT_X,A2), D0	; $E5A
 	bcc.b *+$4	; $E5E
 	moveq #$1, D4	; $E60
 UnlinkCollisionPair_Done:
 	rts	; $E62
-	tst.b (-$2AFD,A2)	; $E64
+	tst.b (ENT_PlayerFlags,A2)	; $E64
 	bmi.b *+$30	; $E68
 	bsr.b *+$30	; $E6A
 	bhi.b *+$2C	; $E6C
 	move.w D4, D3	; $E6E
-	move.w (-$2700,A2), (-$23FE,A4)	; $E70
+	move.w (ENT_Attack,A2), (ENT_Damage,A4)	; $E70
 	ori.b #-$7C, D3	; $E76
-	or.b D3, (-$2AFD,A2)	; $E7A
-	move.w (-$2700,A4), (-$23FE,A2)	; $E7E
+	or.b D3, (ENT_PlayerFlags,A2)	; $E7A
+	move.w (ENT_Attack,A4), (ENT_Damage,A2)	; $E7E
 	move.w A4, (-$22FE,A2)	; $E84
 	bchg.l #$0, D4	; $E88
 	ori.b #$4, D4	; $E8C
-	or.b D4, (-$2AFD,A4)	; $E90
+	or.b D4, (ENT_PlayerFlags,A4)	; $E90
 	move.w A2, (-$22FE,A4)	; $E94
 CollisionHit_Done:
 	rts	; $E98
 CheckOverlapDistance:
 	moveq #$0, D4	; $E9A
-	move.w (-$3800,A4), D0	; $E9C
-	move.w (-$3800,A2), D1	; $EA0
+	move.w (ENT_X,A4), D0	; $E9C
+	move.w (ENT_X,A2), D1	; $EA0
 	cmp.w D1, D0	; $EA4
 	bcc.b *+$6	; $EA6
 			dc.w	$c340	; EXG D1,D0
@@ -489,13 +489,13 @@ CheckOverlapDistance_X:
 	sub.w D1, D0	; $EAC
 	moveq #$0, D1	; $EAE
 	moveq #$0, D2	; $EB0
-	move.b (-$3500,A4), D1	; $EB2
-	move.b (-$3500,A2), D2	; $EB6
+	move.b (ENT_ColW,A4), D1	; $EB2
+	move.b (ENT_ColW,A2), D2	; $EB6
 	add.w D2, D1	; $EBA
 	sub.w D1, D0	; $EBC
 	bhi.b *+$22	; $EBE
-	move.w (-$3700,A4), D1	; $EC0
-	move.w (-$3700,A2), D2	; $EC4
+	move.w (ENT_Y,A4), D1	; $EC0
+	move.w (ENT_Y,A2), D2	; $EC4
 	cmp.w D2, D1	; $EC8
 	bcc.b *+$4	; $ECA
 			dc.w	$c541	; EXG D2,D1
@@ -503,8 +503,8 @@ CheckOverlapDistance_Y:
 	sub.w D2, D1	; $ECE
 	moveq #$0, D2	; $ED0
 	moveq #$0, D3	; $ED2
-	move.b (-$34FF,A4), D2	; $ED4
-	move.b (-$34FF,A2), D3	; $ED8
+	move.b (ENT_ColH,A4), D2	; $ED4
+	move.b (ENT_ColH,A2), D3	; $ED8
 	add.w D3, D2	; $EDC
 	sub.w D2, D1	; $EDE
 CheckOverlapDistance_Done:
@@ -611,10 +611,10 @@ Atan2Fast_Lookup:
 	dc.w	$4000,$4000,$c000,$c000,$0000,$8000,$0000,$8000	; $106C
 	dc.w	$2000,$6000,$e000,$a000,$2000,$6000,$e000,$a000	; $107C
 CalcAngleToTarget:			; loc_00108C (atan2: angle to another entity)
-	move.w (-$3800,A2), D0	; $108C
-	sub.w (-$3800,A4), D0	; $1090
-	move.w (-$3700,A2), D1	; $1094
-	sub.w (-$3700,A4), D1	; $1098
+	move.w (ENT_X,A2), D0	; $108C
+	sub.w (ENT_X,A4), D0	; $1090
+	move.w (ENT_Y,A2), D1	; $1094
+	sub.w (ENT_Y,A4), D1	; $1098
 	moveq #$0, D2	; $109C
 	tst.w D0	; $109E
 	bpl.b *+$6	; $10A0
@@ -688,8 +688,8 @@ CalcAngleToTarget_Done:
 	jsr $108C.w	; $1202
 	move.w D3, D6	; $1206
 	jsr $FA8.w	; $1208
-	move.w D0, (-$3600,A4)	; $120C
-	move.w D5, (-$35FE,A4)	; $1210
+	move.w D0, (ENT_VelX,A4)	; $120C
+	move.w D5, (ENT_VelY,A4)	; $1210
 	rts	; $1214
 	jsr $108C.w	; $1216
 	move.w D3, D6	; $121A
@@ -697,25 +697,25 @@ CalcAngleToTarget_Done:
 	jsr $1032.w	; $1220
 	move.w D3, D6	; $1224
 	jsr $FC0.w	; $1226
-	move.w D0, (-$3600,A4)	; $122A
-	move.w D5, (-$35FE,A4)	; $122E
+	move.w D0, (ENT_VelX,A4)	; $122A
+	move.w D5, (ENT_VelY,A4)	; $122E
 	rts	; $1232
 	jsr $108C.w	; $1234
 	move.w D3, D6	; $1238
 	jsr $FC0.w	; $123A
-	move.w D0, (-$3600,A4)	; $123E
-	move.w D5, (-$35FE,A4)	; $1242
+	move.w D0, (ENT_VelX,A4)	; $123E
+	move.w D5, (ENT_VelY,A4)	; $1242
 	rts	; $1246
 	bsr.w CalcAngleToTarget	; $1248
 	move.w D3, D6	; $124C
 	bra.w AngleToVectorQ	; $124E
-	move.w (-$3800,A2), D0	; $1252
-	sub.w (-$3800,A4), D0	; $1256
+	move.w (ENT_X,A2), D0	; $1252
+	sub.w (ENT_X,A4), D0	; $1256
 	bpl.b *+$4	; $125A
 	neg.w D0	; $125C
 ComputeDistance:
-	move.w (-$3700,A2), D1	; $125E
-	sub.w (-$3700,A4), D1	; $1262
+	move.w (ENT_Y,A2), D1	; $125E
+	sub.w (ENT_Y,A4), D1	; $1262
 	bpl.b *+$4	; $1266
 	neg.w D1	; $1268
 ComputeDistance_Swap:
