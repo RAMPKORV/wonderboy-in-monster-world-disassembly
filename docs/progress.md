@@ -88,6 +88,25 @@ module BEFORE running spanforce.
 - $98000-$99A76: **z80_driver.asm** (full Z80 disassembly annotated + 20 labels).
 - $A0000-$A4C76: data_banks.asm.
 
+## Readability / modding infrastructure (reviews executed)
+
+- **Every routine named**: 0 `loc_`/anonymous labels remain; all 1,195+
+  routines have descriptive PascalCase names. Entry-point labels added for
+  spawn/damage/menu/scene code (CheckCollisionPoint, SceneSpawnCommand,
+  ApplyDamage, KillEntity, UpdateHelper, FrameUpdate, EnterScene...).
+- **All raw-address calls resolved**: 0 `jsr/jmp/bsr $XXXX` remain; every
+  call site uses a named label (builds a real call graph, rename-safe).
+- **94 routine doc blocks** on engine/gameplay entry points (zoom-style).
+- **Entity object layout symbolized**: 575 `ENT_*` A4-relative symbols in
+  ram_addresses.asm (X/Y, velocity, HP `$FF9403`, gold `$FF9A00`, attack,
+  stat index, defense, collision box, state).
+- **21 ROM table EQU constants** added to game_constants.asm (stat/damage/
+  angle/scene/dispatch tables). Fixed two misleading names (DamageStatTable,
+  StatDeltaTable).
+- **Map editing round-trip**: `compress_tag02.js` + `inject_maps.js`
+  (verified on all 682 maps). **Scene manifest**: `extract_scenes.js` ->
+  scenes/scenes.json + docs/scenes.md.
+
 ## Ghidra conversion limitation (documented)
 
 Ghidra's force-disassembly mis-sizes/skips instructions where data tables are
