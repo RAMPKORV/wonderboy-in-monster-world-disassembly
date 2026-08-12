@@ -1,0 +1,1497 @@
+[
+ {
+  "index": 0,
+  "type": 0,
+  "offset": 393,
+  "dataAddr": "0x1df1d",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "···"
+ },
+ {
+  "index": 1,
+  "type": 1,
+  "offset": 613,
+  "dataAddr": "0x1dff9",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "·····e to····T ·g! ·"
+ },
+ {
+  "index": 2,
+  "type": 0,
+  "offset": 634,
+  "dataAddr": "0x1e00e",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····6"
+ },
+ {
+  "index": 3,
+  "type": 1,
+  "offset": 857,
+  "dataAddr": "0x1e0ed",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "······@,····· fairy ···"
+ },
+ {
+  "index": 4,
+  "type": 1,
+  "offset": 881,
+  "dataAddr": "0x1e105",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "······Z ·E···Entrance·"
+ },
+ {
+  "index": 5,
+  "type": 1,
+  "offset": 904,
+  "dataAddr": "0x1e11c",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "······S ·J-·····at ·· own risk!·"
+ },
+ {
+  "index": 6,
+  "type": 1,
+  "offset": 937,
+  "dataAddr": "0x1e13d",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "······Q,····· ·· ···"
+ },
+ {
+  "index": 7,
+  "type": 1,
+  "offset": 958,
+  "dataAddr": "0x1e152",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "·····Begonia,····· dragon ···"
+ },
+ {
+  "index": 8,
+  "type": 1,
+  "offset": 988,
+  "dataAddr": "0x1e170",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "·····Childam,····· Darkworld ···"
+ },
+ {
+  "index": 9,
+  "type": 1,
+  "offset": 1021,
+  "dataAddr": "0x1e191",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "······Z,····· Aqua Capital·"
+ },
+ {
+  "index": 10,
+  "type": 0,
+  "offset": 1049,
+  "dataAddr": "0x1e1ad",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 11,
+  "type": 0,
+  "offset": 1055,
+  "dataAddr": "0x1e1b3",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 12,
+  "type": 0,
+  "offset": 1061,
+  "dataAddr": "0x1e1b9",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 13,
+  "type": 0,
+  "offset": 1067,
+  "dataAddr": "0x1e1bf",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 14,
+  "type": 0,
+  "offset": 1073,
+  "dataAddr": "0x1e1c5",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 15,
+  "type": 0,
+  "offset": 1079,
+  "dataAddr": "0x1e1cb",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 16,
+  "type": 0,
+  "offset": 1085,
+  "dataAddr": "0x1e1d1",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 17,
+  "type": 0,
+  "offset": 1091,
+  "dataAddr": "0x1e1d7",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 18,
+  "type": 0,
+  "offset": 1097,
+  "dataAddr": "0x1e1dd",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 19,
+  "type": 0,
+  "offset": 1103,
+  "dataAddr": "0x1e1e3",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 20,
+  "type": 0,
+  "offset": 1109,
+  "dataAddr": "0x1e1e9",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 21,
+  "type": 0,
+  "offset": 1115,
+  "dataAddr": "0x1e1ef",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 22,
+  "type": 0,
+  "offset": 1121,
+  "dataAddr": "0x1e1f5",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 23,
+  "type": 0,
+  "offset": 1127,
+  "dataAddr": "0x1e1fb",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 24,
+  "type": 0,
+  "offset": 1133,
+  "dataAddr": "0x1e201",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 25,
+  "type": 0,
+  "offset": 1139,
+  "dataAddr": "0x1e207",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 26,
+  "type": 0,
+  "offset": 1145,
+  "dataAddr": "0x1e20d",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 27,
+  "type": 0,
+  "offset": 1151,
+  "dataAddr": "0x1e213",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 28,
+  "type": 0,
+  "offset": 1157,
+  "dataAddr": "0x1e219",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 29,
+  "type": 0,
+  "offset": 1163,
+  "dataAddr": "0x1e21f",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 30,
+  "type": 0,
+  "offset": 1169,
+  "dataAddr": "0x1e225",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 31,
+  "type": 0,
+  "offset": 1175,
+  "dataAddr": "0x1e22b",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 32,
+  "type": 0,
+  "offset": 1181,
+  "dataAddr": "0x1e231",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 33,
+  "type": 0,
+  "offset": 1187,
+  "dataAddr": "0x1e237",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 34,
+  "type": 0,
+  "offset": 1193,
+  "dataAddr": "0x1e23d",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·· ·"
+ },
+ {
+  "index": 35,
+  "type": 0,
+  "offset": 1199,
+  "dataAddr": "0x1e243",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··!·"
+ },
+ {
+  "index": 36,
+  "type": 0,
+  "offset": 1205,
+  "dataAddr": "0x1e249",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··#·"
+ },
+ {
+  "index": 37,
+  "type": 0,
+  "offset": 1211,
+  "dataAddr": "0x1e24f",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··d·"
+ },
+ {
+  "index": 38,
+  "type": 0,
+  "offset": 1217,
+  "dataAddr": "0x1e255",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··%·"
+ },
+ {
+  "index": 39,
+  "type": 0,
+  "offset": 1223,
+  "dataAddr": "0x1e25b",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··*·"
+ },
+ {
+  "index": 40,
+  "type": 1,
+  "offset": 1229,
+  "dataAddr": "0x1e261",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "········Oh, it's ·· ··(····(····-··!····"
+ },
+ {
+  "index": 41,
+  "type": 0,
+  "offset": 1270,
+  "dataAddr": "0x1e28a",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··)·"
+ },
+ {
+  "index": 42,
+  "type": 0,
+  "offset": 1276,
+  "dataAddr": "0x1e290",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··+·"
+ },
+ {
+  "index": 43,
+  "type": 0,
+  "offset": 1282,
+  "dataAddr": "0x1e296",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··,·"
+ },
+ {
+  "index": 44,
+  "type": 0,
+  "offset": 1288,
+  "dataAddr": "0x1e29c",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··-·"
+ },
+ {
+  "index": 45,
+  "type": 0,
+  "offset": 1294,
+  "dataAddr": "0x1e2a2",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··.·"
+ },
+ {
+  "index": 46,
+  "type": 0,
+  "offset": 1300,
+  "dataAddr": "0x1e2a8",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 47,
+  "type": 0,
+  "offset": 1306,
+  "dataAddr": "0x1e2ae",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 48,
+  "type": 0,
+  "offset": 1312,
+  "dataAddr": "0x1e2b4",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··\"·"
+ },
+ {
+  "index": 49,
+  "type": 0,
+  "offset": 1318,
+  "dataAddr": "0x1e2ba",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·······9"
+ },
+ {
+  "index": 50,
+  "type": 0,
+  "offset": 1418,
+  "dataAddr": "0x1e31e",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····9"
+ },
+ {
+  "index": 51,
+  "type": 0,
+  "offset": 1504,
+  "dataAddr": "0x1e374",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "···"
+ },
+ {
+  "index": 52,
+  "type": 0,
+  "offset": 1580,
+  "dataAddr": "0x1e3c0",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 53,
+  "type": 0,
+  "offset": 1761,
+  "dataAddr": "0x1e475",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 54,
+  "type": 0,
+  "offset": 1767,
+  "dataAddr": "0x1e47b",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 55,
+  "type": 0,
+  "offset": 1918,
+  "dataAddr": "0x1e512",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 56,
+  "type": 0,
+  "offset": 2058,
+  "dataAddr": "0x1e59e",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····7····(····&··I'm Sonia.····b ·· is under·attack.···I ··'"
+ },
+ {
+  "index": 57,
+  "type": 2,
+  "offset": 2214,
+  "dataAddr": "0x1e63a",
+  "geom": {
+   "x": 1,
+   "y": 1,
+   "w": 21,
+   "h": 3
+  },
+  "text": "····^"
+ },
+ {
+  "index": 58,
+  "type": 0,
+  "offset": 2458,
+  "dataAddr": "0x1e72e",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··%·h ·· ·· ·V·to open ·· ·z·doors, ·w I lost it···· inside "
+ },
+ {
+  "index": 59,
+  "type": 0,
+  "offset": 2526,
+  "dataAddr": "0x1e772",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 60,
+  "type": 0,
+  "offset": 2532,
+  "dataAddr": "0x1e778",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····7"
+ },
+ {
+  "index": 61,
+  "type": 0,
+  "offset": 2743,
+  "dataAddr": "0x1e84b",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····7"
+ },
+ {
+  "index": 62,
+  "type": 0,
+  "offset": 2841,
+  "dataAddr": "0x1e8ad",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 63,
+  "type": 0,
+  "offset": 2969,
+  "dataAddr": "0x1e92d",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····F"
+ },
+ {
+  "index": 64,
+  "type": 0,
+  "offset": 3401,
+  "dataAddr": "0x1eadd",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····^·a ·· so ··.····@ is once ···a ·· ··.····Go ·t ·· large"
+ },
+ {
+  "index": 65,
+  "type": 0,
+  "offset": 3673,
+  "dataAddr": "0x1ebed",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 66,
+  "type": 0,
+  "offset": 3679,
+  "dataAddr": "0x1ebf3",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 67,
+  "type": 0,
+  "offset": 3843,
+  "dataAddr": "0x1ec97",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 68,
+  "type": 0,
+  "offset": 3916,
+  "dataAddr": "0x1ece0",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····"
+ },
+ {
+  "index": 69,
+  "type": 0,
+  "offset": 4288,
+  "dataAddr": "0x1ee54",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····8"
+ },
+ {
+  "index": 70,
+  "type": 0,
+  "offset": 4702,
+  "dataAddr": "0x1eff2",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 71,
+  "type": 0,
+  "offset": 4894,
+  "dataAddr": "0x1f0b2",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 72,
+  "type": 0,
+  "offset": 5011,
+  "dataAddr": "0x1f127",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 73,
+  "type": 5,
+  "offset": 5163,
+  "dataAddr": "0x1f1bf",
+  "geom": {
+   "x": 0,
+   "y": 0,
+   "w": 19,
+   "h": 3
+  },
+  "text": "····D"
+ },
+ {
+  "index": 74,
+  "type": 0,
+  "offset": 5793,
+  "dataAddr": "0x1f435",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 75,
+  "type": 0,
+  "offset": 5930,
+  "dataAddr": "0x1f4be",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··It's ·r years·since we last had·a visitor.···Your ·· ·····"
+ },
+ {
+  "index": 76,
+  "type": 0,
+  "offset": 6041,
+  "dataAddr": "0x1f52d",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····b"
+ },
+ {
+  "index": 77,
+  "type": 0,
+  "offset": 6176,
+  "dataAddr": "0x1f5b4",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 78,
+  "type": 0,
+  "offset": 6391,
+  "dataAddr": "0x1f68b",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····8"
+ },
+ {
+  "index": 79,
+  "type": 1,
+  "offset": 6820,
+  "dataAddr": "0x1f838",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "···············"
+ },
+ {
+  "index": 80,
+  "type": 0,
+  "offset": 6836,
+  "dataAddr": "0x1f848",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "···*··O·*·"
+ },
+ {
+  "index": 81,
+  "type": 3,
+  "offset": 7427,
+  "dataAddr": "0x1fa97",
+  "geom": {
+   "x": 6,
+   "y": 3,
+   "w": 17,
+   "h": 1
+  },
+  "text": "····b Myconid!····"
+ },
+ {
+  "index": 82,
+  "type": 1,
+  "offset": 7446,
+  "dataAddr": "0x1faaa",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "··It ·· ·· ····· is ·|.·"
+ },
+ {
+  "index": 83,
+  "type": 0,
+  "offset": 7471,
+  "dataAddr": "0x1fac3",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 84,
+  "type": 3,
+  "offset": 7773,
+  "dataAddr": "0x1fbf1",
+  "geom": {
+   "x": 6,
+   "y": 3,
+   "w": 17,
+   "h": 1
+  },
+  "text": "··It's locked.·"
+ },
+ {
+  "index": 85,
+  "type": 0,
+  "offset": 7789,
+  "dataAddr": "0x1fc01",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··I had ·r taken·prisoner by ·····.····W ·} to ····y hall.··"
+ },
+ {
+  "index": 86,
+  "type": 0,
+  "offset": 7869,
+  "dataAddr": "0x1fc51",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····;·b gate to ····y ·· ·r·opened.···Why ··'t ·· go on·insi"
+ },
+ {
+  "index": 87,
+  "type": 0,
+  "offset": 7935,
+  "dataAddr": "0x1fc93",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····Z··If ·· ·· ····A, ·· ·x··· ·· ····at ·· ·u of ···sea.··"
+ },
+ {
+  "index": 88,
+  "type": 0,
+  "offset": 8479,
+  "dataAddr": "0x1feb3",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··="
+ },
+ {
+  "index": 89,
+  "type": 0,
+  "offset": 8826,
+  "dataAddr": "0x2000e",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 90,
+  "type": 1,
+  "offset": 8917,
+  "dataAddr": "0x20069",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "···b ·· ·· ·r···sealed.·"
+ },
+ {
+  "index": 91,
+  "type": 4,
+  "offset": 8942,
+  "dataAddr": "0x20082",
+  "geom": {
+   "x": 0,
+   "y": 0,
+   "w": 17,
+   "h": 5
+  },
+  "text": "·#···So ··'ve·arrived.·· As ·· ·· ···guessed, I'm ····_.·· I"
+ },
+ {
+  "index": 92,
+  "type": 0,
+  "offset": 9720,
+  "dataAddr": "0x2038c",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····C"
+ },
+ {
+  "index": 93,
+  "type": 1,
+  "offset": 9903,
+  "dataAddr": "0x20443",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "···b ·· is ·|.·"
+ },
+ {
+  "index": 94,
+  "type": 0,
+  "offset": 9919,
+  "dataAddr": "0x20453",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "····?"
+ },
+ {
+  "index": 95,
+  "type": 3,
+  "offset": 10311,
+  "dataAddr": "0x205db",
+  "geom": {
+   "x": 6,
+   "y": 3,
+   "w": 17,
+   "h": 1
+  },
+  "text": "····b ·_!····"
+ },
+ {
+  "index": 96,
+  "type": 1,
+  "offset": 10325,
+  "dataAddr": "0x205e9",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "······b ·D ·· ···begun to glow.·"
+ },
+ {
+  "index": 97,
+  "type": 1,
+  "offset": 10358,
+  "dataAddr": "0x2060a",
+  "geom": {
+   "x": 4,
+   "y": 5,
+   "w": 23,
+   "h": 2
+  },
+  "text": "······b seal is broken.·"
+ },
+ {
+  "index": 98,
+  "type": 0,
+  "offset": 10383,
+  "dataAddr": "0x20623",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 99,
+  "type": 0,
+  "offset": 10541,
+  "dataAddr": "0x206c1",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 100,
+  "type": 0,
+  "offset": 10627,
+  "dataAddr": "0x20717",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 101,
+  "type": 0,
+  "offset": 10633,
+  "dataAddr": "0x2071d",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "···/"
+ },
+ {
+  "index": 102,
+  "type": 0,
+  "offset": 11075,
+  "dataAddr": "0x208d7",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··To ·· ·· ··,··· ·· ·· ···room on ·· ····side of ·· ··,··w "
+ },
+ {
+  "index": 103,
+  "type": 3,
+  "offset": 11444,
+  "dataAddr": "0x20a48",
+  "geom": {
+   "x": 6,
+   "y": 3,
+   "w": 17,
+   "h": 1
+  },
+  "text": "···Gragg & Glagg!····"
+ },
+ {
+  "index": 104,
+  "type": 3,
+  "offset": 11466,
+  "dataAddr": "0x20a5e",
+  "geom": {
+   "x": 6,
+   "y": 3,
+   "w": 17,
+   "h": 1
+  },
+  "text": "····b Ice Bomber!····"
+ },
+ {
+  "index": 105,
+  "type": 7,
+  "offset": 11488,
+  "dataAddr": "0x20a74",
+  "geom": {
+   "x": 2,
+   "y": 3,
+   "w": 26,
+   "h": 1
+  },
+  "text": "····b Tyrant ·K!····"
+ },
+ {
+  "index": 106,
+  "type": 7,
+  "offset": 11509,
+  "dataAddr": "0x20a89",
+  "geom": {
+   "x": 2,
+   "y": 3,
+   "w": 26,
+   "h": 1
+  },
+  "text": "····b Almighty Demon King!····"
+ },
+ {
+  "index": 107,
+  "type": 0,
+  "offset": 11540,
+  "dataAddr": "0x20aa8",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··I've ·· ·· ····_ in ·· Pyramid·likes quizzes.·"
+ },
+ {
+  "index": 108,
+  "type": 0,
+  "offset": 11589,
+  "dataAddr": "0x20ad9",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "··If ·· ·· a certain·special ··, ·· ·x·swim ··.·"
+ },
+ {
+  "index": 109,
+  "type": 0,
+  "offset": 11638,
+  "dataAddr": "0x20b0a",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "···b star crest on··· Bell Tower is··· same as ····insignia "
+ },
+ {
+  "index": 110,
+  "type": 0,
+  "offset": 11754,
+  "dataAddr": "0x20b7e",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "·····"
+ },
+ {
+  "index": 111,
+  "type": 0,
+  "offset": 11901,
+  "dataAddr": "0x20c11",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "···I am ·· Prince of·DarkWorld, ·o ····· be ······ ··.···I ·"
+ },
+ {
+  "index": 112,
+  "type": 0,
+  "offset": 12081,
+  "dataAddr": "0x20cc5",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "···Some ··.·Is ·· ·· best ····x do?···Well, watch ··!·"
+ },
+ {
+  "index": 113,
+  "type": 0,
+  "offset": 12136,
+  "dataAddr": "0x20cfc",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "···Not too bad, eh?··U, let's ·· if···'ve ·· ·· it··takes.·("
+ },
+ {
+  "index": 114,
+  "type": 0,
+  "offset": 12198,
+  "dataAddr": "0x20d3a",
+  "geom": {
+   "x": 4,
+   "y": 1,
+   "w": 23,
+   "h": 3
+  },
+  "text": "···h're really ···to go,aren't ··...···Can't ·· stay ···me?·"
+ }
+]

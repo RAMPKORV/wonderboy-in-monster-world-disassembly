@@ -201,3 +201,21 @@ Dialogue is ASCII with control bytes, driven by a dictionary of common words:
 - Z80 sound driver semantics ($98000+).
 - Rebuild pipeline: tile/palette inject done; maps/text + recompression +
   pointer/alignment fixes pending.
+
+## Map editing (round-trip)
+
+- `tools/extract_maps.js` decodes all 682 tag-$02 tilemaps to `maps/map_<HEXADDR>.bin`.
+- `tools/compress_tag02.js` re-encodes a 1024-byte tilemap (Huffman tree + LZSS,
+  exact inverse of the `$6D9C` decompressor). Verified round-trip on all 682 maps.
+  Match tokens are 0x100-0x11E (len 3-33); 0x11F is the escape; literal leaf =
+  '0' + '0' + 8 bits; match leaf = '0' + '1' + 5 bits; the tree root is implicit.
+- `tools/inject_maps.js` patches an edited map back into a ROM copy: in-place
+  when the payload fits, otherwise relocates to free space and updates the
+  flagged-table record. Size-changing edits beyond the slot need relayout.
+
+## Scenes
+
+- `tools/extract_scenes.js` walks the scene table ($1DD94) and dumps every
+  scene's type entry, geometry (from $1DD74) and a readable text preview to
+  `scenes/scenes.json` + `docs/scenes.md`. Scene data is bytecode + dialogue.
+- Scene -> tileset/palette mapping remains open (traced from the $A000-$20000 bank).
