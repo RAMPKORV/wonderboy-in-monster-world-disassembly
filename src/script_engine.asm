@@ -134,7 +134,7 @@ ScriptDataPointer:
 	cmpi.b	#$F0, D0			; $8EC
 	bcc.b	ProcessScriptByte		; $8F0
 	bra.b	*+$6				; $8F2
-loc_8F4:
+ScriptClearCounter:
 	clr.w	(-$3A00,A4)			; $8F4
 ScriptSaveStream:
 	move.l	A1, (-$3C00,A4)			; $8F8
@@ -147,7 +147,7 @@ ScriptFrameTick:
 	beq.b	*+$3C				; $910
 	ori.b	#$1, (-$4000,A4)		; $912
 	bra.b	*+$34				; $918
-loc_91A:
+ScriptHandleRepeat:
 	btst	#$6, D0				; $91A
 	beq.b	*+$32				; $91E
 	subq.b	#$1, (-$38FF,A4)		; $920
@@ -155,22 +155,22 @@ loc_91A:
 	btst	#$5, D0				; $926
 	beq.b	*+$22				; $92A
 	bra.b	*+$24				; $92C
-loc_92E:
+ScriptRepeatAdvance:
 	move.b	(-$3900,A4), D1			; $92E
 	bchg	#$5, D0				; $932
 	bne.b	*+$6				; $936
 	lsr.b	#$4, D1				; $938
 	bra.b	*+$A				; $93A
-loc_93C:
+ScriptRepeatSet:
 	andi.b	#$F, D1				; $93C
 	ori.b	#$4, D0				; $940
-loc_944:
+ScriptRepeatStore:
 	addq.b	#$1, D1				; $944
 	move.b	D1, (-$38FF,A4)			; $946
 	bra.b	*+$6				; $94A
-loc_94C:
+ScriptSetRepeatFlag:
 	ori.b	#$4, D0				; $94C
-loc_950:
+ScriptFinishFrame:
 	ori.b	#$80, D0			; $950
 	move.b	D0, (-$3FFD,A4)			; $954
 	rts					; $958
@@ -190,7 +190,7 @@ ScriptCmd_MoveX:				; cmd $FA: add signed byte to X
 	btst.b	#$3, (-$3FFE,A4)		; $96E
 	beq.b	*+$4				; $974
 	neg.w	D0				; $976
-loc_978:
+ScriptCmd_MoveX_Add:
 	add.w	D0, (-$3800,A4)			; $978
 ScriptCmd_MoveY:				; cmd $FA: add signed byte to Y
 	move.b	(A1)+, D0			; $97C
@@ -198,7 +198,7 @@ ScriptCmd_MoveY:				; cmd $FA: add signed byte to Y
 	btst.b	#$4, (-$3FFE,A4)		; $980
 	beq.b	*+$4				; $986
 	neg.w	D0				; $988
-loc_98A:
+ScriptCmd_MoveY_Add:
 	add.w	D0, (-$3700,A4)			; $98A
 	rts					; $98E
 ScriptCmd_StorePair:				; cmd $FB: read 2 bytes to $FF8B00/01
@@ -218,9 +218,9 @@ ScriptCmd_XBound:				; cmd $FC: X boundary check/adjust
 	btst.b	#$2, (-$3100,A4)		; $9B6
 	beq.b	*+$4				; $9BC
 	neg.w	D1				; $9BE
-loc_9C0:
+ScriptCmd_XBound_Adjust:
 	add.w	D1, (-$3800,A4)			; $9C0
-loc_9C4:
+ScriptCmd_XBound_Store:
 	move.b	D0, (-$34FE,A4)			; $9C4
 ScriptCmd_YBound:				; cmd $FD: Y boundary check/adjust
 	move.b	(A1)+, D0			; $9C8
@@ -232,12 +232,12 @@ ScriptCmd_YBound:				; cmd $FD: Y boundary check/adjust
 	beq.b	*+$16				; $9E0
 	btst.b	#$3, (-$3100,A4)		; $9E2
 	bne.b	*+$E				; $9E8
-loc_9EA:
+ScriptCmd_YBound_Adjust:
 	move.b	(-$34FD,A4), D1			; $9EA
 	sub.b	D0, D1				; $9EE
 	ext.w	D1				; $9F0
 	add.w	D1, (-$3700,A4)			; $9F2
-loc_9F6:
+ScriptCmd_YBound_Store:
 	move.b	D0, (-$34FD,A4)			; $9F6
 	rts					; $9FA
 ScriptCmd_End:					; cmd $FE: end of script

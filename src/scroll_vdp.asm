@@ -56,12 +56,12 @@ ClearScrollCtrlBit20:
 	bra.b	*+$C				; $65C
 SetScrollCtrlBit10:
 	moveq	#$10, D0			; $65E
-loc_660:
+SetScrollCtrlBit10_Or:
 	or.w	(RAM_word_FFFF8A5C).w, D0		; $660
 	bra.b	*+$8				; $664
 ClearScrollCtrlBit10:
 	moveq	#-$11, D0			; $666
-loc_668:
+ClearScrollCtrlBit10_And:
 	and.w	(RAM_word_FFFF8A5C).w, D0		; $668
 WriteScrollControl:
 	move.w	D0, (RAM_word_FFFF8A5C).w		; $66C
@@ -80,31 +80,31 @@ WriteScrollRegA:
 ; ======================================================================
 ; Scroll mode register $FF8A5E bit ops.
 ; ======================================================================
-loc_686:
+SetScrollMode2_Bit3:
 	moveq	#$8, D0				; $686
 	bra.b	*+$26				; $688
-loc_68A:
+ClearScrollMode2_Bit3:
 	moveq	#-$9, D0			; $68A
 	bra.b	*+$E				; $68C
-loc_68E:
+ClearScrollMode2_Bit2:
 	move.w	#$FFFB, D0			; $68E
 	bra.b	*+$8				; $692
-loc_694:
+SetScrollMode2_Bit2:
 	moveq	#$4, D0				; $694
 	bra.b	*+$18				; $696
-loc_698:
+ClearScrollMode2_Bits01:
 	moveq	#-$4, D0			; $698
-loc_69A:
+WriteScrollMode2_And:
 	and.w	(RAM_word_FFFF8A5E).w, D0		; $69A
 	bra.b	*+$14				; $69E
-loc_6A0:
+SetScrollMode2_Bit1:
 	moveq	#-$4, D0			; $6A0
 	and.w	(RAM_word_FFFF8A5E).w, D0		; $6A2
 	ori.w	#$2, D0				; $6A6
 	bra.b	*+$8				; $6AA
-loc_6AC:
+SetScrollMode2_Bits01:
 	moveq	#$3, D0				; $6AC
-loc_6AE:
+WriteScrollMode2_Or:
 	or.w	(RAM_word_FFFF8A5E).w, D0		; $6AE
 WriteScrollMode2:
 	move.w	D0, (RAM_word_FFFF8A5E).w		; $6B2
@@ -114,36 +114,36 @@ WriteScrollMode2:
 ; ======================================================================
 ; Scroll mode register $FF8A60 bit ops.
 ; ======================================================================
-loc_6BE:
+ClearScrollMode3_Bit7:
 	move.w	(RAM_word_FFFF8A60).w, D0		; $6BE
 	andi.b	#$7E, D0			; $6C2
 	bra.b	*+$36				; $6C6
-loc_6C8:
+SetScrollMode3_Bit7:
 	move.w	(RAM_word_FFFF8A60).w, D0		; $6C8
 	andi.b	#$7E, D0			; $6CC
 	ori.b	#$81, D0			; $6D0
 	bra.b	*+$28				; $6D4
-loc_6D6:
+ClearScrollMode3_Bits012:
 	moveq	#-$7, D0			; $6D6
 	bra.b	*+$20				; $6D8
-loc_6DA:
+SetScrollMode3_Bit1:
 	moveq	#-$7, D0			; $6DA
 	and.w	D0, (RAM_word_FFFF8A60).w		; $6DC
 	moveq	#$2, D0				; $6E0
 	bra.b	*+$E				; $6E2
-loc_6E4:
+SetScrollMode3_Bit2:
 	moveq	#-$7, D0			; $6E4
 	and.w	D0, (RAM_word_FFFF8A60).w		; $6E6
 	moveq	#$4, D0				; $6EA
 	bra.b	*+$4				; $6EC
-loc_6EE:
+SetScrollMode3_Bit3:
 	moveq	#$8, D0				; $6EE
-loc_6F0:
+WriteScrollMode3_Or:
 	or.w	(RAM_word_FFFF8A60).w, D0		; $6F0
 	bra.b	*+$8				; $6F4
-loc_6F6:
+ClearScrollMode3_Bit3:
 	moveq	#-$9, D0			; $6F6
-loc_6F8:
+WriteScrollMode3_And:
 	and.w	(RAM_word_FFFF8A60).w, D0		; $6F8
 WriteScrollMode3:
 	move.w	D0, (RAM_word_FFFF8A60).w		; $6FC
@@ -177,7 +177,7 @@ WritePlaneBAddr:				; reg 3: Plan B base
 	btst.b	#$0, (RAM_word_FFFF8A60).w		; $736
 	beq.b	*+$6				; $73C
 	andi.w	#$3C, D0			; $73E
-loc_742:
+WritePlaneBAddr_Alt:
 	ori.w	#$8300, D0			; $742
 	move.w	D0, ($C00004).l			; $746
 	rts					; $74C
@@ -195,7 +195,7 @@ WriteSpriteDim:					; reg 5: sprite size
 	btst.b	#$0, (RAM_word_FFFF8A60).w		; $76E
 	beq.b	*+$6				; $774
 	andi.w	#$7E, D0			; $776
-loc_77A:
+WriteSpriteDim_Alt:
 	ori.w	#$8500, D0			; $77A
 	move.w	D0, ($C00004).l			; $77E
 	rts					; $784

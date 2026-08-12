@@ -10,21 +10,21 @@
 	beq.b *+$8	; $4906
 	jsr $4814.w	; $4908
 	addq.w #$4, SP	; $490C
-loc_490E:
+InputHandler_Return:
 	rts	; $490E
 	lea (-$5EDE).w, A0	; $4910
 	move.w (RAM_word_FFFFA142).w, D0	; $4914
-loc_4918:
+FindWordInTable_Loop:
 	cmp.w (A0)+, D1	; $4918
 	beq.b *+$C	; $491A
 	addq.w #$2, A0	; $491C
 	subq.b #$1, D0	; $491E
-	bne.b loc_4918	; $4920
-loc_4922:
-	bra.w loc_4922	; $4922
-loc_4926:
+	bne.b FindWordInTable_Loop	; $4920
+FindWordInTable_NotFound:
+	bra.w FindWordInTable_NotFound	; $4922
+FindWordInTable_Found:
 	rts	; $4926
-loc_4928:
+ComputeHPBar:
 	moveq #$0, D0	; $4928
 	move.b (-$2BFD,A4), D0	; $492A
 	lea ($1BA6C).l, A0	; $492E
@@ -40,12 +40,12 @@ loc_4928:
 	bne.b *+$16	; $494C
 	btst.b #$2, (-$2AFD,A4)	; $494E
 	beq.b *+$E	; $4954
-	bsr.b loc_4928	; $4956
+	bsr.b ComputeHPBar	; $4956
 	move.w D0, (RAM_HUD_HP).w	; $4958
 	move.w (-$2600,A4), (RAM_HUD_Gold).w	; $495C
-loc_4962:
+DrawStatusPanel_Done:
 	rts	; $4962
-loc_4964:
+ScaleByStatThreshold:
 	move.w (-$26FE,A4), D1	; $4964
 	move.b ($4972,PC,D1.w), D1	; $4968
 	mulu.w D1, D0	; $496C
@@ -58,7 +58,7 @@ StatThresholdTable:				; loc_0004972
 DrawStatusPanel:				; loc_0004986
 	moveq	#$1F, D0			; $4986
 	jsr	$366.w				; $4988
-	bsr.w loc_4928	; $498C
+	bsr.w ComputeHPBar	; $498C
 	move.w D0, (RAM_HUD_HP).w	; $4990
 	moveq #$0, D0	; $4994
 	move.w (-$2600,A4), D2	; $4996
@@ -66,7 +66,7 @@ DrawStatusPanel:				; loc_0004986
 	bpl.b *+$38	; $499E
 	move.w (-$23FE,A4), D0	; $49A0
 	beq.b *+$32	; $49A4
-	bsr.b loc_4964	; $49A6
+	bsr.b ScaleByStatThreshold	; $49A6
 	btst.b #$5, (RAM_word_FFFF9F03).w	; $49A8
 	beq.b *+$28	; $49AE
 	btst.b #$3, (-$2AFD,A4)	; $49B0
@@ -80,35 +80,35 @@ DrawStatusPanel:				; loc_0004986
 	sub.w ($49F0,PC,D3.w), D1	; $49CA
 	bpl.b *+$4	; $49CE
 	moveq #$0, D1	; $49D0
-loc_49D2:
+ClampDamage:
 	move.w D1, (RAM_word_FFFF9F16).w	; $49D2
-loc_49D6:
+AdjustGold:
 	tst.b (-$21FF,A4)	; $49D6
 	bpl.b *+$6	; $49DA
 	add.w (-$21FE,A4), D0	; $49DC
-loc_49E0:
+ClampGold:
 	sub.w D0, D2	; $49E0
 	bhi.b *+$4	; $49E2
 	moveq #$0, D2	; $49E4
-loc_49E6:
+UpdateGoldMirror:
 	move.w D2, (-$2600,A4)	; $49E6
 	move.w D2, (RAM_HUD_Gold).w	; $49EA
 	rts					; $49EE
 DamageTable:					; loc_00049F0
 	dc.w	$0400,$0400,$0400,$0400		; $49F0  damage subtractions
 	nop					; $49F8
-loc_49FA:
-	bra.w loc_49FA	; $49FA
-loc_49FE:
-	bra.w loc_49FE	; $49FE
-loc_4A02:
+TrapSpin_49FA:
+	bra.w TrapSpin_49FA	; $49FA
+TrapSpin_49FE:
+	bra.w TrapSpin_49FE	; $49FE
+TrapSpin_4A02:
 	nop	; $4A02
-	bra.b loc_4A02	; $4A04
+	bra.b TrapSpin_4A02	; $4A04
 MainInit:					; loc_0004A06
 	moveq #$2, D0	; $4A06
-loc_4A08:
+WaitVDPIdle:
 	and.w ($C00004).l, D0	; $4A08
-	bne.b loc_4A08	; $4A0E
+	bne.b WaitVDPIdle	; $4A0E
 	move #$2700, SR	; $4A10
 	bsr.b *+$66	; $4A14
 	move.l	#$C0000000, ($C00004).l	; $4A16
@@ -236,7 +236,7 @@ CleanupObjects:
 	move.w (SP)+, D1	; $4BAC
 	movea.w (SP)+, A0	; $4BAE
 	clr.w (A0)	; $4BB0
-loc_4BB2:
+CleanupObjects_Next:
 	lea ($80,A0), A0	; $4BB2
 	dbf D1, $4B9C	; $4BB6
 	rts	; $4BBA
@@ -258,12 +258,12 @@ NextTaskSlot:
 	bcs.b DispatchImmediateTask	; $4BEA
 	bsr.w	$53AA				; $4BEC
 	bsr.b *+$10	; $4BF0
-loc_4BF2:
+MainLoop_End:
 	bsr.w	FrameWait			; $4BF2
 	bra.b	MainLoop			; $4BF6
 ResetStack:					; loc_0004BF8
 	movea.l #RAM_ObjectRAM, SP	; $4BF8
-	bra.b loc_4BF2	; $4BFE
+	bra.b MainLoop_End	; $4BFE
 WaitForVBlankScanline:				; loc_0004C00
 	btst.b #$6, (RAM_word_FFFF8A5D).w	; $4C00
 	beq.b *+$54	; $4C06
@@ -275,32 +275,32 @@ WaitForVBlankScanline:				; loc_0004C00
 	addi.w #-$7DB8, D0	; $4C18
 	movea.w D0, A5	; $4C1C
 	move.b #$10, (RAM_word_FFFF8A4B).w	; $4C1E
-loc_4C24:
+WaitForScanline:
 	move.w ($C00004).l, D0	; $4C24
 	andi.w #$8, D0	; $4C2A
 	bne.b *+$2A	; $4C2E
 	move.w ($C00008).l, D0	; $4C30
 	andi.w #-$100, D0	; $4C36
-loc_4C3A:
+WaitHVStable:
 	move.w D0, D2	; $4C3A
 	move.w ($C00008).l, D0	; $4C3C
 	andi.w #-$100, D0	; $4C42
 	cmp.w D0, D2	; $4C46
-	bne.b loc_4C3A	; $4C48
+	bne.b WaitHVStable	; $4C48
 	cmpi.w #-$3000, D2	; $4C4A
 	bcc.b *+$A	; $4C4E
 	bsr.b *+$1E	; $4C50
 	subq.b #$1, (RAM_word_FFFF8A4B).w	; $4C52
-	bne.b loc_4C24	; $4C56
-loc_4C58:
+	bne.b WaitForScanline	; $4C56
+WaitForVBlankScanline_Done:
 	rts	; $4C58
-loc_4C5A:
+RunRoundRobin:
 	move.b #$10, (RAM_word_FFFF8A4B).w	; $4C5A
 	lea (-$7DB8).w, A5	; $4C60
-loc_4C64:
+RunRoundRobin_Loop:
 	bsr.b *+$A	; $4C64
 	subq.b #$1, (RAM_word_FFFF8A4B).w	; $4C66
-	bne.b loc_4C64	; $4C6A
+	bne.b RunRoundRobin_Loop	; $4C6A
 	rts	; $4C6C
 RunRoundRobinTask:				; loc_0004C6E
 	clr.b (RAM_VBlankTick).w	; $4C6E
