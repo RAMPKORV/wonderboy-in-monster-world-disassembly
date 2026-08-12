@@ -22,7 +22,7 @@ SpriteAnimTable:				; loc_0004092
 	dc.b	$04,$04,$05,$05,$06,$06,$07,$07,$08,$08,$09,$09,$0a,$0a,$0b,$0b	; $4172
 	dc.b	$0c,$0c,$0d,$0d,$0e,$0e,$0f,$0f,$10,$10,$05,$07,$03,$00,$04,$07	; $4182
 	dc.b	$05,$00,$04,$01,$03,$07,$05,$01,$02,$07,$03,$06,$05,$02,$06,$01	; $4192
-loc_41A2:
+CopyEntityFields:
 		dc.w	$394a,$d302	; move.w
 		dc.w	$354c,$d302	; move.w
 	dc.w	$C54C				; $41AA  ; EXG A4,A2
@@ -48,19 +48,19 @@ loc_41A2:
 	move.w D0, D1	; $4204
 	andi.w #$3, D1	; $4206
 	beq.b *+$12	; $420A
-loc_420C:
+RandomIdle_Done:
 	rts	; $420C
 	btst.b #$0, (RAM_word_FFFF966B).w	; $420E
 	bne.b *+$4	; $4214
 	rts	; $4216
-loc_4218:
+IdleCheck:
 	jsr $5D8.w	; $4218
-loc_421C:
+IdleCheck_Setup:
 	move.w #$204, D1	; $421C
 	andi.w #$3, D0	; $4220
 	beq.b *+$6	; $4224
 	move.w #$210, D1	; $4226
-loc_422A:
+IdleCheck_Scan:
 	move.w D1, D0	; $422A
 	moveq #$0, D1	; $422C
 	move.b (-$34FE,A4), D1	; $422E
@@ -68,7 +68,7 @@ loc_422A:
 	btst.b #$3, (-$3FFE,A4)	; $4234
 	beq.b *+$4	; $423A
 	neg.w D1	; $423C
-loc_423E:
+IdleCheck_X:
 	add.w (-$3800,A4), D1	; $423E
 	moveq #$0, D2	; $4242
 	move.b (-$34FD,A4), D2	; $4244
@@ -78,7 +78,7 @@ loc_423E:
 	bsr.b *+$8	; $4254
 	jsr $AB4.w	; $4256
 	rts	; $425A
-loc_425C:
+DecelerateVelocity:
 	move.w (-$3600,A4), D1	; $425C
 	asr.w #$4, D1	; $4260
 	sub.w D1, (-$3600,A4)	; $4262
@@ -89,12 +89,12 @@ loc_425C:
 	tst.w (-$35FE,A4)	; $4274
 	bpl.b *+$4	; $4278
 	neg.w D1	; $427A
-loc_427C:
+DecelerateY:
 	add.w D1, D0	; $427C
 	cmp.w (-$3700,A4), D0	; $427E
 	bcc.b *+$4	; $4282
 	neg.w D2	; $4284
-loc_4286:
+DecelerateY_Store:
 	move.w D2, (-$33FE,A4)	; $4286
 	rts	; $428A
 	jsr $5D8.w	; $428C
@@ -104,9 +104,9 @@ loc_4286:
 	beq.b *+$E	; $429A
 	bpl.b *+$8	; $429C
 	jmp $13542.l	; $429E
-loc_42A4:
+SetAnimId:
 	move.b D0, (-$2BFF,A4)	; $42A4
-loc_42A8:
+SetAnimId_Done:
 	rts	; $42A8
 	jsr $4356.w	; $42AA
 	bne.b *+$12	; $42AE
@@ -115,9 +115,9 @@ loc_42A8:
 	beq.b *+$A	; $42B8
 	subq.b #$1, (-$27FF,A4)	; $42BA
 	beq.b *+$4	; $42BE
-loc_42C0:
+AnimTimer_Done:
 	addq.w #$4, SP	; $42C0
-loc_42C2:
+AnimTimer_Return:
 	rts	; $42C2
 	jsr $4792.w	; $42C4
 	jmp $46D6.w	; $42C8
@@ -126,13 +126,13 @@ loc_42C2:
 	move.w #$1208, D6	; $42D4
 	bra.b *+$6	; $42D8
 	move.w #$120A, D6	; $42DA
-loc_42DE:
+PlaySound3F:
 	moveq #$3F, D0	; $42DE
 	jsr $366.w	; $42E0
 	moveq #-$80, D1	; $42E4
 	bra.b *+$4	; $42E6
 	moveq #$0, D1	; $42E8
-loc_42EA:
+SpawnHelper:
 	jsr $12812.l	; $42EA
 	bmi.b *+$4E	; $42F0
 	exg A2, A4	; $42F2
@@ -156,9 +156,9 @@ loc_42EA:
 	ori.b #$40, (-$4000,A4)	; $4334
 	exg A2, A4	; $433A
 	moveq #$0, D0	; $433C
-loc_433E:
+SpawnHelper_Done:
 	rts	; $433E
-loc_4340:
+RandomSigned:
 	jsr $5D8.w	; $4340
 	moveq #$0, D2	; $4344
 	move.w D0, D2	; $4346
@@ -167,15 +167,15 @@ loc_4340:
 	btst.l #$10, D0	; $434C
 	beq.b *+$4	; $4350
 	neg.w D2	; $4352
-loc_4354:
+RandomSigned_Done:
 	rts	; $4354
 	bsr.b *+$C	; $4356
 	bne.b *+$8	; $4358
 	moveq #$40, D0	; $435A
 	jmp $B92.w	; $435C
-loc_4360:
+CheckEntityState_Done:
 	rts	; $4360
-loc_4362:
+CheckEntityState:
 	moveq #$A, D0	; $4362
 	and.b (-$3100,A4), D0	; $4364
 	subq.b #$2, D0	; $4368
@@ -185,21 +185,21 @@ loc_4362:
 	move.b D0, (-$2BFF,A4)	; $4374
 	addq.w #$4, SP	; $4378
 	bra.b *+$E	; $437A
-loc_437C:
+SetAnimId_Return:
 	rts	; $437C
 	btst.b #$4, (-$2AFD,A4)	; $437E
 	bne.b *+$4	; $4384
 	rts	; $4386
-loc_4388:
+FaceTarget:
 	move.w (-$3300,A4), D0	; $4388
 	add.w D0, D0	; $438C
 	btst.b #$3, (-$3FFE,A4)	; $438E
 	bne.b *+$4	; $4394
 	neg.w D0	; $4396
-loc_4398:
+FaceTarget_Store:
 	move.w D0, (-$3600,A4)	; $4398
 	rts	; $439C
-loc_439E:
+CheckCollisionFlag:
 	move.b (-$2AFD,A4), D0	; $439E
 	bmi.b *+$18	; $43A2
 	move.b (-$21FF,A4), D1	; $43A4
@@ -209,12 +209,12 @@ loc_439E:
 	or.b D1, D0	; $43B2
 	move.b D0, (-$2AFD,A4)	; $43B4
 	moveq #-$1, D0	; $43B8
-loc_43BA:
+CheckCollisionFlag_Done:
 	rts	; $43BA
 	bsr.b $439E	; $43BC
 	bmi.b *+$4	; $43BE
 	rts	; $43C0
-loc_43C2:
+BounceHit:
 	moveq #$2, D0	; $43C2
 	addq.w #$4, SP	; $43C4
 	jmp $1357E.l	; $43C6
@@ -250,7 +250,7 @@ loc_43C2:
 	bne.b *+$6	; $4430
 	addq.w #$4, SP	; $4432
 	bra.b *+$58	; $4434
-loc_4436:
+CheckState_Done:
 	rts	; $4436
 	moveq #$41, D0	; $4438
 	and.b (-$3100,A4), D0	; $443A
@@ -260,44 +260,44 @@ loc_4436:
 	btst.b #$2, (-$2AFD,A4)	; $4444
 	bne.b *+$4	; $444A
 	rts	; $444C
-loc_444E:
+CheckState_Ret:
 	addq.w #$4, SP	; $444E
 	bra.b *+$C	; $4450
 	btst.b #$2, (-$2AFD,A4)	; $4452
 	bne.b *+$4	; $4458
 	rts	; $445A
-loc_445C:
+CheckFacing:
 	btst.b #$0, (-$2AFD,A4)	; $445C
 	beq.b *+$A	; $4462
 	andi.b #-$9, (-$3FFE,A4)	; $4464
 	bra.b *+$28	; $446A
-loc_446C:
+SetFacingBit:
 	ori.b #$8, (-$3FFE,A4)	; $446C
 	bra.b *+$20	; $4472
 	btst.b #$2, (-$2AFD,A4)	; $4474
 	beq.b *+$6	; $447A
 	addq.w #$4, SP	; $447C
 	bra.b *+$E	; $447E
-loc_4480:
+CheckFacing_Done:
 	rts	; $4480
 	btst.b #$2, (-$2AFD,A4)	; $4482
 	bne.b *+$4	; $4488
 	rts	; $448A
-loc_448C:
+FlipFacing:
 	bchg.b #$3, (-$3FFE,A4)	; $448C
-loc_4492:
+ApplyFacingVelocity:
 	move.w (-$3300,A4), D0	; $4492
 	btst.b #$3, (-$3FFE,A4)	; $4496
 	beq.b *+$4	; $449C
 	neg.w D0	; $449E
-loc_44A0:
+ApplyFacingVelocity_Store:
 	move.w D0, (-$3600,A4)	; $44A0
 	rts	; $44A4
 	tst.w (-$3600,A4)	; $44A6
 	bmi.b *+$A	; $44AA
 	andi.b #-$9, (-$3FFE,A4)	; $44AC
 	rts	; $44B2
-loc_44B4:
+SetFacingRight:
 	ori.b #$8, (-$3FFE,A4)	; $44B4
 	rts	; $44BA
 	move.w (-$3800,A2), D0	; $44BC
@@ -309,14 +309,14 @@ loc_44B4:
 	rts	; $44CE
 	bsr.b *+$6	; $44D0
 	bra.w $4492	; $44D2
-loc_44D6:
+FacePlayer:
 	movea.w (RAM_word_FFFFA11C).w, A2	; $44D6
 	move.w (-$3800,A2), D0	; $44DA
 	sub.w (-$3800,A4), D0	; $44DE
 	bpl.b *+$A	; $44E2
 	ori.b #$8, (-$3FFE,A4)	; $44E4
 	rts	; $44EA
-loc_44EC:
+FacePlayer_Left:
 	andi.b #-$9, (-$3FFE,A4)	; $44EC
 	rts	; $44F2
 	move.w (-$32FE,A4), D0	; $44F4
@@ -326,7 +326,7 @@ loc_44EC:
 	move.w (-$32FE,A4), D0	; $4500
 	lsr.w #$1, D0	; $4504
 	neg.w D0	; $4506
-loc_4508:
+SetJumpVelocity:
 	andi.b #$75, (-$3100,A4)	; $4508
 	move.w D0, (-$35FE,A4)	; $450E
 	rts	; $4512
@@ -339,16 +339,16 @@ loc_4508:
 	neg.w D0	; $4532
 	bsr.w $4508	; $4534
 	move.w #$200, D0	; $4538
-loc_453C:
+ChasePlayer:
 	move.w D0, D1	; $453C
 	jsr $4362.w	; $453E
 	beq.b *+$6	; $4542
 	move.w #$100, D1	; $4544
-loc_4548:
+ChasePlayer_Store:
 	btst.b #$0, (-$2AFD,A4)	; $4548
 	bne.b *+$4	; $454E
 	neg.w D1	; $4550
-loc_4552:
+ChasePlayer_Done:
 	move.w D1, (-$3600,A4)	; $4552
 	rts	; $4556
 	move.w #$400, D0	; $4558
@@ -360,11 +360,11 @@ loc_4552:
 	bcs.b *+$6	; $456C
 	moveq #$0, D0	; $456E
 	rts	; $4570
-loc_4572:
+FacePlayer_XNeg:
 	neg.w D1	; $4572
 	rts	; $4574
 	movea.w (RAM_word_FFFFA11C).w, A2	; $4576
-loc_457A:
+GetYDelta:
 	move.w (-$3700,A2), D1	; $457A
 	sub.w (-$3700,A4), D1	; $457E
 	rts	; $4582
@@ -372,7 +372,7 @@ loc_457A:
 	bsr.w $457A	; $4588
 	bpl.b *+$4	; $458C
 	neg.w D1	; $458E
-loc_4590:
+GetYDelta_Done:
 	rts	; $4590
 	moveq #$41, D0	; $4592
 	and.b (-$3100,A4), D0	; $4594
@@ -383,16 +383,16 @@ loc_4590:
 	addq.w #$4, SP	; $45A0
 	moveq #$5, D0	; $45A2
 	jmp $13542.l	; $45A4
-loc_45AA:
+CheckWallAhead_Done:
 	rts	; $45AA
-loc_45AC:
+CheckWallAhead:
 	moveq #$0, D6	; $45AC
 	move.b (-$34FE,A4), D6	; $45AE
 	addq.w #$1, D6	; $45B2
 	btst.b #$3, (-$3FFE,A4)	; $45B4
 	beq.b *+$4	; $45BA
 	neg.w D6	; $45BC
-loc_45BE:
+CheckWallAhead_X:
 	add.w (-$3800,A4), D6	; $45BE
 	moveq #$0, D7	; $45C2
 	move.b (-$34FD,A4), D7	; $45C4
@@ -406,23 +406,23 @@ loc_45BE:
 	bcs.b *+$8	; $45DE
 	addq.w #$4, SP	; $45E0
 	bra.w $448C	; $45E2
-loc_45E6:
+CheckObstacle_Done:
 	rts	; $45E6
 	bsr.b *+$C	; $45E8
 	bcc.w $448C	; $45EA
 	rts	; $45EE
 	move.w #$80, D2	; $45F0
-loc_45F4:
+CheckObstacle:
 	move.w (-$3800,A4), D1	; $45F4
 	btst.b #$3, (-$3FFE,A4)	; $45F8
 	bne.b *+$8	; $45FE
 	add.w (-$2100,A4), D2	; $4600
 	bra.b *+$A	; $4604
-loc_4606:
+CheckObstacle_Neg:
 	neg.w D2	; $4606
 	add.w (-$2100,A4), D2	; $4608
 			dc.w	$c541	; dc.w
-loc_460E:
+CheckObstacle_Sub:
 	sub.w D2, D1	; $460E
 	rts	; $4610
 	move.w #$80, D2	; $4612
@@ -431,32 +431,32 @@ loc_460E:
 	sub.w (-$2100,A4), D1	; $461E
 	bcc.b *+$4	; $4622
 	neg.w D1	; $4624
-loc_4626:
+CheckObstacle_Compare:
 	cmp.w D2, D1	; $4626
 	rts	; $4628
 	bsr.b *+$1C	; $462A
 	bpl.b *+$4	; $462C
 	bsr.b *+$58	; $462E
-loc_4630:
+CheckObstacle_Found:
 	bne.b *+$8	; $4630
 	addq.w #$4, SP	; $4632
 	bra.w $448C	; $4634
-loc_4638:
+CheckObstacle_Found_Done:
 	rts	; $4638
 	bsr.b *+$C	; $463A
 	bpl.b *+$4	; $463C
 	bsr.b *+$48	; $463E
-loc_4640:
+CheckObstacle2:
 	beq.w $448C	; $4640
 	rts	; $4644
-loc_4646:
+CheckEntityState2:
 	move.b (-$3100,A4), D0	; $4646
 	andi.b #-$76, D0	; $464A
 	cmpi.b #-$7E, D0	; $464E
 	beq.b *+$6	; $4652
 	moveq #-$1, D0	; $4654
 	rts	; $4656
-loc_4658:
+CheckPlatformEdge:
 	movea.w (-$2D00,A4), A0	; $4658
 	move.w (-$601E,A0), D0	; $465C
 	tst.w (-$3600,A4)	; $4660
@@ -466,27 +466,27 @@ loc_4658:
 	cmp.w (-$3800,A4), D0	; $466C
 	bcc.b *+$12	; $4670
 	bra.b *+$C	; $4672
-loc_4674:
+CheckPlatformEdge_Left:
 	sub.w (-$5F76,A0), D0	; $4674
 	cmp.w (-$3800,A4), D0	; $4678
 	bcs.b *+$6	; $467C
-loc_467E:
+CheckPlatformEdge_No:
 	moveq #$0, D0	; $467E
 	rts	; $4680
-loc_4682:
+CheckPlatformEdge_Yes:
 	moveq #$1, D0	; $4682
 	rts	; $4684
-loc_4686:
+CheckCollisionAhead:
 	moveq #$0, D6	; $4686
 	move.b (-$34FE,A4), D6	; $4688
 	tst.w (-$3600,A4)	; $468C
 	bne.b *+$6	; $4690
 	moveq #$1, D0	; $4692
 	rts	; $4694
-loc_4696:
+CheckCollisionAhead_X:
 	bpl.b *+$4	; $4696
 	neg.w D6	; $4698
-loc_469A:
+CheckCollisionAhead_Scan:
 	add.w (-$3800,A4), D6	; $469A
 	moveq #$0, D7	; $469E
 	move.b (-$34FD,A4), D7	; $46A0
@@ -504,7 +504,7 @@ loc_469A:
 	btst.b #$3, (-$3FFE,A4)	; $46C6
 	beq.b *+$4	; $46CC
 	neg.w D0	; $46CE
-loc_46D0:
+ApplyTurnVelocity:
 	move.w D0, (-$3400,A4)	; $46D0
 	rts	; $46D4
 	jsr $B44.w	; $46D6
@@ -513,43 +513,43 @@ loc_46D0:
 	btst.b #$0, (-$4000,A4)	; $46E2
 	beq.b *+$8	; $46E8
 	jsr $DD7C.l	; $46EA
-loc_46F0:
+HelperUpdate_Jump:
 	jmp $2FD0.w	; $46F0
 	movea.w (RAM_word_FFFF9EEE).w, A2	; $46F4
 	btst.b #$6, (RAM_word_FFFF9F03).w	; $46F8
 	beq.b *+$6	; $46FE
 	bsr.b *+$42	; $4700
 	bra.b *+$14	; $4702
-loc_4704:
+HelperUpdate_Check:
 	bsr.b *+$26	; $4704
 	bne.b *+$8	; $4706
 	jsr $C36.w	; $4708
 	bne.b *+$A	; $470C
-loc_470E:
+HelperUpdate_Link:
 	jsr $E64.w	; $470E
 	jsr $D6E.w	; $4712
-loc_4716:
+HelperUpdate_Link2:
 	bsr.b *+$14	; $4716
 	bne.b *+$8	; $4718
 	jsr $C3E.w	; $471A
 	bne.b *+$A	; $471E
-loc_4720:
+HelperUpdate_Link3:
 	jsr $D76.w	; $4720
 	bra.w $4948	; $4724
-loc_4728:
+HelperUpdate_Done:
 	rts	; $4728
-loc_472A:
+GetFacingDir:
 	moveq #$0, D0	; $472A
 	move.w (-$3800,A2), D1	; $472C
 	sub.w (-$3800,A4), D1	; $4730
 	bcc.b *+$4	; $4734
 	moveq #$8, D0	; $4736
-loc_4738:
+GetFacingDir_Calc:
 	moveq #$8, D1	; $4738
 	and.b (-$3FFE,A4), D1	; $473A
 	eor.b D1, D0	; $473E
 	rts	; $4740
-loc_4742:
+CheckHitPlayer:
 	jsr $D2C.w	; $4742
 	jsr $C36.w	; $4746
 	tst.b (-$2AFD,A4)	; $474A
@@ -563,14 +563,14 @@ loc_4742:
 	bset.b D3, (RAM_word_FFFF9F13).w	; $4766
 	ori.b #-$80, (-$2AFD,A4)	; $476A
 	move.w #$0, (-$23FE,A4)	; $4770
-loc_4776:
+CheckHitPlayer_Done:
 	rts	; $4776
 	movea.w (RAM_word_FFFF9EEE).w, A2	; $4778
 	btst.b #$6, (RAM_word_FFFF9F03).w	; $477C
 	beq.b *+$8	; $4782
 	bsr.b $4742	; $4784
 	bra.w $4948	; $4786
-loc_478A:
+HitPlayer_No:
 	jsr $E64.w	; $478A
 	bra.w $4948	; $478E
 	movea.w (RAM_word_FFFF9EEE).w, A2	; $4792
@@ -578,9 +578,9 @@ loc_478A:
 	beq.b *+$6	; $479C
 	bsr.b $4742	; $479E
 	bra.b *+$6	; $47A0
-loc_47A2:
+HitPlayer_Link:
 	jsr $E64.w	; $47A2
-loc_47A6:
+HitPlayer_Link2:
 	jsr $D76.w	; $47A6
 	bra.w $4948	; $47AA
 	movea.w (RAM_word_FFFF9EEE).w, A2	; $47AE
@@ -588,7 +588,7 @@ loc_47A6:
 	beq.b *+$A	; $47B8
 	bsr.w $4742	; $47BA
 	bra.w $4948	; $47BE
-loc_47C2:
+HitPlayer_Alt:
 	jsr $D2C.w	; $47C2
 	bne.w $4948	; $47C6
 	jsr $E64.w	; $47CA
@@ -603,16 +603,16 @@ loc_47C2:
 	beq.b *+$A	; $47EA
 	btst.b #$6, (-$4000,A2)	; $47EC
 	bne.b *+$8	; $47F2
-loc_47F4:
+IdleAnim_Next:
 	clr.w (-$4000,A2)	; $47F4
 	bra.b *+$14	; $47F8
-loc_47FA:
+IdleAnim_Set:
 	moveq #$7F, D0	; $47FA
 	and.b (-$2BFF,A2), D0	; $47FC
 	cmpi.b #$1, D0	; $4800
 	beq.b *+$8	; $4804
 	move.b #$1, (-$2BFF,A2)	; $4806
-loc_480C:
+IdleAnim_Next2:
 	addq.w #$4, A2	; $480C
 	dbf D2, $47DC	; $480E
 	rts	; $4812
@@ -623,7 +623,7 @@ loc_480C:
 	tst.b (-$5DB4,A0)	; $4820
 	bmi.b *+$6	; $4824
 	addq.b #$1, (-$5DB1,A0)	; $4826
-loc_482A:
+IdleAnim_Done:
 	rts	; $482A
 	addq.w #$1, (RAM_word_FFFFA148).w	; $482C
 	move.w (-$2B00,A4), D0	; $4830
@@ -641,13 +641,13 @@ loc_482A:
 	jsr $2758.w	; $4854
 	bset.b D0, ($0,A0,D1.w)	; $4858
 	bra.b *+$6	; $485C
-loc_485E:
+KillEntity_ClearFlag:
 	jsr $2752.w	; $485E
-loc_4862:
+KillEntity_Reward:
 	moveq #$0, D0	; $4862
 	move.w (-$5CC4,A3), D0	; $4864
 	bpl.b *+$3C	; $4868
-loc_486A:
+KillEntity_Drop:
 	tst.b (RAM_word_FFFFA14A).w	; $486A
 	bmi.b *+$30	; $486E
 	lea ($1C170).l, A0	; $4870
@@ -663,22 +663,22 @@ loc_486A:
 	bcs.b *+$8	; $488C
 	addq.w #$1, A0	; $488E
 	dbf D1, $4886	; $4890
-loc_4894:
+KillEntity_DropItem:
 	moveq #$0, D0	; $4894
 	move.b (A0), D0	; $4896
 	cmpi.b #-$1, D0	; $4898
 	bne.b *+$E	; $489C
-loc_489E:
+KillEntity_Done:
 	clr.w (-$4000,A4)	; $489E
 	rts	; $48A2
-loc_48A4:
+KillEntity_NoDrop:
 	cmpi.w #$FE, D0	; $48A4
 	beq.b $489E	; $48A8
-loc_48AA:
+KillEntity_SpawnDrop:
 	tst.b D0	; $48AA
 	bpl.b *+$6	; $48AC
 	addi.w #$F80, D0	; $48AE
-loc_48B2:
+KillEntity_Item:
 	clr.b (-$27FF,A4)	; $48B2
 	move.w (-$3800,A4), D1	; $48B6
 	move.w (-$3700,A4), D2	; $48BA
@@ -694,7 +694,7 @@ loc_48B2:
 	beq.b *+$6	; $48E2
 	subq.b #$6, D0	; $48E4
 	bne.b $4902	; $48E6
-loc_48E8:
+IdleCheck_Scan2:
 	moveq #$40, D2	; $48E8
 	move.w (-$3800,A4), D0	; $48EA
 	jsr $BD0.w	; $48EE
