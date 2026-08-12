@@ -901,7 +901,7 @@ loc_13A6:
 	tst.b (RAM_PlayerState).w	; $13BC
 	bmi.b *+$4	; $13C0
 	rts	; $13C2
-loc_13C4:
+ResetPlayerForScene:
 	bset.b #$6, (RAM_PlayerState).w	; $13C4
 	bne.b *+$22	; $13CA
 	clr.b (RAM_PlayerSubState).w	; $13CC

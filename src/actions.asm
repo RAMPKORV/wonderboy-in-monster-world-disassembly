@@ -83,14 +83,21 @@ loc_14E4:
 loc_14EC:
 	movea.w (RAM_SceneScriptPtr).w, A0	; $14EC
 	movea.l (-$7386,A0), A2	; $14F0
-loc_14F4:
+; ----------------------------------------------------------------------
+; RunSceneEventScript: the scene-event bytecode interpreter. Reads commands from
+; the stream pointed to by RAM_SceneScriptPtr (A2 via (RAM_SceneScriptPtr)) and
+; dispatches through DispatchTable1/DispatchTable2. Runs one step per frame so
+; door entries / screen scrolls play across frames. Stores the resume pointer
+; back into RAM_SceneScriptPtr.
+; ----------------------------------------------------------------------
+RunSceneEventScript:
 	move.b (A2)+, D3	; $14F4
 	cmpi.b #$10, D3	; $14F6
 	bcs.b *+$56	; $14FA
 	move.w (RAM_CellX).w, D6	; $14FC
 	cmp.w (RAM_SceneWidth).w, D6	; $1500
 	bcs.b *+$A	; $1504
-	bsr.w loc_16C6	; $1506
+	bsr.w AdvanceSceneCellRow	; $1506
 	move.b (-$1,A2), D3	; $150A
 loc_150E:
 	move.w (RAM_PlayerStateValue).w, D0	; $150E
@@ -114,7 +121,7 @@ loc_1524:
 loc_1546:
 	move.b (RAM_SceneEventCounter).w, (RAM_word_FFFF8CA3).w	; $1546
 	bne.b *+$4A	; $154C
-	bra.b loc_14F4	; $154E
+	bra.b RunSceneEventScript	; $154E
 loc_1550:
 	cmpi.b #$C, D3	; $1550
 	bcc.b *+$12	; $1554
@@ -139,7 +146,7 @@ loc_1568:
 	addq.l #$4, A0	; $1588
 	move.w A0, (RAM_SceneScriptPtr).w	; $158A
 	lea ($0,A1,D2.w), A2	; $158E
-	bra.w loc_14F4	; $1592
+	bra.w RunSceneEventScript	; $1592
 loc_1596:
 	movea.w (RAM_SceneScriptPtr).w, A0	; $1596
 	move.l A2, (-$7386,A0)	; $159A
@@ -171,21 +178,21 @@ loc_163A:
 	move.w D0, (RAM_SceneScriptPtr).w	; $163C
 	movea.w D0, A0	; $1640
 	movea.l (-$7386,A0), A2	; $1642
-	bra.w loc_14F4	; $1646
+	bra.w RunSceneEventScript	; $1646
 	move.b (A2)+, D0	; $164A
 	lsl.w #$8, D0	; $164C
 	move.w D0, (RAM_PlayerStateValue).w	; $164E
-	bra.w loc_14F4	; $1652
-	bsr.w loc_16C6	; $1656
+	bra.w RunSceneEventScript	; $1652
+	bsr.w AdvanceSceneCellRow	; $1656
 	bra.w loc_1546	; $165A
 	move.b (A2)+, D0	; $165E
 		dc.w	$6100,$09d8	; bsr.w
 	move.b D0, (RAM_SceneEventCounter).w	; $1664
-	bra.w loc_14F4	; $1668
+	bra.w RunSceneEventScript	; $1668
 	moveq #$0, D0	; $166C
 	move.b (A2)+, D0	; $166E
 	add.w D0, (RAM_CellX).w	; $1670
-	bra.w loc_14F4	; $1674
+	bra.w RunSceneEventScript	; $1674
 	ori.b #$1, (RAM_PlayerState).w	; $1678
 	bsr.w loc_1754	; $167E
 	bset.b #$0, (RAM_PlayerSubState).w	; $1682
@@ -196,19 +203,24 @@ loc_168C:
 	move.b (A2), D0	; $1690
 	subq.w #$1, D0	; $1692
 	adda.w D0, A2	; $1694
-	bra.w loc_14F4	; $1696
+	bra.w RunSceneEventScript	; $1696
 	ori.b #$10, (RAM_PlayerState).w	; $169A
-	bra.w loc_14F4	; $16A0
+	bra.w RunSceneEventScript	; $16A0
 	andi.b #-$11, (RAM_PlayerState).w	; $16A4
-	bra.w loc_14F4	; $16AA
+	bra.w RunSceneEventScript	; $16AA
 	bsr.b *+$18	; $16AE
 	moveq #$0, D0	; $16B0
 	move.b (RAM_TransitionValue).w, D0	; $16B2
 	add.w D0, (RAM_CellX).w	; $16B6
-	bra.w loc_14F4	; $16BA
+	bra.w RunSceneEventScript	; $16BA
 	move.b (A2)+, (RAM_TransitionValue).w	; $16BE
-	bra.w loc_14F4	; $16C2
-loc_16C6:
+	bra.w RunSceneEventScript	; $16C2
+; ----------------------------------------------------------------------
+; AdvanceSceneCellRow: the player reached the right edge of the current screen
+; cell. Clears the cell X counter, increments the cell Y, and re-renders the
+; tilemap for the next cell row (wrapping at the scene height).
+; ----------------------------------------------------------------------
+AdvanceSceneCellRow:
 	clr.w (RAM_CellX).w	; $16C6
 	addq.w #$1, (RAM_CellY).w	; $16CA
 	move.w (RAM_CellY).w, D7	; $16CE
@@ -260,7 +272,12 @@ loc_174C:
 	bne.b loc_174A	; $1752
 loc_1754:
 	move.w #-$6FED, D0	; $1754
-loc_1758:
+; ----------------------------------------------------------------------
+; RenderFullScene: draws the whole 32x32 tilemap to Plane A on scene entry.
+; Computes the scene centre from RAM_SceneWidth/RAM_SceneHeight and runs the
+; bulk tilemap renderer.
+; ----------------------------------------------------------------------
+RenderFullScene:
 	move.b #$14, (RAM_TransitionTimer).w	; $1758
 	move.w (RAM_SceneHeight).w, D7	; $175E
 	add.w D7, D7	; $1762
@@ -316,7 +333,7 @@ loc_17C2:
 	cmp.l (RAM_word_FFFF8CB2).w, D0	; $17FA
 	bcs.w loc_168C	; $17FE
 	addq.l #$2, A2	; $1802
-	bra.w loc_14F4	; $1804
+	bra.w RunSceneEventScript	; $1804
 	move.b (A2)+, D0	; $1808
 	cmpi.b #-$1, D0	; $180A
 	bne.b *+$6	; $180E
@@ -324,7 +341,7 @@ loc_17C2:
 loc_1814:
 	bsr.w	$1D92				; $1814
 	move.l D0, (RAM_word_FFFF8CB2).w	; $1818
-	bra.w loc_14F4	; $181C
+	bra.w RunSceneEventScript	; $181C
 	move.l (RAM_word_FFFF8CB2).w, D1	; $1820
 	lea (-$7340).w, A1	; $1824
 	bsr.b *+$16	; $1828
@@ -333,7 +350,7 @@ loc_1814:
 	addq.w #$4, A0	; $1832
 	move.w A0, (RAM_SceneScriptPtr).w	; $1834
 	movea.l A1, A2	; $1838
-	bra.w loc_14F4	; $183A
+	bra.w RunSceneEventScript	; $183A
 loc_183E:
 	clr.b (A1)	; $183E
 loc_1840:
@@ -367,7 +384,7 @@ loc_1886:
 	move.l A2, -(SP)	; $1886
 	jsr	$85A8.l				; $1888
 	movea.l (SP)+, A2	; $188E
-	bra.w loc_14F4	; $1890
+	bra.w RunSceneEventScript	; $1890
 	move.b (A2)+, D0	; $1894
 	cmpi.b #-$1, D0	; $1896
 	bne.b *+$6	; $189A
@@ -377,20 +394,20 @@ loc_18A0:
 	jsr $245A.w	; $18A2
 	movea.l (SP)+, A2	; $18A6
 	ori.w #$4000, (RAM_word_FFFF9994).w	; $18A8
-	bra.w loc_14F4	; $18AE
+	bra.w RunSceneEventScript	; $18AE
 	movea.w (RAM_word_FFFF8CB0).w, A0	; $18B2
 	clr.b (-$4000,A0)	; $18B6
-	bra.w loc_14F4	; $18BA
+	bra.w RunSceneEventScript	; $18BA
 	move.b (A2)+, (RAM_word_FFFF8CAE).w	; $18BE
-	bra.w loc_14F4	; $18C2
+	bra.w RunSceneEventScript	; $18C2
 	jsr	$1C494.l			; $18C6
-	bra.w loc_14F4	; $18CC
+	bra.w RunSceneEventScript	; $18CC
 	ori.b #$3, (RAM_word_FFFF9BF3).w	; $18D0
-	bra.w loc_14F4	; $18D6
+	bra.w RunSceneEventScript	; $18D6
 	ori.b #$1, (RAM_word_FFFF9BF3).w	; $18DA
-	bra.w loc_14F4	; $18E0
+	bra.w RunSceneEventScript	; $18E0
 	move.b (A2)+, (RAM_word_FFFF965E).w	; $18E4
-	bra.w loc_14F4	; $18E8
+	bra.w RunSceneEventScript	; $18E8
 	moveq #$0, D0	; $18EC
 	move.b (A2)+, D0	; $18EE
 	cmpi.b #-$1, D0	; $18F0
@@ -399,7 +416,7 @@ loc_18A0:
 loc_18FA:
 	lsl.w #$2, D0	; $18FA
 	move.l ($1906,PC,D0.w), (RAM_word_FFFF8CB2).w	; $18FC
-	bra.w loc_14F4	; $1902
+	bra.w RunSceneEventScript	; $1902
 	ori.b #$0, D0	; $1906
 	ori.b #$A, D0	; $190A
 	ori.b #$F, D0	; $190E
@@ -423,25 +440,25 @@ loc_18FA:
 	btst.b D0, ($0,A0,D1.w)	; $1954
 	bne.w loc_168C	; $1958
 	addq.l #$2, A2	; $195C
-	bra.w loc_14F4	; $195E
+	bra.w RunSceneEventScript	; $195E
 	move.b (A2)+, D0	; $1962
 	jsr $274C.w	; $1964
 	bne.w loc_168C	; $1968
 	addq.l #$2, A2	; $196C
-	bra.w loc_14F4	; $196E
+	bra.w RunSceneEventScript	; $196E
 	move.b (A2)+, D0	; $1972
 	jsr $2758.w	; $1974
 	bset.b D0, ($0,A0,D1.w)	; $1978
-	bra.w loc_14F4	; $197C
+	bra.w RunSceneEventScript	; $197C
 	move.b (A2)+, D0	; $1980
 	jsr $2752.w	; $1982
-	bra.w loc_14F4	; $1986
+	bra.w RunSceneEventScript	; $1986
 	move.l A2, -(SP)	; $198A
 	jsr	$1C330.l			; $198C
 	movea.l (SP)+, A2	; $1992
-	bra.w loc_14F4	; $1994
+	bra.w RunSceneEventScript	; $1994
 	move.b (A2)+, (RAM_EventCounter).w	; $1998
-	bra.w loc_14F4	; $199C
+	bra.w RunSceneEventScript	; $199C
 	move.b (A2)+, D0	; $19A0
 	cmpi.b #-$1, D0	; $19A2
 	bne.b *+$6	; $19A6
@@ -450,14 +467,14 @@ loc_19AC:
 	jsr $23E4.w	; $19AC
 	bne.w loc_168C	; $19B0
 	addq.l #$2, A2	; $19B4
-	bra.w loc_14F4	; $19B6
+	bra.w RunSceneEventScript	; $19B6
 	move.b (A2)+, D0	; $19BA
 		dc.w	$6100,$067c	; bsr.w
 	move.b D0, (RAM_word_FFFF8CA3).w	; $19C0
 	bra.w loc_1596	; $19C4
 	move.b (A2)+, D0	; $19C8
 	jsr $366.w	; $19CA
-	bra.w loc_14F4	; $19CE
+	bra.w RunSceneEventScript	; $19CE
 	move.l (SP)+, (RAM_word_FFFF8CD6).w	; $19D2
 	move.b (A2)+, D0	; $19D6
 	bpl.b *+$6	; $19D8
@@ -474,22 +491,22 @@ loc_19DE:
 	addq.l #$2, A2	; $19FC
 	beq.w loc_168C	; $19FE
 	addq.l #$2, A2	; $1A02
-	bra.w loc_14F4	; $1A04
+	bra.w RunSceneEventScript	; $1A04
 	move.b (A2)+, (RAM_word_FFFF8CC4).w	; $1A08
 	move.b (A2)+, (RAM_word_FFFF8CC5).w	; $1A0C
-	bra.w loc_14F4	; $1A10
+	bra.w RunSceneEventScript	; $1A10
 	move.b (RAM_word_FFFF8CC4).w, D3	; $1A14
 	move.b (RAM_word_FFFF8CC5).w, D2	; $1A18
 	bra.w loc_1568	; $1A1C
 	move.w (RAM_word_FFFF968A).w, D0	; $1A20
 	jsr	$F906.l				; $1A24
-	bra.w loc_14F4	; $1A2A
+	bra.w RunSceneEventScript	; $1A2A
 	moveq #$0, D0	; $1A2E
 	move.b (A2)+, D0	; $1A30
 	move.w D0, (RAM_CellX).w	; $1A32
 	move.b (A2)+, D0	; $1A36
 	move.w D0, (RAM_CellY).w	; $1A38
-	bra.w loc_14F4	; $1A3C
+	bra.w RunSceneEventScript	; $1A3C
 	moveq #$C, D3	; $1A40
 	moveq #$0, D0	; $1A42
 	move.b (A2)+, D0	; $1A44
@@ -514,7 +531,7 @@ loc_1A64:
 	bne.b loc_1A5E	; $1A72
 	move.w D5, (RAM_CellX).w	; $1A74
 	move.w D5, (RAM_CellY).w	; $1A78
-	bra.w loc_14F4	; $1A7C
+	bra.w RunSceneEventScript	; $1A7C
 	move.w #$F0, (RAM_word_FFFF8CD4).w	; $1A80
 	bset.b #$3, (RAM_PlayerState).w	; $1A86
 	bra.w loc_1596	; $1A8C
@@ -540,7 +557,7 @@ loc_1A64:
 	lsr.w #$2, D0	; $1ACA
 	dbf D1, $1ABE	; $1ACC
 	movea.l (SP)+, A2	; $1AD0
-	bra.w loc_14F4	; $1AD2
+	bra.w RunSceneEventScript	; $1AD2
 	movep.w ($D0E, A4), D5	; $1AD6
 	btst.b D7, (A1)	; $1ADA
 	move.b (A2), D0	; $1ADC
@@ -588,7 +605,7 @@ loc_1B2A:
 	clr.b (RAM_word_FFFF8CD3).w	; $1B42
 	clr.b (RAM_word_FFFF8CD2).w	; $1B46
 	unlk A6	; $1B4A
-	bra.w loc_14F4	; $1B4C
+	bra.w RunSceneEventScript	; $1B4C
 	moveq #$0, D2	; $1B50
 	moveq #$F, D3	; $1B52
 	add.w D0, D0	; $1B54
@@ -607,7 +624,7 @@ loc_1B60:
 	move.b (A2)+, D1	; $1B70
 	dbf D0, $1B6C	; $1B72
 	lea (-$2,A2,D1.w), A2	; $1B76
-	bra.w loc_14F4	; $1B7A
+	bra.w RunSceneEventScript	; $1B7A
 	move.b (A2)+, D0	; $1B7E
 	lsl.w #$8, D0	; $1B80
 	move.b (A2)+, D0	; $1B82
@@ -660,13 +677,13 @@ loc_1C0A:
 	move.l A2, -(SP)	; $1C16
 	jsr $24DC.w	; $1C18
 	movea.l (SP)+, A2	; $1C1C
-	bra.w loc_14F4	; $1C1E
+	bra.w RunSceneEventScript	; $1C1E
 	move.b (A2)+, D0	; $1C22
 	cmp.b (RAM_word_FFFF959C).w, D0	; $1C24
 	bls.w loc_168C	; $1C28
 loc_1C2C:
 	addq.w #$2, A2	; $1C2C
-	bra.w loc_14F4	; $1C2E
+	bra.w RunSceneEventScript	; $1C2E
 	cmpi.w #$E00, (RAM_word_FFFF9F00).w	; $1C32
 loc_1C38:
 	bcc.w loc_168C	; $1C38
@@ -702,14 +719,14 @@ loc_1C38:
 loc_1CA0:
 	movea.l (SP)+, A2	; $1CA0
 loc_1CA2:
-	bra.w loc_14F4	; $1CA2
+	bra.w RunSceneEventScript	; $1CA2
 	move.l A2, -(SP)	; $1CA6
 	jsr	$76C4.l				; $1CA8
 	bra.b loc_1CA0	; $1CAE
 	moveq #$0, D0	; $1CB0
 	move.b (A2)+, D0	; $1CB2
 	move.w D0, (RAM_SceneHeight).w	; $1CB4
-	bra.w loc_14F4	; $1CB8
+	bra.w RunSceneEventScript	; $1CB8
 loc_1CBC:
 	btst.b #$6, (RAM_InputSelectedNew).w	; $1CBC
 	beq.b *+$6	; $1CC2
@@ -985,7 +1002,13 @@ loc_1FD4:
 FoundGoldStrings:				; loc_0001FE6
 	dc.b	"Found the ",$00,"Found ",$00	; $1FE6
 	dc.b	" GOLD.",$00,".",$00,$00		; $1FF8
-loc_2002:
+; ----------------------------------------------------------------------
+; SetupScene: scene-entry geometry set-up. Resolves the scene (ResolveScene),
+; then reads the scene type entry: X origin -> RAM_SceneOriginX, Y origin
+; (x2-1) -> RAM_SceneOriginY, width -> RAM_SceneWidth, height ->
+; RAM_SceneHeight. Sets RAM_PlayerState = $80 (scene active).
+; ----------------------------------------------------------------------
+SetupScene:
 	jsr	$276C.w				; $2002
 	moveq	#$0, D0				; $2006
 	move.b	(A1)+, D0			; $2008
@@ -1016,7 +1039,13 @@ GetMagicMeterValue:				; loc_000203A
 	moveq	#$6, D1				; $204A
 	divu.w	D1, D0				; $204C
 	rts					; $204E
-loc_2050:
+; ----------------------------------------------------------------------
+; WriteTilemapEntry: writes one tilemap word to Plane A. Computes the Plane A
+; VRAM address from (scroll Y + row) << 6 + (scroll X + col), ORs $4000 (Plane A
+; base), emits the VDP control word then the tile+attribute word. D0 = tile word,
+; D6/D7 = col/row.
+; ----------------------------------------------------------------------
+WriteTilemapEntry:
 	move.w	D7, D1				; $2050
 	add.w	(RAM_ScrollOffsetY).w, D1		; $2052
 	andi.w	#$1F, D1			; $2056
@@ -1032,7 +1061,12 @@ loc_2050:
 	move.l	D1, ($C00004).l			; $2074
 	move.w	D0, ($C00000).l			; $207A
 	rts					; $2080
-loc_2082:
+; ----------------------------------------------------------------------
+; RenderTilemapPlane: bulk tilemap renderer. Iterates the visible rows/cols of
+; the decoded map buffer (A0) and streams them to Plane A, honouring the
+; render-control values RAM_RenderRowSkip/RAM_RenderColSkip.
+; ----------------------------------------------------------------------
+RenderTilemapPlane:
 	move.l	A2, -(SP)			; $2082
 	lea	($C00000).l, A0			; $2084
 	lea	($4,A0), A1			; $208A
@@ -1040,7 +1074,7 @@ loc_2082:
 	lsl.w	#$7, D4				; $2092
 	move.w	(RAM_RenderRows).w, D7		; $2094
 	move.w	(RAM_RenderRowSkip).w, D6		; $2098
-loc_209C:
+RenderTilemapRow:
 	move.w	D7, D3				; $209C
 	add.w	(RAM_ScrollOffsetY).w, D3		; $209E
 	andi.w	#$1F, D3			; $20A2
@@ -1084,7 +1118,7 @@ loc_20EE:
 	bne.b	loc_20EE			; $2104
 	addq.w	#$1, D7				; $2106
 	subq.w	#$1, D6				; $2108
-	bne.b	loc_209C			; $210A
+	bne.b	RenderTilemapRow			; $210A
 	movea.l	(SP)+, A2			; $210C
 	rts					; $210E
 UpdateScrollRegs:				; loc_0002110
@@ -1157,7 +1191,7 @@ loc_21E0:
 	addq.l	#$4, A4				; $21E0
 	dbf	D3, loc_2194			; $21E2
 	rts					; $21E6
-loc_21E8:
+WriteScrollRegs:
 	moveq	#$0, D6				; $21E8
 	bsr.w	$2050				; $21EA
 	addq.w	#$1, D6				; $21EE

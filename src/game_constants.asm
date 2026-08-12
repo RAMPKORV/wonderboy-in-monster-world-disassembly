@@ -23,10 +23,10 @@ RAM_ProgramState       = RAM_word_00FFF600   ; game state byte
 STATE_MASK             = $0000001C   ; state dispatch mask (bits 2-4)
 
 ; ============================================================
-; Scene / plane system (see docs/engine.md Â§4)
+; Scene / plane system (see docs/engine.md ÃÂ§4)
 ; ============================================================
 ; Two global pointers anchor the scene system. They are stored as longs
-; at ROM $1CC14 and $1CC18 and dereferenced by ResolveScene (loc_276C).
+; at ROM $1CC14 and $1CC18 and dereferenced by ResolveScene (ResolveScene).
 ROM_SceneTablePtr      = $00001CC14  ; long: pointer to the scene table
 ROM_SceneTypeTablePtr  = $00001CC18  ; long: pointer to the scene type table
 ROM_SceneTable         = $0001DD94   ; scene table: [type byte][16-bit offset] per index
@@ -59,7 +59,7 @@ FLAG_TAG_TILES         = $00          ; compressed tile stream ($6BFC)
 ; AdjustPaletteWord label is in src/palette_driver.asm ($594A)
 
 ; ============================================================
-; Data loaders (scene engine) â routine labels are in src/scene_decompressors.asm
+; Data loaders (scene engine) Ã¢ÂÂ routine labels are in src/scene_decompressors.asm
 ; ============================================================
 ; LoadFlaggedData ($6BC4) / DecompressTiles ($6BFC) / DecodeMap ($6D9C)
 

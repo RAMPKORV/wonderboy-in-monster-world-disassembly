@@ -4,7 +4,12 @@
 ; Covers ROM $220A-$3000.
 ; Verified bit-exact against the original ROM.
 ; ======================================================================
-loc_220A:
+; ----------------------------------------------------------------------
+; ComputeTilemapCoord: converts a screen position (D6/D7) plus camera offset into
+; a tilemap index. Uses RAM_SceneOriginX/Y and the screen tile size; returns the
+; index in D0.
+; ----------------------------------------------------------------------
+ComputeTilemapCoord:
 	lea (-$68AC).w, A3	; $220A
 	moveq #$0, D1	; $220E
 	move.w ($6,A3), D0	; $2210
@@ -41,8 +46,8 @@ loc_220A:
 loc_225E:
 	moveq #$0, D6	; $225E
 loc_2260:
-	bsr.w loc_220A	; $2260
-	bsr.w loc_2050	; $2264
+	bsr.w ComputeTilemapCoord	; $2260
+	bsr.w WriteTilemapEntry	; $2264
 	addq.w #$1, D6	; $2268
 	cmp.w (RAM_ScreenTilesX).w, D6	; $226A
 	bcs.b loc_2260	; $226E
@@ -72,7 +77,12 @@ loc_22A6:
 	move.l D0, (A1)	; $22B8
 	dbf D2, $22B8	; $22BA
 	rts	; $22BE
-loc_22C0:
+; ----------------------------------------------------------------------
+; LoadTileBlock: loads one 64-tile block from the flagged table into the
+; destination buffer. D1 = flag index (masked), A1 = destination. Reads the
+; record at ROM_FlaggedTable and copies the tile data.
+; ----------------------------------------------------------------------
+LoadTileBlock:
 	andi.w #-$20, D1	; $22C0
 	lsr.w #$3, D1	; $22C4
 	movea.w D1, A0	; $22C6
@@ -94,7 +104,14 @@ loc_22D8:
 	link A6, #-$2	; $22F0
 	lea (-$71F8).w, A0	; $22F4
 	move.w #$0, (-$2,A6)	; $22F8
-loc_22FE:
+; ----------------------------------------------------------------------
+; LoadSceneTiles: scene tile upload loop. Walks the scene flag-index list (A0)
+; until a negative word, calling LoadFlaggedData for each index into
+; RAM_TileStagingBuffer and streaming 64-tile blocks to VRAM. Uses the cache
+; field at (A0)+$7E to skip blocks already in VRAM. Loads up to $40 blocks
+; (4096 tiles = full VRAM tile area).
+; ----------------------------------------------------------------------
+LoadSceneTiles:
 	move.w (A0)+, D0	; $22FE
 	bmi.b *+$3C	; $2300
 	cmp.w ($7E,A0), D0	; $2302
@@ -115,7 +132,7 @@ loc_22FE:
 loc_233C:
 	addq.w #$1, (-$2,A6)	; $233C
 	cmpi.w #$40, (-$2,A6)	; $2340
-	bcs.b loc_22FE	; $2346
+	bcs.b LoadSceneTiles	; $2346
 	unlk A6	; $2348
 	rts	; $234A
 loc_234C:
@@ -538,7 +555,13 @@ loc_2738:
 	lsr.w #$3, D1	; $2764
 	eori.w #$1, D1	; $2766
 	rts	; $276A
-loc_276C:
+; ----------------------------------------------------------------------
+; ResolveScene: resolves a scene index (D0) via the scene table (ROM_SceneTable):
+; entry = [type byte][16-bit offset]; scene data pointer = table base + offset
+; stored to RAM_SceneDataPtr; A1 = scene type entry (type x4 into
+; ROM_SceneTypeTable). The type entry carries X/Y origin + W/H geometry.
+; ----------------------------------------------------------------------
+ResolveScene:
 	move.w D0, D1	; $276C
 	add.w D0, D0	; $276E
 	add.w D1, D0	; $2770
@@ -554,13 +577,18 @@ loc_276C:
 	movea.l ($1CC18).l, A1	; $2792
 	adda.w D1, A1	; $2798
 	rts	; $279A
-	bsr.b loc_276C	; $279C
+	bsr.b ResolveScene	; $279C
 	moveq #$4F, D0	; $279E
 	jsr $366.w	; $27A0
-	bsr.w loc_27B0	; $27A4
+	bsr.w InitSceneData	; $27A4
 	move.b #-$80, (RAM_PlayerState).w	; $27A8
 	rts	; $27AE
-loc_27B0:
+; ----------------------------------------------------------------------
+; InitSceneData: initialises the scene data after ResolveScene. Sets the scene
+; origin/dimension RAM and (optionally) runs the flagged-loader housekeeping
+; ($7F00) before returning.
+; ----------------------------------------------------------------------
+InitSceneData:
 	tst.w (RAM_word_FFFF965C).w	; $27B0
 	beq.b *+$6	; $27B4
 	bsr.w	$7F00				; $27B6

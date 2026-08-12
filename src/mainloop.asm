@@ -196,11 +196,11 @@ InitQueues:					; loc_0004B42
 	clr.w (A0)	; $4B48
 	lea ($80,A0), A0	; $4B4A
 	dbf D0, $4B48	; $4B4E
-	bsr.w loc_4B72	; $4B52
+	bsr.w ClearTaskSlots	; $4B52
 	rts	; $4B56
-loc_4B58:
+TrapSpin:
 	nop	; $4B58
-	bra.b loc_4B58	; $4B5A
+	bra.b TrapSpin	; $4B5A
 VBlankHandler:					; loc_0004B5C (IRQ6)
 	addq.b #$1, (RAM_VBlankTick).l	; $4B5C
 	ori.b #$1, (RAM_VBlankFlag).w	; $4B62
@@ -209,14 +209,14 @@ VBlankTick:					; loc_0004B6A
 	clr.b (RAM_SchedulerCursor).w	; $4B6A
 	bsr.b *+$14	; $4B6E
 	bsr.b *+$26	; $4B70
-loc_4B72:
+ClearTaskSlots:
 	moveq #$0, D0	; $4B72
 	lea (-$7FF8).w, A0	; $4B74
 	moveq #$1F, D1	; $4B78
 	move.w D0, (A0)+	; $4B7A
 	dbf D1, $4B7A	; $4B7C
 	rts	; $4B80
-loc_4B82:
+ClearFirstTaskSlots:
 	moveq #$0, D0	; $4B82
 	lea (-$7FB8).w, A0	; $4B84
 	moveq #$3, D1	; $4B88
@@ -224,7 +224,7 @@ loc_4B82:
 	lea ($80,A0), A0	; $4B8C
 	dbf D1, $4B8A	; $4B90
 	rts	; $4B94
-loc_4B96:
+CleanupObjects:
 	lea (-$7DB8).w, A0	; $4B96
 	moveq #$F, D1	; $4B9A
 	tst.w (A0)	; $4B9C
@@ -243,7 +243,7 @@ loc_4BB2:
 MainLoop:					; loc_0004BBC
 	move.b #-$80, (RAM_SchedulerCursor).w	; $4BBC
 	lea (-$7FB8).w, A5	; $4BC2
-loc_4BC6:
+DispatchImmediateTask:
 	move.b (A5), D0	; $4BC6
 	andi.b #-$80, D0	; $4BC8
 	beq.b *+$10	; $4BCC
@@ -251,11 +251,11 @@ loc_4BC6:
 	movea.l ($C,A5), A0	; $4BD2
 	jsr (A0)	; $4BD6
 	movea.w (RAM_CurrentTaskSlot).w, A5	; $4BD8
-loc_4BDC:
+NextTaskSlot:
 	lea ($80,A5), A5	; $4BDC
 	addq.b #$1, (RAM_SchedulerCursor).w	; $4BE0
 	cmpi.b #-$7C, (RAM_SchedulerCursor).w	; $4BE4
-	bcs.b loc_4BC6	; $4BEA
+	bcs.b DispatchImmediateTask	; $4BEA
 	bsr.w	$53AA				; $4BEC
 	bsr.b *+$10	; $4BF0
 loc_4BF2:
