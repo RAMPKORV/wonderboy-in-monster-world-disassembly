@@ -1,0 +1,8 @@
+out.bin
+game.lst
+data_rest.asm
+game.rom
+tools/node_modules/
+*.bin.orig
+*.bin.bak
+savestates/
